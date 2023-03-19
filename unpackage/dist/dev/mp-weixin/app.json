@@ -9,5 +9,29 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
   },
+  "tabBar": {
+    "color": "#7A7e83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "fffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "简历"
+      },
+      {
+        "pagePath": "pages/job/index",
+        "text": "求职"
+      },
+      {
+        "pagePath": "pages/info/index",
+        "text": "信息"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "个人"
+      }
+    ]
+  },
   "usingComponents": {}
 }
