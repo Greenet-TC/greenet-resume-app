@@ -1,41 +1,67 @@
 {
-	"pages": [
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		}
-	],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	},
-	"tabBar": {
-		"color": "#7A7e83",
-		"selectedColor": "#3cc51f",
-		"borderStyle": "black",
-		"backgroundColor": "fffff",
-		"list": [
-			{
-				"pagePath": "pages/index/index",
-				"text": "简历"
-			},
-			{
-				"pagePath": "pages/job/index",
-				"text": "求职"
-			},
-			{
-				"pagePath": "pages/info/index",
-				"text": "信息"
-			},
-			{
-				"pagePath": "pages/profile/index",
-				"text": "个人"
-			}
-		]
-	},
-	"uniIdRouter": {}
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/job/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/info/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "uni-app"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#7A7E83",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "简历",
+        "iconPath": "static/images/tabbar/home.png",
+        "selectedIconPath": "static/images/tabbar/select-home.png"
+      },
+      {
+        "pagePath": "pages/job/index",
+        "text": "求职",
+        "iconPath": "static/images/tabbar/job.png",
+        "selectedIconPath": "static/images/tabbar/select-job.png"
+      },
+      {
+        "pagePath": "pages/info/index",
+        "text": "课程",
+        "iconPath": "static/images/tabbar/coures.png",
+        "selectedIconPath": "static/images/tabbar/select-coures.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "个人",
+        "iconPath": "static/images/tabbar/profile.png",
+        "selectedIconPath": "static/images/tabbar/select-profile.png"
+      }
+    ]
+  },
+  "uniIdRouter": {}
 }
