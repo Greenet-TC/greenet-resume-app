@@ -1,12 +1,13 @@
 /**
  * 复制文本 兼容H5
- * 来自 ThorUI  www.thorui.cn | 文档地址： www.donarui.com
+ * 来自 ThorUI  www.thorui.cn/doc
  * @author echo.
- * @version 1.0.0
+ * @version 1.7.1
  **/
 // #ifdef H5
 import ClipboardJS from "./clipboard.min.js"
 // #endif
+
 const thorui = {
 	/**
 	 * data 需要复制的数据
