@@ -312,11 +312,11 @@ export default {
         },
         {
           img: "qa.png",
-          name: "模拟面试",
+          name: "实习内推",
         },
         {
           img: "house.png",
-          name: "实习内推",
+          name: "实习租房",
         },
       ],
       newProduct: [
