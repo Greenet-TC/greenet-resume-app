@@ -52,120 +52,19 @@
       class="tui-img__coupon"
       @tap="coupon"
     ></image>
-    <view class="tui-product-box">
-      <!--秒杀-->
-      <view class="tui-block__box">
-        <view class="tui-group-name">
-          <view class="tui-seckill__box">
-            <image
-              src="https://thorui.cn/images/mall/img_home_seckill_3x.png"
-              class="tui-seckill__img"
-              mode="widthFix"
-            ></image>
-            <view class="tui-countdown__box">
-              <view class="tui-countdown__title">距结束</view>
-              <view class="tui-flex__center">
-                <tui-countdown
-                  :time="3800"
-                  backgroundColor="transparent"
-                  borderColor="transparent"
-                  color="#EB0909"
-                  colonColor="#EB0909"
-                ></tui-countdown>
-              </view>
-            </view>
-          </view>
-          <view class="tui-more__box" @tap="seckill(1)">
-            <text>更多</text>
-            <tui-icon
-              name="arrowright"
-              :size="36"
-              unit="rpx"
-              color="#999"
-            ></tui-icon>
-          </view>
-        </view>
-        <scroll-view scroll-x>
-          <view class="tui-goods__list">
-            <view
-              class="tui-goods__item"
-              @tap="seckill(2)"
-              v-for="(item, index) in 8"
-              :key="index"
-            >
-              <view class="tui-goods__imgbox">
-                <image
-                  :src="`/static/images/mall/product/${
-                    index % 2 == 0 ? 4 : 2
-                  }.jpg`"
-                  mode="widthFix"
-                  class="tui-goods__img"
-                ></image>
-              </view>
-              <view class="tui-pri__box">
-                <view class="tui-sale-pri">
-                  <view class="tui-size-sm">¥</view>
-                  <view>298</view>
-                  <view class="tui-size-sm">.50</view>
-                </view>
-              </view>
-              <view class="tui-original__pri">¥399.00</view>
-            </view>
-          </view>
-        </scroll-view>
-      </view>
-      <!--超值拼团-->
-      <view class="tui-block__box tui-mtop__20">
-        <view class="tui-group-name">
-          <view>
-            <text>超值拼团</text>
-            <text class="tui-sub__desc tui-color__pink">拼着买更便宜</text>
-          </view>
-          <view class="tui-more__box" @tap="group(1)">
-            <text>更多</text>
-            <tui-icon
-              name="arrowright"
-              :size="36"
-              unit="rpx"
-              color="#999"
-            ></tui-icon>
-          </view>
-        </view>
-        <scroll-view scroll-x>
-          <view class="tui-goods__list">
-            <view
-              class="tui-goods__item"
-              @tap="group(2)"
-              v-for="(item, index) in 8"
-              :key="index"
-            >
-              <view class="tui-goods__imgbox">
-                <image
-                  :src="`/static/images/product/${
-                    index % 2 == 0 ? 55 : 44
-                  }.jpg`"
-                  mode="widthFix"
-                  class="tui-goods__img"
-                ></image>
-              </view>
-              <view class="tui-pri__box">
-                <view class="tui-sale-pri">
-                  <view class="tui-size-sm">¥</view>
-                  <view>298</view>
-                  <view class="tui-size-sm">.50</view>
-                </view>
-              </view>
-              <view class="tui-original__pri">¥399.00</view>
-            </view>
-          </view>
-        </scroll-view>
-      </view>
-
-      <!--排行榜-->
+    <tui-text
+      padding="20rpx 20rpx"
+      size="35"
+      fontWeight="500"
+      block
+      text="实习内推"
+    ></tui-text>
+    <view class="">
+      <!--简历模板-->
       <view class="tui-block__box tui-mtop__20">
         <view class="tui-group-name" @tap="more">
           <view>
-            <text>排行榜</text>
+            <text>简历模板</text>
             <text class="tui-sub__desc">大家都在买</text>
           </view>
           <view class="tui-more__box">
@@ -290,16 +189,13 @@
   </view>
 </template>
 <script>
-import tuiFooter from "@/components/thorui/tui-footer/tui-footer.vue";
-import tuiNavigationBar from "@/components/thorui/tui-navigation-bar/tui-navigation-bar.vue";
+import tuiText from "@/components/thorui/tui-text/tui-text.vue";
 export default {
   components: {
-    tuiFooter,
-    tuiNavigationBar,
+    tuiText,
   },
   data() {
     return {
-      hotSearch: ["休闲零食", "自热火锅", "小冰箱迷你"],
       banner: ["a.png", "b.png", "c.png", "d.png"],
       category: [
         {
@@ -725,9 +621,8 @@ page {
 }
 
 .tui-product-box {
-  margin-top: 20rpx;
-  padding: 0 25rpx;
   box-sizing: border-box;
+  border-radius: 5px 5px 0 0;
 }
 
 .tui-img__coupon {
