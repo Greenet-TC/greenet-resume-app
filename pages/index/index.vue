@@ -40,7 +40,7 @@
         @tap="more"
       >
         <image
-          :src="'https://thorui.cn/images/mall/category/' + item.img"
+          :src="'/static/images/icon/' + item.img"
           class="tui-category-img"
           mode="scaleToFill"
         ></image>
@@ -48,7 +48,7 @@
       </view>
     </view>
     <image
-      src="https://thorui.cn/images/mall/activity/img_coupon_banner.png"
+      src="/static/images/coupon/banner.png"
       class="tui-img__coupon"
       @tap="coupon"
     ></image>
@@ -303,44 +303,20 @@ export default {
       banner: ["a.png", "b.png", "c.png", "d.png"],
       category: [
         {
-          img: "1.png",
-          name: "短袖T恤",
+          img: "cv.png",
+          name: "简历修改",
         },
         {
-          img: "2.png",
-          name: "足球",
+          img: "interview.png",
+          name: "模拟面试",
         },
         {
-          img: "3.png",
-          name: "运动鞋",
+          img: "qa.png",
+          name: "模拟面试",
         },
         {
-          img: "4.png",
-          name: "中老年",
-        },
-        {
-          img: "5.png",
-          name: "甜美风",
-        },
-        {
-          img: "6.png",
-          name: "鱼尾裙",
-        },
-        {
-          img: "7.png",
-          name: "相机配件",
-        },
-        {
-          img: "8.png",
-          name: "护肤套装",
-        },
-        {
-          img: "9.png",
-          name: "单肩包",
-        },
-        {
-          img: "10.png",
-          name: "卫衣",
+          img: "house.png",
+          name: "实习内推",
         },
       ],
       newProduct: [
@@ -716,7 +692,7 @@ page {
   flex-wrap: wrap;
   font-size: 24rpx;
   color: #555;
-  /* margin-bottom: 20rpx; */
+  margin-top: 20rpx;
 }
 
 .tui-category-item {
@@ -756,7 +732,7 @@ page {
 
 .tui-img__coupon {
   width: 100%;
-  height: 184rpx;
+  height: 200rpx;
   display: block;
 }
 
