@@ -45,7 +45,7 @@
       },
       {
         "pagePath": "pages/job/index",
-        "text": "求职",
+        "text": "实习",
         "iconPath": "static/images/tabbar/job.png",
         "selectedIconPath": "static/images/tabbar/select-job.png"
       },
