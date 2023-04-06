@@ -1,6 +1,8 @@
 <template>
   <view class="container">
     <!--header-->
+    <!--加载loadding-->
+    <tui-loadmore v-if="pullUpOn" :index="1"></tui-loadmore>
     <view class="tui-header-banner">
       <view class="tui-banner-bg">
         <!--banner-->
@@ -52,16 +54,23 @@
       class="tui-img__coupon"
       @tap="coupon"
     ></image>
-    <tui-text
-      padding="20rpx 20rpx"
-      size="35"
-      fontWeight="500"
-      block
-      text="实习内推"
-    ></tui-text>
-    <view class="">
+    <!-- 头部 -->
+    <view class="tui-title-contant">
+      <tui-text size="35" fontWeight="500" block text="实习内推"></tui-text>
+      <tui-button
+        width="140rpx"
+        size="24"
+        shape="circle"
+        type="gray-primary"
+        height="50rpx"
+        disabledGray
+        >更多内推</tui-button
+      >
+    </view>
+
+    <view class="tui-product-box">
       <!--简历模板-->
-      <view class="tui-block__box tui-mtop__20">
+      <view class="tui-block__box">
         <view class="tui-group-name" @tap="more">
           <view>
             <text>简历模板</text>
@@ -110,90 +119,15 @@
       </view>
     </view>
 
-    <view class="tui-product-box">
-      <view class="tui-title__img">
-        <image
-          src="https://thorui.cn/images/mall/img_home_update_3x.png"
-          mode="widthFix"
-        ></image>
-      </view>
-      <view class="tui-product-list">
-        <view class="tui-product-container">
-          <template v-for="(item, index) in productList">
-            <!--商品列表-->
-            <view
-              :key="index"
-              v-if="(index + 1) % 2 != 0"
-              class="tui-pro-item"
-              hover-class="hover"
-              :hover-start-time="150"
-              @tap="detail"
-            >
-              <image
-                :src="'/static/images/mall/product/' + item.img + '.jpg'"
-                class="tui-pro-img"
-                mode="widthFix"
-              />
-              <view class="tui-pro-content">
-                <view class="tui-pro-tit">{{ item.name }}</view>
-                <view>
-                  <view class="tui-pro-price">
-                    <text class="tui-sale-price">￥{{ item.sale }}</text>
-                    <text class="tui-factory-price">￥{{ item.factory }}</text>
-                  </view>
-                  <view class="tui-pro-pay">{{ item.payNum }}人付款</view>
-                </view>
-              </view>
-            </view>
-            <!--商品列表-->
-          </template>
-        </view>
-        <view class="tui-product-container">
-          <template v-for="(item, index) in productList">
-            <!--商品列表-->
-            <view
-              :key="index"
-              v-if="(index + 1) % 2 == 0"
-              class="tui-pro-item"
-              hover-class="hover"
-              :hover-start-time="150"
-              @tap="detail"
-            >
-              <image
-                :src="'/static/images/mall/product/' + item.img + '.jpg'"
-                class="tui-pro-img"
-                mode="widthFix"
-              />
-              <view class="tui-pro-content">
-                <view class="tui-pro-tit">{{ item.name }}</view>
-                <view>
-                  <view class="tui-pro-price">
-                    <text class="tui-sale-price">￥{{ item.sale }}</text>
-                    <text class="tui-factory-price">￥{{ item.factory }}</text>
-                  </view>
-                  <view class="tui-pro-pay">{{ item.payNum }}人付款</view>
-                </view>
-              </view>
-            </view>
-            <!--商品列表-->
-          </template>
-        </view>
-      </view>
-    </view>
-
     <!--加载loadding-->
-    <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore>
+    <tui-loadmore v-if="loadding" :index="1"></tui-loadmore>
     <!-- <tui-nomore v-if="!pullUpOn"></tui-nomore> -->
     <!--加载loadding-->
     <view class="tui-safearea-bottom"></view>
   </view>
 </template>
 <script>
-import tuiText from "@/components/thorui/tui-text/tui-text.vue";
 export default {
-  components: {
-    tuiText,
-  },
   data() {
     return {
       banner: ["a.png", "b.png", "c.png", "d.png"],
@@ -339,7 +273,7 @@ export default {
       ],
       pageIndex: 1,
       loadding: false,
-      pullUpOn: true,
+      pullUpOn: false,
       opacity: 1,
     };
   },
@@ -435,61 +369,10 @@ page {
   color: #333;
 }
 
-.tui-category-scale {
-  transform: scale(0.7);
-  line-height: 24rpx;
-}
-
-.tui-icon-category {
-  line-height: 20px !important;
-  margin-bottom: 0 !important;
-}
-
-.tui-swiper {
-  font-size: 26rpx;
-  height: 60rpx;
-  flex: 1;
-  padding-left: 12rpx;
-}
-
-.tui-swiper-item {
-  display: flex;
-  align-items: center;
-}
-
-.tui-hot-item {
-  line-height: 26rpx;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .tui-header-banner {
   padding-top: 100rpx;
   box-sizing: border-box;
   /* background: #e41f19; */
-}
-
-.tui-hot-search {
-  color: #fff;
-  font-size: 24rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20rpx;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 2;
-}
-
-.tui-hot-tag {
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 10rpx 24rpx;
-  border-radius: 30rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 24rpx;
 }
 
 .tui-banner-bg {
@@ -629,10 +512,6 @@ page {
   width: 100%;
   height: 200rpx;
   display: block;
-}
-
-.tui-mtop__20 {
-  margin-top: 20rpx;
 }
 
 .tui-bg-white {
@@ -952,5 +831,11 @@ page {
   padding-top: 10rpx;
   font-size: 24rpx;
   color: #656565;
+}
+.tui-title-contant {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx;
+  margin-top: 20rpx;
 }
 </style>
