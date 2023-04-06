@@ -1,6 +1,8 @@
 <template>
   <view class="container">
     <!--header-->
+    <!--加载loadding-->
+    <tui-loadmore v-if="pullUpOn" :index="1"></tui-loadmore>
     <view class="tui-header-banner">
       <view class="tui-banner-bg">
         <!--banner-->
@@ -52,254 +54,106 @@
       class="tui-img__coupon"
       @tap="coupon"
     ></image>
-    <view class="tui-product-box">
-      <!--秒杀-->
-      <view class="tui-block__box">
-        <view class="tui-group-name">
-          <view class="tui-seckill__box">
-            <image
-              src="https://thorui.cn/images/mall/img_home_seckill_3x.png"
-              class="tui-seckill__img"
-              mode="widthFix"
-            ></image>
-            <view class="tui-countdown__box">
-              <view class="tui-countdown__title">距结束</view>
-              <view class="tui-flex__center">
-                <tui-countdown
-                  :time="3800"
-                  backgroundColor="transparent"
-                  borderColor="transparent"
-                  color="#EB0909"
-                  colonColor="#EB0909"
-                ></tui-countdown>
-              </view>
-            </view>
-          </view>
-          <view class="tui-more__box" @tap="seckill(1)">
-            <text>更多</text>
-            <tui-icon
-              name="arrowright"
-              :size="36"
-              unit="rpx"
-              color="#999"
-            ></tui-icon>
-          </view>
-        </view>
-        <scroll-view scroll-x>
-          <view class="tui-goods__list">
-            <view
-              class="tui-goods__item"
-              @tap="seckill(2)"
-              v-for="(item, index) in 8"
-              :key="index"
-            >
-              <view class="tui-goods__imgbox">
-                <image
-                  :src="`/static/images/mall/product/${
-                    index % 2 == 0 ? 4 : 2
-                  }.jpg`"
-                  mode="widthFix"
-                  class="tui-goods__img"
-                ></image>
-              </view>
-              <view class="tui-pri__box">
-                <view class="tui-sale-pri">
-                  <view class="tui-size-sm">¥</view>
-                  <view>298</view>
-                  <view class="tui-size-sm">.50</view>
-                </view>
-              </view>
-              <view class="tui-original__pri">¥399.00</view>
-            </view>
-          </view>
-        </scroll-view>
-      </view>
-      <!--超值拼团-->
-      <view class="tui-block__box tui-mtop__20">
-        <view class="tui-group-name">
-          <view>
-            <text>超值拼团</text>
-            <text class="tui-sub__desc tui-color__pink">拼着买更便宜</text>
-          </view>
-          <view class="tui-more__box" @tap="group(1)">
-            <text>更多</text>
-            <tui-icon
-              name="arrowright"
-              :size="36"
-              unit="rpx"
-              color="#999"
-            ></tui-icon>
-          </view>
-        </view>
-        <scroll-view scroll-x>
-          <view class="tui-goods__list">
-            <view
-              class="tui-goods__item"
-              @tap="group(2)"
-              v-for="(item, index) in 8"
-              :key="index"
-            >
-              <view class="tui-goods__imgbox">
-                <image
-                  :src="`/static/images/product/${
-                    index % 2 == 0 ? 55 : 44
-                  }.jpg`"
-                  mode="widthFix"
-                  class="tui-goods__img"
-                ></image>
-              </view>
-              <view class="tui-pri__box">
-                <view class="tui-sale-pri">
-                  <view class="tui-size-sm">¥</view>
-                  <view>298</view>
-                  <view class="tui-size-sm">.50</view>
-                </view>
-              </view>
-              <view class="tui-original__pri">¥399.00</view>
-            </view>
-          </view>
-        </scroll-view>
-      </view>
+    <!-- 头部 -->
+    <view class="tui-title-contant">
+      <tui-text size="35" fontWeight="500" block text="实习内推"></tui-text>
+      <tui-button
+        width="140rpx"
+        size="24"
+        shape="circle"
+        type="gray-primary"
+        height="50rpx"
+        disabledGray
+        >更多内推</tui-button
+      >
+    </view>
 
-      <!--排行榜-->
-      <view class="tui-block__box tui-mtop__20">
+    <view class="tui-product-box">
+      <!--简历模板-->
+      <view class="tui-block__box">
         <view class="tui-group-name" @tap="more">
           <view>
-            <text>排行榜</text>
-            <text class="tui-sub__desc">大家都在买</text>
+            <text>热招岗位</text>
+            <text class="tui-sub__desc">大家都在投递</text>
           </view>
           <view class="tui-more__box">
-            <text>更多</text>
+            <text>100+ 岗位</text>
             <tui-icon
               name="arrowright"
-              :size="36"
+              :size="30"
               unit="rpx"
               color="#999"
             ></tui-icon>
           </view>
         </view>
         <view class="tui-new-box">
+          <view class="tui-new-job-info-box">
+            <view class="tui-new-job-info">
+              <tui-image-group
+                :imageList="[
+                  {
+                    src: `https://uploadfiles.nowcoder.com/files/20181102/4575098_1541147538969_826546_1499420128657_7.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill`,
+                  },
+                ]"
+                isGroup
+                width="80rpx"
+                height="80rpx"
+              ></tui-image-group>
+              <view class="tui-recru-info-text">
+                <tui-text block text="阿里巴巴" size="30"></tui-text>
+                <tui-text
+                  block
+                  text="`互联网 | 已上市 | 10000 + 人`"
+                  size="22"
+                  type="gray"
+                ></tui-text
+              ></view>
+            </view>
+            <tui-notice-bar
+              single
+              :padding="['0', '20rpx']"
+              content="阿里巴巴集团的业务包括核心商业、云计算、本地生活服务、数字媒体及娱乐以及创新业务。围绕着阿里巴巴的平台与业务，一个涵盖了消费者、商家、品牌"
+            ></tui-notice-bar>
+          </view>
           <view
             class="tui-new-item"
             :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
-            v-for="(item, index) in newProduct"
+            v-for="(item, index) in recruitInfo"
             :key="index"
             @tap="detail"
           >
-            <image
-              :src="
-                '/static/images/mall/new/' +
-                (item.type == 1 ? 'new' : 'discount') +
-                '.png'
-              "
-              class="tui-new-label"
-              v-if="item.isLabel"
-            ></image>
-            <view class="tui-title-box">
-              <view class="tui-new-title">{{ item.name }}</view>
-              <view class="tui-new-price">
-                <text class="tui-new-present">￥{{ item.present }}</text>
-                <text class="tui-new-original">￥{{ item.original }}</text>
+            <view class="tui-recru-info-item">
+              <tui-image-group
+                :imageList="[{ src: item.logo }]"
+                isGroup
+                width="70rpx"
+                height="70rpx"
+              ></tui-image-group>
+              <view class="tui-recru-info-text">
+                <tui-text block :text="item.name" size="30"></tui-text>
+                <tui-text
+                  block
+                  :text="`${item.jobNum}个内推岗位`"
+                  size="22"
+                  type="gray"
+                ></tui-text>
               </view>
             </view>
-            <image
-              :src="'/static/images/mall/new/' + item.pic"
-              class="tui-new-img"
-            ></image>
           </view>
         </view>
       </view>
     </view>
 
-    <view class="tui-product-box">
-      <view class="tui-title__img">
-        <image
-          src="https://thorui.cn/images/mall/img_home_update_3x.png"
-          mode="widthFix"
-        ></image>
-      </view>
-      <view class="tui-product-list">
-        <view class="tui-product-container">
-          <template v-for="(item, index) in productList">
-            <!--商品列表-->
-            <view
-              :key="index"
-              v-if="(index + 1) % 2 != 0"
-              class="tui-pro-item"
-              hover-class="hover"
-              :hover-start-time="150"
-              @tap="detail"
-            >
-              <image
-                :src="'/static/images/mall/product/' + item.img + '.jpg'"
-                class="tui-pro-img"
-                mode="widthFix"
-              />
-              <view class="tui-pro-content">
-                <view class="tui-pro-tit">{{ item.name }}</view>
-                <view>
-                  <view class="tui-pro-price">
-                    <text class="tui-sale-price">￥{{ item.sale }}</text>
-                    <text class="tui-factory-price">￥{{ item.factory }}</text>
-                  </view>
-                  <view class="tui-pro-pay">{{ item.payNum }}人付款</view>
-                </view>
-              </view>
-            </view>
-            <!--商品列表-->
-          </template>
-        </view>
-        <view class="tui-product-container">
-          <template v-for="(item, index) in productList">
-            <!--商品列表-->
-            <view
-              :key="index"
-              v-if="(index + 1) % 2 == 0"
-              class="tui-pro-item"
-              hover-class="hover"
-              :hover-start-time="150"
-              @tap="detail"
-            >
-              <image
-                :src="'/static/images/mall/product/' + item.img + '.jpg'"
-                class="tui-pro-img"
-                mode="widthFix"
-              />
-              <view class="tui-pro-content">
-                <view class="tui-pro-tit">{{ item.name }}</view>
-                <view>
-                  <view class="tui-pro-price">
-                    <text class="tui-sale-price">￥{{ item.sale }}</text>
-                    <text class="tui-factory-price">￥{{ item.factory }}</text>
-                  </view>
-                  <view class="tui-pro-pay">{{ item.payNum }}人付款</view>
-                </view>
-              </view>
-            </view>
-            <!--商品列表-->
-          </template>
-        </view>
-      </view>
-    </view>
-
     <!--加载loadding-->
-    <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore>
+    <tui-loadmore v-if="loadding" :index="1"></tui-loadmore>
     <!-- <tui-nomore v-if="!pullUpOn"></tui-nomore> -->
     <!--加载loadding-->
-    <view class="tui-safearea-bottom"></view>
   </view>
 </template>
 <script>
-import tuiFooter from "@/components/thorui/tui-footer/tui-footer.vue";
-import tuiNavigationBar from "@/components/thorui/tui-navigation-bar/tui-navigation-bar.vue";
 export default {
-  components: {
-    tuiFooter,
-    tuiNavigationBar,
-  },
   data() {
     return {
-      hotSearch: ["休闲零食", "自热火锅", "小冰箱迷你"],
       banner: ["a.png", "b.png", "c.png", "d.png"],
       category: [
         {
@@ -319,54 +173,62 @@ export default {
           name: "实习租房",
         },
       ],
-      newProduct: [
+      recruitInfo: [
         {
-          name: "时尚舒适公主裙高街修身长裙",
-          present: 198,
-          original: 298,
-          pic: "1.jpg",
-          type: 1,
-          isLabel: true,
+          name: "字节跳动",
+          logo: "https://uploadfiles.nowcoder.com/images/20220808/330699344_1659946449229/1FC8B2F316140F82B3F02B371E5E6B3A",
+          webSite: "https://jobs.toutiao.com/s/k6F397w",
+          pushCode: "2E54XY2",
+          jobNum: 4,
+          state: 1,
+          updateDate: "2023-01-16",
         },
         {
-          name: "高街修身雪纺衫",
-          present: 398,
-          original: 598,
-          pic: "2.jpg",
-          type: 2,
-          isLabel: true,
+          name: "锐捷网络",
+          logo: "https://uploadfiles.nowcoder.com/files/20221028/1030035845_1666949017907/%E5%9C%86%E5%BD%A9120x120.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
+          webSite: "https://www.ruijie.com.cn/campus-recruiting/",
+          pushCode: "DScpG3QT",
+          state: 1,
+          jobNum: 43,
+          updateDate: "2023-01-16",
         },
         {
-          name: "轻奢商务上衣",
-          present: 99,
-          original: 199,
-          pic: "3.jpg",
-          type: 1,
-          isLabel: true,
+          name: "TCL",
+          logo: "http://campus.tcl.com/image/logo1.png",
+          webSite: "http://campus.tcl.com/",
+          state: 1,
+          jobNum: 64,
+          pushCode: "wsztcd",
+          updateDate: "2023-01-16",
         },
         {
-          name: "品质牛皮婚鞋牛皮婚鞋品质就是好",
-          present: 99,
-          original: 199,
-          pic: "5.jpg",
-          type: 1,
-          isLabel: true,
+          name: "滴滴",
+          jobNum: 54,
+          logo: "https://uploadfiles.nowcoder.com/files/20221017/621313650_1666004314939/didi.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
+          webSite:
+            "https://campus.didiglobal.com/campus_apply/didiglobal/6223#/",
+          pushCode: "DSCuWZt4",
+          state: 14,
+          updateDate: "2023-01-16",
         },
         {
-          name: "轻奢时尚大包限时新品推荐",
-          present: 99,
-          original: 199,
-          pic: "6.jpg",
-          type: 1,
-          isLabel: false,
+          name: "理想汽车",
+          logo: "https://uploadfiles.nowcoder.com/files/20220211/127456592_1644572366024/64D3B5811C97FF69FE9F9874DE5BE1F11?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
+          webSite:
+            "https://li.jobs.feishu.cn/referral/campus/position?token=MzsxNjcyMzkyNDIyMDE1OzcxMTcwNDI0NTEzMTk1Mzc2Njc7MA",
+          pushCode: "4JZBW6Q",
+          state: 1,
+          jobNum: 14,
+          updateDate: "2023-01-16",
         },
         {
-          name: "高街修身长裙",
-          present: 999,
-          original: 1299,
-          pic: "4.jpg",
-          type: 2,
-          isLabel: true,
+          name: "京东",
+          logo: "https://uploadfiles.nowcoder.com/files/20221009/1030035845_1665311754589/%E5%9C%86%E5%BD%A9120x120.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
+          webSite: "https://zhaopin.jd.com/home",
+          pushCode: "C38L6",
+          state: 1,
+          jobNum: 40,
+          updateDate: "2023-01-16",
         },
       ],
       productList: [
@@ -443,7 +305,7 @@ export default {
       ],
       pageIndex: 1,
       loadding: false,
-      pullUpOn: true,
+      pullUpOn: false,
       opacity: 1,
     };
   },
@@ -539,61 +401,10 @@ page {
   color: #333;
 }
 
-.tui-category-scale {
-  transform: scale(0.7);
-  line-height: 24rpx;
-}
-
-.tui-icon-category {
-  line-height: 20px !important;
-  margin-bottom: 0 !important;
-}
-
-.tui-swiper {
-  font-size: 26rpx;
-  height: 60rpx;
-  flex: 1;
-  padding-left: 12rpx;
-}
-
-.tui-swiper-item {
-  display: flex;
-  align-items: center;
-}
-
-.tui-hot-item {
-  line-height: 26rpx;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .tui-header-banner {
   padding-top: 100rpx;
   box-sizing: border-box;
   /* background: #e41f19; */
-}
-
-.tui-hot-search {
-  color: #fff;
-  font-size: 24rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20rpx;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 2;
-}
-
-.tui-hot-tag {
-  background-color: rgba(255, 255, 255, 0.15);
-  padding: 10rpx 24rpx;
-  border-radius: 30rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 24rpx;
 }
 
 .tui-banner-bg {
@@ -725,19 +536,14 @@ page {
 }
 
 .tui-product-box {
-  margin-top: 20rpx;
-  padding: 0 25rpx;
   box-sizing: border-box;
+  border-radius: 5px 5px 0 0;
 }
 
 .tui-img__coupon {
   width: 100%;
   height: 200rpx;
   display: block;
-}
-
-.tui-mtop__20 {
-  margin-top: 20rpx;
 }
 
 .tui-bg-white {
@@ -758,7 +564,7 @@ page {
 }
 
 .tui-sub__desc {
-  color: #34c7a9;
+  color: #ff4906;
   font-size: 28rpx;
   font-weight: 400;
   padding-left: 25rpx;
@@ -909,7 +715,7 @@ page {
 
 .tui-new-item {
   width: 49%;
-  height: 180rpx;
+  height: 130rpx;
   padding: 0 20rpx;
   box-sizing: border-box;
   display: flex;
@@ -927,135 +733,28 @@ page {
   font-size: 24rpx;
 }
 
-.tui-new-title {
-  font-size: 26rpx;
-  line-height: 32rpx;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.tui-new-price {
-  padding-top: 18rpx;
-}
-
-.tui-new-present {
-  color: #ff201f;
-  font-weight: bold;
-}
-
-.tui-new-original {
-  display: inline-block;
-  color: #a0a0a0;
-  text-decoration: line-through;
-  padding-left: 12rpx;
-  transform: scale(0.8);
-  transform-origin: center center;
-}
-
-.tui-new-img {
-  width: 148rpx;
-  height: 148rpx;
-  display: block;
-  flex-shrink: 0;
-}
-
-.tui-new-label {
-  width: 56rpx;
-  height: 56rpx;
-  border-top-left-radius: 12rpx;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.tui-title__img {
-  width: 100%;
-  padding: 30rpx 0;
-  display: flex;
-  justify-content: center;
-}
-
-.tui-title__img image {
-  width: 352rpx;
-  height: 32rpx;
-}
-
-.tui-product-list {
+.tui-title-contant {
   display: flex;
   justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-  /* padding-top: 20rpx; */
-}
-
-.tui-product-container {
-  flex: 1;
-  margin-right: 2%;
-}
-
-.tui-product-container:last-child {
-  margin-right: 0;
-}
-
-.tui-pro-item {
-  width: 100%;
-  margin-bottom: 4%;
-  background: #fff;
-  box-sizing: border-box;
-  border-radius: 12rpx;
-  overflow: hidden;
-}
-
-.tui-pro-img {
-  width: 100%;
-  display: block;
-}
-
-.tui-pro-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
   padding: 20rpx;
+  margin-top: 20rpx;
 }
-
-.tui-pro-tit {
-  color: #2e2e2e;
-  font-size: 26rpx;
-  line-height: 32rpx;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+.tui-recru-info-item {
+  display: flex;
+  justify-content: space-around;
 }
-
-.tui-pro-price {
-  padding-top: 18rpx;
+.tui-recru-info-text {
+  margin-left: 20rpx;
 }
-
-.tui-sale-price {
-  font-size: 34rpx;
-  font-weight: 500;
-  color: #e41f19;
+.tui-new-job-info {
+  height: 80rpx;
+  display: flex;
+  justify-content: left;
+  padding: 20rpx 0;
+  border-radius: 10rpx;
 }
-
-.tui-factory-price {
-  font-size: 24rpx;
-  color: #a0a0a0;
-  text-decoration: line-through;
-  padding-left: 12rpx;
-}
-
-.tui-pro-pay {
-  padding-top: 10rpx;
-  font-size: 24rpx;
-  color: #656565;
+.tui-new-job-info-box {
+  margin-bottom: 50rpx;
+  width: 100%;
 }
 </style>
