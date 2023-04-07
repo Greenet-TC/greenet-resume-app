@@ -67,7 +67,6 @@
         >更多内推</tui-button
       >
     </view>
-
     <view class="tui-product-box">
       <!--简历模板-->
       <view class="tui-block__box">
@@ -143,6 +142,7 @@
         </view>
       </view>
     </view>
+    <!-- 优秀简历 -->
 
     <!--加载loadding-->
     <tui-loadmore v-if="loadding" :index="1"></tui-loadmore>
@@ -231,7 +231,6 @@ export default {
           updateDate: "2023-01-16",
         },
       ],
-
       pageIndex: 1,
       loadding: false,
       pullUpOn: false,

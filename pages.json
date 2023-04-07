@@ -21,7 +21,8 @@
     {
       "path": "pages/profile/index",
       "style": {
-        "navigationBarTitleText": "uni-app"
+        "navigationBarTitleText": "uni-app",
+        "navigationStyle": "custom"
       }
     }
   ],
