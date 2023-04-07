@@ -67,7 +67,6 @@
         >更多内推</tui-button
       >
     </view>
-
     <view class="tui-product-box">
       <!--简历模板-->
       <view class="tui-block__box">
@@ -143,6 +142,7 @@
         </view>
       </view>
     </view>
+    <!-- 优秀简历 -->
 
     <!--加载loadding-->
     <tui-loadmore v-if="loadding" :index="1"></tui-loadmore>
@@ -229,78 +229,6 @@ export default {
           state: 1,
           jobNum: 40,
           updateDate: "2023-01-16",
-        },
-      ],
-      productList: [
-        {
-          img: 1,
-          name: "欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜 粉BB 遮瑕疵 隔离）",
-          sale: 599,
-          factory: 899,
-          payNum: 2342,
-        },
-        {
-          img: 2,
-          name: "德国DMK进口牛奶  欧德堡（Oldenburger）超高温处理全脂纯牛奶1L*12盒",
-          sale: 29,
-          factory: 69,
-          payNum: 999,
-        },
-        {
-          img: 3,
-          name: "【第2支1元】柔色尽情丝柔口红唇膏女士不易掉色保湿滋润防水 珊瑚红",
-          sale: 299,
-          factory: 699,
-          payNum: 666,
-        },
-        {
-          img: 4,
-          name: "百雀羚套装女补水保湿护肤品",
-          sale: 1599,
-          factory: 2899,
-          payNum: 236,
-        },
-        {
-          img: 5,
-          name: "百草味 肉干肉脯 休闲零食 靖江精制猪肉脯200g/袋",
-          sale: 599,
-          factory: 899,
-          payNum: 2399,
-        },
-        {
-          img: 6,
-          name: "短袖睡衣女夏季薄款休闲家居服短裤套装女可爱韩版清新学生两件套 短袖粉色长颈鹿 M码75-95斤",
-          sale: 599,
-          factory: 899,
-          payNum: 2399,
-        },
-        {
-          img: 1,
-          name: "欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜",
-          sale: 599,
-          factory: 899,
-          payNum: 2342,
-        },
-        {
-          img: 2,
-          name: "德国DMK进口牛奶",
-          sale: 29,
-          factory: 69,
-          payNum: 999,
-        },
-        {
-          img: 3,
-          name: "【第2支1元】柔色尽情丝柔口红唇膏女士不易掉色保湿滋润防水 珊瑚红",
-          sale: 299,
-          factory: 699,
-          payNum: 666,
-        },
-        {
-          img: 4,
-          name: "百雀羚套装女补水保湿护肤品",
-          sale: 1599,
-          factory: 2899,
-          payNum: 236,
         },
       ],
       pageIndex: 1,
@@ -619,77 +547,11 @@ page {
 }
 
 /*秒杀商品*/
-.tui-goods__list {
-  display: flex;
-  align-items: center;
-}
-
-.tui-goods__item {
-  background-color: #fff;
-  width: 150rpx;
-  height: 230rpx;
-  border-radius: 6rpx;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  flex-shrink: 0;
-  margin-right: 18rpx;
-}
-
-.tui-goods__imgbox {
-  width: 150rpx;
-  height: 150rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-}
 
 .tui-goods__img {
   max-width: 150rpx;
   max-height: 150rpx;
   display: block;
-}
-
-.tui-pri__box {
-  max-width: 150rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.tui-sale-pri {
-  display: flex;
-  align-items: flex-end;
-  padding: 10rpx 0 8rpx;
-  box-sizing: border-box;
-  font-size: 28rpx;
-  line-height: 28rpx;
-  color: #eb0909;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.tui-size-sm {
-  font-size: 24rpx;
-  line-height: 24rpx;
-  transform: scale(0.8);
-  transform-origin: 0 50%;
-}
-
-.tui-original__pri {
-  font-size: 24rpx;
-  line-height: 24rpx;
-  color: #999999;
-  transform-origin: center 10%;
-  transform: scale(0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: line-through;
 }
 
 /*秒杀商品*/
