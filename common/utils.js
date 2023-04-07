@@ -74,27 +74,27 @@ export const getUserProfile = () => {
     });
   });
 };
-// 6.保存授权信息
-export const saveAuthInfo = (info) => {
-  return new Promise((resolve, reject) => {
-    const { nickName, gender, city, province, country, avatarUrl } =
-      info.userInfo;
+// // 6.保存授权信息
+// export const saveAuthInfo = (info) => {
+//   return new Promise((resolve, reject) => {
+//     const { nickName, gender, city, province, country, avatarUrl } =
+//       info.userInfo;
 
-    const data = {
-      nickName: nickName,
-      avatarUrl: avatarUrl,
-      gender: gender,
-      address: `${city === "" ? "0" : city} ${
-        province === "" ? "0" : province
-      } ${country === "" ? "0" : country}`,
-    };
-    saveWXAuthInfo(data)
-      .then((res) => {
-        uni.setStorageSync(STORAGE_KEYS.USER_LOGIN_CODE, res.code);
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
+//     const data = {
+//       nickName: nickName,
+//       avatarUrl: avatarUrl,
+//       gender: gender,
+//       address: `${city === "" ? "0" : city} ${
+//         province === "" ? "0" : province
+//       } ${country === "" ? "0" : country}`,
+//     };
+//     saveWXAuthInfo(data)
+//       .then((res) => {
+//         uni.setStorageSync(STORAGE_KEYS.USER_LOGIN_CODE, res.code);
+//         resolve();
+//       })
+//       .catch((err) => {
+//         reject(err);
+//       });
+//   });
+// };

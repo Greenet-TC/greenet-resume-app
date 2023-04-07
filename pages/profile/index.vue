@@ -53,7 +53,7 @@
         ></image>
         <view class="tui-info" v-if="isLogin">
           <view class="tui-nickname">
-            呼噜猪zzZ
+            马学明
             <image
               src="/static/images/mall/my/icon_vip_3x.png"
               class="tui-img-vip"
@@ -99,11 +99,11 @@
       <view class="tui-header-btm" @tap="href(5)">
         <view class="tui-btm-item">
           <view class="tui-btm-num">25</view>
-          <view class="tui-btm-text">收藏夹</view>
+          <view class="tui-btm-text">收藏职位</view>
         </view>
         <view class="tui-btm-item">
           <view class="tui-btm-num">22</view>
-          <view class="tui-btm-text">店铺关注</view>
+          <view class="tui-btm-text">关注公司</view>
         </view>
         <view class="tui-btm-item">
           <view class="tui-btm-num">3</view>
@@ -132,51 +132,41 @@
           <view class="tui-order-item" @tap="href(4)">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_daifukuan_3x.png"
+                src="/static/images/icon/profile/1.png"
                 class="tui-order-icon"
               ></image>
               <view class="tui-badge tui-badge-red">1</view>
             </view>
-            <view class="tui-order-text">待付款</view>
+            <view class="tui-order-text">简历修改</view>
           </view>
           <view class="tui-order-item" @tap="href(4)">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_daifahuo_3x.png"
+                src="/static/images/icon/profile/2.png"
                 class="tui-order-icon"
               ></image>
               <view class="tui-badge tui-badge-red">1</view>
             </view>
-            <view class="tui-order-text">待发货</view>
+            <view class="tui-order-text">模拟面试</view>
           </view>
           <view class="tui-order-item" @tap="href(4)">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_daishouhuo_3x.png"
+                src="/static/images/icon/profile/3.png"
                 class="tui-order-icon"
               ></image>
             </view>
-            <view class="tui-order-text">待收货</view>
+            <view class="tui-order-text">实习内推</view>
           </view>
           <view class="tui-order-item" @tap="href(4)">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_pingjia_3x.png"
+                src="/static/images/icon/profile/4.png"
                 class="tui-order-icon"
               ></image>
               <view class="tui-badge tui-badge-red" v-if="false">12</view>
             </view>
-            <view class="tui-order-text">评价</view>
-          </view>
-          <view class="tui-order-item" @tap="href(10)">
-            <view class="tui-icon-box">
-              <image
-                src="/static/images/mall/my/icon_tuikuan_3x.png"
-                class="tui-order-icon"
-              ></image>
-              <view class="tui-badge tui-badge-red">2</view>
-            </view>
-            <view class="tui-order-text">退款/售后</view>
+            <view class="tui-order-text">实习租房</view>
           </view>
         </view>
       </view>
@@ -220,7 +210,7 @@
       <view class="tui-box tui-tool-box">
         <tui-list-cell :arrow="true" padding="0" :lineLeft="false">
           <view class="tui-cell-header">
-            <view class="tui-cell-title">常用工具</view>
+            <view class="tui-cell-title">更多服务</view>
             <view class="tui-cell-sub">查看更多</view>
           </view>
         </tui-list-cell>
@@ -228,147 +218,78 @@
           <view class="tui-tool-item">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_gift_3x.png"
+                src="/static/images/icon/profile/5.png"
                 class="tui-tool-icon"
               ></image>
-              <image
-                src="/static/images/mall/my/icon_tab_3x.png"
-                class="tui-badge-icon"
-              ></image>
             </view>
-            <view class="tui-tool-text">免费领好礼</view>
+            <view class="tui-tool-text">简历模版</view>
           </view>
           <view class="tui-tool-item" @tap="href(11)">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_purse_3x.png"
+                src="/static/images/icon/profile/8.png"
                 class="tui-tool-icon"
               ></image>
             </view>
-            <view class="tui-tool-text">钱包</view>
+            <view class="tui-tool-text">实习咨询</view>
           </view>
           <view class="tui-tool-item" @tap="href(6)">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_ticket_3x.png"
+                src="/static/images/icon/profile/6.png"
                 class="tui-tool-icon"
               ></image>
             </view>
-            <view class="tui-tool-text">领券中心</view>
+            <view class="tui-tool-text">简历修改</view>
           </view>
           <view class="tui-tool-item">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_kefu_3x.png"
+                src="/static/images/icon/profile/9.png"
                 class="tui-tool-icon"
               ></image>
             </view>
-            <view class="tui-tool-text">客服服务</view>
+            <view class="tui-tool-text">模拟面试</view>
           </view>
           <view class="tui-tool-item">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_fanxian_3x.png"
+                src="/static/images/icon/profile/10.png"
                 class="tui-tool-icon"
               ></image>
             </view>
-            <view class="tui-tool-text">每日返现</view>
+            <view class="tui-tool-text">面试指导</view>
           </view>
           <view class="tui-tool-item" @tap="href(9)">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_tuan_3x.png"
+                src="/static/images/icon/profile/6.png"
                 class="tui-tool-icon"
               ></image>
             </view>
-            <view class="tui-tool-text">我的拼团</view>
+            <view class="tui-tool-text">实习内推</view>
           </view>
           <view class="tui-tool-item">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_zhihuan_3x.png"
+                src="/static/images/icon/profile/11.png"
                 class="tui-tool-icon"
               ></image>
             </view>
-            <view class="tui-tool-text">闲置换钱</view>
+            <view class="tui-tool-text">实习租房</view>
           </view>
           <view class="tui-tool-item">
             <view class="tui-icon-box">
               <image
-                src="/static/images/mall/my/icon_kaipiao_3x.png"
+                src="/static/images/icon/profile/12.png"
                 class="tui-tool-icon"
               ></image>
             </view>
-            <view class="tui-tool-text">开发票</view>
+            <view class="tui-tool-text">出国留学</view>
           </view>
         </view>
       </view>
 
-      <!--为你推荐-->
-      <tui-divider :size="28" :bold="true" color="#333" width="50%"
-        >为你推荐</tui-divider
-      >
-      <view class="tui-product-list">
-        <view class="tui-product-container">
-          <template v-for="(item, index) in productList">
-            <!--商品列表-->
-            <view
-              :key="index"
-              v-if="(index + 1) % 2 != 0"
-              class="tui-pro-item"
-              hover-class="hover"
-              :hover-start-time="150"
-              @tap="detail"
-            >
-              <image
-                :src="'/static/images/mall/product/' + item.img + '.jpg'"
-                class="tui-pro-img"
-                mode="widthFix"
-              />
-              <view class="tui-pro-content">
-                <view class="tui-pro-tit">{{ item.name }}</view>
-                <view>
-                  <view class="tui-pro-price">
-                    <text class="tui-sale-price">￥{{ item.sale }}</text>
-                    <text class="tui-factory-price">￥{{ item.factory }}</text>
-                  </view>
-                  <view class="tui-pro-pay">{{ item.payNum }}人付款</view>
-                </view>
-              </view>
-            </view>
-            <!--商品列表-->
-          </template>
-        </view>
-        <view class="tui-product-container">
-          <template v-for="(item, index) in productList">
-            <!--商品列表-->
-            <view
-              :key="index"
-              v-if="(index + 1) % 2 == 0"
-              class="tui-pro-item"
-              hover-class="hover"
-              :hover-start-time="150"
-              @tap="detail"
-            >
-              <image
-                :src="'/static/images/mall/product/' + item.img + '.jpg'"
-                class="tui-pro-img"
-                mode="widthFix"
-              />
-              <view class="tui-pro-content">
-                <view class="tui-pro-tit">{{ item.name }}</view>
-                <view>
-                  <view class="tui-pro-price">
-                    <text class="tui-sale-price">￥{{ item.sale }}</text>
-                    <text class="tui-factory-price">￥{{ item.factory }}</text>
-                  </view>
-                  <view class="tui-pro-pay">{{ item.payNum }}人付款</view>
-                </view>
-              </view>
-            </view>
-          </template>
-        </view>
-      </view>
       <!--加载loadding-->
       <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore>
     </view>
@@ -551,7 +472,7 @@ export default {
       this.opacity = e.opacity;
     },
     login() {
-      //   this.isLogin = true;
+      this.isLogin = true;
       getlogin().then((res) => {
         // wxLogin(res);
       });
@@ -788,7 +709,8 @@ export default {
 .tui-box {
   width: 100%;
   background: #fff;
-  box-shadow: 0 3rpx 20rpx rgba(183, 183, 183, 0.1);
+  /* box-shadow: 0 3rpx 20rpx rgba(183, 183, 183, 0.1); */
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
   border-radius: 10rpx;
   overflow: hidden;
 }
@@ -911,80 +833,5 @@ export default {
   right: 0;
   transform: translateX(88%);
   top: -15rpx;
-}
-
-/*为你推荐*/
-.tui-product-list {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
-  box-sizing: border-box;
-}
-
-.tui-product-container {
-  flex: 1;
-  margin-right: 2%;
-}
-
-.tui-product-container:last-child {
-  margin-right: 0;
-}
-
-.tui-pro-item {
-  width: 100%;
-  margin-bottom: 4%;
-  background: #fff;
-  box-sizing: border-box;
-  border-radius: 12rpx;
-  overflow: hidden;
-}
-
-.tui-pro-img {
-  width: 100%;
-  display: block;
-}
-
-.tui-pro-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-sizing: border-box;
-  padding: 20rpx;
-}
-
-.tui-pro-tit {
-  color: #2e2e2e;
-  font-size: 26rpx;
-  line-height: 32rpx;
-  word-break: break-all;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.tui-pro-price {
-  padding-top: 18rpx;
-}
-
-.tui-sale-price {
-  font-size: 34rpx;
-  font-weight: 500;
-  color: #e41f19;
-}
-
-.tui-factory-price {
-  font-size: 24rpx;
-  color: #a0a0a0;
-  text-decoration: line-through;
-  padding-left: 12rpx;
-}
-
-.tui-pro-pay {
-  padding-top: 10rpx;
-  font-size: 24rpx;
-  color: #656565;
 }
 </style>
