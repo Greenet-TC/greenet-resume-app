@@ -13,7 +13,7 @@
       }
     },
     {
-      "path": "pages/info/index",
+      "path": "pages/coures/index",
       "style": {
         "navigationBarTitleText": "uni-app"
       }
@@ -51,7 +51,7 @@
         "selectedIconPath": "static/images/tabbar/select-job.png"
       },
       {
-        "pagePath": "pages/info/index",
+        "pagePath": "pages/coures/index",
         "text": "课程",
         "iconPath": "static/images/tabbar/coures.png",
         "selectedIconPath": "static/images/tabbar/select-coures.png"
