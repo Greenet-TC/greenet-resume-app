@@ -1,9 +1,6 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">2{{title}}</text>
-		</view>
+	<tui-tabs :tabs="tabs" :currentTab="currentTab" unlined itemWidth="50%" @change="change"></tui-tabs>
 	</view>
 </template>
 
@@ -11,7 +8,16 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				tabs: [{
+					name: "今日特拼"
+				}, {
+					name: "全部"
+				}, {
+					name: "新品"
+				}, {
+					name: "禁用状态",
+					disabled: true
+				}]
 			}
 		},
 		onLoad() {
