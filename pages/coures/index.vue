@@ -23,25 +23,29 @@
 export default {
   data() {
     return {
+      currentTab: 0,
       tabs: [
-        {
-          name: "今日特拼",
-        },
         {
           name: "全部",
         },
         {
-          name: "新品",
+          name: "简历制作",
         },
         {
-          name: "禁用状态",
-          disabled: true,
+          name: "模拟面试",
+        },
+        {
+          name: "铲平",
         },
       ],
     };
   },
   onLoad() {},
-  methods: {},
+  methods: {
+    change(preValue) {
+      this.currentTab = preValue.index;
+    },
+  },
 };
 </script>
 
