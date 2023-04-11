@@ -35,7 +35,7 @@ export default {
           name: "模拟面试",
         },
         {
-          name: "铲平",
+          name: "企业项目",
         },
       ],
     };
