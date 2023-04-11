@@ -9,7 +9,7 @@
     {
       "path": "pages/job/index",
       "style": {
-        "navigationBarTitleText": "uni-app"
+        "navigationBarTitleText": "求职信息"
       }
     },
     {
