@@ -1,21 +1,6 @@
 <template>
   <view class="content">
-    <tui-tabs
-      :tabs="tabs"
-      :currentTab="currentTab"
-      unlined="true"
-      isSlider
-      itemWidth="50%"
-      @change="change"
-      sliderWidth="154"
-      sliderHeight="54"
-      sliderRadius="50rpx"
-      sliderBgColor="#fff"
-      color="rgb(255,255,255)"
-      bottom="50%"
-      selectedColor="rgb(235, 9, 9)"
-      backgroundColor="linear-gradient(90deg, rgb(255, 118, 38), rgb(252, 30, 82));"
-    ></tui-tabs>
+    <tui-tab :tabs="tabs" :current="current" scroll @change="change"></tui-tab>
   </view>
 </template>
 
@@ -23,27 +8,14 @@
 export default {
   data() {
     return {
-      currentTab: 0,
-      tabs: [
-        {
-          name: "全部",
-        },
-        {
-          name: "简历制作",
-        },
-        {
-          name: "模拟面试",
-        },
-        {
-          name: "企业项目",
-        },
-      ],
+      current: 0,
+      tabs: ["全部", "企业项目"],
     };
   },
   onLoad() {},
   methods: {
     change(preValue) {
-      this.currentTab = preValue.index;
+      this.current = preValue.index;
     },
   },
 };
