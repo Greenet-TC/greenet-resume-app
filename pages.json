@@ -15,7 +15,7 @@
     {
       "path": "pages/coures/index",
       "style": {
-        "navigationBarTitleText": "uni-app"
+        "navigationBarTitleText": "精选课程"
       }
     },
     {
