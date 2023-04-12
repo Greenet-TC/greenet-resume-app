@@ -8,299 +8,146 @@
         sliderBgColor="#ff4906"
         scroll
         @change="change"
+        isFixed
+      
       ></tui-tab>
     </view>
     <view class="greenet-content-list">
-      <view class="greenet-course-list-item">
+      
+      <view class="greenet-course-list-item"  v-for="(item) in couresList"
+            :key="item.couresId">
         <view class="course-list-item-image">
           <image
-            :src="'/static/images/banner/a.png'"
+            :src="'/static/images/banner/'+item.coverUrl"
             class="img"
             mode="scaleToFill"
           />
         </view>
         <view class="course-list-item-right">
           <view class="course-list-item-title"
-            >产地今晚还得把我当产地今晚还得把我当成吴楚东南坼大年初八玩家可当我看见的户外空间</view
+            >{{ item.title }}</view
           >
           <view class="course-list-item-tag">
             <tui-tag
+            v-for="(_i,index) in item.tag"
+            :key="index"
               type="light-orange"
               margin="0 8rpx 0 0"
               padding="8rpx"
               size="20rpx"
               >实心标签</tui-tag
             >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
+            
           </view>
-          <view class="course-list-item-intro"></view>
-        </view>
-      </view>
-      <tui-divider />
-      <view class="greenet-course-list-item">
-        <view class="course-list-item-image">
-          <image
-            :src="'/static/images/banner/a.png'"
-            class="img"
-            mode="scaleToFill"
-          />
-        </view>
-        <view class="course-list-item-right">
-          <view class="course-list-item-title"
-            >产地今晚还得把我当产地今晚还得把我当成吴楚东南坼大年初八玩家可当我看见的户外空间</view
-          >
-          <view class="course-list-item-tag">
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
+          <view class="course-list-item-intro">
+            <view class="course-list-item-intro-price">
+             <span> ¥ {{ item.price }}</span>
+              <span class="line-thro">{{ item.originPrice }}</span>
+            </view>
+            <view class="course-list-item-intro-applicant">
+              <tui-text :text="item.applicantNum" padding="0 8rpx" color="#7d7c7c" size="24"></tui-text>
+            </view>
           </view>
-          <view class="course-list-item-intro"></view>
         </view>
-      </view>
-      <tui-divider />
-      <view class="greenet-course-list-item">
-        <view class="course-list-item-image">
-          <image
-            :src="'/static/images/banner/a.png'"
-            class="img"
-            mode="scaleToFill"
-          />
         </view>
-        <view class="course-list-item-right">
-          <view class="course-list-item-title"
-            >产地今晚还得把我当产地今晚还得把我当成吴楚东南坼大年初八玩家可当我看见的户外空间</view
-          >
-          <view class="course-list-item-tag">
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-          </view>
-          <view class="course-list-item-intro"></view>
-        </view>
-      </view>
-      <tui-divider />
-      <view class="greenet-course-list-item">
-        <view class="course-list-item-image">
-          <image
-            :src="'/static/images/banner/a.png'"
-            class="img"
-            mode="scaleToFill"
-          />
-        </view>
-        <view class="course-list-item-right">
-          <view class="course-list-item-title"
-            >产地今晚还得把我当产地今晚还得把我当成吴楚东南坼大年初八玩家可当我看见的户外空间</view
-          >
-          <view class="course-list-item-tag">
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-          </view>
-          <view class="course-list-item-intro"></view>
-        </view>
-      </view>
-      <tui-divider />
-      <view class="greenet-course-list-item">
-        <view class="course-list-item-image">
-          <image
-            :src="'/static/images/banner/a.png'"
-            class="img"
-            mode="scaleToFill"
-          />
-        </view>
-        <view class="course-list-item-right">
-          <view class="course-list-item-title"
-            >产地今晚还得把我当产地今晚还得把我当成吴楚东南坼大年初八玩家可当我看见的户外空间</view
-          >
-          <view class="course-list-item-tag">
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-          </view>
-          <view class="course-list-item-intro"></view>
-        </view>
-      </view>
-      <tui-divider />
-      <view class="greenet-course-list-item">
-        <view class="course-list-item-image">
-          <image
-            :src="'/static/images/banner/a.png'"
-            class="img"
-            mode="scaleToFill"
-          />
-        </view>
-        <view class="course-list-item-right">
-          <view class="course-list-item-title"
-            >产地今晚还得把我当产地今晚还得把我当成吴楚东南坼大年初八玩家可当我看见的户外空间</view
-          >
-          <view class="course-list-item-tag">
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-          </view>
-          <view class="course-list-item-intro"></view>
-        </view>
-      </view>
-      <tui-divider />
-      <view class="greenet-course-list-item">
-        <view class="course-list-item-image">
-          <image
-            :src="'/static/images/banner/a.png'"
-            class="img"
-            mode="scaleToFill"
-          />
-        </view>
-        <view class="course-list-item-right">
-          <view class="course-list-item-title"
-            >产地今晚还得把我当产地今晚还得把我当成吴楚东南坼大年初八玩家可当我看见的户外空间</view
-          >
-          <view class="course-list-item-tag">
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-            <tui-tag
-              type="light-orange"
-              margin="0 8rpx 0 0"
-              padding="8rpx"
-              size="20rpx"
-              >实心标签</tui-tag
-            >
-          </view>
-          <view class="course-list-item-intro"></view>
-        </view>
-      </view>
+      <tui-divider  height="4"/>
+    
     </view>
   </view>
 </template>
 
 <script>
 export default {
+  onLoad() {},
   data() {
     return {
       current: 0,
       tabs: ["全部", "企业项目"],
-      resumeInfo: [
-        {
-          logo: "",
-        },
+      couresList: [
+      {
+        couresId:"11",
+      title: '深信服春深信金牌课程服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"199",
+     coverUrl:"a.png",
+     originPrice:"499",
+     applicantNum:"92人报名"
+     
+    },{
+    couresId:"11",
+    title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"199",
+     coverUrl:"a.png",
+     originPrice:"499",
+     applicantNum:"211人报名"
+     
+    },{
+        couresId:"11",
+      title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"199", coverUrl:"a.png",
+     originPrice:"499",
+     applicantNum:"922人报名"
+     
+    },{
+        couresId:"11",
+      title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"199",
+     coverUrl:"d.png",
+     originPrice:"499",
+     applicantNum:"2222人报名"
+     
+    },{
+        couresId:"11",
+      title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"199",
+     coverUrl:"b.png",
+     originPrice:"499",
+     applicantNum:"922人报名"
+     
+    },{
+        couresId:"11",
+      title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"199",
+     coverUrl:"b.png",
+     originPrice:"499",
+     applicantNum:"92人报名"
+     
+    },{
+        couresId:"11",
+      title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"399",
+     coverUrl:"d.png",
+     originPrice:"599",
+     applicantNum:"92人报名"
+     
+    },{
+        couresId:"11",
+      title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"99",
+     coverUrl:"c.png",
+     originPrice:"399",
+     applicantNum:"92人报名"
+     
+    },{
+        couresId:"11",
+      title: '深信服春深信服招金牌课程',
+     tag:["行业热点","录像视频","精品"],
+     price:"139",
+     coverUrl:"b.png",
+     originPrice:"399",
+     applicantNum:"92人报名"
+     
+    },
       ],
     };
   },
-  onLoad() {},
   methods: {
     change(preValue) {
       this.current = preValue.index;
@@ -320,14 +167,14 @@ page {
   justify-content: center;
 }
 .greenet-top-tab {
-  padding: 0rpx 20rpx;
   width: 100%;
 }
 .greenet-content-list {
   background: #fff;
   border-radius: 10rpx;
-  margin: 30rpx 0;
+  margin: 100rpx 0;
   width: 100%;
+  overflow: hidden;
 }
 .greenet-course-list-item {
   padding: 26rpx;
@@ -357,7 +204,6 @@ page {
   height: 148rpx;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 .course-list-item-title {
   line-height: 1.25;
@@ -368,7 +214,7 @@ page {
   text-overflow: ellipsis;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  font-size: 33rpx;
+  font-size: 28rpx;
   color: #222222;
 }
 
@@ -378,5 +224,26 @@ page {
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
+  margin:15rpx 0;
 }
+.course-list-item-intro{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.course-list-item-intro span{
+    font-size: 32rpx;
+    color: #ff4f4c;
+    position: relative;
+margin-right: 8rpx;
+}
+.course-list-item-intro .line-thro{
+    font-size: 24rpx;
+    position: relative;
+    font-weight: 400;
+    color: #9c9c9c;
+    text-decoration: line-through;
+}
+
 </style>
