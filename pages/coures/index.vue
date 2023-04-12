@@ -13,9 +13,9 @@
       ></tui-tab>
     </view>
     <view class="greenet-content-list">
-      
-      <view class="greenet-course-list-item"  v-for="(item) in couresList"
+      <view   v-for="(item) in couresList"
             :key="item.couresId">
+      <view class="greenet-course-list-item" >
         <view class="course-list-item-image">
           <image
             :src="'/static/images/banner/'+item.coverUrl"
@@ -50,8 +50,9 @@
           </view>
         </view>
         </view>
-      <tui-divider  height="4"/>
+        <tui-divider  height="4"/>
     
+      </view>
     </view>
   </view>
 </template>
