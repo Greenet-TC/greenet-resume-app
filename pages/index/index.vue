@@ -148,6 +148,12 @@
     <tui-loadmore v-if="loadding" :index="1"></tui-loadmore>
     <!-- <tui-nomore v-if="!pullUpOn"></tui-nomore> -->
     <!--加载loadding-->
+    <!-- <view class="tui-footer-box"> -->
+    <tui-footer
+      :fixed="false"
+      copyright="Copyright © 2022-2025 Greenet-TC."
+    ></tui-footer>
+    <!-- </view> -->
   </view>
 </template>
 <script>
@@ -618,5 +624,8 @@ page {
 .tui-new-job-info-box {
   margin-bottom: 50rpx;
   width: 100%;
+}
+.tui-footer-box {
+  display: block;
 }
 </style>
