@@ -39,7 +39,7 @@
         v-for="(item, index) in category"
         :key="index"
         :data-key="item.name"
-        @tap="more"
+        @tap="resumeEdit"
       >
         <image
           :src="'/static/images/icon/' + item.img"
@@ -244,9 +244,9 @@ export default {
     };
   },
   methods: {
-    detail: function () {
+    resumeEdit: function (e) {
       uni.navigateTo({
-        url: "/pages/index/productDetail/productDetail",
+        url: "/pages/index/resume-edit/resume-edit",
       });
     },
     coupon() {
