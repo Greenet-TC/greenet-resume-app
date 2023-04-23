@@ -38,7 +38,7 @@
         class="tui-category-item"
         v-for="(item, index) in category"
         :key="index"
-        :data-key="item.name"
+        :data-key="item.id"
         @tap="resumeEdit"
       >
         <image
@@ -165,18 +165,22 @@ export default {
         {
           img: "cv.png",
           name: "简历修改",
+          id: "servier-select/servier-select",
         },
         {
           img: "interview.png",
           name: "模拟面试",
+          id: "interview/interview",
         },
         {
           img: "qa.png",
           name: "实习内推",
+          id: "3",
         },
         {
           img: "house.png",
           name: "实习租房",
+          id: "4",
         },
       ],
       recruitInfo: [
@@ -244,9 +248,10 @@ export default {
     };
   },
   methods: {
-    resumeEdit: function () {
+    resumeEdit: function (e) {
+      console.log(e.currentTarget.dataset.key);
       uni.navigateTo({
-        url: "/pages/index/resume-edit/resume-edit",
+        url: `/pages/index/${e.currentTarget.dataset.key}`,
       });
     },
     coupon() {

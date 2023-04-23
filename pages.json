@@ -13,6 +13,18 @@
       }
     },
     {
+      "path": "pages/index/interview/interview",
+      "style": {
+        "navigationBarTitleText": "简历修改"
+      }
+    },
+    {
+      "path": "pages/index/servier-select/servier-select",
+      "style": {
+        "navigationBarTitleText": "简历修改"
+      }
+    },
+    {
       "path": "pages/job/index",
       "style": {
         "navigationBarTitleText": "求职信息"

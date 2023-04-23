@@ -1,105 +1,13 @@
 <template>
-  <!--uni-app-->
-  <view>
-    <tui-text
-      padding="24rpx 25rpx"
-      type="gray"
-      block
-      text="基础信息"
-    ></tui-text>
-    <tui-form ref="form">
-      <tui-input
-        label="姓名"
-        radius="20rpx"
-        placeholder="请输入姓名"
-        v-model="name"
-      ></tui-input>
-      <tui-input
-        label="电话"
-        :lineLeft="false"
-        placeholder="请输入电话"
-        v-model="mobile"
-      ></tui-input>
-      <tui-input
-        label="性别"
-        placeholder="请输入性别"
-        v-model="name"
-      ></tui-input>
-      <tui-input
-        label="学校"
-        :lineLeft="false"
-        placeholder="请输入学校"
-        v-model="mobile"
-      ></tui-input>
-      <tui-input
-        label="年级"
-        :lineLeft="false"
-        placeholder="请输入年级"
-        v-model="mobile"
-      ></tui-input>
-      <tui-input
-        label="专业"
-        :lineLeft="false"
-        placeholder="请输入专业"
-        v-model="mobile"
-      ></tui-input>
-    </tui-form>
-    <tui-text
-      padding="24rpx 25rpx"
-      type="gray"
-      block
-      text="其他信息"
-    ></tui-text>
-    <tui-form ref="form">
-      <tui-input
-        label="最高学历"
-        radius="20rpx"
-        placeholder="请选择最高学历"
-        v-model="name"
-      ></tui-input>
-      <tui-input
-        label="目标行业"
-        :lineLeft="false"
-        placeholder="请选择目标行业"
-        v-model="mobile"
-      ></tui-input>
-      <tui-input
-        label="是否留学"
-        placeholder="请选择是否留学"
-        v-model="name"
-      ></tui-input>
-      <tui-input
-        label="是否加急"
-        :lineLeft="false"
-        placeholder="请选择是否加急"
-        v-model="mobile"
-      ></tui-input>
-      <tui-input
-        label="简历语言"
-        :lineLeft="false"
-        placeholder="请选择简历语言"
-        v-model="mobile"
-      ></tui-input>
-      <tui-input
-        label="求职经验"
-        :lineLeft="false"
-        placeholder="请选择求职经验"
-        v-model="mobile"
-      ></tui-input>
-    </tui-form>
-    <tui-text
-      padding="24rpx 25rpx"
-      type="gray"
-      block
-      text="选择服务"
-    ></tui-text>
-    <tui-footer
-      :fixed="false"
-      copyright="Copyright © 2022-2025 Greenet-TC."
-    ></tui-footer>
-    <view>
-      <tui-button disabled width="100rpx" height="60px">提交</tui-button>
+  <view class="servier-contant">
+    <view class="servier-contant-info">
+      <view class="servier-contant-title">
+        <view class="num">1</view>
+        <view>选择服务内容</view>
+      </view>
     </view>
+    <view class="servier-contant-"> </view>
+    <view class="servier-contant"> </view>
   </view>
 </template>
 <script>
@@ -112,20 +20,6 @@ export default {
       loadding: false,
       pullUpOn: false,
       opacity: 1,
-      // items: [{
-      // 		title: "步骤一",
-      // 		desc: "2020-04-01"
-      // 	}, {
-      // 		title: "步骤二",
-      // 		desc: "2020-04-01"
-      // 	}, {
-      // 		title: "步骤三",
-      // 		desc: "2020-04-01"
-      // 	}, {
-      // 		title: "步骤四",
-      // 		desc: "2020-04-01"
-      // 	}],
-      // 	activeSteps: 1
       serviceType: [
         {
           type: "1",
@@ -423,5 +317,36 @@ export default {
 <style>
 page {
   background-color: #f7f7f7;
+}
+.servier-contant {
+  margin: 0 auto;
+  height: auto;
+  width: 95%;
+}
+.servier-contant-info {
+  background: #fff;
+  border-radius: 10rpx;
+  padding: 20rpx 6rpx 20rpx 100rpx;
+  margin-top: 5rpx;
+}
+.servier-contant-title {
+  font-size: 36rpx;
+  color: #404040;
+  font-weight: 600;
+  position: relative;
+}
+.num {
+  width: 32px;
+  position: absolute;
+  height: 19px;
+  line-height: 19px;
+  top: 3px;
+  font-size: 18px;
+  left: -40px;
+  border-radius: 10px 6px 0 10px;
+  background: #ff4f4f;
+  background-image: linear-gradient(90deg, #ff813a, #ff3d3d);
+  color: #fff;
+  text-align: center;
 }
 </style>
