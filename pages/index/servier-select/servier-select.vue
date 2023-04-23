@@ -5,6 +5,71 @@
         <view class="num">1</view>
         <view>选择服务内容</view>
       </view>
+      <view class="service-info-contant">
+        <view
+          v-for="(item, index) in serviceType[0].serviceContent"
+          :key="item.orderType"
+          class="service-info-contant-item"
+        >
+          <view class="service-item-header">
+            <h6>
+              {{ item.h6 }}
+              <img
+                v-if="index === 0 || index === 1"
+                img
+                src="/static/images/icon/hot.png"
+                alt="1"
+              />
+            </h6>
+            <view
+              class="service-item-header-detail"
+              @tap="setDetailShow(item.orderType)"
+              >{{ item.detail.btn }}
+              <tui-bubble-popup
+                :show="item.detail.show"
+                :mask="false"
+                position="absolute"
+                direction="right"
+                @close="topBubble"
+                width="400rpx"
+                left="-400rpx"
+                top="64rpx"
+                translateY="-100%"
+                triangleRight="-22rpx"
+                triangleBottom="32rpx"
+                maskBgColor="rgba(0, 0, 0, 0)"
+              >
+                {{ item.detail.tooltip }}
+              </tui-bubble-popup>
+            </view>
+          </view>
+          <tui-overflow-hidden :lineClamp="1" size="24" color="#606060">
+            {{ item.desc }}
+          </tui-overflow-hidden>
+          <view className="service-item-flooter">
+            <view className="service-item-flooter-left">
+              <tui-image-group
+                :imageList="forMate(item.avatar)"
+                isGroup
+                width="60rpx"
+                height="60rpx"
+              ></tui-image-group>
+              <span>{{ item.userNum }}</span>
+            </view>
+            <!-- <div
+                        className={classnames('service-item-flooter-btn', {
+                          active: orderTyppe.includes(item.orderType),
+                        })}
+                        onClick={() => {
+                          choseService(item.orderType);
+                        }}
+                      >
+                        {orderTyppe.includes(item.orderType) ? '已' : <i></i>}
+                        选择
+                      </div> -->
+          </view>
+        </view>
+      </view>
     </view>
     <view class="servier-contant-"> </view>
     <view class="servier-contant"> </view>
@@ -20,6 +85,39 @@ export default {
       loadding: false,
       pullUpOn: false,
       opacity: 1,
+      imageList: [
+        {
+          id: 1,
+          src: "/static/images/product/1.jpg",
+        },
+        {
+          id: 2,
+          src: "/static/images/product/2.jpg",
+        },
+        {
+          id: 3,
+          src: "/static/images/product/3.jpg",
+        },
+        {
+          id: 4,
+          src: "/static/images/product/4.jpg",
+        },
+      ],
+      show: [
+        {
+          show: false,
+        },
+        {
+          show: false,
+        },
+        {
+          show: false,
+        },
+        {
+          show: false,
+        },
+      ],
+
       serviceType: [
         {
           type: "1",
@@ -34,6 +132,7 @@ export default {
                 btn: "详情",
                 tooltip:
                   "专业实习 HR 执笔，最大程度满足凸显用户特点和高度匹配岗位；往期平均投递后2-3天内收到面试邀请",
+                show: false,
               },
               desc: "从用人方角度出发，逐字逐句打造被 HR 瞬间 Pick 的好简历",
               avatar: [
@@ -51,6 +150,7 @@ export default {
               detail: {
                 btn: "详情",
                 tooltip: "解答职业困惑，制定职业发展计划及阶段性目标",
+                show: false,
               },
               desc: "职业规划师为你量身打造职场晋升之路，打好职场第一步",
               avatar: [
@@ -68,6 +168,7 @@ export default {
               detail: {
                 btn: "详情",
                 tooltip: "30 分钟深度沟通，关于面试你想知道的，我们都会告诉你",
+                show: false,
               },
               desc: "行业大佬视频模拟面试辅导，一对一辅导，好 Offer 就是要一遍抓住",
               avatar: [
@@ -86,7 +187,9 @@ export default {
                 btn: "详情",
                 tooltip:
                   "60 分钟深度沟通，5 道自选面试问题+3 道个性化面试题+2 道预测面试题，为你的 Offer 保驾护航",
+                show: false,
               },
+
               desc: "模拟面试+深度复盘，精准挖掘面试弱点",
               avatar: [
                 "https://6d78-mxm1923893223-ulteh-1302287111.tcb.qcloud.la/youjia/IMG_1941.JPG?sign=f2c8c0812a71a56ff690b0509a962e14&t=1647367355",
@@ -311,6 +414,32 @@ export default {
           : "/pages/index/groupDetail/groupDetail";
       this.tui.href(url);
     },
+    setDetailShow(orderType) {
+      this.serviceType[0].serviceContent.map((i) => {
+        if (i.detail.show) {
+          i.detail.show = false;
+          return;
+        }
+        if (orderType === i.orderType) {
+          i.detail.show = true;
+        } else {
+          i.detail.show = false;
+        }
+      });
+    },
+    topBubble() {
+      this.serviceType[0].serviceContent.map((i) => {
+        i.detail.show = false;
+      });
+    },
+    forMate(imageList) {
+      return imageList.map((i, index) => {
+        return {
+          url: i,
+          id: index,
+        };
+      });
+    },
   },
 };
 </script>
@@ -326,7 +455,7 @@ page {
 .servier-contant-info {
   background: #fff;
   border-radius: 10rpx;
-  padding: 20rpx 6rpx 20rpx 100rpx;
+  padding: 20rpx 30rpx 20rpx 100rpx;
   margin-top: 5rpx;
 }
 .servier-contant-title {
@@ -348,5 +477,90 @@ page {
   background-image: linear-gradient(90deg, #ff813a, #ff3d3d);
   color: #fff;
   text-align: center;
+}
+.service-info-contant {
+  margin-top: 32rpx;
+  margin-bottom: 12rpx;
+  margin-left: -60rpx;
+}
+.service-info-contant-item {
+  padding: 16rpx 20rpx 20rpx;
+  border-radius: 6rpx;
+  border: 1rpx solid #ececec;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #fff;
+  cursor: pointer;
+  margin-bottom: 20rpx;
+}
+.service-item-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+h6 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #404040;
+  line-height: 44rpx;
+}
+img {
+  width: 100rpx;
+  height: 40rpx;
+  margin-left: 20rpx;
+}
+
+.service-item-header-detail {
+  position: relative;
+  width: 96rpx;
+  height: 44rpx;
+  line-height: 44rpx;
+  background: #f9f9f9;
+  border-radius: 22rpx;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 26rpx;
+  font-weight: 400;
+  color: #bcbcbc;
+  text-align: center;
+}
+.service-item-header-detail:active {
+  background: #505667;
+}
+.service-item-flooter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+.service-item-flooter-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+span {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #9c9c9c;
+  line-height: 24rpx;
+  width: 100rpx;
 }
 </style>
