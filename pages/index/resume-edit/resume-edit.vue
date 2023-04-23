@@ -81,7 +81,11 @@
     :fixed="false"
     copyright="Copyright © 2022-2025 Greenet-TC."
   ></tui-footer>
+  <view>
+	  <tui-button disabled width="100rpx" height="60px">提交</tui-button>
+	  </view>
   </view>
+  
 </template>
 <script>
 import tuiButton from "../../../components/thorui/tui-button/tui-button.vue";
@@ -93,6 +97,20 @@ export default {
       loadding: false,
       pullUpOn: false,
       opacity: 1,
+	  items: [{
+	  		title: "步骤一",
+	  		desc: "2020-04-01"
+	  	}, {
+	  		title: "步骤二",
+	  		desc: "2020-04-01"
+	  	}, {
+	  		title: "步骤三",
+	  		desc: "2020-04-01"
+	  	}, {
+	  		title: "步骤四",
+	  		desc: "2020-04-01"
+	  	}],
+	  	activeSteps: 1
     };
   },
   methods: {
