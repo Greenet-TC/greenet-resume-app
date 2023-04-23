@@ -244,7 +244,7 @@ export default {
     };
   },
   methods: {
-    resumeEdit: function (e) {
+    resumeEdit: function () {
       uni.navigateTo({
         url: "/pages/index/resume-edit/resume-edit",
       });
