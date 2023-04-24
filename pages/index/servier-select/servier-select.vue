@@ -47,16 +47,19 @@
             {{ item.desc }}
           </tui-overflow-hidden>
           <view className="service-item-flooter">
-            <view className="service-item-flooter-left">
-              <tui-image-group
-                :imageList="forMate(item.avatar)"
-                isGroup
-                width="60rpx"
-                height="60rpx"
-              ></tui-image-group>
+            <view class="service-item-flooter-left">
+              <view
+                ><tui-image-group
+                  :imageList="forMate(item.avatar)"
+                  isGroup
+                  width="26rpx"
+                  height="26rpx"
+                  distance="-17"
+                ></tui-image-group
+              ></view>
               <span>{{ item.userNum }}</span>
             </view>
-            <!-- <div
+            <view
                         className={classnames('service-item-flooter-btn', {
                           active: orderTyppe.includes(item.orderType),
                         })}
@@ -66,7 +69,7 @@
                       >
                         {orderTyppe.includes(item.orderType) ? '已' : <i></i>}
                         选择
-                      </div> -->
+                      </view>
           </view>
         </view>
       </view>
@@ -85,24 +88,6 @@ export default {
       loadding: false,
       pullUpOn: false,
       opacity: 1,
-      imageList: [
-        {
-          id: 1,
-          src: "/static/images/product/1.jpg",
-        },
-        {
-          id: 2,
-          src: "/static/images/product/2.jpg",
-        },
-        {
-          id: 3,
-          src: "/static/images/product/3.jpg",
-        },
-        {
-          id: 4,
-          src: "/static/images/product/4.jpg",
-        },
-      ],
       show: [
         {
           show: false,
@@ -433,10 +418,18 @@ export default {
       });
     },
     forMate(imageList) {
+      console.log(
+        imageList.map((i, index) => {
+          return {
+            url: i,
+            id: index,
+          };
+        })
+      );
       return imageList.map((i, index) => {
         return {
-          url: i,
-          id: index,
+          src: i,
+          id: index + 1,
         };
       });
     },
@@ -561,6 +554,7 @@ span {
   font-weight: 400;
   color: #9c9c9c;
   line-height: 24rpx;
-  width: 100rpx;
+  width: 300rpx;
+  margin-left: 10rpx;
 }
 </style>
