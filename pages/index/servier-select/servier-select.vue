@@ -64,7 +64,7 @@
               :class="{
                 'active-btn': orderTyppe.includes(item.orderType),
               }"
-              @tap="choseService(item.orderType)"
+              @tap="choseService(item)"
             >
               <p v-if="orderTyppe.includes(item.orderType)">已</p>
               <i v-else></i>
@@ -76,19 +76,73 @@
     </view>
     <view class="servier-contant-"> </view>
     <view class="servier-contant"> </view>
+    <!--tabbar-->
+    <view class="tui-tabbar">
+      <view class="tui-checkAll">
+        <tui-radio-group @tap="radioChange()">
+          <tui-list-cell>
+            <view class="tui-checkbox">
+              <tui-radio
+                :checked="checked"
+                color="#ff4f4c"
+                checkMarkColor="#fff"
+              >
+              </tui-radio>
+              <text class="tui-checkbox-pl">全选</text>
+            </view>
+          </tui-list-cell>
+        </tui-radio-group>
+        <view class="tui-total-price" v-if="!isEdit"
+          >合计:<text class="tui-bold">￥{{ count }}</text>
+        </view>
+      </view>
+      <view>
+        <tui-button
+          width="200rpx"
+          height="70rpx"
+          :size="30"
+          type="danger"
+          shape="circle"
+          v-if="!isEdit"
+          @click="btnPay"
+          >去结算({{ 2222 }})</tui-button
+        >
+        <tui-button
+          width="200rpx"
+          height="70rpx"
+          :size="30"
+          type="danger"
+          shape="circle"
+          :plain="true"
+          v-else
+          >删除</tui-button
+        >
+      </view>
+    </view>
   </view>
 </template>
 <script>
 import tuiButton from "../../../components/thorui/tui-button/tui-button.vue";
 export default {
   components: { tuiButton },
+  onLoad: function (option) {
+    this.orderTyppe = [option.type]; //打印出上个页面传递的参数。
+    this.serviceType[0].serviceContent.forEach((i) => {
+      if (i.orderType === String(option.type)) {
+        this.count = this.count + i.num;
+      }
+    });
+  },
   data() {
     return {
       pageIndex: 1,
+      type: "1",
+      count: 0,
       loadding: false,
       pullUpOn: false,
       opacity: 1,
       orderTyppe: ["1"],
+      checked: false,
       show: [
         {
           show: false,
@@ -426,16 +480,37 @@ export default {
         };
       });
     },
-    choseService(orderType) {
+    choseService(e) {
       let a = this.orderTyppe;
-      if (a.includes(orderType)) {
+      if (a.includes(e.orderType)) {
         a = a.filter((item) => {
-          return item !== orderType;
+          if (e.orderType === item) {
+            this.count = this.count - e.num;
+          }
+          return item !== e.orderType;
         });
       } else {
-        a = [...a, String(orderType)];
+        this.count = this.count + e.num;
+        a = [...a, String(e.orderType)];
       }
+
       this.orderTyppe = a;
+    },
+    radioChange() {
+      if (this.checked) {
+        this.checked = !this.checked;
+        this.count = 0;
+        this.orderTyppe = [];
+      } else {
+        this.checked = !this.checked;
+        this.count = 0;
+        this.serviceType[0].serviceContent.forEach((i) => {
+          this.count = this.count + i.num;
+          if (!this.orderTyppe.includes(i.orderType)) {
+            this.orderTyppe.push(i.orderType);
+          }
+        });
+      }
     },
   },
 };
@@ -601,5 +676,52 @@ span {
   position: absolute;
   left: 34rpx;
   top: 0rpx;
+}
+.tui-tabbar {
+  width: 100%;
+  height: 150rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  /* #ifdef H5 */
+  bottom: 50px;
+  /* #endif */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  z-index: 9999;
+}
+.tui-tabbar::before {
+  content: "";
+  width: 100%;
+  border-top: 1rpx solid #d9d9d9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+
+.tui-checkAll {
+  display: flex;
+  align-items: center;
+}
+
+.tui-checkbox-pl {
+  padding-left: 12rpx;
+}
+
+.tui-total-price {
+  padding-left: 30rpx;
+  font-size: 30rpx !important;
+}
+.tui-bold {
+  font-weight: bold;
+}
+.tui-text {
 }
 </style>
