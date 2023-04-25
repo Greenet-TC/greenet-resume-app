@@ -60,16 +60,16 @@
               <span>{{ item.userNum }}</span>
             </view>
             <view
-                        className={classnames('service-item-flooter-btn', {
-                          active: orderTyppe.includes(item.orderType),
-                        })}
-                        onClick={() => {
-                          choseService(item.orderType);
-                        }}
-                      >
-                        {orderTyppe.includes(item.orderType) ? '已' : <i></i>}
-                        选择
-                      </view>
+              class="service-item-flooter-btn"
+              :class="{
+                'active-btn': orderTyppe.includes(item.orderType),
+              }"
+              @tap="choseService(item.orderType)"
+            >
+              <p v-if="orderTyppe.includes(item.orderType)">已</p>
+              <i v-else></i>
+              选择
+            </view>
           </view>
         </view>
       </view>
@@ -88,6 +88,7 @@ export default {
       loadding: false,
       pullUpOn: false,
       opacity: 1,
+      orderTyppe: ["1"],
       show: [
         {
           show: false,
@@ -418,20 +419,23 @@ export default {
       });
     },
     forMate(imageList) {
-      console.log(
-        imageList.map((i, index) => {
-          return {
-            url: i,
-            id: index,
-          };
-        })
-      );
       return imageList.map((i, index) => {
         return {
           src: i,
           id: index + 1,
         };
       });
+    },
+    choseService(orderType) {
+      let a = this.orderTyppe;
+      if (a.includes(orderType)) {
+        a = a.filter((item) => {
+          return item !== orderType;
+        });
+      } else {
+        a = [...a, String(orderType)];
+      }
+      this.orderTyppe = a;
     },
   },
 };
@@ -556,5 +560,46 @@ span {
   line-height: 24rpx;
   width: 300rpx;
   margin-left: 10rpx;
+}
+.service-item-flooter-btn {
+  width: 76px;
+  height: 28px;
+  line-height: 26px;
+  font-size: 13px;
+  border-radius: 14px;
+  text-align: center;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #ff4f4c;
+  border: 1px solid #ff4f4c;
+  background: #fff;
+  position: relative;
+  padding-left: 14px;
+}
+.service-item-flooter-btn.active-btn {
+  background: #ff4f4c;
+  border: 1px solid #ff4f4c;
+  color: #fff;
+}
+.service-item-flooter-btn i {
+  font-size: 10px;
+  color: #ff4f4c;
+  font-family: "iconfont" !important;
+  font-size: 15px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.service-item-flooter-btn i::before {
+  content: "+";
+  position: absolute;
+  left: 15px;
+  top: -1px;
+}
+.service-item-flooter-btn p {
+  position: absolute;
+  left: 17px;
+  top: 0px;
 }
 </style>
