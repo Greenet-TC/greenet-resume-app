@@ -46,14 +46,14 @@
           <tui-overflow-hidden :lineClamp="1" size="24" color="#606060">
             {{ item.desc }}
           </tui-overflow-hidden>
-          <view className="service-item-flooter">
+          <view class="service-item-flooter">
             <view class="service-item-flooter-left">
               <view
                 ><tui-image-group
                   :imageList="forMate(item.avatar)"
                   isGroup
-                  width="26rpx"
-                  height="26rpx"
+                  width="30rpx"
+                  height="30rpx"
                   distance="-17"
                 ></tui-image-group
               ></view>
@@ -562,31 +562,31 @@ span {
   margin-left: 10rpx;
 }
 .service-item-flooter-btn {
-  width: 76px;
-  height: 28px;
-  line-height: 26px;
-  font-size: 13px;
-  border-radius: 14px;
+  width: 152rpx;
+  height: 56rpx;
+  line-height: 52rpx;
+  font-size: 26rpx;
+  border-radius: 28rpx;
   text-align: center;
   cursor: pointer;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   color: #ff4f4c;
-  border: 1px solid #ff4f4c;
+  border: 1rpx solid #ff4f4c;
   background: #fff;
   position: relative;
-  padding-left: 14px;
+  padding-left: 28rpx;
 }
 .service-item-flooter-btn.active-btn {
   background: #ff4f4c;
-  border: 1px solid #ff4f4c;
+  border: 1rpx solid #ff4f4c;
   color: #fff;
 }
 .service-item-flooter-btn i {
-  font-size: 10px;
+  font-size: 20rpx;
   color: #ff4f4c;
   font-family: "iconfont" !important;
-  font-size: 15px;
+  font-size: 30rpx;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -594,12 +594,12 @@ span {
 .service-item-flooter-btn i::before {
   content: "+";
   position: absolute;
-  left: 15px;
-  top: -1px;
+  left: 30rpx;
+  top: -2rpx;
 }
 .service-item-flooter-btn p {
   position: absolute;
-  left: 17px;
-  top: 0px;
+  left: 34rpx;
+  top: 0rpx;
 }
 </style>
