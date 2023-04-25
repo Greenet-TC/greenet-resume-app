@@ -165,12 +165,12 @@ export default {
         {
           img: "cv.png",
           name: "简历修改",
-          id: "servier-select/servier-select",
+          id: "1",
         },
         {
           img: "interview.png",
           name: "模拟面试",
-          id: "interview/interview",
+          id: "2",
         },
         {
           img: "qa.png",
@@ -251,7 +251,7 @@ export default {
     resumeEdit: function (e) {
       console.log(e.currentTarget.dataset.key);
       uni.navigateTo({
-        url: `/pages/index/${e.currentTarget.dataset.key}`,
+        url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });
     },
     coupon() {

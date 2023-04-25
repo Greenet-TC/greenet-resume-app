@@ -218,12 +218,26 @@
     <!--tabbar-->
     <view class="tui-tabbar">
       <view class="tui-checkAll">
-        <checkbox-group @change="checkAll">
+        <!-- <checkbox-group @change="checkAll">
           <label class="tui-checkbox">
             <checkbox :checked="isAll" color="#fff"></checkbox>
             <text class="tui-checkbox-pl">全选</text>
           </label>
-        </checkbox-group>
+        </checkbox-group> -->
+        <tui-radio-group>
+          <tui-list-cell>
+            <view class="thorui-align__center">
+              <tui-radio
+                :checked="checked"
+                value="1"
+                color="#07c160"
+                borderColor="#999"
+              >
+              </tui-radio>
+              <text class="tui-text">{{ 222 }}</text>
+            </view>
+          </tui-list-cell>
+        </tui-radio-group>
         <view class="tui-total-price" v-if="!isEdit"
           >合计:<text class="tui-bold">￥{{ getPrice(totalPrice) }}</text>
         </view>
@@ -274,6 +288,7 @@ export default {
           selected: false,
         },
       ],
+      checked: false,
       isAll: false,
       totalPrice: 0,
       buyNum: 0,
