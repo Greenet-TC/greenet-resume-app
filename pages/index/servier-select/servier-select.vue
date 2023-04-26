@@ -79,18 +79,12 @@
     <!--tabbar-->
     <view class="tui-tabbar">
       <view class="tui-checkAll">
-        <tui-radio-group @tap="radioChange()">
-          <tui-list-cell>
-            <view class="tui-checkbox">
-              <tui-radio
-                :checked="checked"
-                color="#ff4f4c"
-                checkMarkColor="#fff"
-              >
-              </tui-radio>
-              <text class="tui-checkbox-pl">全选</text>
-            </view>
-          </tui-list-cell>
+        <tui-radio-group>
+          <view class="tui-checkbox" @tap="radioChange()">
+            <tui-radio :checked="checked" color="#ff4f4c" checkMarkColor="#fff">
+            </tui-radio>
+            <text class="tui-checkbox-pl">全选</text>
+          </view>
         </tui-radio-group>
         <view class="tui-total-price" v-if="!isEdit"
           >合计:<text class="tui-bold">￥{{ count }}</text>
@@ -105,7 +99,7 @@
           shape="circle"
           v-if="!isEdit"
           @click="btnPay"
-          >去结算({{ 2222 }})</tui-button
+          >去结算({{ orderTyppe.length }})</tui-button
         >
         <tui-button
           width="200rpx"
@@ -502,7 +496,8 @@ export default {
         this.checked = false;
       }
     },
-    radioChange() {
+    radioChange(e) {
+      console.log(e);
       if (this.checked) {
         this.checked = !this.checked;
         this.count = 0;
@@ -680,7 +675,7 @@ span {
 }
 .service-item-flooter-btn p {
   position: absolute;
-  left: 34rpx;
+  left: 40rpx;
   top: 0rpx;
 }
 .tui-tabbar {
@@ -718,7 +713,8 @@ span {
 }
 
 .tui-checkbox-pl {
-  padding-left: 12rpx;
+  padding-left: 15rpx;
+  font-size: 28rpx;
 }
 
 .tui-total-price {
