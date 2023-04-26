@@ -81,8 +81,12 @@
       <view class="tui-checkAll">
         <tui-radio-group>
           <view class="tui-checkbox" @tap="radioChange()">
-            <tui-radio :checked="checked" color="#ff4f4c" checkMarkColor="#fff">
-            </tui-radio>
+            <tui-radio
+              :checked="checked"
+              color="#ff4f4c"
+              checkMarkColor="#fff"
+            />
+
             <text class="tui-checkbox-pl">全选</text>
           </view>
         </tui-radio-group>
@@ -497,7 +501,7 @@ export default {
       }
     },
     radioChange(e) {
-      console.log(e);
+      console.log(1111, e);
       if (this.checked) {
         this.checked = !this.checked;
         this.count = 0;
