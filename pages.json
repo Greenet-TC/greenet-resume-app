@@ -6,18 +6,7 @@
         "navigationBarTitleText": "优加实习"
       }
     },
-    {
-      "path": "pages/index/resume-edit/resume-edit",
-      "style": {
-        "navigationBarTitleText": "简历修改"
-      }
-    },
-    {
-      "path": "pages/index/interview/interview",
-      "style": {
-        "navigationBarTitleText": "简历修改"
-      }
-    },
+
     {
       "path": "pages/index/servier-select/servier-select",
       "style": {
