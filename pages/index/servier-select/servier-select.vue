@@ -493,8 +493,14 @@ export default {
         this.count = this.count + e.num;
         a = [...a, String(e.orderType)];
       }
-
       this.orderTyppe = a;
+      if (
+        this.orderTyppe.length === this.serviceType[0].serviceContent.length
+      ) {
+        this.checked = true;
+      } else {
+        this.checked = false;
+      }
     },
     radioChange() {
       if (this.checked) {
