@@ -78,9 +78,9 @@
     <view class="servier-contant"> </view>
     <!--tabbar-->
     <view class="tui-tabbar">
-      <view class="tui-checkAll">
+      <view class="tui-checkAll" @tap="radioChange()">
         <tui-radio-group>
-          <view class="tui-checkbox" @tap="radioChange()">
+          <view class="tui-checkbox">
             <tui-radio
               :checked="checked"
               color="#ff4f4c"
