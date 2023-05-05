@@ -273,7 +273,7 @@ export default {
         {
           name: "1.导师辅导的内容包括哪些？",
           intro: `<view style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
               <p>
                 优加实习已为<span style="color:#ff4f4c;display:inline-block" >10000+</span>的在校大学生提供实习简历优化、模拟面试、职业规划等服务，
@@ -295,7 +295,7 @@ export default {
         {
           name: "2.下单前注意事项？",
           intro: `  <view style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
               <p>
             <span style="color:#ff4f4c;display:inline-block">
@@ -321,7 +321,7 @@ export default {
         {
           name: "3.导师由谁来担任？",
           intro: `<view  style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
               超级简历的导师团队来自高盛、美世咨询、四大、谷歌、BAT、各大 500 强的顶级名企，拥有至少 5 年以上工作经验，并且负责或参与企业招聘流程。
             </view>`,
@@ -329,7 +329,7 @@ export default {
         {
           name: "4.多长时间会收到修改回复？",
           intro: ` <view  style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
               <p>
                 导师辅导首轮反馈会在 3 个工作日完成（实习版 3
@@ -358,7 +358,7 @@ export default {
         {
           name: "5.我想要加急怎么办？",
           intro: `<view  style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
               超级简历的导师团队来自高盛、美世咨询、四大、谷歌、BAT、各大 500 强的顶级名企，拥有至少
               5 年以上工作经验，并且负责或参与企业招聘流程。
@@ -367,7 +367,7 @@ export default {
         {
           name: "6.如果不用“优加简历”写简历，可以购买导师服务吗？",
           intro: `<view  style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
               抱歉，导师辅导只针对在超级简历上制作的简历，建议你用超级简历创建一份简历或将已经写好的简历通过【导入简历】的功能上传。另外由于导入功能可能不会100%完全复制您的简历内容，需要您在下单前检查被修改的简历是否完整可读。
             </view>`,
@@ -375,7 +375,7 @@ export default {
         {
           name: "7.对导师辅导不满意怎么办？",
           intro: `<view  style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
         若对导师辅导不满意，可以添加导师助手微信或寻找在线客服及时反馈，我们会帮你与导师协商沟通重新修改或退款。注意：【校招版】和【在职版】导师辅导只在第一轮反馈后提供更换导师或退款服务。
             </view>`,
@@ -383,7 +383,7 @@ export default {
         {
           name: "8.我的简历为什么会被退单？",
           intro: `<view  style="color:#9c9c9c; font-size: 12px;
-        margin-top: -10px;
+          padding: 0px 10px;
         line-height: 20px;">
         导师辅导下单后首先会进行专业评估，如果简历不完善或存在信息过多缺失，会导致导师无法进行辅导。所以我们会对您的订单发起退款通知。 建议您在下单之前根据超级简历的填写贴士、案例完善简历，同时注意提交求职意向信息。信息越完整导师越能提供更具针对性的辅导建议。
             </view>`,
