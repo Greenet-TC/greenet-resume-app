@@ -46,63 +46,194 @@
           <tui-overflow-hidden :lineClamp="1" size="24" color="#606060">
             {{ item.desc }}
           </tui-overflow-hidden>
-          <view className="service-item-flooter">
-            <view className="service-item-flooter-left">
-              <tui-image-group
-                :imageList="forMate(item.avatar)"
-                isGroup
-                width="60rpx"
-                height="60rpx"
-              ></tui-image-group>
+          <view class="service-item-flooter">
+            <view class="service-item-flooter-left">
+              <view
+                ><tui-image-group
+                  :imageList="forMate(item.avatar)"
+                  isGroup
+                  width="30rpx"
+                  height="30rpx"
+                  distance="-17"
+                ></tui-image-group
+              ></view>
               <span>{{ item.userNum }}</span>
             </view>
-            <!-- <div
-                        className={classnames('service-item-flooter-btn', {
-                          active: orderTyppe.includes(item.orderType),
-                        })}
-                        onClick={() => {
-                          choseService(item.orderType);
-                        }}
-                      >
-                        {orderTyppe.includes(item.orderType) ? '已' : <i></i>}
-                        选择
-                      </div> -->
+            <view
+              class="service-item-flooter-btn"
+              :class="{
+                'active-btn': orderTyppe.includes(item.orderType),
+              }"
+              @tap="choseService(item)"
+            >
+              <p v-if="orderTyppe.includes(item.orderType)">已</p>
+              <i v-else></i>
+              选择
+            </view>
           </view>
         </view>
       </view>
     </view>
-    <view class="servier-contant-"> </view>
-    <view class="servier-contant"> </view>
+    <view class="servier-contant-info">
+      <view class="servier-contant-title">
+        <view class="num">2</view>
+        <view>基础信息</view>
+      </view>
+      <view class="service-info-contant">
+        <tui-form ref="form">
+          <tui-input
+            label="姓名"
+            radius="20rpx"
+            placeholder="请输入姓名"
+            v-model="name"
+          ></tui-input>
+          <tui-input
+            label="电话"
+            :lineLeft="false"
+            placeholder="请输入电话"
+            v-model="mobile"
+          ></tui-input>
+          <tui-input
+            label="性别"
+            placeholder="请输入性别"
+            v-model="name"
+          ></tui-input>
+          <tui-input
+            label="学校"
+            :lineLeft="false"
+            placeholder="请输入学校"
+            v-model="mobile"
+          ></tui-input>
+          <tui-input
+            label="年级"
+            :lineLeft="false"
+            placeholder="请输入年级"
+            v-model="mobile"
+          ></tui-input>
+          <tui-input
+            label="专业"
+            :lineLeft="false"
+            placeholder="请输入专业"
+            v-model="mobile"
+          ></tui-input>
+        </tui-form>
+        <tui-text
+          padding="24rpx 25rpx"
+          type="gray"
+          block
+          text="选择服务"
+        ></tui-text>
+      </view>
+    </view>
+    <view class="servier-contant-info">
+      <view class="servier-contant-title">
+        <view class="num">3</view>
+        <view>其他信息</view>
+      </view>
+      <view class="service-info-contant">
+        <tui-form ref="form">
+          <tui-input
+            label="最高学历"
+            radius="20rpx"
+            placeholder="请选择最高学历"
+            v-model="name"
+          ></tui-input>
+          <tui-input
+            label="目标行业"
+            :lineLeft="false"
+            placeholder="请选择目标行业"
+            v-model="mobile"
+          ></tui-input>
+          <tui-input
+            label="是否留学"
+            placeholder="请选择是否留学"
+            v-model="name"
+          ></tui-input>
+          <tui-input
+            label="是否加急"
+            :lineLeft="false"
+            placeholder="请选择是否加急"
+            v-model="mobile"
+          ></tui-input>
+          <tui-input
+            label="简历语言"
+            :lineLeft="false"
+            placeholder="请选择简历语言"
+            v-model="mobile"
+          ></tui-input>
+          <tui-input
+            label="求职经验"
+            :lineLeft="false"
+            placeholder="请选择求职经验"
+            v-model="mobile"
+          ></tui-input> </tui-form
+      ></view>
+    </view>
+    <!--tabbar-->
+    <view class="tui-tabbar">
+      <view class="tui-checkAll">
+        <tui-radio-group>
+          <view class="tui-checkbox" @tap="radioChange()">
+            <tui-radio
+              :checked="checked"
+              color="#ff4f4c"
+              checkMarkColor="#fff"
+            />
+
+            <text class="tui-checkbox-pl">全选</text>
+          </view>
+        </tui-radio-group>
+        <view class="tui-total-price" v-if="!isEdit"
+          >合计:<text class="tui-bold">￥{{ count }}</text>
+        </view>
+      </view>
+      <view>
+        <tui-button
+          width="200rpx"
+          height="70rpx"
+          :size="30"
+          type="danger"
+          shape="circle"
+          v-if="!isEdit"
+          @click="btnPay"
+          >去结算({{ orderTyppe.length }})</tui-button
+        >
+        <tui-button
+          width="200rpx"
+          height="70rpx"
+          :size="30"
+          type="danger"
+          shape="circle"
+          :plain="true"
+          v-else
+          >删除</tui-button
+        >
+      </view>
+    </view>
   </view>
 </template>
 <script>
 import tuiButton from "../../../components/thorui/tui-button/tui-button.vue";
 export default {
   components: { tuiButton },
+  onLoad: function (option) {
+    this.orderTyppe = [option.type]; //打印出上个页面传递的参数。
+    this.serviceType[0].serviceContent.forEach((i) => {
+      if (i.orderType === String(option.type)) {
+        this.count = this.count + i.num;
+      }
+    });
+  },
   data() {
     return {
       pageIndex: 1,
+      type: "1",
+      count: 0,
       loadding: false,
       pullUpOn: false,
       opacity: 1,
-      imageList: [
-        {
-          id: 1,
-          src: "/static/images/product/1.jpg",
-        },
-        {
-          id: 2,
-          src: "/static/images/product/2.jpg",
-        },
-        {
-          id: 3,
-          src: "/static/images/product/3.jpg",
-        },
-        {
-          id: 4,
-          src: "/static/images/product/4.jpg",
-        },
-      ],
+      orderTyppe: ["1"],
+      checked: false,
       show: [
         {
           show: false,
@@ -435,10 +566,49 @@ export default {
     forMate(imageList) {
       return imageList.map((i, index) => {
         return {
-          url: i,
-          id: index,
+          src: i,
+          id: index + 1,
         };
       });
+    },
+    choseService(e) {
+      let a = this.orderTyppe;
+      if (a.includes(e.orderType)) {
+        a = a.filter((item) => {
+          if (e.orderType === item) {
+            this.count = this.count - e.num;
+          }
+          return item !== e.orderType;
+        });
+      } else {
+        this.count = this.count + e.num;
+        a = [...a, String(e.orderType)];
+      }
+      this.orderTyppe = a;
+      if (
+        this.orderTyppe.length === this.serviceType[0].serviceContent.length
+      ) {
+        this.checked = true;
+      } else {
+        this.checked = false;
+      }
+    },
+    radioChange(e) {
+      console.log(1111, e);
+      if (this.checked) {
+        this.checked = !this.checked;
+        this.count = 0;
+        this.orderTyppe = [];
+      } else {
+        this.checked = !this.checked;
+        this.count = 0;
+        this.serviceType[0].serviceContent.forEach((i) => {
+          this.count = this.count + i.num;
+          if (!this.orderTyppe.includes(i.orderType)) {
+            this.orderTyppe.push(i.orderType);
+          }
+        });
+      }
     },
   },
 };
@@ -455,8 +625,10 @@ page {
 .servier-contant-info {
   background: #fff;
   border-radius: 10rpx;
+  box-shadow: rgba(0, 0, 0, 0.04) 0rpx 3rpx 5rpx;
   padding: 20rpx 30rpx 20rpx 100rpx;
   margin-top: 5rpx;
+  margin-bottom: 30rpx;
 }
 .servier-contant-title {
   font-size: 36rpx;
@@ -561,6 +733,96 @@ span {
   font-weight: 400;
   color: #9c9c9c;
   line-height: 24rpx;
-  width: 100rpx;
+  width: 300rpx;
+  margin-left: 10rpx;
+}
+.service-item-flooter-btn {
+  width: 152rpx;
+  height: 56rpx;
+  line-height: 52rpx;
+  font-size: 26rpx;
+  border-radius: 28rpx;
+  text-align: center;
+  cursor: pointer;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #ff4f4c;
+  border: 1rpx solid #ff4f4c;
+  background: #fff;
+  position: relative;
+  padding-left: 28rpx;
+}
+.service-item-flooter-btn.active-btn {
+  background: #ff4f4c;
+  border: 1rpx solid #ff4f4c;
+  color: #fff;
+}
+.service-item-flooter-btn i {
+  font-size: 20rpx;
+  color: #ff4f4c;
+  font-family: "iconfont" !important;
+  font-size: 30rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.service-item-flooter-btn i::before {
+  content: "+";
+  position: absolute;
+  left: 30rpx;
+  top: -2rpx;
+}
+.service-item-flooter-btn p {
+  position: absolute;
+  left: 40rpx;
+  top: 0rpx;
+}
+.tui-tabbar {
+  width: 100%;
+  height: 150rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  /* #ifdef H5 */
+  bottom: 50px;
+  /* #endif */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  z-index: 9999;
+}
+.tui-tabbar::before {
+  content: "";
+  width: 100%;
+  border-top: 1rpx solid #d9d9d9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+
+.tui-checkAll {
+  display: flex;
+  align-items: center;
+}
+
+.tui-checkbox-pl {
+  padding-left: 15rpx;
+  font-size: 28rpx;
+}
+
+.tui-total-price {
+  padding-left: 30rpx;
+  font-size: 30rpx !important;
+}
+.tui-bold {
+  font-weight: bold;
+}
+.tui-text {
 }
 </style>
