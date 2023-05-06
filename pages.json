@@ -10,7 +10,13 @@
     {
       "path": "pages/index/servier-select/servier-select",
       "style": {
-        "navigationBarTitleText": "简历修改"
+        "navigationBarTitleText": "服务选择"
+      }
+    },
+    {
+      "path": "pages/index/confirm-order/confirm-order",
+      "style": {
+        "navigationBarTitleText": "支付订单"
       }
     },
     {

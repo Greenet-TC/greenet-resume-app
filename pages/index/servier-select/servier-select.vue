@@ -217,7 +217,7 @@
             <text class="tui-checkbox-pl">全选</text>
           </view>
         </tui-radio-group>
-        <view class="tui-total-price" v-if="!isEdit"
+        <view class="tui-total-price"
           >合计:<text class="tui-bold">￥{{ count }}</text>
         </view>
       </view>
@@ -228,19 +228,8 @@
           :size="30"
           type="danger"
           shape="circle"
-          v-if="!isEdit"
           @click="btnPay"
           >去结算({{ orderTyppe.length }})</tui-button
-        >
-        <tui-button
-          width="200rpx"
-          height="70rpx"
-          :size="30"
-          type="danger"
-          shape="circle"
-          :plain="true"
-          v-else
-          >删除</tui-button
         >
       </view>
     </view>
@@ -676,46 +665,10 @@ export default {
     };
   },
   methods: {
-    detail: function () {
+    btnPay: function () {
       uni.navigateTo({
-        url: "/pages/index/productDetail/productDetail",
+        url: "/pages/index/confirm-order/confirm-order",
       });
-    },
-    coupon() {
-      uni.navigateTo({
-        url: "/pages/index/coupon/coupon",
-      });
-    },
-
-    classify: function () {
-      uni.switchTab({
-        url: "../classify/classify",
-      });
-    },
-    more: function (e) {
-      let key = e.currentTarget.dataset.key || "";
-      uni.navigateTo({
-        url: "/pages/index/productList/productList?searchKey=" + key,
-      });
-    },
-    search: function () {
-      uni.navigateTo({
-        url: "/pages/common/search/search",
-      });
-    },
-    seckill(type) {
-      let url =
-        type == 1
-          ? "/pages/index/seckillList/seckillList"
-          : "/pages/index/seckillDetail/seckillDetail";
-      this.tui.href(url);
-    },
-    group(type) {
-      let url =
-        type == 1
-          ? "/pages/index/groupList/groupList"
-          : "/pages/index/groupDetail/groupDetail";
-      this.tui.href(url);
     },
     setDetailShow(orderType) {
       this.serviceType[0].serviceContent.map((i) => {
@@ -766,7 +719,6 @@ export default {
       }
     },
     radioChange(e) {
-      console.log(1111, e);
       if (this.checked) {
         this.checked = !this.checked;
         this.count = 0;
