@@ -48,6 +48,12 @@
           </tui-overflow-hidden>
           <view class="service-item-flooter">
             <view class="service-item-flooter-left">
+              <view class="course-list-item-intro">
+                <view class="course-list-item-intro-price">
+                  <span> ¥{{ item.num }}</span>
+                  <span class="line-thro">{{ item.preNum }}</span>
+                </view>
+              </view>
               <view
                 ><tui-image-group
                   :imageList="forMate(item.avatar)"
@@ -860,7 +866,7 @@ span {
   font-weight: 400;
   color: #9c9c9c;
   line-height: 24rpx;
-  width: 300rpx;
+  width: 180rpx;
   margin-left: 10rpx;
 }
 .service-item-flooter-btn {
@@ -966,5 +972,26 @@ span {
 }
 .red-text {
   color: #ff4f4c;
+}
+
+.course-list-item-intro {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-right: 40rpx;
+}
+.course-list-item-intro span {
+  font-size: 32rpx;
+  color: #ff4f4c;
+  position: relative;
+  /* margin-right: 8rpx; */
+}
+.course-list-item-intro .line-thro {
+  font-size: 24rpx;
+  position: relative;
+  font-weight: 400;
+  color: #9c9c9c;
+  text-decoration: line-through;
 }
 </style>

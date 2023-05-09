@@ -58,7 +58,7 @@
 
     <view class="tui-order-item">
       <tui-list-cell :hover="false" :lineLeft="false">
-        <view class="tui-goods-title"> 商品信息 </view>
+        <view class="tui-goods-title"> 订单信息 </view>
       </tui-list-cell>
       <block v-for="(item, index) in 2" :key="index">
         <tui-list-cell padding="0">
