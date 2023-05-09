@@ -24,59 +24,26 @@
         ></image>
       </view>
     </view>
-    <tui-list-cell arrow backgroundColor="#fefefe" @click="logistics">
-      <view class="tui-flex-box">
-        <image
-          :src="webURL + 'img_order_logistics3x.png'"
-          class="tui-icon-img"
-        ></image>
-        <view class="tui-logistics">
-          <view class="tui-logistics-text"
-            >快递已到收货点，请注意查收哦! 投递员: echo. 联系电话:
-            17788849992</view
-          >
-          <view class="tui-logistics-time">2019-06-03 12:02</view>
-        </view>
-      </view>
-    </tui-list-cell>
-    <tui-list-cell unlined :hover="false">
-      <view class="tui-flex-box">
-        <image
-          :src="webURL + 'img_order_address3x.png'"
-          class="tui-icon-img"
-        ></image>
-        <view class="tui-addr">
-          <view class="tui-addr-userinfo"
-            >张一<text class="tui-addr-tel">18378849962</text></view
-          >
-          <view class="tui-addr-text"
-            >广东省广州市海珠区阅江西路222号鲜卑路16巷吉安花园 2栋106</view
-          >
-        </view>
-      </view>
-    </tui-list-cell>
 
     <view class="tui-order-item">
       <tui-list-cell :hover="false" :lineLeft="false">
-        <view class="tui-goods-title"> 商品信息 </view>
+        <view class="tui-order-title"> 已选订单 </view>
       </tui-list-cell>
-      <block v-for="(item, index) in 2" :key="index">
+      <block v-for="(item, index) in serviceType" :key="index">
         <tui-list-cell padding="0">
           <view class="tui-goods-item">
-            <image
+            <!-- <image
               :src="`/static/images/mall/product/${index + 3}.jpg`"
               class="tui-goods-img"
-            ></image>
+            ></image> -->
             <view class="tui-goods-center">
-              <view class="tui-goods-name"
-                >欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜
-                粉BB 遮瑕疵 隔离）</view
-              >
-              <view class="tui-goods-attr">黑色，50ml</view>
+              <view class="tui-goods-name">{{ item.h6 }}</view>
+
+              <view class="tui-goods-attr">{{ item.desc }}</view>
             </view>
             <view class="tui-price-right">
-              <view>￥298.00</view>
-              <view>x2</view>
+              <view>￥{{ item.num }}.00</view>
+              <view>x1</view>
             </view>
           </view>
         </tui-list-cell>
@@ -84,21 +51,21 @@
       <view class="tui-goods-info">
         <view class="tui-price-flex tui-size24">
           <view>商品总额</view>
-          <view>￥1192.00</view>
+          <view>￥{{ getCount() }}.00</view>
         </view>
         <view class="tui-price-flex tui-size24">
           <view>优惠券</view>
           <view>￥0.00</view>
         </view>
         <view class="tui-price-flex tui-size24">
-          <view>配送费</view>
+          <view>其他费用</view>
           <view>￥0.00</view>
         </view>
         <view class="tui-price-flex tui-size32 tui-pbtm20">
           <view class="tui-flex-shrink">合计</view>
           <view class="tui-goods-price">
             <view class="tui-size-24">￥</view>
-            <view class="tui-price-large">1192</view>
+            <view class="tui-price-large">{{ getCount() }}</view>
             <view class="tui-size-24">.00</view>
           </view>
         </view>
@@ -106,13 +73,71 @@
           <view class="tui-flex-shrink">实付款</view>
           <view class="tui-goods-price tui-primary-color">
             <view class="tui-size-24">￥</view>
-            <view class="tui-price-large">1192</view>
+            <view class="tui-price-large">{{ getCount() }}</view>
             <view class="tui-size-24">.00</view>
           </view>
         </view>
       </view>
     </view>
 
+    <view class="tui-order-info">
+      <tui-list-cell :hover="false">
+        <view class="tui-order-title"> 基础信息 </view>
+      </tui-list-cell>
+      <view class="tui-order-content">
+        <view class="tui-order-flex">
+          <view class="tui-item-title">姓名:</view>
+          <view class="tui-item-content">48690010100035</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">电话:</view>
+          <view class="tui-item-content">33655511251265578556</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">性别:</view>
+          <view class="tui-item-content">2019-05-26 10:36</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">学校:</view>
+          <view class="tui-item-content">2019-05-26 10:44</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">年级:</view>
+          <view class="tui-item-content">2019-05-27 10:20</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">专业:</view>
+          <view class="tui-item-content">包邮</view>
+        </view>
+      </view>
+    </view>
+    <view class="tui-order-info">
+      <tui-list-cell :hover="false">
+        <view class="tui-order-title"> 服务信息 </view>
+      </tui-list-cell>
+      <view class="tui-order-content">
+        <view class="tui-order-flex">
+          <view class="tui-item-title">最高学历:</view>
+          <view class="tui-item-content">48690010100035</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">目标行业:</view>
+          <view class="tui-item-content">33655511251265578556</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">是否留学:</view>
+          <view class="tui-item-content">2019-05-26 10:36</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">简历语言:</view>
+          <view class="tui-item-content">2019-05-26 10:44</view>
+        </view>
+        <view class="tui-order-flex">
+          <view class="tui-item-title">求职经验:</view>
+          <view class="tui-item-content">2019-05-27 10:20</view>
+        </view>
+      </view>
+    </view>
     <view class="tui-order-info">
       <tui-list-cell :hover="false">
         <view class="tui-order-title"> 订单信息 </view>
@@ -122,10 +147,7 @@
           <view class="tui-item-title">订单号:</view>
           <view class="tui-item-content">48690010100035</view>
         </view>
-        <view class="tui-order-flex">
-          <view class="tui-item-title">物流单号:</view>
-          <view class="tui-item-content">33655511251265578556</view>
-        </view>
+
         <view class="tui-order-flex">
           <view class="tui-item-title">创建时间:</view>
           <view class="tui-item-content">2019-05-26 10:36</view>
@@ -134,18 +156,11 @@
           <view class="tui-item-title">付款时间:</view>
           <view class="tui-item-content">2019-05-26 10:44</view>
         </view>
-        <view class="tui-order-flex">
-          <view class="tui-item-title">发货时间:</view>
-          <view class="tui-item-content">2019-05-27 10:20</view>
-        </view>
-        <view class="tui-order-flex">
-          <view class="tui-item-title">配送方式:</view>
-          <view class="tui-item-content">包邮</view>
-        </view>
+
         <view class="tui-order-flex">
           <view class="tui-item-title">订单备注:</view>
           <view class="tui-item-content"
-            >麻烦尽快发货，打包包裹时请多拿几个泡沫放在纸箱盒内，防止摔碎</view
+            >提交订单后，会有工作人员和您联系，请保持电话畅通，同时谨防电信诈骗</view
           >
         </view>
       </view>
@@ -196,16 +211,28 @@
 
 <script>
 import tPayWay from "@/components/views/t-pay-way/t-pay-way";
+import { serviceType } from "@/common/contant";
+
 export default {
   components: {
     tPayWay,
   },
+  // 我的页面
+  onLoad() {
+    this.orderTyppe = uni.getStorageSync("orderTyppe");
+    this.serviceType = serviceType[0].serviceContent.filter((i) => {
+      return this.orderTyppe.includes(i.orderType);
+    });
+  },
+
   data() {
     return {
       webURL: "https://www.thorui.cn/wx/static/images/mall/order/",
       //1-待付款 2-付款成功 3-待收货 4-订单已完成 5-交易关闭
       status: 1,
       show: false,
+      orderTyppe: ["1"],
+      serviceType: [],
     };
   },
   methods: {
@@ -222,16 +249,22 @@ export default {
       );
     },
     getStatusText: function (status) {
-      return ["等待您付款", "付款成功", "待收货", "订单已完成", "交易关闭"][
-        status - 1
-      ];
+      return [
+        "等待您付款",
+        "付款成功",
+        "等待服务",
+        "订单进行中",
+        "订单结束",
+        "订单关闭",
+      ][status - 1];
     },
     getReason: function (status) {
       return [
         "剩余时间",
-        "等待卖家发货",
-        "还剩X天XX小时自动确认",
-        "",
+        "等待服务中",
+        "小助手将马上联系您",
+        "我们追求卓越的服务质量",
+        "本次服务已结束，有任何问题可以向小助手反馈",
         "超时未付款，订单自动取消",
       ][status - 1];
     },
@@ -239,6 +272,9 @@ export default {
       let status = this.status + 1;
       this.status = status > 5 ? 1 : status;
       this.tui.toast("状态切换成功");
+    },
+    getCount() {
+      return uni.getStorageSync("orderCount");
     },
     logistics() {
       this.tui.href("/pages/my/logistics/logistics");
@@ -405,6 +441,10 @@ export default {
 }
 
 .tui-goods-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #404040;
+  line-height: 44rpx;
   max-width: 310rpx;
   word-break: break-all;
   overflow: hidden;
@@ -412,7 +452,6 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  font-size: 26rpx;
   line-height: 32rpx;
 }
 
