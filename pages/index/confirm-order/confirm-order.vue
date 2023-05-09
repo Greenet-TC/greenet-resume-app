@@ -58,25 +58,22 @@
 
     <view class="tui-order-item">
       <tui-list-cell :hover="false" :lineLeft="false">
-        <view class="tui-goods-title"> 订单信息 </view>
+        <view class="tui-order-title"> 已选订单 </view>
       </tui-list-cell>
-      <block v-for="(item, index) in 2" :key="index">
+      <block v-for="(item, index) in serviceType" :key="index">
         <tui-list-cell padding="0">
           <view class="tui-goods-item">
-            <image
+            <!-- <image
               :src="`/static/images/mall/product/${index + 3}.jpg`"
               class="tui-goods-img"
-            ></image>
+            ></image> -->
             <view class="tui-goods-center">
-              <view class="tui-goods-name"
-                >欧莱雅（LOREAL）奇焕光彩粉嫩透亮修颜霜 30ml（欧莱雅彩妆 BB霜
-                粉BB 遮瑕疵 隔离）</view
-              >
-              <view class="tui-goods-attr">黑色，50ml</view>
+              <view class="tui-goods-name">{{ item.h6 }}</view>
+              <view class="tui-goods-attr">{{ item.desc }}</view>
             </view>
             <view class="tui-price-right">
-              <view>￥298.00</view>
-              <view>x2</view>
+              <view>￥{{ item.num }}.00</view>
+              <view>x1</view>
             </view>
           </view>
         </tui-list-cell>
@@ -91,7 +88,7 @@
           <view>￥0.00</view>
         </view>
         <view class="tui-price-flex tui-size24">
-          <view>配送费</view>
+          <view>其他费用</view>
           <view>￥0.00</view>
         </view>
         <view class="tui-price-flex tui-size32 tui-pbtm20">
@@ -196,16 +193,28 @@
 
 <script>
 import tPayWay from "@/components/views/t-pay-way/t-pay-way";
+import { serviceType } from "@/common/contant";
+
 export default {
   components: {
     tPayWay,
   },
+  // 我的页面
+  onLoad() {
+    this.orderTyppe = uni.getStorageSync("orderTyppe");
+    this.serviceType = serviceType[0].serviceContent.filter((i) => {
+      return this.orderTyppe.includes(i.orderType);
+    });
+  },
+
   data() {
     return {
       webURL: "https://www.thorui.cn/wx/static/images/mall/order/",
       //1-待付款 2-付款成功 3-待收货 4-订单已完成 5-交易关闭
       status: 1,
       show: false,
+      orderTyppe: ["1"],
+      serviceType: [],
     };
   },
   methods: {
@@ -411,6 +420,10 @@ export default {
 }
 
 .tui-goods-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #404040;
+  line-height: 44rpx;
   max-width: 310rpx;
   word-break: break-all;
   overflow: hidden;
@@ -418,7 +431,6 @@ export default {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  font-size: 26rpx;
   line-height: 32rpx;
 }
 

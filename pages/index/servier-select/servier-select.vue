@@ -50,7 +50,7 @@
             <view class="service-item-flooter-left">
               <view class="course-list-item-intro">
                 <view class="course-list-item-intro-price">
-                  <span> ¥{{ item.num }}</span>
+                  <span> ¥{{ item.num }}.00</span>
                   <span class="line-thro">{{ item.preNum }}</span>
                 </view>
               </view>
@@ -422,6 +422,7 @@ export default {
   },
   methods: {
     btnPay: function () {
+      uni.setStorageSync("orderTyppe", this.orderTyppe);
       uni.navigateTo({
         url: "/pages/index/confirm-order/confirm-order",
       });
