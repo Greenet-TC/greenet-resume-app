@@ -423,6 +423,7 @@ export default {
   methods: {
     btnPay: function () {
       uni.setStorageSync("orderTyppe", this.orderTyppe);
+      uni.setStorageSync("orderCount", this.count);
       uni.navigateTo({
         url: "/pages/index/confirm-order/confirm-order",
       });

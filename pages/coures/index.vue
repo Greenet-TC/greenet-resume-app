@@ -37,6 +37,7 @@
             <view class="course-list-item-intro">
               <view class="course-list-item-intro-price">
                 <span> ¥ {{ item.price }}</span>
+
                 <span class="line-thro">{{ item.originPrice }}</span>
               </view>
               <view class="course-list-item-intro-applicant">
