@@ -58,8 +58,8 @@
                 ><tui-image-group
                   :imageList="forMate(item.avatar)"
                   isGroup
-                  width="30rpx"
-                  height="30rpx"
+                  width="26rpx"
+                  height="26rpx"
                   distance="-17"
                 ></tui-image-group
               ></view>
@@ -614,10 +614,10 @@ img {
   align-items: center;
 }
 span {
-  font-size: 24rpx;
+  font-size: 22rpx;
   font-weight: 400;
   color: #9c9c9c;
-  line-height: 24rpx;
+  line-height: 22rpx;
   width: 180rpx;
   margin-left: 10rpx;
 }
@@ -731,7 +731,7 @@ span {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: flex-start;
-  margin-right: 40rpx;
+  margin-right: 28rpx;
 }
 .course-list-item-intro span {
   font-size: 32rpx;
