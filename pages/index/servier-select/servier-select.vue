@@ -659,7 +659,7 @@ span {
 }
 .service-item-flooter-btn p {
   position: absolute;
-  left: 34rpx;
+  left: 40rpx;
   top: 0rpx;
 }
 .tui-tabbar {
