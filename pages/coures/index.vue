@@ -36,7 +36,7 @@
             </view>
             <view class="course-list-item-intro">
               <view class="course-list-item-intro-price">
-                <span> ¥ {{ item.price }}</span>
+                <span class="span"> ¥ {{ item.price }}</span>
 
                 <span class="line-thro">{{ item.originPrice }}</span>
               </view>
@@ -233,7 +233,7 @@ page {
   flex-direction: row;
   justify-content: flex-start;
 }
-.course-list-item-intro span {
+.course-list-item-intro .span {
   font-size: 32rpx;
   color: #ff4f4c;
   position: relative;

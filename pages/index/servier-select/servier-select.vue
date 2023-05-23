@@ -16,9 +16,9 @@
               {{ item.h6 }}
               <img
                 v-if="index === 0 || index === 1"
-                img
                 src="/static/images/icon/hot.png"
                 alt="1"
+                class="img"
               />
             </h6>
             <view
@@ -50,7 +50,7 @@
             <view class="service-item-flooter-left">
               <view class="course-list-item-intro">
                 <view class="course-list-item-intro-price">
-                  <span> ¥{{ item.num }}.00</span>
+                  <span class="span"> ¥{{ item.num }}.00</span>
                   <span class="line-thro">{{ item.preNum }}</span>
                 </view>
               </view>
@@ -63,7 +63,7 @@
                   distance="-17"
                 ></tui-image-group
               ></view>
-              <span>{{ item.userNum }}</span>
+              <span class="span">{{ item.userNum }}</span>
             </view>
             <view
               class="service-item-flooter-btn"
@@ -72,8 +72,8 @@
               }"
               @tap="choseService(item)"
             >
-              <p v-if="orderTyppe.includes(item.orderType)">已</p>
-              <i v-else></i>
+              <p class="p" v-if="orderTyppe.includes(item.orderType)">已</p>
+              <i class="i" v-else></i>
               选择
             </view>
           </view>
@@ -272,11 +272,11 @@ export default {
           padding: 0px 10px;
         line-height: 20px;">
               <p>
-                优加实习已为<span style="color:#ff4f4c;display:inline-block" >10000+</span>的在校大学生提供实习简历优化、模拟面试、职业规划等服务，
-                <span style="color:#ff4f4c;display:inline-block">90%</span>的客户都成功获取Offer，在过程中优加总结出了一套大幅提高简历成功率的方法论。每一位成功导师皆有5-10年从业经验，并经过平台筛选，确保简历修改的标准。
+                优加实习已为<view style="color:#ff4f4c;display:inline-block" >10000+</view>的在校大学生提供实习简历优化、模拟面试、职业规划等服务，
+                <view style="color:#ff4f4c;display:inline-block">90%</view>的客户都成功获取Offer，在过程中优加总结出了一套大幅提高简历成功率的方法论。每一位成功导师皆有5-10年从业经验，并经过平台筛选，确保简历修改的标准。
               </p>
               <br />
-              <p>自<span style="color:#ff4f4c;display:inline-block">2021年6月起</span>，导师服务已全面升级，三大服务内容打造一站式绝佳体验，服务内容包括：
+              <p>自<view style="color:#ff4f4c;display:inline-block">2021年6月起</view>，导师服务已全面升级，三大服务内容打造一站式绝佳体验，服务内容包括：
               </p>
               <br />
               <p>1.1v1 简历修改：根据求职意向全方面优化简历的各个维度，并给予详细的修改意见； </p>
@@ -294,23 +294,23 @@ export default {
           padding: 0px 10px;
         line-height: 20px;">
               <p>
-            <span style="color:#ff4f4c;display:inline-block">
+            <view style="color:#ff4f4c;display:inline-block">
                   <b>【1. 不作假】：</b>
-                </span>导师辅导服务提供的每一份简历都是最大化体现候选人的亮点进而增加候选人的竞争力，但是必须是真实可信的。根据经验，简历内容超出实际能力的候选人会在面试环节被刷掉。求职要量力而为，最合适的Offer才是最好的Offer，切勿急功近利。
+                </view>导师辅导服务提供的每一份简历都是最大化体现候选人的亮点进而增加候选人的竞争力，但是必须是真实可信的。根据经验，简历内容超出实际能力的候选人会在面试环节被刷掉。求职要量力而为，最合适的Offer才是最好的Offer，切勿急功近利。
               </p>
               <p>
-                <span style="color:#ff4f4c;display:inline-block">
+                <view style="color:#ff4f4c;display:inline-block">
                   <b>【2. 沟通内容】：</b>
-                </span> 为了提供准确、有效的求职建议，下单前会要求提供目标岗位的JD（职位描述）。
+                </view> 为了提供准确、有效的求职建议，下单前会要求提供目标岗位的JD（职位描述）。
               </p>
               <p>
-                <span style="color:#ff4f4c;display:inline-block">
+                <view style="color:#ff4f4c;display:inline-block">
                   <b>【3. 其他帮助】：</b>
-                </span>如果有其他需要，如面试辅导、职业规划、行业认知等问题请与导师沟通，导师同意接单后您需额外支付相应服务费用后再进行服务。
+                </view>如果有其他需要，如面试辅导、职业规划、行业认知等问题请与导师沟通，导师同意接单后您需额外支付相应服务费用后再进行服务。
               </p>
               <p>
-                <span style="color:#ff4f4c;display:inline-block">
-                  <b>【4. 不覆盖范畴】：</b></span> 导师服务只针对求职简历辅导。考研、出国、MBA、申请奖项等其他简历使用场景均不属于服务范围内，无法保证此类场景的辅导效果，也无法针对简历以外的文书进行辅导
+                <view style="color:#ff4f4c;display:inline-block">
+                  <b>【4. 不覆盖范畴】：</b></view> 导师服务只针对求职简历辅导。考研、出国、MBA、申请奖项等其他简历使用场景均不属于服务范围内，无法保证此类场景的辅导效果，也无法针对简历以外的文书进行辅导
               </p>
             </view>`,
         },
@@ -333,19 +333,19 @@ export default {
               </p>
               <p>
 
-                <span style="color:#ff4f4c;display:inline-block">
+                <view style="color:#ff4f4c;display:inline-block">
                   <b>【实习版】 </b>
-                </span>包括 1 轮简历修改反馈；
+                </view>包括 1 轮简历修改反馈；
               </p>
               <p>
-                <span style="color:#ff4f4c;display:inline-block">
+                <view style="color:#ff4f4c;display:inline-block">
                   <b>【校招版】 </b>
-                </span>包括 10 天内多轮（每轮 3 个工作日）简历修改、添加导师微信沟通；
+                </view>包括 10 天内多轮（每轮 3 个工作日）简历修改、添加导师微信沟通；
               </p>
               <p>
-                <span style="color:#ff4f4c;display:inline-block">
+                <view style="color:#ff4f4c;display:inline-block">
                   <b>【在职版】 </b>
-                </span>【在职版】包括 10 天内多轮（每轮 3 个工作日）简历修改、添加导师微信沟通以及 1
+                </view>【在职版】包括 10 天内多轮（每轮 3 个工作日）简历修改、添加导师微信沟通以及 1
                 次微信语音沟通。
               </p>
               您还可以根据需求选择面试辅导 & 职业生涯规划服务。校招版 &在职版多轮辅导在导师交付初稿后，需要您在7天内提交修改，超过7天未提交修改，导师辅导将自动结束。
@@ -571,7 +571,7 @@ h6 {
   color: #404040;
   line-height: 44rpx;
 }
-img {
+.img {
   width: 100rpx;
   height: 40rpx;
   margin-left: 20rpx;
@@ -621,6 +621,14 @@ span {
   width: 180rpx;
   margin-left: 10rpx;
 }
+.span {
+  font-size: 22rpx;
+  font-weight: 400;
+  color: #9c9c9c;
+  line-height: 22rpx;
+  width: 180rpx;
+  margin-left: 10rpx;
+}
 .service-item-flooter-btn {
   width: 152rpx;
   height: 56rpx;
@@ -642,7 +650,7 @@ span {
   border: 1rpx solid #ff4f4c;
   color: #fff;
 }
-.service-item-flooter-btn i {
+.service-item-flooter-btn .i {
   font-size: 20rpx;
   color: #ff4f4c;
   font-family: "iconfont" !important;
@@ -651,15 +659,15 @@ span {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.service-item-flooter-btn i::before {
+.service-item-flooter-btn .i::before {
   content: "+";
   position: absolute;
   left: 30rpx;
   top: -2rpx;
 }
-.service-item-flooter-btn p {
+.service-item-flooter-btn .p {
   position: absolute;
-  left: 40rpx;
+  left: 39rpx;
   top: 0rpx;
 }
 .tui-tabbar {
@@ -733,7 +741,7 @@ span {
   justify-content: flex-start;
   margin-right: 28rpx;
 }
-.course-list-item-intro span {
+.course-list-item-intro .span {
   font-size: 32rpx;
   color: #ff4f4c;
   position: relative;
