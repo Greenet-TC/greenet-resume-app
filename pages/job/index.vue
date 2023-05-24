@@ -13,6 +13,7 @@
           size: 26,
           color: '#f64',
         }"
+        @tap="toJobDetail(item)"
       >
         <template v-slot:body>
           <view class="course-list-item-tag">
@@ -95,6 +96,12 @@ export default {
       return companyInfo.filter((item) => {
         return item.id === id;
       })[0];
+    },
+    toJobDetail(item) {
+      uni.setStorageSync("jobInfo", item);
+      uni.navigateTo({
+        url: `/pages/job/jobInfo/index`,
+      });
     },
   },
 };
