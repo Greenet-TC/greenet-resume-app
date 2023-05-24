@@ -1,28 +1,88 @@
-<template></template>
+<template>
+  <view>
+    <view class="job-card" v-for="(item, index) in JobInfo" :key="index">
+      <tui-card
+        :title="{
+          text: item.name,
+          size: 32,
+          color: 'black',
+        }"
+        :tag="{
+          text: item.salary + '·' + item.countMonths,
+          size: 26,
+          color: '#f64',
+        }"
+      >
+        <template v-slot:body>
+          <view class="course-list-item-tag">
+            <tui-tag
+              type="gray"
+              v-if="item.jobLocation"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.jobLocation }}</tui-tag
+            >
+            <tui-tag
+              v-if="item.jobAttributes"
+              type="gray"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.jobAttributes }}</tui-tag
+            >
+            <tui-tag
+              v-if="item.jobTime"
+              type="gray"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.jobTime }}</tui-tag
+            >
+            <tui-tag
+              v-if="item.academicRequirements"
+              type="gray"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.academicRequirements }}</tui-tag
+            >
+          </view>
+        </template>
+        <template v-slot:footer>
+          <view class="tui-default"> 默认卡片底部 slot=>footer </view>
+        </template>
+      </tui-card>
+    </view>
+  </view>
+</template>
 
 <script>
+import { companyInfo, JobInfo } from "@/common/contant";
 export default {
   data() {
-    return {
-      JobInfo: [
-        {
-          name: "组织发展专家",
-          isHot: true,
-          jobAttributes: "全职",
-          jobDepartment: "组织研究发展中心",
-          jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
-          jobLocation: "北京",
-          updateTime: "2023-05-19",
-          jobDesc: `1、支持国际化业务团队，深入了解业务状况和团队运作状况，理解业务战略并促进人力资源战略在业务部门的有效实施；
-2、洞察组织与人才存在的问题，应用专业理论、方法、工具，为业务团队提供全方位解决方案，包括招聘、培训、绩效、员工关系等人力资源工作，并推动方案落地，为业务一号位做好团队管理支撑；
-3、建立有效的跨地区、跨文化沟通渠道，保障信息通畅和协作互信；传递公司价值观，提升海外团队的归属感和凝聚力；
-4、有机会参与事业部横向专项，结合业务重点系统性地解决组织、人才、激励、文化、机制等方面的管理问题。`,
-          jobRequire: ` 1、五年或以上HR相关工作经验，具有组织诊断、组织设计及变革、组织管理体系搭建等相关专业知识及项目运作经验优先；
- 2、业务Sense好，能理解洞察业务；自驱力强，韧性佳；逻辑思辩、研究与数据分析能力优秀；良好的团队合作意识和协作能力；项目管理能力强，具备较强的推动及执行能力；
- 3、在甲方互联网/科技公司有组织发展工作经验优先，如有乙方知名人力资源管理咨询经验是加分项。`,
-        },
-      ],
-    };
+    return { companyInfo, JobInfo };
   },
 };
 </script>
+<style>
+page {
+  background-color: rgb(245, 246, 248);
+}
+.job-card {
+  margin-bottom: 20rpx;
+}
+.tui-header-right {
+  font-family: monospace !important;
+}
+.course-list-item-tag {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 10rpx 0;
+  padding: 0 24rpx;
+  color: rgb(185, 186, 188);
+}
+</style>

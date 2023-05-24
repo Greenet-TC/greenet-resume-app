@@ -31,7 +31,7 @@
                 margin="0 8rpx 0 0"
                 padding="8rpx"
                 size="20rpx"
-                >实心标签</tui-tag
+                >{{ _i }}</tui-tag
               >
             </view>
             <view class="course-list-item-intro">
