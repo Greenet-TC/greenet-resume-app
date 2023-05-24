@@ -32,6 +32,26 @@
             v-if="title.text"
             >{{ title.text }}</text
           >
+          <view class="tui-header-hot" v-if="isHot">
+            <image
+              src="./hot.svg"
+              mode="widthFix"
+              :style="{
+                height: 26 + 'rpx',
+                width: 26 + 'rpx',
+                verticalAlign: '-6rpx',
+                marginRight: '6rpx',
+              }"
+            ></image>
+            <text
+              class="tui-header-title"
+              :style="{
+                fontSize: 30 + 'rpx',
+                color: '#ff8000',
+              }"
+              >急召</text
+            >
+          </view>
         </view>
         <view
           class="tui-header-right"
@@ -76,6 +96,10 @@ export default {
       },
     },
     //标题
+    isHot: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: Object,
       default: function () {
@@ -243,5 +267,16 @@ export default {
   border-bottom-left-radius: 10rpx;
   border-bottom-right-radius: 10rpx;
   box-sizing: border-box;
+}
+.tui-header-hot {
+  font-size: 28rpx;
+  font-weight: normal;
+  padding: 4rpx 24rpx;
+  display: inline-block;
+  border-radius: 64rpx;
+  color: #ff8000;
+  margin-left: 20rpx;
+  vertical-align: 4rpx;
+  background: #ffe6d3;
 }
 </style>
