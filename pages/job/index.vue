@@ -7,6 +7,7 @@
           size: 32,
           color: 'black',
         }"
+        :isHot="item.isHot"
         :tag="{
           text: item.salary + '·' + item.countMonths,
           size: 26,
@@ -50,7 +51,33 @@
           </view>
         </template>
         <template v-slot:footer>
-          <view class="tui-default"> 默认卡片底部 slot=>footer </view>
+          <view class="tui-new-job-info">
+            <tui-image-group
+              :imageList="[
+                {
+                  src: getkey(companyInfo, item.companyId).logo,
+                },
+              ]"
+              isGroup
+              width="80rpx"
+              height="80rpx"
+            ></tui-image-group>
+            <view class="tui-recru-info-text">
+              <tui-text
+                block
+                :text="getkey(companyInfo, item.companyId).name"
+                size="30"
+              ></tui-text>
+              <tui-text
+                block
+                :text="`${getkey(companyInfo, item.companyId).industry} | ${
+                  getkey(companyInfo, item.companyId).financing
+                } | ${getkey(companyInfo, item.companyId).scale}`"
+                size="22"
+                type="gray"
+              ></tui-text
+            ></view>
+          </view>
         </template>
       </tui-card>
     </view>
@@ -62,6 +89,13 @@ import { companyInfo, JobInfo } from "@/common/contant";
 export default {
   data() {
     return { companyInfo, JobInfo };
+  },
+  methods: {
+    getkey(companyInfo, id) {
+      return companyInfo.filter((item) => {
+        return item.id === id;
+      })[0];
+    },
   },
 };
 </script>
@@ -84,5 +118,12 @@ page {
   margin: 10rpx 0;
   padding: 0 24rpx;
   color: rgb(185, 186, 188);
+}
+.tui-new-job-info {
+  height: 80rpx;
+  display: flex;
+  justify-content: left;
+  padding: 20rpx 24rpx;
+  border-radius: 10rpx;
 }
 </style>
