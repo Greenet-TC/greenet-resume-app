@@ -37,6 +37,12 @@
         "navigationBarTitleText": "uni-app",
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/job/jobInfo/index",
+      "style": {
+        "navigationBarTitleText": "职位详情"
+      }
     }
   ],
   "globalStyle": {

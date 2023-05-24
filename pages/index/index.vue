@@ -249,7 +249,6 @@ export default {
   },
   methods: {
     resumeEdit: function (e) {
-      console.log(e.currentTarget.dataset.key);
       uni.navigateTo({
         url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });

@@ -244,7 +244,7 @@
 </template>
 <script>
 import uParse from "@/components/uni/uParse/src/wxParse";
-import { serviceType, item, dataList, show } from "@/common/contant";
+import { serviceType, items, dataList, show } from "@/common/contant";
 export default {
   components: { uParse },
   onLoad: function (option) {
@@ -266,7 +266,7 @@ export default {
       orderTyppe: ["1"],
       checked: false,
       current: 0,
-      item,
+      items,
       show,
       dataList,
       serviceType: serviceType,
