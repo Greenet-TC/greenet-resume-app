@@ -239,6 +239,7 @@
         >
       </view>
     </view>
+    <!-- <tui-toast ref="toast"></tui-toast> -->
   </view>
 </template>
 <script>
@@ -422,6 +423,19 @@ export default {
   },
   methods: {
     btnPay: function () {
+      if (!this.orderTyppe.length) {
+        // let params = {
+        //   title: "至少选择一个服务",
+        // };
+        // this.$refs.toast.show(params);
+        uni.showToast({
+          icon: "none",
+          title: "至少选择一个服务",
+          duration: 3000,
+          position: "center",
+        });
+        return;
+      }
       uni.setStorageSync("orderTyppe", this.orderTyppe);
       uni.setStorageSync("orderCount", this.count);
       uni.navigateTo({
