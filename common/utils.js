@@ -98,3 +98,8 @@ export const getUserProfile = () => {
 //       });
 //   });
 // };
+export const getkey = (companyInfo, id) => {
+  return companyInfo.filter((item) => {
+    return item.id === id;
+  })[0];
+};
