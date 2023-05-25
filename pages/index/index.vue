@@ -157,6 +157,7 @@
   </view>
 </template>
 <script>
+import { companyInfo } from "@/common/contant";
 export default {
   data() {
     return {
@@ -183,64 +184,7 @@ export default {
           id: "4",
         },
       ],
-      recruitInfo: [
-        {
-          name: "字节跳动",
-          logo: "https://uploadfiles.nowcoder.com/images/20220808/330699344_1659946449229/1FC8B2F316140F82B3F02B371E5E6B3A",
-          webSite: "https://jobs.toutiao.com/s/k6F397w",
-          pushCode: "2E54XY2",
-          jobNum: 4,
-          state: 1,
-          updateDate: "2023-01-16",
-        },
-        {
-          name: "锐捷网络",
-          logo: "https://uploadfiles.nowcoder.com/files/20221028/1030035845_1666949017907/%E5%9C%86%E5%BD%A9120x120.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
-          webSite: "https://www.ruijie.com.cn/campus-recruiting/",
-          pushCode: "DScpG3QT",
-          state: 1,
-          jobNum: 43,
-          updateDate: "2023-01-16",
-        },
-        {
-          name: "TCL",
-          logo: "http://campus.tcl.com/image/logo1.png",
-          webSite: "http://campus.tcl.com/",
-          state: 1,
-          jobNum: 64,
-          pushCode: "wsztcd",
-          updateDate: "2023-01-16",
-        },
-        {
-          name: "滴滴",
-          jobNum: 54,
-          logo: "https://uploadfiles.nowcoder.com/files/20221017/621313650_1666004314939/didi.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
-          webSite:
-            "https://campus.didiglobal.com/campus_apply/didiglobal/6223#/",
-          pushCode: "DSCuWZt4",
-          state: 14,
-          updateDate: "2023-01-16",
-        },
-        {
-          name: "理想汽车",
-          logo: "https://uploadfiles.nowcoder.com/files/20220211/127456592_1644572366024/64D3B5811C97FF69FE9F9874DE5BE1F11?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
-          webSite:
-            "https://li.jobs.feishu.cn/referral/campus/position?token=MzsxNjcyMzkyNDIyMDE1OzcxMTcwNDI0NTEzMTk1Mzc2Njc7MA",
-          pushCode: "4JZBW6Q",
-          state: 1,
-          jobNum: 14,
-          updateDate: "2023-01-16",
-        },
-        {
-          name: "京东",
-          logo: "https://uploadfiles.nowcoder.com/files/20221009/1030035845_1665311754589/%E5%9C%86%E5%BD%A9120x120.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill",
-          webSite: "https://zhaopin.jd.com/home",
-          pushCode: "C38L6",
-          state: 1,
-          jobNum: 40,
-          updateDate: "2023-01-16",
-        },
-      ],
+      recruitInfo: companyInfo,
       pageIndex: 1,
       loadding: false,
       pullUpOn: false,

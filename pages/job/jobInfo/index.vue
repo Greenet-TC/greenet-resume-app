@@ -283,5 +283,76 @@ page {
 }
 .flooter-box {
   display: flex;
+} /*秒杀商品*/
+.tui-goods__list {
+  display: flex;
+  align-items: center;
+}
+
+.tui-goods__item {
+  background-color: #fff;
+  width: 150rpx;
+  height: 230rpx;
+  border-radius: 6rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin-right: 18rpx;
+}
+
+.tui-goods__imgbox {
+  width: 150rpx;
+  height: 150rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.tui-goods__img {
+  max-width: 150rpx;
+  max-height: 150rpx;
+  display: block;
+}
+.tui-pri__box {
+  max-width: 150rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tui-sale-pri {
+  display: flex;
+  align-items: flex-end;
+  padding: 10rpx 0 8rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #eb0909;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tui-size-sm {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  transform: scale(0.8);
+  transform-origin: 0 50%;
+}
+
+.tui-original__pri {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #999999;
+  transform-origin: center 10%;
+  transform: scale(0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: line-through;
 }
 </style>
