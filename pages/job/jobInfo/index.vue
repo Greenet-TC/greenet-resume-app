@@ -12,15 +12,49 @@
         <template v-slot:body>
           <view class="job-tui-text">
             <tui-text
-              padding="24rpx 0"
+              padding="0rpx 0"
               block
               :text="jobInfo.salary + '·' + jobInfo.countMonths"
-              size="36"
+              size="43"
+              color="#f64"
               fontWeight="600"
             ></tui-text>
           </view>
         </template>
-        <template v-slot:footer> </template>
+        <template v-slot:footer>
+          <view class="job-footer-box">
+            <view class="job-footer-box-item">
+              <tui-icon name="gps" :size="18"></tui-icon>
+              <tui-text
+                padding="0rpx 6rpx"
+                block
+                :text="jobInfo.jobLocation"
+                size="30x"
+                color="gray"
+              ></tui-text
+            ></view>
+            <view class="job-footer-box-item">
+              <tui-icon name="send" :size="18"></tui-icon>
+              <tui-text
+                padding="0rpx 6rpx"
+                block
+                :text="jobInfo.academicRequirements"
+                size="30x"
+                color="gray"
+              ></tui-text
+            ></view>
+            <view class="job-footer-box-item">
+              <tui-icon name="gps" :size="18"></tui-icon>
+              <tui-text
+                padding="0rpx 6rpx"
+                block
+                :text="jobInfo.jobTime"
+                size="30x"
+                color="gray"
+              ></tui-text
+            ></view>
+          </view>
+        </template>
       </tui-card>
     </view>
     <view class="job-detail">
@@ -49,7 +83,6 @@ import { companyInfo } from "@/common/contant";
 export default {
   onLoad() {
     this.jobInfo = uni.getStorageSync("jobInfo");
-    console.log(11111, this.jobInfo);
   },
   data() {
     return {
@@ -74,6 +107,16 @@ page {
 .job-detail-box {
 }
 .job-tui-text {
-  padding: 24rpx;
+  padding: 0rpx 24rpx;
+}
+.job-footer-box {
+  padding: 16rpx 24rpx 24rpx;
+  display: flex;
+  flex-direction: row;
+}
+.job-footer-box-item {
+  display: flex;
+  flex-direction: row;
+  margin-right: 24rpx;
 }
 </style>
