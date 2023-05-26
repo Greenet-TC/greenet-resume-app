@@ -253,6 +253,9 @@ export default {
   font-size: 24rpx;
   color: #b2b2b2;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background: rgba(255, 121, 0, 0.08);
+  padding: 6rpx 20rpx;
+  border-radius: 6rpx;
 }
 
 .tui-card-body {
