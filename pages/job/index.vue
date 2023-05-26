@@ -146,32 +146,52 @@
           </view>
         </template>
         <template v-slot:footer>
-          <view class="tui-new-job-info">
-            <tui-image-group
-              :imageList="[
-                {
-                  src: getkey(companyInfo, item.companyId).logo,
-                },
-              ]"
-              isGroup
-              width="80rpx"
-              height="80rpx"
-            ></tui-image-group>
-            <view class="tui-recru-info-text">
-              <tui-text
-                block
-                :text="getkey(companyInfo, item.companyId).name"
-                size="30"
-              ></tui-text>
-              <tui-text
-                block
-                :text="`${getkey(companyInfo, item.companyId).industry} | ${
-                  getkey(companyInfo, item.companyId).financing
-                } | ${getkey(companyInfo, item.companyId).scale}`"
-                size="22"
-                type="gray"
-              ></tui-text
-            ></view>
+          <view class="tui-footer-job-info">
+            <view class="tui-new-job-info">
+              <tui-image-group
+                :imageList="[
+                  {
+                    src: getkey(companyInfo, item.companyId).logo,
+                  },
+                ]"
+                isGroup
+                width="80rpx"
+                height="80rpx"
+              ></tui-image-group>
+              <view class="tui-recru-info-text">
+                <tui-text
+                  block
+                  :text="getkey(companyInfo, item.companyId).name"
+                  size="30"
+                ></tui-text>
+                <tui-text
+                  block
+                  :text="`${getkey(companyInfo, item.companyId).industry} | ${
+                    getkey(companyInfo, item.companyId).financing
+                  } | ${getkey(companyInfo, item.companyId).scale}`"
+                  size="22"
+                  type="gray"
+                ></tui-text
+              ></view>
+            </view>
+            <view class="tui-right-job-info">
+              <tui-tag
+                v-if="item.isFree"
+                type="light-blue"
+                padding="8rpx"
+                size="20rpx"
+                >免费</tui-tag
+              >
+              <image
+                v-else
+                src="./vip.svg"
+                mode="widthFix"
+                :style="{
+                  height: 50 + 'rpx',
+                  width: 50 + 'rpx',
+                }"
+              ></image>
+            </view>
           </view>
         </template>
       </tui-card>
@@ -226,7 +246,7 @@ page {
 }
 .tui-new-job-info {
   height: 80rpx;
-  width: 100%;
+  width: 80%;
   display: flex;
   justify-content: left;
   padding: 20rpx 24rpx;
@@ -462,5 +482,12 @@ page {
   width: 100%;
   height: 300rpx;
   display: block;
+}
+.tui-footer-job-info {
+  display: flex;
+  justify-content: space-between;
+}
+.tui-right-job-info {
+  padding: 40rpx 24rpx 20rpx 0;
 }
 </style>
