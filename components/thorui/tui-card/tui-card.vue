@@ -46,10 +46,10 @@
             <text
               class="tui-header-title"
               :style="{
-                fontSize: 30 + 'rpx',
+                fontSize: 24 + 'rpx',
                 color: '#ff8000',
               }"
-              >急召</text
+              >急招</text
             >
           </view>
         </view>
@@ -269,10 +269,12 @@ export default {
   box-sizing: border-box;
 }
 .tui-header-hot {
-  font-size: 28rpx;
+  font-size: 24rpx;
   font-weight: normal;
-  padding: 4rpx 24rpx;
+  padding: 4rpx 20rpx;
   display: inline-block;
+  line-height: 28rpx;
+  font-family: cursive;
   border-radius: 64rpx;
   color: #ff8000;
   margin-left: 20rpx;

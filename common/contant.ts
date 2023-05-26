@@ -262,6 +262,7 @@ export const JobInfo = [
     updateTime: "2023-05-19",
     academicRequirements: "本科及以上",
     salary: "23k-45k",
+    isFree: true,
     countMonths: 16,
     jobDesc: `1、支持国际化业务团队，深入了解业务状况和团队运作状况，理解业务战略并促进人力资源战略在业务部门的有效实施；
 2、洞察组织与人才存在的问题，应用专业理论、方法、工具，为业务团队提供全方位解决方案，包括招聘、培训、绩效、员工关系等人力资源工作，并推动方案落地，为业务一号位做好团队管理支撑；
@@ -275,6 +276,7 @@ export const JobInfo = [
     name: "组织发展专家",
     companyId: "1",
     isHot: false,
+    isFree: true,
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -295,6 +297,7 @@ export const JobInfo = [
     name: "组织发展专家",
     companyId: "1",
     isHot: true,
+    isFree: false,
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -315,6 +318,7 @@ export const JobInfo = [
     name: "组织发展专家",
     companyId: "1",
     isHot: true,
+    isFree: true,
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -335,6 +339,7 @@ export const JobInfo = [
     name: "组织发展专家",
     companyId: "1",
     isHot: true,
+    isFree: false,
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -355,6 +360,7 @@ export const JobInfo = [
     name: "组织发展专家",
     companyId: "1",
     isHot: true,
+    isFree: true,
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”

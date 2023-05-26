@@ -198,8 +198,23 @@
     <tui-footer
       :fixed="false"
       copyright="Copyright © 2022-2025 Greenet-TC."
-    ></tui-footer
-  ></view>
+    ></tui-footer>
+    <view class="tui-bottom"> </view>
+    <!--tabbar-->
+    <view class="tui-tabbar">
+      <view class="tui-btn-mr">
+        <tui-button
+          type="warning"
+          width="350rpx"
+          height="70rpx"
+          :size="30"
+          shape="circle"
+          @click="refund"
+          >立即投递</tui-button
+        >
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
@@ -354,5 +369,29 @@ page {
   align-items: center;
   justify-content: center;
   text-decoration: line-through;
+}
+.tui-tabbar {
+  width: 100%;
+  height: 150rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  /* #ifdef H5 */
+  /* bottom: 50px; */
+  /* #endif */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  z-index: 9999;
+}
+.tui-bottom {
+  height: 150rpx;
+}
+.tui-btn-mr {
+  margin-right: 30rpx;
 }
 </style>
