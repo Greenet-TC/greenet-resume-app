@@ -255,6 +255,7 @@ export const JobInfo = [
     companyId: "1",
     name: "组织发展专家",
     isHot: false,
+    jobTag: [],
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -263,6 +264,7 @@ export const JobInfo = [
     academicRequirements: "本科及以上",
     salary: "23k-45k",
     isFree: true,
+    email: "lipan05@kuaishou.com",
     countMonths: 16,
     jobDesc: `1、支持国际化业务团队，深入了解业务状况和团队运作状况，理解业务战略并促进人力资源战略在业务部门的有效实施；
 2、洞察组织与人才存在的问题，应用专业理论、方法、工具，为业务团队提供全方位解决方案，包括招聘、培训、绩效、员工关系等人力资源工作，并推动方案落地，为业务一号位做好团队管理支撑；
@@ -277,10 +279,12 @@ export const JobInfo = [
     companyId: "1",
     isHot: false,
     isFree: true,
+    jobTag: [],
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
     jobLocation: "北京",
+    email: "lipan05@kuaishou.com",
     updateTime: "2023-05-19",
     academicRequirements: "本科及以上",
     salary: "23k-45k",
@@ -298,6 +302,8 @@ export const JobInfo = [
     companyId: "1",
     isHot: true,
     isFree: false,
+    jobTag: [],
+    email: "lipan05@kuaishou.com",
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -319,6 +325,8 @@ export const JobInfo = [
     companyId: "1",
     isHot: true,
     isFree: true,
+    jobTag: [],
+    email: "lipan05@kuaishou.com",
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -340,6 +348,8 @@ export const JobInfo = [
     companyId: "1",
     isHot: true,
     isFree: false,
+    jobTag: [],
+    email: "lipan05@kuaishou.com",
     jobAttributes: "全职",
     jobDepartment: "组织研究发展中心",
     jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
@@ -357,25 +367,59 @@ export const JobInfo = [
 3、在甲方互联网/科技公司有组织发展工作经验优先，如有乙方知名人力资源管理咨询经验是加分项。`,
   },
   {
-    name: "组织发展专家",
-    companyId: "1",
+    name: "产品运营实习生",
+    companyId: "2",
     isHot: true,
     isFree: true,
-    jobAttributes: "全职",
+    email: "lipan05@kuaishou.com",
+    jobAttributes: "实习",
     jobDepartment: "组织研究发展中心",
-    jobTime: "5-10年", //"应届/不限" “1-3年” “3-5年” “5-10年”
+    jobTag: ["暑期实习", "可转正"],
+    jobTime: "无", //"应届/不限" “1-3年” “3-5年” “5-10年”
     jobLocation: "北京",
     updateTime: "2023-05-19",
     academicRequirements: "本科及以上",
-    salary: "23k-45k",
+    salary: "3k-5k",
+    countMonths: 16,
+    jobDesc: `1）协助搜索运营团队进行日常工作，包括但不限于活动策划、数据分析、竞品研究等。
+    2）参与竞品分析和市场调研工作，关注行业动态和趋势，提供相关报告和洞察。
+    3）撰写产品运营相关文档、活动策划方案等，确保执行效果。支持大型活动的落地，提升用户的搜索认知。`,
+    jobRequire: ` 1）2024年毕业生（毕业可正式入职），本科及以上学历，专业不限。
+    2）逻辑思维清晰，具有良好的语言文字表达能力；
+    3）熟悉和热爱互联网产品，有互联网行业内容运营实习经验者优先；
+    4）具备高度的工作责任心和主动性，执行力强，善于沟通，团队协作能力较佳；
+    5）对搜索、问答产品有深入理解者可加分。`,
+    jobAdvantage: `业务驱动，数据落地，增长growth hacking，技能成长，团队氛围好。
+    学校和户籍不在北京的同学每月提供1500元房补。
+    该实习岗位具有转正机会，表现优秀者可获得校招转正机会。`,
+  },
+  {
+    name: "HRBP实习生",
+    companyId: "1",
+    isHot: true,
+    isFree: true,
+    email: "lipan05@kuaishou.com",
+    jobAttributes: "实习",
+    jobTag: ["日常实习"],
+    jobDepartment: "组织研究发展中心",
+    jobTime: "不限", //"应届/不限" “1-3年” “3-5年” “5-10年”
+    jobLocation: "北京",
+    updateTime: "2023-05-19",
+    academicRequirements: "本科及以上",
+    salary: "3k-5k",
     countMonths: 16,
     jobDesc: `1、支持国际化业务团队，深入了解业务状况和团队运作状况，理解业务战略并促进人力资源战略在业务部门的有效实施；
 2、洞察组织与人才存在的问题，应用专业理论、方法、工具，为业务团队提供全方位解决方案，包括招聘、培训、绩效、员工关系等人力资源工作，并推动方案落地，为业务一号位做好团队管理支撑；
 3、建立有效的跨地区、跨文化沟通渠道，保障信息通畅和协作互信；传递公司价值观，提升海外团队的归属感和凝聚力；
 4、有机会参与事业部横向专项，结合业务重点系统性地解决组织、人才、激励、文化、机制等方面的管理问题。`,
-    jobRequire: ` 1、五年或以上HR相关工作经验，具有组织诊断、组织设计及变革、组织管理体系搭建等相关专业知识及项目运作经验优先；
-2、业务Sense好，能理解洞察业务；自驱力强，韧性佳；逻辑思辩、研究与数据分析能力优秀；良好的团队合作意识和协作能力；项目管理能力强，具备较强的推动及执行能力；
-3、在甲方互联网/科技公司有组织发展工作经验优先，如有乙方知名人力资源管理咨询经验是加分项。`,
+    jobRequire: ` 1）2024年毕业生（毕业可正式入职），本科及以上学历，专业不限。
+    2）逻辑思维清晰，具有良好的语言文字表达能力；
+    3）熟悉和热爱互联网产品，有互联网行业内容运营实习经验者优先；
+    4）具备高度的工作责任心和主动性，执行力强，善于沟通，团队协作能力较佳；
+    5）对搜索、问答产品有深入理解者可加分。`,
+    jobAdvantage: `业务驱动，数据落地，增长growth hacking，技能成长，团队氛围好。
+    学校和户籍不在北京的同学每月提供1500元房补。
+    该实习岗位具有转正机会，表现优秀者可获得校招转正机会。`,
   },
 ];
 export const companyInfo = [

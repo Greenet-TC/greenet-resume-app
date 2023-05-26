@@ -209,11 +209,64 @@
           height="70rpx"
           :size="30"
           shape="circle"
-          @click="refund"
+          @click="openDrawer"
           >立即投递</tui-button
         >
+      </view> </view
+    ><tui-drawer
+      mode="bottom"
+      :visible="visible"
+      @close="closeDrawer"
+      backgroundColor="rgba(1,1,1,0)"
+    >
+      <view class="d-container">
+        <tui-copy-text
+          :value="`投递邮箱: ${jobInfo.email}`"
+          :copyValue="jobInfo.email"
+          color="#586c94"
+          :copy="copy"
+        ></tui-copy-text>
+
+        <tui-copy-text
+          value="投递链接: 复制"
+          :copyValue="getkey(companyInfo, jobInfo.companyId).webSite"
+          color="#586c94"
+          @copy="copy"
+        ></tui-copy-text>
+
+        <tui-copy-text
+          :value="`内推码: ${getkey(companyInfo, jobInfo.companyId).pushCode}`"
+          :copyValue="getkey(companyInfo, jobInfo.companyId).pushCode"
+          color="#586c94"
+          @copy="copy"
+        ></tui-copy-text>
+        <view class="job-detail flooter-box">
+          <tui-icon name="about" color="red" :size="14"></tui-icon>
+
+          <tui-text
+            block
+            :text="`【使用说明】：长按复制
+            【邮箱】： 投递邮箱为用人部门leader链接，简历筛选快，通过率高 可以接邮箱发送
+            【内推链接】：部门公司使用内推链接方式投递，简历筛选速度快
+            【内推码】：内推码是简历筛选通过率高的重要影响因素，填写内推码，可以提该通过率
+            `"
+            size="22"
+            color="gray"
+            padding="0rpx 12rpx"
+          ></tui-text>
+        </view>
+        <tui-button
+          type="warning"
+          :plain="true"
+          width="152rpx"
+          height="56rpx"
+          :size="26"
+          shape="circle"
+          @click="closeDrawer"
+          >关闭</tui-button
+        >
       </view>
-    </view>
+    </tui-drawer>
   </view>
 </template>
 
@@ -228,6 +281,7 @@ export default {
       jobInfo: [],
       companyInfo,
       removeGradient: false,
+      visible: false,
     };
   },
   methods: {
@@ -238,6 +292,21 @@ export default {
     },
     setRemoveGradient() {
       this.removeGradient = true;
+    },
+    closeDrawer() {
+      this.visible = false;
+    },
+    openDrawer() {
+      this.visible = true;
+    },
+    copy() {
+      console.log(11);
+      uni.showToast({
+        icon: "none",
+        title: "复制成功",
+        duration: 3000,
+        position: "center",
+      });
     },
   },
 };
@@ -386,12 +455,22 @@ page {
   padding: 0 30rpx;
   box-sizing: border-box;
   font-size: 24rpx;
-  z-index: 9999;
+  z-index: 1;
 }
 .tui-bottom {
   height: 150rpx;
 }
 .tui-btn-mr {
   margin-right: 30rpx;
+}
+.d-container {
+  height: 500rpx;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 12rpx 12rpx 0 0;
+  background: #fff;
+  padding: 60rpx 0;
 }
 </style>
