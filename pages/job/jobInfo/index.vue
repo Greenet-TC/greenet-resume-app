@@ -137,8 +137,24 @@
             :text="jobInfo.jobRequire"
             size="28"
             color="#213547"
-          ></tui-text> </view
-      ></tui-overflow-hidden>
+          ></tui-text>
+        </view>
+        <view class="job-detail-box" v-if="jobInfo?.jobAdvantage">
+          <tui-text
+            padding="0rpx 0"
+            block
+            text="岗位优势:"
+            size="34"
+          ></tui-text>
+          <tui-text
+            padding="16rpx 0"
+            block
+            :text="jobInfo.jobAdvantage"
+            size="28"
+            color="#213547"
+          ></tui-text>
+        </view>
+      </tui-overflow-hidden>
       <view v-if="!removeGradient" class="job-footer-box-more-btn"
         ><tui-text
           padding="0rpx 0"
