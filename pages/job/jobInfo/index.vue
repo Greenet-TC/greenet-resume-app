@@ -8,6 +8,11 @@
           color: 'black',
         }"
         :isHot="jobInfo.isHot"
+        :tag="{
+          text: jobInfo.jobAttributes,
+          size: 26,
+          color: '#f64',
+        }"
       >
         <template v-slot:body>
           <view class="job-tui-text">
@@ -59,7 +64,7 @@
     </view>
     <view class="job-detail">
       <view class="job-detail-box">
-        <view>
+        <view class="job-detail-box-tag">
           <tui-tag
             v-if="getkey(companyInfo, jobInfo.companyId).industry"
             type="gray"
@@ -67,6 +72,15 @@
             padding="10rpx"
             size="24rpx"
             >{{ getkey(companyInfo, jobInfo.companyId).industry }}</tui-tag
+          >
+          <view v-for="(item, index) in jobInfo.jobTag" :key="index">
+            <tui-tag
+              type="light-green"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item }}</tui-tag
+            ></view
           >
         </view>
       </view>
@@ -81,15 +95,8 @@
               padding="0rpx 0"
               color="gray"
               block
-              text="毕业要求 :  "
+              :text="`毕业要求 : ${jobInfo.academicRequirements} `"
               size="30"
-            ></tui-text>
-            <tui-text
-              padding="0rpx 12rpx"
-              block
-              :text="jobInfo.academicRequirements"
-              size="30"
-              color="gray"
             ></tui-text>
           </view>
           <view class="job-footer-box-gra">
@@ -97,15 +104,8 @@
               padding="0rpx 0"
               color="gray"
               block
-              text="工作地点 :  "
+              :text="`工作地点 : ${jobInfo.jobLocation} `"
               size="30"
-            ></tui-text>
-            <tui-text
-              padding="15rpx 12rpx"
-              block
-              :text="jobInfo.jobLocation"
-              size="30"
-              color="gray"
             ></tui-text>
           </view>
         </view>
@@ -472,5 +472,9 @@ page {
   border-radius: 12rpx 12rpx 0 0;
   background: #fff;
   padding: 60rpx 0;
+}
+.job-detail-box-tag {
+  display: flex;
+  margin: 16rpx 0;
 }
 </style>
