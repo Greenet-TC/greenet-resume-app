@@ -88,6 +88,7 @@ const poster = {
     winHeight,
     imgs,
     text,
+    text2,
     jobAttributes,
     price,
     originalPrice,
@@ -120,27 +121,46 @@ const poster = {
     context.setFontSize(uni.upx2px(32 * scaleRatio));
     context.fillText(
       name,
-      uni.upx2px(40 * scaleRatio),
+      uni.upx2px(30 * scaleRatio),
       uni.upx2px(335 * scaleRatio)
     );
     context.setFillStyle("#333");
     context.setFontSize(uni.upx2px(32 * scaleRatio));
     context.fillText(
       "岗位描述:",
-      uni.upx2px(40 * scaleRatio),
-      uni.upx2px(383 * scaleRatio)
+      uni.upx2px(30 * scaleRatio),
+      uni.upx2px(385 * scaleRatio)
     );
-    let a = uni.upx2px(40 * scaleRatio); //定义行高
+    let a = uni.upx2px(43 * scaleRatio); //定义行高
     context.setFontSize(uni.upx2px(26 * scaleRatio));
     context.setFillStyle("gray");
     let w = uni.upx2px(468 * scaleRatio);
     //名称很长调用方法将文字折行，传参 文字内容text，画布context
-    let row = poster.wrapText(text, Math.floor(w), context, 5);
+    let row = poster.wrapText(text, Math.floor(w), context, 2);
     for (let i = 0; i < row.length; i++) {
       context.fillText(
         row[i],
         uni.upx2px(30 * scaleRatio),
-        uni.upx2px(435 * scaleRatio) + a * i
+        uni.upx2px(437 * scaleRatio) + a * i
+      );
+    }
+    context.setFillStyle("#333");
+    context.setFontSize(uni.upx2px(32 * scaleRatio));
+    context.fillText(
+      "岗位要求:",
+      uni.upx2px(30 * scaleRatio),
+      uni.upx2px(525 * scaleRatio)
+    );
+    context.setFontSize(uni.upx2px(26 * scaleRatio));
+    context.setFillStyle("gray");
+    let w3 = uni.upx2px(468 * scaleRatio);
+    //名称很长调用方法将文字折行，传参 文字内容text，画布context
+    let row3 = poster.wrapText(text2, Math.floor(w), context, 2);
+    for (let i = 0; i < row3.length; i++) {
+      context.fillText(
+        row3[i],
+        uni.upx2px(30 * scaleRatio),
+        uni.upx2px(564 * scaleRatio) + a * i
       );
     }
     context.setFillStyle("#EB0909");

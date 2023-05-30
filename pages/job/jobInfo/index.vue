@@ -503,8 +503,8 @@ export default {
         mask: true,
         title: "图片生成中...",
       });
-      let mainPic = await poster.getImage("../../../static/0.jpeg");
-      let qrcode = await poster.getImage("../../../static/qrcode.png");
+      let mainPic = "../../../static/0.jpeg";
+      let qrcode = "../../../static/qrcode.png";
       // #ifdef MP-WEIXIN
       await poster.removeSavedFile();
       // #endif
@@ -514,12 +514,14 @@ export default {
           qrcode: qrcode,
         };
         let text = `${this.jobInfo.jobDesc}`;
+        let text2 = `${this.jobInfo.jobRequire}`;
         poster.drawShipInfoPoster(
           "posterId",
           this.winWidth,
           this.winHeight,
           imgs,
           text,
+          text2,
           this.jobInfo.jobAttributes ?? "",
           `${this.jobInfo.salary + "·" + this.jobInfo.countMonths}`,
           `${this.jobInfo.jobLocation + "·" + this.jobInfo.jobTime}`,
