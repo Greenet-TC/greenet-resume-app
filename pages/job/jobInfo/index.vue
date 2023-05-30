@@ -49,7 +49,7 @@
               ></tui-text
             ></view>
             <view class="job-footer-box-item">
-              <tui-icon name="gps" :size="18"></tui-icon>
+              <tui-icon name="clock" :size="18"></tui-icon>
               <tui-text
                 padding="0rpx 6rpx"
                 block
@@ -228,6 +228,16 @@
           @click="openDrawer"
           >立即投递</tui-button
         >
+      </view>
+      <view @click="showSharePopup">
+        <image
+          src="../../../static/images/icon/share.svg"
+          mode="widthFix"
+          :style="{
+            height: 80 + 'rpx',
+            width: 80 + 'rpx',
+          }"
+        ></image>
       </view> </view
     ><tui-drawer
       mode="bottom"
@@ -283,6 +293,41 @@
         >
       </view>
     </tui-drawer>
+    <!--底部分享弹层-->
+    <tui-bottom-popup :show="sharePopup" @close="hideSharePopup">
+      <view class="tui-share__box">
+        <view class="tui-share__header">
+          <text>分享</text>
+          <view class="tui-close__box" @tap="hideSharePopup">
+            <tui-icon name="shut" :size="20" color="#C9C9C9"></tui-icon>
+          </view>
+        </view>
+        <view class="tui-share__list">
+          <button open-type="share" class="tui-share-btn" @tap="onShare">
+            <view class="tui-share__item">
+              <image
+                src="../../../static/images/icon/icon_popup_share.png"
+              ></image>
+              <view class="tui-share__text">分享给好友</view>
+            </view>
+          </button>
+
+          <!-- #ifdef H5 -->
+          <view class="tui-share__item" @tap="onShareTimeline">
+            <image src="../../../static/images/icon/time-line.svg"></image>
+            <view class="tui-share__text">朋友圈</view>
+          </view>
+          <!-- #endif -->
+          <view class="tui-share__item" @tap="createPoster">
+            <image
+              src="../../../static/images/icon/icon_popup_poster.png"
+            ></image>
+            <view class="tui-share__text">生成分享海报</view>
+          </view>
+        </view>
+      </view>
+    </tui-bottom-popup>
+    <!--底部分享弹层-->
   </view>
 </template>
 
@@ -292,12 +337,34 @@ export default {
   onLoad() {
     this.jobInfo = uni.getStorageSync("jobInfo");
   },
+  //uniapp微信小程序分享页面到微信朋友圈
+  onShareTimeline(res) {
+    return {
+      title: `优加实习｜招聘信息｜${this.jobInfo.name}`, // 我是分享后显示的标题,可不填
+      query: "", // id=123, 可不填 传递的参数，只能是这种格式
+      imageUrl:
+        "https://mmbiz.qpic.cn/mmbiz_jpg/DLjQMNwUKcBAwxGJHmf01HoWOhOfO8LMmRcmc0VUKIibgt0lzRxIaUg3smkq6XMYBFfeEJXsHGDGolkMNvkziaBQ/0?wx_fmt=jpeg", // 可不填,可以是网络路径也可以是本地路径，分享到朋友圈显示的图标
+      success(res) {
+        uni.showToast({
+          title: "分享成功",
+        });
+      },
+      fail(res) {
+        uni.showToast({
+          title: "分享失败",
+          icon: "none",
+        });
+      },
+    };
+  },
+
   data() {
     return {
       jobInfo: [],
       companyInfo,
       removeGradient: false,
       visible: false,
+      sharePopup: false,
     };
   },
   methods: {
@@ -324,6 +391,40 @@ export default {
         position: "center",
       });
     },
+    hideSharePopup() {
+      this.sharePopup = false;
+    },
+    showSharePopup() {
+      this.sharePopup = true;
+    },
+    onShare() {
+      this.hideSharePopup();
+      //#ifdef APP-PLUS
+      plus.share.sendWithSystem(
+        {
+          content: "ThorUI商城模板",
+          href: "https://www.thorui.cn/",
+        },
+        function () {
+          console.log("分享成功");
+        },
+        function (e) {
+          console.log("分享失败：" + JSON.stringify(e));
+        }
+      );
+      //#endif
+      // #ifdef H5
+      thorui.getClipboardData("https://thorui.cn/doc", (res) => {
+        if (res) {
+          this.tui.toast("链接复制成功，赶快去分享吧~");
+        } else {
+          this.tui.toast("链接复制失败");
+        }
+      });
+      // #endif
+    },
+
+    share() {},
   },
 };
 </script>
@@ -492,5 +593,64 @@ page {
 .job-detail-box-tag {
   display: flex;
   margin: 16rpx 0;
+}
+/*分享弹层*/
+.tui-share__box {
+  width: 100%;
+  height: 380rpx;
+  background-color: #fff;
+}
+
+.tui-share__header {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+  text-align: center;
+  position: relative;
+}
+
+.tui-close__box {
+  position: absolute;
+  right: 25rpx;
+  top: 25rpx;
+}
+.tui-share__list {
+  width: 100%;
+  padding-top: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tui-share__item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.tui-share__item image {
+  width: 120rpx;
+  height: 120rpx;
+}
+.tui-share__text {
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #333333;
+  padding-top: 18rpx;
+}
+.tui-share-btn {
+  flex: 1;
+  display: block;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  line-height: 1;
+}
+
+.tui-share-btn::after {
+  border: 0;
 }
 </style>

@@ -184,7 +184,7 @@
               >
               <image
                 v-else
-                src="./vip.svg"
+                src="../../static/images/icon/vip.svg"
                 mode="widthFix"
                 :style="{
                   height: 50 + 'rpx',
