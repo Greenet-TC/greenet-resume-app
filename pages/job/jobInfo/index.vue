@@ -328,14 +328,80 @@
       </view>
     </tui-bottom-popup>
     <!--底部分享弹层-->
+    <!--底部分享弹层-->
+    <canvas
+      :style="{ width: winWidth + 'px', height: winHeight + 'px' }"
+      canvas-id="posterId"
+      id="posterId"
+      class="tui-poster__canvas"
+    ></canvas>
+    <tui-modal
+      custom
+      :show="modalShow"
+      backgroundColor="transparent"
+      padding="0"
+      @cancel="hideModal"
+    >
+      <view class="tui-poster__box" :style="{ marginTop: height + 'px' }">
+        <image
+          src="/static/images/icon/icon_popup_closed.png"
+          class="tui-close__img"
+          @tap.stop="hideModal"
+        ></image>
+        <image
+          :src="posterImg"
+          v-if="posterImg"
+          class="tui-poster__img"
+        ></image>
+        <tui-button
+          type="danger"
+          width="460rpx"
+          height="80rpx"
+          shape="circle"
+          @click="savePic"
+          >保存图片</tui-button
+        >
+        <view class="tui-share__tips"
+          >保存图片到手机相册后，将图片分享到您的圈子</view
+        >
+      </view>
+    </tui-modal>
   </view>
 </template>
 
 <script>
+import thorui from "@/components/common/tui-clipboard/tui-clipboard.js";
+import poster from "@/components/common/tui-poster/tui-poster.js";
 import { companyInfo } from "@/common/contant";
 export default {
   onLoad() {
     this.jobInfo = uni.getStorageSync("jobInfo");
+
+    let obj = {};
+    // #ifdef MP-WEIXIN
+    obj = wx.getMenuButtonBoundingClientRect();
+    // #endif
+    // #ifdef MP-BAIDU
+    obj = swan.getMenuButtonBoundingClientRect();
+    // #endif
+    // #ifdef MP-ALIPAY
+    my.hideAddToDesktopMenu();
+    // #endif
+
+    setTimeout(() => {
+      uni.getSystemInfo({
+        success: (res) => {
+          this.width = obj.left || res.windowWidth;
+          this.height = obj.top
+            ? obj.top + obj.height + 8
+            : res.statusBarHeight + 44;
+          this.top = obj.top
+            ? obj.top + (obj.height - 32) / 2
+            : res.statusBarHeight + 6;
+          this.scrollH = res.windowWidth;
+        },
+      });
+    }, 0);
   },
   //uniapp微信小程序分享页面到微信朋友圈
   onShareTimeline(res) {
@@ -365,6 +431,10 @@ export default {
       removeGradient: false,
       visible: false,
       sharePopup: false,
+      winWidth: uni.upx2px(560 * 2),
+      winHeight: uni.upx2px(890 * 2),
+      modalShow: false,
+      posterImg: "",
     };
   },
   methods: {
@@ -423,7 +493,75 @@ export default {
       });
       // #endif
     },
+    async createPoster() {
+      this.hideSharePopup();
+      if (this.posterImg) {
+        this.modalShow = true;
+        return;
+      }
+      uni.showLoading({
+        mask: true,
+        title: "图片生成中...",
+      });
+      let mainPic = await poster.getImage("../../../static/0.jpeg");
+      let qrcode = await poster.getImage("../../../static/qrcode.png");
+      // #ifdef MP-WEIXIN
+      await poster.removeSavedFile();
+      // #endif
+      if (mainPic && qrcode) {
+        const imgs = {
+          mainPic: mainPic,
+          qrcode: qrcode,
+        };
+        let text = `${this.jobInfo.jobDesc}`;
+        poster.drawShipInfoPoster(
+          "posterId",
+          this.winWidth,
+          this.winHeight,
+          imgs,
+          text,
+          this.jobInfo.jobAttributes ?? "",
+          `${this.jobInfo.salary + "·" + this.jobInfo.countMonths}`,
+          `${this.jobInfo.jobLocation + "·" + this.jobInfo.jobTime}`,
+          `岗位名称：${this.jobInfo.name}`,
+          `公司名称：${
+            this.getkey(this.companyInfo, this.jobInfo.companyId).name
+          }`,
+          (res) => {
+            uni.hideLoading();
+            if (res) {
+              this.posterImg = res;
+              setTimeout(() => {
+                this.modalShow = true;
+              }, 60);
+            } else {
+              this.tui.toast("生成海报失败,请稍后再试");
+            }
+          }
+        );
+      } else {
+        uni.hideLoading();
+        this.tui.toast("生成海报图片下载失败,请稍后再试");
+      }
+    },
+    hideModal() {
+      this.modalShow = false;
+    },
+    savePic() {
+      if (this.posterImg) {
+        // #ifdef H5
+        uni.previewImage({
+          urls: [this.posterImg],
+        });
+        // #endif
 
+        // #ifndef H5
+        poster.saveImage(this.posterImg);
+        // #endif
+
+        this.hideModal();
+      }
+    },
     share() {},
   },
 };
@@ -652,5 +790,43 @@ page {
 
 .tui-share-btn::after {
   border: 0;
+}
+/*海报modal弹层*/
+.tui-poster__canvas {
+  background-color: #fff;
+  position: absolute;
+  left: -9999px;
+}
+
+.tui-poster__box {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tui-close__img {
+  width: 48rpx;
+  height: 48rpx;
+  position: absolute;
+  right: 0;
+  top: -60rpx;
+}
+
+.tui-poster__img {
+  width: 560rpx;
+  height: 890rpx;
+  border-radius: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.tui-share__tips {
+  font-size: 24rpx;
+  transform: scale(0.8);
+  transform-origin: center center;
+  color: #ffffff;
+  padding-top: 12rpx;
 }
 </style>
