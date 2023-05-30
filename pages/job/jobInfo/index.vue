@@ -49,7 +49,7 @@
               ></tui-text
             ></view>
             <view class="job-footer-box-item">
-              <tui-icon name="gps" :size="18"></tui-icon>
+              <tui-icon name="clock" :size="18"></tui-icon>
               <tui-text
                 padding="0rpx 6rpx"
                 block
@@ -228,6 +228,16 @@
           @click="openDrawer"
           >立即投递</tui-button
         >
+      </view>
+      <view @click="showSharePopup">
+        <image
+          src="../../../static/images/icon/share.svg"
+          mode="widthFix"
+          :style="{
+            height: 80 + 'rpx',
+            width: 80 + 'rpx',
+          }"
+        ></image>
       </view> </view
     ><tui-drawer
       mode="bottom"
@@ -283,21 +293,148 @@
         >
       </view>
     </tui-drawer>
+    <!--底部分享弹层-->
+    <tui-bottom-popup :show="sharePopup" @close="hideSharePopup">
+      <view class="tui-share__box">
+        <view class="tui-share__header">
+          <text>分享</text>
+          <view class="tui-close__box" @tap="hideSharePopup">
+            <tui-icon name="shut" :size="20" color="#C9C9C9"></tui-icon>
+          </view>
+        </view>
+        <view class="tui-share__list">
+          <button open-type="share" class="tui-share-btn" @tap="onShare">
+            <view class="tui-share__item">
+              <image
+                src="../../../static/images/icon/icon_popup_share.png"
+              ></image>
+              <view class="tui-share__text">分享给好友</view>
+            </view>
+          </button>
+
+          <!-- #ifdef H5 -->
+          <view class="tui-share__item" @tap="onShareTimeline">
+            <image src="../../../static/images/icon/time-line.svg"></image>
+            <view class="tui-share__text">朋友圈</view>
+          </view>
+          <!-- #endif -->
+          <view class="tui-share__item" @tap="createPoster">
+            <image
+              src="../../../static/images/icon/icon_popup_poster.png"
+            ></image>
+            <view class="tui-share__text">生成分享海报</view>
+          </view>
+        </view>
+      </view>
+    </tui-bottom-popup>
+    <!--底部分享弹层-->
+    <!--底部分享弹层-->
+    <canvas
+      :style="{ width: winWidth + 'px', height: winHeight + 'px' }"
+      canvas-id="posterId"
+      id="posterId"
+      class="tui-poster__canvas"
+    ></canvas>
+    <tui-modal
+      custom
+      :show="modalShow"
+      backgroundColor="transparent"
+      padding="0"
+      @cancel="hideModal"
+    >
+      <view class="tui-poster__box" :style="{ marginTop: height + 'px' }">
+        <image
+          src="/static/images/icon/icon_popup_closed.png"
+          class="tui-close__img"
+          @tap.stop="hideModal"
+        ></image>
+        <image
+          :src="posterImg"
+          v-if="posterImg"
+          class="tui-poster__img"
+        ></image>
+        <tui-button
+          type="danger"
+          width="460rpx"
+          height="80rpx"
+          shape="circle"
+          @click="savePic"
+          >保存图片</tui-button
+        >
+        <view class="tui-share__tips"
+          >保存图片到手机相册后，将图片分享到您的圈子</view
+        >
+      </view>
+    </tui-modal>
   </view>
 </template>
 
 <script>
+import thorui from "@/components/common/tui-clipboard/tui-clipboard.js";
+import poster from "@/components/common/tui-poster/tui-poster.js";
 import { companyInfo } from "@/common/contant";
 export default {
   onLoad() {
     this.jobInfo = uni.getStorageSync("jobInfo");
+
+    let obj = {};
+    // #ifdef MP-WEIXIN
+    obj = wx.getMenuButtonBoundingClientRect();
+    // #endif
+    // #ifdef MP-BAIDU
+    obj = swan.getMenuButtonBoundingClientRect();
+    // #endif
+    // #ifdef MP-ALIPAY
+    my.hideAddToDesktopMenu();
+    // #endif
+
+    setTimeout(() => {
+      uni.getSystemInfo({
+        success: (res) => {
+          this.width = obj.left || res.windowWidth;
+          this.height = obj.top
+            ? obj.top + obj.height + 8
+            : res.statusBarHeight + 44;
+          this.top = obj.top
+            ? obj.top + (obj.height - 32) / 2
+            : res.statusBarHeight + 6;
+          this.scrollH = res.windowWidth;
+        },
+      });
+    }, 0);
   },
+  //uniapp微信小程序分享页面到微信朋友圈
+  onShareTimeline(res) {
+    return {
+      title: `优加实习｜招聘信息｜${this.jobInfo.name}`, // 我是分享后显示的标题,可不填
+      query: "", // id=123, 可不填 传递的参数，只能是这种格式
+      imageUrl:
+        "https://mmbiz.qpic.cn/mmbiz_jpg/DLjQMNwUKcBAwxGJHmf01HoWOhOfO8LMmRcmc0VUKIibgt0lzRxIaUg3smkq6XMYBFfeEJXsHGDGolkMNvkziaBQ/0?wx_fmt=jpeg", // 可不填,可以是网络路径也可以是本地路径，分享到朋友圈显示的图标
+      success(res) {
+        uni.showToast({
+          title: "分享成功",
+        });
+      },
+      fail(res) {
+        uni.showToast({
+          title: "分享失败",
+          icon: "none",
+        });
+      },
+    };
+  },
+
   data() {
     return {
       jobInfo: [],
       companyInfo,
       removeGradient: false,
       visible: false,
+      sharePopup: false,
+      winWidth: uni.upx2px(560 * 2),
+      winHeight: uni.upx2px(890 * 2),
+      modalShow: false,
+      posterImg: "",
     };
   },
   methods: {
@@ -324,6 +461,108 @@ export default {
         position: "center",
       });
     },
+    hideSharePopup() {
+      this.sharePopup = false;
+    },
+    showSharePopup() {
+      this.sharePopup = true;
+    },
+    onShare() {
+      this.hideSharePopup();
+      //#ifdef APP-PLUS
+      plus.share.sendWithSystem(
+        {
+          content: "ThorUI商城模板",
+          href: "https://www.thorui.cn/",
+        },
+        function () {
+          console.log("分享成功");
+        },
+        function (e) {
+          console.log("分享失败：" + JSON.stringify(e));
+        }
+      );
+      //#endif
+      // #ifdef H5
+      thorui.getClipboardData("https://thorui.cn/doc", (res) => {
+        if (res) {
+          this.tui.toast("链接复制成功，赶快去分享吧~");
+        } else {
+          this.tui.toast("链接复制失败");
+        }
+      });
+      // #endif
+    },
+    async createPoster() {
+      this.hideSharePopup();
+      if (this.posterImg) {
+        this.modalShow = true;
+        return;
+      }
+      uni.showLoading({
+        mask: true,
+        title: "图片生成中...",
+      });
+      let mainPic = await poster.getImage("../../../static/0.jpeg");
+      let qrcode = await poster.getImage("../../../static/qrcode.png");
+      // #ifdef MP-WEIXIN
+      await poster.removeSavedFile();
+      // #endif
+      if (mainPic && qrcode) {
+        const imgs = {
+          mainPic: mainPic,
+          qrcode: qrcode,
+        };
+        let text = `${this.jobInfo.jobDesc}`;
+        poster.drawShipInfoPoster(
+          "posterId",
+          this.winWidth,
+          this.winHeight,
+          imgs,
+          text,
+          this.jobInfo.jobAttributes ?? "",
+          `${this.jobInfo.salary + "·" + this.jobInfo.countMonths}`,
+          `${this.jobInfo.jobLocation + "·" + this.jobInfo.jobTime}`,
+          `岗位名称：${this.jobInfo.name}`,
+          `公司名称：${
+            this.getkey(this.companyInfo, this.jobInfo.companyId).name
+          }`,
+          (res) => {
+            uni.hideLoading();
+            if (res) {
+              this.posterImg = res;
+              setTimeout(() => {
+                this.modalShow = true;
+              }, 60);
+            } else {
+              this.tui.toast("生成海报失败,请稍后再试");
+            }
+          }
+        );
+      } else {
+        uni.hideLoading();
+        this.tui.toast("生成海报图片下载失败,请稍后再试");
+      }
+    },
+    hideModal() {
+      this.modalShow = false;
+    },
+    savePic() {
+      if (this.posterImg) {
+        // #ifdef H5
+        uni.previewImage({
+          urls: [this.posterImg],
+        });
+        // #endif
+
+        // #ifndef H5
+        poster.saveImage(this.posterImg);
+        // #endif
+
+        this.hideModal();
+      }
+    },
+    share() {},
   },
 };
 </script>
@@ -492,5 +731,102 @@ page {
 .job-detail-box-tag {
   display: flex;
   margin: 16rpx 0;
+}
+/*分享弹层*/
+.tui-share__box {
+  width: 100%;
+  height: 380rpx;
+  background-color: #fff;
+}
+
+.tui-share__header {
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+  text-align: center;
+  position: relative;
+}
+
+.tui-close__box {
+  position: absolute;
+  right: 25rpx;
+  top: 25rpx;
+}
+.tui-share__list {
+  width: 100%;
+  padding-top: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tui-share__item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.tui-share__item image {
+  width: 120rpx;
+  height: 120rpx;
+}
+.tui-share__text {
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #333333;
+  padding-top: 18rpx;
+}
+.tui-share-btn {
+  flex: 1;
+  display: block;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  line-height: 1;
+}
+
+.tui-share-btn::after {
+  border: 0;
+}
+/*海报modal弹层*/
+.tui-poster__canvas {
+  background-color: #fff;
+  position: absolute;
+  left: -9999px;
+}
+
+.tui-poster__box {
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tui-close__img {
+  width: 48rpx;
+  height: 48rpx;
+  position: absolute;
+  right: 0;
+  top: -60rpx;
+}
+
+.tui-poster__img {
+  width: 560rpx;
+  height: 890rpx;
+  border-radius: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.tui-share__tips {
+  font-size: 24rpx;
+  transform: scale(0.8);
+  transform-origin: center center;
+  color: #ffffff;
+  padding-top: 12rpx;
 }
 </style>
