@@ -453,7 +453,6 @@ export default {
       this.visible = true;
     },
     copy() {
-      console.log(11);
       uni.showToast({
         icon: "none",
         title: "复制成功",

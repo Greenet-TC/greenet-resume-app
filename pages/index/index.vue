@@ -64,6 +64,7 @@
         type="gray-primary"
         height="50rpx"
         disabledGray
+        @tap="more"
         >更多内推</tui-button
       >
     </view>
@@ -208,10 +209,9 @@ export default {
         url: "../classify/classify",
       });
     },
-    more: function (e) {
-      let key = e.currentTarget.dataset.key || "";
+    more: function () {
       uni.navigateTo({
-        url: "/pages/index/productList/productList?searchKey=" + key,
+        url: "/pages/job/index",
       });
     },
     search: function () {
