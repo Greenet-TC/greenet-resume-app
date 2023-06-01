@@ -443,6 +443,7 @@ export default {
         return item.id === id;
       })[0];
     },
+
     setRemoveGradient() {
       this.removeGradient = true;
     },
@@ -563,7 +564,6 @@ export default {
         this.hideModal();
       }
     },
-    share() {},
   },
 };
 </script>

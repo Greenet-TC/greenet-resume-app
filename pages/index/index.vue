@@ -64,7 +64,7 @@
         type="gray-primary"
         height="50rpx"
         disabledGray
-        @tap="more"
+        @tap="moreCompany"
         >更多内推</tui-button
       >
     </view>
@@ -120,7 +120,7 @@
             :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
             v-for="(item, index) in recruitInfo"
             :key="index"
-            @tap="detail"
+            @tap="moreDetail"
           >
             <view class="tui-recru-info-item">
               <tui-image-group
@@ -138,6 +138,15 @@
                   type="gray"
                 ></tui-text>
               </view>
+            </view>
+            <view class="job-company-detail">
+              <text>详情</text>
+              <tui-icon
+                name="arrowright"
+                :size="30"
+                unit="rpx"
+                color="#999"
+              ></tui-icon>
             </view>
           </view>
         </view>
@@ -185,7 +194,9 @@ export default {
           id: "4",
         },
       ],
-      recruitInfo: companyInfo,
+      recruitInfo: companyInfo.filter((e, i) => {
+        return i < 6;
+      }),
       pageIndex: 1,
       loadding: false,
       pullUpOn: false,
@@ -198,40 +209,21 @@ export default {
         url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });
     },
-    coupon() {
+    moreDetail: function () {
       uni.navigateTo({
-        url: "/pages/index/coupon/coupon",
+        url: "/pages/job/companyDetail/index",
       });
     },
 
-    classify: function () {
-      uni.switchTab({
-        url: "../classify/classify",
-      });
-    },
     more: function () {
-      uni.navigateTo({
+      uni.switchTab({
         url: "/pages/job/index",
       });
     },
-    search: function () {
+    moreCompany: function () {
       uni.navigateTo({
-        url: "/pages/common/search/search",
+        url: "/pages/job/companyInfo/index",
       });
-    },
-    seckill(type) {
-      let url =
-        type == 1
-          ? "/pages/index/seckillList/seckillList"
-          : "/pages/index/seckillDetail/seckillDetail";
-      this.tui.href(url);
-    },
-    group(type) {
-      let url =
-        type == 1
-          ? "/pages/index/groupList/groupList"
-          : "/pages/index/groupDetail/groupDetail";
-      this.tui.href(url);
     },
   },
   onPullDownRefresh: function () {
@@ -465,7 +457,16 @@ page {
   width: 160rpx;
   height: 34rpx;
 }
-
+.job-company-detail {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  color: #999;
+  position: absolute;
+  right: 6rpx;
+  font-size: 24rpx;
+  top: 16rpx;
+}
 .tui-countdown__box {
   width: 228rpx;
   display: flex;
