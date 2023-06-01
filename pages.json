@@ -28,7 +28,14 @@
     {
       "path": "pages/job/companyInfo/index",
       "style": {
-        "navigationBarTitleText": "求职信息"
+        "navigationBarTitleText": "更多内推"
+      }
+    },
+    {
+      "path": "pages/job/companyDetail/index",
+      "style": {
+        "navigationBarTitleText": "公司详情",
+        "navigationStyle": "custom"
       }
     },
     {

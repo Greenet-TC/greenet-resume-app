@@ -52,7 +52,7 @@
             </view>
           </view>
         </view>
-        <view class="tui-more__box" @tap="seckill(1)">
+        <view class="tui-more__box" @tap="moreCompany">
           <text>更多</text>
           <tui-icon
             name="arrowright"
@@ -68,6 +68,7 @@
             v-for="(item, index) in companyInfo"
             :key="index"
             class="tui-company-item"
+            @tap="moreDetail"
           >
             <view class="tui-new-comp-info">
               <tui-image-group
@@ -89,6 +90,15 @@
                   type="gray"
                 ></tui-text
               ></view>
+            </view>
+            <view class="job-company-detail">
+              <!-- <text>详情</text> -->
+              <tui-icon
+                name="arrowright"
+                :size="30"
+                unit="rpx"
+                color="#999"
+              ></tui-icon>
             </view>
           </view>
         </view>
@@ -215,6 +225,16 @@ export default {
         return item.id === id;
       })[0];
     },
+    moreCompany: function () {
+      uni.navigateTo({
+        url: "/pages/job/companyInfo/index",
+      });
+    },
+    moreDetail: function () {
+      uni.navigateTo({
+        url: "/pages/job/companyDetail/index",
+      });
+    },
     toJobDetail(item) {
       uni.setStorageSync("jobInfo", item);
       uni.navigateTo({
@@ -254,7 +274,7 @@ page {
 }
 .tui-new-comp-info {
   height: 80rpx;
-  width: 240rpx;
+  width: 280rpx;
   display: flex;
   justify-content: left;
   padding: 20rpx 10rpx;
@@ -444,6 +464,17 @@ page {
 }
 .tui-company-item {
   margin: 0 4rpx;
+  position: relative;
+}
+.job-company-detail {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  color: #999;
+  position: absolute;
+  right: 6rpx;
+  font-size: 24rpx;
+  top: 16rpx;
 }
 .tui-header-banner {
   padding-top: 100rpx;
