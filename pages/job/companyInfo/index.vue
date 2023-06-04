@@ -57,7 +57,7 @@
             :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
             v-for="(item, index) in recruitInfo"
             :key="index"
-            @tap="moreDetail"
+            @tap="moreDetail(item)"
           >
             <view class="tui-recru-info-item">
               <tui-image-group
@@ -107,14 +107,15 @@ export default {
         url: "/pages/job/index",
       });
     },
-    moreDetail: function () {
+    moreDetail: function (e) {
       uni.navigateTo({
-        url: "/pages/job/companyDetail/index",
+        url: `/pages/job/companyDetail/index?id=${e.id}`,
       });
     },
   },
 };
 </script>
+
 <style>
 page {
   background-color: #f7f7f7;

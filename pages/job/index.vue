@@ -68,7 +68,7 @@
             v-for="(item, index) in companyInfo"
             :key="index"
             class="tui-company-item"
-            @tap="moreDetail"
+            @tap="moreDetail(item)"
           >
             <view class="tui-new-comp-info">
               <tui-image-group
@@ -230,9 +230,10 @@ export default {
         url: "/pages/job/companyInfo/index",
       });
     },
-    moreDetail: function () {
+    moreDetail: function (e) {
+      
       uni.navigateTo({
-        url: "/pages/job/companyDetail/index",
+        url: `/pages/job/companyDetail/index?id=${e.id}`,
       });
     },
     toJobDetail(item) {
@@ -244,6 +245,7 @@ export default {
   },
 };
 </script>
+
 <style>
 page {
   background-color: rgb(245, 246, 248);

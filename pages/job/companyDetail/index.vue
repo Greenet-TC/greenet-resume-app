@@ -6,23 +6,37 @@
           <tui-image-group
             :imageList="[
               {
-                src: `https://uploadfiles.nowcoder.com/files/20181102/4575098_1541147538969_826546_1499420128657_7.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill`,
+                src: companyInfoValue.logo,
               },
             ]"
             isGroup
-            width="80rpx"
-            height="80rpx"
+            width="120rpx"
+            height="120rpx"
           ></tui-image-group>
           <view class="tui-recru-info-text">
-            <tui-text block text="阿里巴巴" size="30" color="fff"></tui-text>
+            <tui-text block text="阿里巴巴" size="40" color="#fff"></tui-text>
             <tui-text
               block
-              text="互联网 | 已上市 | 10000 + 人"
-              size="22"
-              type="#fff"
+              :text="`${companyInfoValue.industry} | ${companyInfoValue.financing} | ${companyInfoValue.scale}`"
+              size="28"
+              color="#fff"
             ></tui-text
           ></view>
         </view>
+        <view class="tui-company-intro">
+          <tui-text
+            block
+            text="公司简介"
+            color="#fff"
+            size="38"
+            margin
+          ></tui-text>
+        </view>
+        <tui-text
+          block
+          :text="companyInfoValue.introduce"
+          color="#FFFAFA"
+        ></tui-text>
         <!-- <tui-notice-bar
           single
           :padding="['0', '20rpx']"
@@ -40,12 +54,24 @@
 <script>
 import { companyInfo } from "@/common/contant";
 export default {
+  onLoad: function (option) {
+    this.compant_id = option.id; //打印出上个页面传递的参数。
+    console.log(this.compant_id);
+    this.companyInfoValue = companyInfo.filter((i, index) => {
+      return i.id === this.compant_id;
+    })[0];
+    console.log(this.companyInfoValue);
+  },
   data() {
-    return {};
+    return {
+      compant_id: "",
+      companyInfoValue: "",
+    };
   },
   methods: {},
 };
 </script>
+
 <style>
 page {
   /* background-color: #f7f7f7; */
@@ -59,9 +85,11 @@ page {
 
 .container {
   padding-bottom: 100%;
-  margin-top: 100px;
+  margin-top: 180rpx;
   /* color: #333; */
-  padding: 24rpx;
+  padding: 0 34rpx;
+}
+.container-header {
 }
 .tui-new-job-info-box {
   margin-bottom: 50rpx;
@@ -69,9 +97,12 @@ page {
 }
 .tui-recru-info-text {
   margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 .tui-new-job-info {
-  height: 80rpx;
+  height: 120rpx;
   display: flex;
   justify-content: left;
   padding: 20rpx 0;
@@ -80,5 +111,8 @@ page {
 .tui-new-job-info-box {
   margin-bottom: 50rpx;
   width: 100%;
+}
+.tui-company-intro {
+  margin: 40rpx 0 20rpx 0;
 }
 </style>
