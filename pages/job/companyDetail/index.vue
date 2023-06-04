@@ -14,7 +14,12 @@
             height="120rpx"
           ></tui-image-group>
           <view class="tui-recru-info-text">
-            <tui-text block :text="companyInfoValue.name" size="40" color="#fff"></tui-text>
+            <tui-text
+              block
+              :text="companyInfoValue.name"
+              size="40"
+              color="#fff"
+            ></tui-text>
             <tui-text
               block
               :text="`${companyInfoValue.industry} | ${companyInfoValue.financing} | ${companyInfoValue.scale}`"
@@ -44,7 +49,119 @@
         ></tui-notice-bar> -->
       </view>
     </view>
-    <view> </view>
+  
+    <view class="tui-draw-bottom">
+      <view class="tui-draw-bottom-header">
+        <view class="tui-draw-bottom-header-bar"></view>
+      </view>
+      <view>
+
+        <view class="job-card" v-for="(item, index) in JobInfo" :key="index">
+      <tui-card
+        :title="{
+          text: item.name,
+          size: 32,
+          color: 'black',
+        }"
+        :isHot="item.isHot"
+        :tag="{
+          text: item.salary + '·' + item.countMonths,
+          size: 26,
+          color: '#f64',
+        }"
+        @tap="toJobDetail(item)"
+      >
+        <template v-slot:body>
+          <view class="course-list-item-tag">
+            <tui-tag
+              type="gray"
+              v-if="item.jobLocation"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.jobLocation }}</tui-tag
+            >
+            <tui-tag
+              v-if="item.jobAttributes"
+              type="gray"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.jobAttributes }}</tui-tag
+            >
+            <tui-tag
+              v-if="item.jobTime"
+              type="gray"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.jobTime }}</tui-tag
+            >
+            <tui-tag
+              v-if="item.academicRequirements"
+              type="gray"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="24rpx"
+              >{{ item.academicRequirements }}</tui-tag
+            >
+          </view>
+        </template>
+        <template v-slot:footer>
+          <view class="tui-footer-job-info">
+            <view class="tui-new-job-info">
+              <tui-image-group
+                :imageList="[
+                  {
+                    src: getkey(companyInfo, item.companyId).logo,
+                  },
+                ]"
+                isGroup
+                width="80rpx"
+                height="80rpx"
+              ></tui-image-group>
+              <view class="tui-recru-info-text">
+                <tui-text
+                  block
+                  :text="getkey(companyInfo, item.companyId).name"
+                  size="30"
+                ></tui-text>
+                <tui-text
+                  block
+                  :text="`${getkey(companyInfo, item.companyId).industry} | ${
+                    getkey(companyInfo, item.companyId).financing
+                  } | ${getkey(companyInfo, item.companyId).scale}`"
+                  size="22"
+                  type="gray"
+                ></tui-text
+              ></view>
+            </view>
+            <view class="tui-right-job-info">
+              <tui-tag
+                v-if="item.isFree"
+                type="light-blue"
+                padding="8rpx"
+                size="20rpx"
+                >免费</tui-tag
+              >
+              <image
+                v-else
+                src="../../static/images/icon/vip.svg"
+                mode="widthFix"
+                :style="{
+                  height: 50 + 'rpx',
+                  width: 50 + 'rpx',
+                }"
+              ></image>
+            </view>
+          </view>
+        </template>
+      </tui-card>
+    </view>
+
+
+      </view>
+    </view>
     <view> </view>
     <view> </view>
     <view> </view>
@@ -86,6 +203,7 @@ page {
 .container {
   padding-bottom: 100%;
   margin-top: 180rpx;
+  height: 100%;
   /* color: #333; */
   padding: 0 34rpx;
 }
@@ -115,4 +233,31 @@ page {
 .tui-company-intro {
   margin: 40rpx 0 20rpx 0;
 }
+.tui-draw-bottom {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 60%;
+  background: #f7f7f7;
+  border-radius: 20rpx 20rpx 20rpx;
+  padding: 24rpx;
+  
+}
+.tui-draw-bottom-header {
+
+  height: 20rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tui-draw-bottom-header-bar {
+  height: 10rpx;
+  width: 100rpx;
+  background: #c2c2c2;
+  border-radius: 10rpx;
+}
+
+
 </style>
