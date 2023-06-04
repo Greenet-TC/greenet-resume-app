@@ -120,7 +120,7 @@
             :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
             v-for="(item, index) in recruitInfo"
             :key="index"
-            @tap="moreDetail"
+            @tap="moreDetail(item)"
           >
             <view class="tui-recru-info-item">
               <tui-image-group
@@ -169,6 +169,46 @@
 <script>
 import { companyInfo } from "@/common/contant";
 export default {
+  onPullDownRefresh: function () {
+    let loadData = JSON.parse(JSON.stringify(this.productList));
+    loadData = loadData.splice(0, 10);
+    this.productList = loadData;
+    this.pageIndex = 1;
+    this.pullUpOn = true;
+    this.loadding = false;
+    uni.stopPullDownRefresh();
+  },
+
+  onReachBottom: function () {
+    if (!this.pullUpOn) return;
+    this.loadding = true;
+    if (this.pageIndex == 4) {
+      this.loadding = false;
+      this.pullUpOn = false;
+    } else {
+      let loadData = JSON.parse(JSON.stringify(this.productList));
+      loadData = loadData.splice(0, 10);
+      if (this.pageIndex == 1) {
+        loadData = loadData.reverse();
+      }
+      this.productList = this.productList.concat(loadData);
+      this.pageIndex = this.pageIndex + 1;
+      this.loadding = false;
+    }
+  },
+
+  //设置页面全屏
+  onPageScroll(e) {
+    // #ifdef APP-PLUS
+    let scrollTop = e.scrollTop;
+    if (scrollTop < 0) {
+      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
+    } else {
+      this.opacity = 1;
+    }
+    // #endif
+  },
+
   data() {
     return {
       banner: ["a.png", "b.png", "c.png", "d.png"],
@@ -203,15 +243,16 @@ export default {
       opacity: 1,
     };
   },
+
   methods: {
     resumeEdit: function (e) {
       uni.navigateTo({
         url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });
     },
-    moreDetail: function () {
+    moreDetail: function (e) { 
       uni.navigateTo({
-        url: "/pages/job/companyDetail/index",
+        url: `/pages/job/companyDetail/index?id=${e.id}`,
       });
     },
 
@@ -221,47 +262,12 @@ export default {
       });
     },
     moreCompany: function () {
+    
       uni.navigateTo({
         url: "/pages/job/companyInfo/index",
       });
     },
-  },
-  onPullDownRefresh: function () {
-    let loadData = JSON.parse(JSON.stringify(this.productList));
-    loadData = loadData.splice(0, 10);
-    this.productList = loadData;
-    this.pageIndex = 1;
-    this.pullUpOn = true;
-    this.loadding = false;
-    uni.stopPullDownRefresh();
-  },
-  onReachBottom: function () {
-    if (!this.pullUpOn) return;
-    this.loadding = true;
-    if (this.pageIndex == 4) {
-      this.loadding = false;
-      this.pullUpOn = false;
-    } else {
-      let loadData = JSON.parse(JSON.stringify(this.productList));
-      loadData = loadData.splice(0, 10);
-      if (this.pageIndex == 1) {
-        loadData = loadData.reverse();
-      }
-      this.productList = this.productList.concat(loadData);
-      this.pageIndex = this.pageIndex + 1;
-      this.loadding = false;
-    }
-  },
-  onPageScroll(e) {
-    // #ifdef APP-PLUS
-    let scrollTop = e.scrollTop;
-    if (scrollTop < 0) {
-      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
-    } else {
-      this.opacity = 1;
-    }
-    // #endif
-  }, //设置页面全屏
+  }
 };
 </script>
 
