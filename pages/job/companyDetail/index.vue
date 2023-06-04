@@ -14,7 +14,7 @@
             height="120rpx"
           ></tui-image-group>
           <view class="tui-recru-info-text">
-            <tui-text block text="阿里巴巴" size="40" color="#fff"></tui-text>
+            <tui-text block :text="companyInfoValue.name" size="40" color="#fff"></tui-text>
             <tui-text
               block
               :text="`${companyInfoValue.industry} | ${companyInfoValue.financing} | ${companyInfoValue.scale}`"
