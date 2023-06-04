@@ -51,7 +51,7 @@
     </view>
     <scroll-view
       class="tui-draw-bottom-box"
-      scroll-y="true"
+      :scroll-y="isScrollBottom"
       @scrolltoupper="upper"
       @scrolltolower="lower"
     >
@@ -188,16 +188,27 @@ export default {
       companyInfoValue: "",
       JobInfo,
       isScrollContant: false,
+      isScrollBottom: true, //
     };
   },
 
   methods: {
     upper: function () {
       this.isScrollContant=false;
+      this.isScrollBottom=true
     },
     lower: function () {
       this.isScrollContant = true;
+      this.isScrollBottom=false
     },
+    bottomUpper:function(){
+      this.isScrollContant = false;
+      this.isScrollBottom=true
+
+    },bottomLower:function(){
+      this.isScrollContant = true;
+      this.isScrollBottom=false
+    }
   },
 };
 </script>
