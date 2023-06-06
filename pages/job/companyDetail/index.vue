@@ -153,7 +153,7 @@
                     >
                     <image
                       v-else
-                      src="../../static/images/icon/vip.svg"
+                      src="../../../static/images/icon/vip.svg"
                       mode="widthFix"
                       :style="{
                         height: 50 + 'rpx',
@@ -194,21 +194,21 @@ export default {
 
   methods: {
     upper: function () {
-      this.isScrollContant=false;
-      this.isScrollBottom=true
+      this.isScrollContant = false;
+      //   this.isScrollBottom = true;
     },
     lower: function () {
       this.isScrollContant = true;
-      this.isScrollBottom=false
+      //   this.isScrollBottom = false;
     },
-    bottomUpper:function(){
+    bottomUpper: function () {
       this.isScrollContant = false;
-      this.isScrollBottom=true
-
-    },bottomLower:function(){
-      this.isScrollContant = true;
-      this.isScrollBottom=false
-    }
+      //   this.isScrollBottom = true;
+    },
+    // bottomLower: function () {
+    //   this.isScrollContant = true;
+    //   this.isScrollBottom = false;
+    // },
   },
 };
 </script>
@@ -263,14 +263,14 @@ page {
   left: 0;
   bottom: -20rpx;
   width: 100%;
-  height: 76%;
+  height: 90%;
 }
 .tui-draw-bottom {
   height: 95%;
   background: #fff;
-  border-radius: 20rpx 20rpx 20rpx;
+  border-radius: 20rpx 20rpx 0rpx 0;
   padding: 24rpx 0;
-  margin-top: 280rpx;
+  margin-top: 520rpx;
 }
 .tui-draw-bottom-header {
   height: 20rpx;
@@ -340,6 +340,5 @@ page {
   margin-top: 40rpx;
   overflow-y: hidden;
   height: 89%;
-
 }
 </style>
