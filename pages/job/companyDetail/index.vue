@@ -268,7 +268,7 @@ page {
 .tui-draw-bottom {
   height: 95%;
   background: #fff;
-  border-radius: 20rpx 20rpx 0rpx 0;
+  border-radius: 30rpx 30rpx 0rpx 0;
   padding: 24rpx 0;
   margin-top: 520rpx;
 }
