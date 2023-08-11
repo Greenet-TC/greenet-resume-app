@@ -78,17 +78,11 @@ app.$mount();
 import { createSSRApp } from "vue";
 export function createApp() {
   const app = createSSRApp(App);
-  return {
-    app,
-  };
-}
-import { createSSRApp } from "vue";
-export function createApp() {
-  const app = createSSRApp(App);
-  app.use(store);
+  // app.use(store);
   app.config.globalProperties.http = http;
   return {
     app,
   };
 }
+
 // #endif
