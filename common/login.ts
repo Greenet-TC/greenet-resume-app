@@ -2,12 +2,15 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-08-11 16:26:15
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-08-11 16:30:50
+ * @LastEditTime: 2023-09-02 21:27:11
  * @FilePath: /greenet-resume-app/common/login.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { userBaseInfoUsingGET } from "./apis/user-controller";
+import { loginMiniGET } from "./apis/weixin-login";
+import { getToken } from "./utils";
 // 调用ui.login()方法，获取用户的code
-export const login = () => {
+export const getlogin = () => {
   return new Promise((resolve, reject) => {
     uni.login({
       provider: "weixin",
@@ -20,6 +23,7 @@ export const login = () => {
     });
   });
 };
+
 export const wxLogin = (loginRes) => {
   return new Promise((resolve, reject) => {
     const { errMsg, code } = loginRes;
@@ -68,3 +72,23 @@ export const wxLogin = (loginRes) => {
     }
   });
 };
+
+export const login = async () => {
+  if (!getToken()) {
+    uni.setStorageSync("preLogin", true);
+  } else {
+    uni.removeStorageSync("preLogin");
+  }
+  console.log(11);
+  const login_res = await getlogin();
+  console.log(11, login_res);
+  await loginMiniGET(login_res?.code);
+
+  await userBaseInfoUsingGET();
+};
+export function uuid(m) {
+  const d = m > 16 ? 16 : m;
+  const num = Math.random().toString();
+  if (num.substr(num.length - d, 1) === "0") return uuid(d);
+  return num.substring(num.length - d);
+}

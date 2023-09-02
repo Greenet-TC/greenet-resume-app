@@ -1,5 +1,14 @@
+/*
+ * @Author: maxueming maxueming@kuaishou.com
+ * @Date: 2023-08-10 19:36:52
+ * @LastEditors: maxueming maxueming@kuaishou.com
+ * @LastEditTime: 2023-09-02 21:11:48
+ * @FilePath: /greenet-resume-app/main.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import App from "./App";
 import http from "./components/common/tui-request";
+import { getToken } from "./common/utils";
 
 //初始化请求配置项
 http.create({
@@ -8,16 +17,34 @@ http.create({
     "content-type": "application/json",
   },
 });
+
 //请求拦截
+
 http.interceptors.request.use((config) => {
-  let token = uni.getStorageSync("thorui_token");
-  if (config.header) {
-    config.header["Authorization"] = token;
-  } else {
-    config.header = {
-      Authorization: token,
-    };
+  const cookiesId = getToken();
+  const sessionId = getToken("preLogin");
+
+  if (!cookiesId && !sessionId) {
+    uni.showToast({
+      title: "请重新登录！",
+      icon: "error",
+      duration: 2000,
+    });
+    uni.navigateTo({
+      url: `/pages/index/index`,
+    });
+    return Promise.reject();
   }
+  if (getToken()) {
+    if (config.data) {
+      config.data["xxl_sso_sessionid"] = getToken();
+    } else {
+      config.data = {
+        xxl_sso_sessionid: getToken(),
+      };
+    }
+  }
+  // config.params.reqid = uuid(16);
   return config;
 });
 //响应拦截

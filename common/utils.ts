@@ -1,17 +1,3 @@
-// 调用ui.login()方法，获取用户的code
-export const getlogin = () => {
-  return new Promise((resolve, reject) => {
-    uni.login({
-      provider: "weixin",
-      success: (res) => {
-        resolve(res);
-      },
-      fail: (err) => {
-        reject(err);
-      },
-    });
-  });
-};
 // export const wxLogin = (loginRes) => {
 //   return new Promise((resolve, reject) => {
 //     const { errMsg, code } = loginRes;
@@ -103,3 +89,27 @@ export const getkey = (companyInfo, id) => {
     return item.id === id;
   })[0];
 };
+export function getCookieValue(name) {
+  const strCookie = document.cookie;
+  const arrCookie = strCookie.split(";");
+  for (let i = 0; i < arrCookie.length; i++) {
+    const c = arrCookie[i].split("=");
+    if (c[0].trim() === name) {
+      return c[1];
+    }
+  }
+  return "";
+}
+
+const tokenKey = "xxl_sso_sessionid";
+
+export function setToken(token) {
+  return uni.setStorageSync(tokenKey, token);
+}
+
+export function getToken() {
+  return uni.getStorageSync(tokenKey);
+}
+export function removeToken() {
+  return uni.removeStorageSync(tokenKey);
+}
