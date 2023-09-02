@@ -159,6 +159,16 @@
     <!-- <tui-nomore v-if="!pullUpOn"></tui-nomore> -->
     <!--加载loadding-->
     <!-- <view class="tui-footer-box"> -->
+    <!--uni-app-->
+    <tui-actionsheet
+      :show="showActionSheet"
+      :item-list="itemList"
+      @click="itemClick"
+      @cancel="closeActionSheet"
+      tips="您还没有登录，请登录后获取更多？"
+      color="#e41f19"
+    >
+    </tui-actionsheet>
     <tui-footer
       :fixed="false"
       copyright="Copyright © 2022-2025 Greenet-TC."
@@ -166,9 +176,20 @@
     <!-- </view> -->
   </view>
 </template>
-<script>
-import { companyInfo } from "@/common/contant";
+<script lang="ts">
+import { companyInfo } from "../../common/contant";
+import { login } from "../../common/login";
+import { getToken } from "../../common/utils";
 export default {
+  onShow() {
+    if (!getToken()) {
+      setTimeout(() => {
+        if (!getToken()) {
+          this.openActionSheet();
+        }
+      }, 3000);
+    }
+  },
   onPullDownRefresh: function () {
     let loadData = JSON.parse(JSON.stringify(this.productList));
     loadData = loadData.splice(0, 10);
@@ -208,6 +229,7 @@ export default {
     }
     // #endif
   },
+  // 调用wx.getUserProfile接口
 
   data() {
     return {
@@ -241,6 +263,13 @@ export default {
       loadding: false,
       pullUpOn: false,
       opacity: 1,
+      showActionSheet: false,
+      itemList: [
+        {
+          text: "登录",
+          color: "#ff4906",
+        },
+      ],
     };
   },
 
@@ -250,7 +279,35 @@ export default {
         url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });
     },
-    moreDetail: function (e) { 
+    login(authDetail) {
+      // let _this = this;
+      wx.login({
+        success(res) {
+          console.log("获取code成功", res);
+          // 调用自定义服务器方法...
+          // _this.$api.get_token();
+        },
+        fail(err) {
+          console.log("获取code失败", err);
+        },
+      });
+    },
+
+    bindGetUserInfo(e) {
+      let _this = this;
+      wx.getUserProfile({
+        desc: "weixin",
+        success: (res) => {
+          _this.login(res);
+          console.log(res, "授权成功");
+        },
+        fail: (err) => {
+          console.log(err, "失败授权");
+        },
+      });
+    },
+
+    moreDetail: function (e) {
       uni.navigateTo({
         url: `/pages/job/companyDetail/index?id=${e.id}`,
       });
@@ -262,12 +319,27 @@ export default {
       });
     },
     moreCompany: function () {
-    
       uni.navigateTo({
         url: "/pages/job/companyInfo/index",
       });
     },
-  }
+    //隐藏组件
+    closeActionSheet: function () {
+      this.showActionSheet = false;
+    },
+    //调用此方法显示组件
+    openActionSheet: function (type) {
+      this.showActionSheet = true;
+    },
+    itemClick: function (e) {
+     
+      let index = e.index;
+      this.closeActionSheet();
+      if (index === 0) {
+        login();
+      }
+    },
+  },
 };
 </script>
 

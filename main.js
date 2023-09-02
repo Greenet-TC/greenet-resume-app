@@ -1,5 +1,67 @@
+/*
+ * @Author: maxueming maxueming@kuaishou.com
+ * @Date: 2023-08-10 19:36:52
+ * @LastEditors: maxueming maxueming@kuaishou.com
+ * @LastEditTime: 2023-09-02 21:11:48
+ * @FilePath: /greenet-resume-app/main.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import App from "./App";
+import http from "./components/common/tui-request";
+import { getToken } from "./common/utils";
 
+//初始化请求配置项
+http.create({
+  host: "https://youjia.sx.cn",
+  header: {
+    "content-type": "application/json",
+  },
+});
+
+//请求拦截
+
+http.interceptors.request.use((config) => {
+  const cookiesId = getToken();
+  const sessionId = getToken("preLogin");
+
+  if (!cookiesId && !sessionId) {
+    uni.showToast({
+      title: "请重新登录！",
+      icon: "error",
+      duration: 2000,
+    });
+    uni.navigateTo({
+      url: `/pages/index/index`,
+    });
+    return Promise.reject();
+  }
+  if (getToken()) {
+    if (config.data) {
+      config.data["xxl_sso_sessionid"] = getToken();
+    } else {
+      config.data = {
+        xxl_sso_sessionid: getToken(),
+      };
+    }
+  }
+  // config.params.reqid = uuid(16);
+  return config;
+});
+//响应拦截
+http.interceptors.response.use(
+  (response) => {
+    const { data } = response;
+    if (data && data.result === 1) {
+      return response;
+    }
+    throw res?.data || {};
+  },
+  async (err) => {
+    console.error(err || {});
+
+    return Promise.reject(err || {});
+  }
+);
 // #ifndef VUE3
 import Vue from "vue";
 Vue.config.productionTip = false;
@@ -13,7 +75,7 @@ try {
       typeof obj.then === "function"
     );
   }
-
+  Vue.prototype.http = http;
   // 统一 vue2 API Promise 化返回格式与 vue3 保持一致
   uni.addInterceptor({
     returnValue(res) {
@@ -43,8 +105,11 @@ app.$mount();
 import { createSSRApp } from "vue";
 export function createApp() {
   const app = createSSRApp(App);
+  // app.use(store);
+  app.config.globalProperties.http = http;
   return {
     app,
   };
 }
+
 // #endif

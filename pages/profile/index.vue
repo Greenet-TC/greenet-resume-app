@@ -297,7 +297,7 @@
 </template>
 
 <script>
-import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
+// import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
 export default {
   onLoad: function (options) {
     let obj = {};
@@ -471,15 +471,15 @@ export default {
     opacityChange(e) {
       this.opacity = e.opacity;
     },
-    login() {
-      this.isLogin = true;
-      getlogin().then((res) => {
-        // wxLogin(res);
-      });
-      getUserProfile().then((res) => {
-        console.log(1111, res);
-      });
-    },
+    // login() {
+    //   this.isLogin = true;
+    //   getlogin().then((res) => {
+    //     // wxLogin(res);
+    //   });
+    //   getUserProfile().then((res) => {
+    //     console.log(1111, res);
+    //   });
+    // },
   },
   onPageScroll(e) {
     this.scrollTop = e.scrollTop;

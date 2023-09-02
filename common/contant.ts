@@ -471,7 +471,7 @@ export const companyInfo = [
   {
     id: "4",
     name: "TCL",
-    logo: "http://campus.tcl.com/image/logo1.png",
+    logo: "http://campus.tcl.com/image/logo.png",
     webSite: "http://campus.tcl.com/",
     state: 1,
     jobNum: 64,
@@ -719,7 +719,7 @@ const aa = [
   },
   {
     name: "TCL",
-    logo: "http://campus.tcl.com/image/logo1.png",
+    logo: "http://campus.tcl.com/image/logo.png",
     webSite: "http://campus.tcl.com/",
     state: 1,
     jobNum: 64,
