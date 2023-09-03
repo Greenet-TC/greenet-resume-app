@@ -176,7 +176,7 @@
     <!-- </view> -->
   </view>
 </template>
-<script lang="ts">
+<script >
 import { companyInfo } from "../../common/contant";
 import { login } from "../../common/login";
 import { getToken } from "../../common/utils";
@@ -279,34 +279,7 @@ export default {
         url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });
     },
-    login(authDetail) {
-      // let _this = this;
-      wx.login({
-        success(res) {
-          console.log("获取code成功", res);
-          // 调用自定义服务器方法...
-          // _this.$api.get_token();
-        },
-        fail(err) {
-          console.log("获取code失败", err);
-        },
-      });
-    },
-
-    bindGetUserInfo(e) {
-      let _this = this;
-      wx.getUserProfile({
-        desc: "weixin",
-        success: (res) => {
-          _this.login(res);
-          console.log(res, "授权成功");
-        },
-        fail: (err) => {
-          console.log(err, "失败授权");
-        },
-      });
-    },
-
+    
     moreDetail: function (e) {
       uni.navigateTo({
         url: `/pages/job/companyDetail/index?id=${e.id}`,

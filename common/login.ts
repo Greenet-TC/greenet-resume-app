@@ -79,9 +79,7 @@ export const login = async () => {
   } else {
     uni.removeStorageSync("preLogin");
   }
-  console.log(11);
   const login_res = await getlogin();
-  console.log(11, login_res);
   await loginMiniGET(login_res?.code);
 
   await userBaseInfoUsingGET();
