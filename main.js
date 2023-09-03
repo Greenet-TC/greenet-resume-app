@@ -9,6 +9,9 @@
 import App from "./App";
 import http from "./components/common/tui-request";
 import { getToken } from "./common/utils";
+import store from './store'
+
+
 
 //初始化请求配置项
 http.create({
@@ -22,8 +25,7 @@ http.create({
 
 http.interceptors.request.use((config) => {
   const cookiesId = getToken();
-  const sessionId = getToken("preLogin");
-
+  const sessionId = uni.getStorageSync("preLogin");
   if (!cookiesId && !sessionId) {
     uni.showToast({
       title: "请重新登录！",
@@ -96,6 +98,7 @@ try {
 } catch (error) {}
 
 const app = new Vue({
+  // store,
   ...App,
 });
 app.$mount();
@@ -105,7 +108,7 @@ app.$mount();
 import { createSSRApp } from "vue";
 export function createApp() {
   const app = createSSRApp(App);
-  // app.use(store);
+  app.use(store);
   app.config.globalProperties.http = http;
   return {
     app,

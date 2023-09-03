@@ -13,7 +13,7 @@ export const loginMiniGET = (code: string) => {
   return http
     .get(`/api/resume/web/loginMini?code=${code}`)
     .then((res) => {
-      console.log(res.data);
+      console.log(1111,res.data);
       if (res.data.result === 1) {
         uni.showToast({
           title: "登录成功！",

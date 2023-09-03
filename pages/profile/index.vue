@@ -298,32 +298,43 @@
 
 <script>
 // import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
+import store from '@/store/index.ts';
 export default {
-  onLoad: function (options) {
-    let obj = {};
-    // #ifdef MP-WEIXIN
-    obj = wx.getMenuButtonBoundingClientRect();
-    // #endif
-    // #ifdef MP-BAIDU
-    obj = swan.getMenuButtonBoundingClientRect();
-    // #endif
-    // #ifdef MP-ALIPAY
-    my.hideAddToDesktopMenu();
-    // #endif
-
-    uni.getSystemInfo({
-      success: (res) => {
-        this.width = obj.left || res.windowWidth;
-        this.height = obj.top
-          ? obj.top + obj.height + 8
-          : res.statusBarHeight + 44;
-        this.top = obj.top
-          ? obj.top + (obj.height - 32) / 2
-          : res.statusBarHeight + 6;
-        this.scrollH = res.windowWidth * 0.6;
-      },
-    });
+  onReachBottom: function () {
+    if (!this.pullUpOn) return;
+    this.loadding = true;
+    if (this.pageIndex == 4) {
+      this.loadding = false;
+      this.pullUpOn = false;
+    } else {
+      let loadData = JSON.parse(JSON.stringify(this.productList));
+      loadData = loadData.splice(0, 10);
+      if (this.pageIndex == 1) {
+        loadData = loadData.reverse();
+      }
+      this.productList = this.productList.concat(loadData);
+      this.pageIndex = this.pageIndex + 1;
+      this.loadding = false;
+    }
   },
+
+  onPullDownRefresh() {
+    setTimeout(() => {
+      uni.stopPullDownRefresh();
+    }, 200);
+  },
+
+  onPageScroll(e) {
+    this.scrollTop = e.scrollTop;
+  },
+
+  onShow() {
+    this.localtoken = uni.getStorageSync("localtoken");
+  },
+
+  onHide() {},
+  onLoad() {},
+
   data() {
     return {
       isLogin: false,
@@ -408,11 +419,13 @@ export default {
       pullUpOn: true,
     };
   },
-  onLoad() {},
-  onHide() {},
-  onShow() {
-    this.localtoken = uni.getStorageSync("localtoken");
-  },
+
+  computed: {
+            username() {
+                return store.state.username 
+            }
+        },
+
   methods: {
     href(page) {
       //未登录状态下应跳转至登录页面，此处未作处理
@@ -471,24 +484,10 @@ export default {
     opacityChange(e) {
       this.opacity = e.opacity;
     },
-    // login() {
-    //   this.isLogin = true;
-    //   getlogin().then((res) => {
-    //     // wxLogin(res);
-    //   });
-    //   getUserProfile().then((res) => {
-    //     console.log(1111, res);
-    //   });
-    // },
+
+   
   },
-  onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
-  },
-  onPullDownRefresh() {
-    setTimeout(() => {
-      uni.stopPullDownRefresh();
-    }, 200);
-  },
+
   onReachBottom: function () {
     if (!this.pullUpOn) return;
     this.loadding = true;
@@ -505,7 +504,7 @@ export default {
       this.pageIndex = this.pageIndex + 1;
       this.loadding = false;
     }
-  },
+  }
 };
 </script>
 
