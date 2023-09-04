@@ -56,7 +56,13 @@ http.interceptors.response.use(
     if (data && data.result === 1) {
       return response;
     }
+    uni.showToast({
+      title: "请求错误！",
+      icon: "error",
+      duration: 4000,
+    });
     throw res?.data || {};
+    
   },
   async (err) => {
     console.error(err || {});

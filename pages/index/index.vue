@@ -176,28 +176,21 @@
     <!-- </view> -->
   </view>
 </template>
-<script >
+<script>
 import { companyInfo } from "../../common/contant";
-import { login } from "../../common/login";
+import { login ,getBaseInfo,setLoginStatus} from "../../common/login";
 import { getToken } from "../../common/utils";
 export default {
-  onShow() {
-    if (!getToken()) {
-      setTimeout(() => {
-        if (!getToken()) {
-          this.openActionSheet();
-        }
-      }, 3000);
+  //设置页面全屏
+  onPageScroll(e) {
+    // #ifdef APP-PLUS
+    let scrollTop = e.scrollTop;
+    if (scrollTop < 0) {
+      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
+    } else {
+      this.opacity = 1;
     }
-  },
-  onPullDownRefresh: function () {
-    let loadData = JSON.parse(JSON.stringify(this.productList));
-    loadData = loadData.splice(0, 10);
-    this.productList = loadData;
-    this.pageIndex = 1;
-    this.pullUpOn = true;
-    this.loadding = false;
-    uni.stopPullDownRefresh();
+    // #endif
   },
 
   onReachBottom: function () {
@@ -218,17 +211,33 @@ export default {
     }
   },
 
-  //设置页面全屏
-  onPageScroll(e) {
-    // #ifdef APP-PLUS
-    let scrollTop = e.scrollTop;
-    if (scrollTop < 0) {
-      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
-    } else {
-      this.opacity = 1;
-    }
-    // #endif
+  onPullDownRefresh: function () {
+    let loadData = JSON.parse(JSON.stringify(this.productList));
+    loadData = loadData.splice(0, 10);
+    this.productList = loadData;
+    this.pageIndex = 1;
+    this.pullUpOn = true;
+    this.loadding = false;
+    uni.stopPullDownRefresh();
   },
+
+  onLoad() {
+   if(getToken()){
+    getBaseInfo()
+    setLoginStatus(true)
+   }
+  },
+
+  onShow() {
+    if (!getToken()) {
+      setTimeout(() => {
+        if (!getToken()) {
+          this.openActionSheet();
+        }
+      }, 3000);
+    }
+  },
+
   // 调用wx.getUserProfile接口
 
   data() {
@@ -279,7 +288,7 @@ export default {
         url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });
     },
-    
+
     moreDetail: function (e) {
       uni.navigateTo({
         url: `/pages/job/companyDetail/index?id=${e.id}`,
@@ -305,14 +314,13 @@ export default {
       this.showActionSheet = true;
     },
     itemClick: function (e) {
-     
       let index = e.index;
       this.closeActionSheet();
       if (index === 0) {
         login();
       }
     },
-  },
+  }
 };
 </script>
 

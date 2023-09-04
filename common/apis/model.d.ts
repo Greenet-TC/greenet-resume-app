@@ -38,3 +38,12 @@ export interface userBaseInfoDataRespones {
   sex: 1 | 2; //1male, 2female
   username: string;
 }
+export interface WechatPayControllerQueryAccountGETResponse {
+  bonus: number;
+  endTime: number;
+  history: string;
+  id: number;
+  startTime: number;
+  unionId: string;
+  vipType: string;
+}

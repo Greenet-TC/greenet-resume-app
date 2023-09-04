@@ -113,3 +113,4 @@ export function getToken() {
 export function removeToken() {
   return uni.removeStorageSync(tokenKey);
 }
+export const WEBURL="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com"
