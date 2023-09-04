@@ -21,7 +21,7 @@
               :size="26"
             ></tui-icon>
             <view
-              v-if="isLogin"
+              v-if="getLoginStatus"
               class="tui-badge"
               :class="[opacity > 0.8 ? 'tui-badge-red' : 'tui-badge-white']"
               >1</view
@@ -47,21 +47,21 @@
       ></image>
       <view class="tui-header-center">
         <image
-          src="/static/images/my/mine_def_touxiang_3x.png"
+          :src="baseInfo.avatar?baseInfo.avatar:baseInfo.sex===1?webURLBase+`/profile/man.png`:webURLBase+`/profile/woman.png`"
           class="tui-avatar"
           @tap="href(3)"
         ></image>
-        <view class="tui-info" v-if="isLogin">
+        <view class="tui-info" v-if="getLoginStatus">
           <view class="tui-nickname">
-            马学明
+            {{ baseInfo.username}}
             <image
-              src="/static/images/mall/my/icon_vip_3x.png"
+              :src="webURLBase+`/vip/vip-icon.png`"
               class="tui-img-vip"
             ></image>
           </view>
           <view class="tui-explain">这家伙很懒…</view>
         </view>
-        <view class="tui-login" v-if="!isLogin" @tap="login">
+        <view class="tui-login" v-if="!getLoginStatus" @tap="loginClick">
           <text>登录/注册</text>
           <tui-icon
             name="arrowright"
@@ -71,7 +71,7 @@
           ></tui-icon>
         </view>
         <!-- #ifndef MP -->
-        <view class="tui-btn-edit" v-if="isLogin">
+        <view class="tui-btn-edit" v-if="getLoginStatus">
           <tui-button
             type="white"
             :plain="true"
@@ -88,7 +88,7 @@
         <view class="tui-set-box">
           <view class="tui-icon-box tui-icon-message" @tap="href(7)">
             <tui-icon name="message" color="#fff" :size="26"></tui-icon>
-            <view v-if="isLogin" class="tui-badge tui-badge-white">1</view>
+            <view v-if="getLoginStatus" class="tui-badge tui-badge-white">1</view>
           </view>
           <view class="tui-icon-box tui-icon-setup" @tap="href(2)">
             <tui-icon name="setup" color="#fff" :size="26"></tui-icon>
@@ -298,7 +298,9 @@
 
 <script>
 // import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
-import store from '@/store/index.ts';
+import store from "@/store/index.ts";
+import {login} from "@/common/login"
+import {WEBURL} from "@/common/utils"
 export default {
   onReachBottom: function () {
     if (!this.pullUpOn) return;
@@ -330,14 +332,20 @@ export default {
 
   onShow() {
     this.localtoken = uni.getStorageSync("localtoken");
+   
   },
 
   onHide() {},
-  onLoad() {},
+
+  onLoad() {
+    console.log(store.state);
+  
+  },
 
   data() {
     return {
       isLogin: false,
+
       webURL: "https://www.thorui.cn/wx",
       top: 0, //标题图标距离顶部距离
       opacity: 0,
@@ -417,14 +425,18 @@ export default {
       pageIndex: 1,
       loadding: false,
       pullUpOn: true,
+      webURLBase:WEBURL
     };
   },
 
   computed: {
-            username() {
-                return store.state.username 
-            }
-        },
+    baseInfo() {
+      return store.state.userBaseInfo;
+    },
+    getLoginStatus(){
+      return store.state.loginStatus
+    }
+  },
 
   methods: {
     href(page) {
@@ -461,16 +473,16 @@ export default {
         default:
           break;
       }
-      if (url) {
-        if (page == 3 && !this.isLogin) {
-          this.isLogin = true;
-          this.tui.toast("模拟登录成功~");
-        } else {
-          this.tui.href(url);
-        }
-      } else {
-        this.tui.toast("功能尚未完善~");
-      }
+      // if (url) {
+      //   if (page == 3 && !this.isLogin) {
+      //     this.isLogin = true;
+      //     this.tui.toast("模拟登录成功~");
+      //   } else {
+      //     this.tui.href(url);
+      //   }
+      // } else {
+      //   this.tui.toast("功能尚未完善~");
+      // }
     },
     detail: function () {
       uni.navigateTo({
@@ -484,8 +496,10 @@ export default {
     opacityChange(e) {
       this.opacity = e.opacity;
     },
-
-   
+  
+    loginClick(){
+      login();
+    }
   },
 
   onReachBottom: function () {
@@ -504,7 +518,7 @@ export default {
       this.pageIndex = this.pageIndex + 1;
       this.loadding = false;
     }
-  }
+  },
 };
 </script>
 
@@ -615,6 +629,7 @@ export default {
   width: 128rpx;
   height: 128rpx;
   display: block;
+  border-radius: 50%;
 }
 
 .tui-info {

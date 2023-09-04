@@ -9,6 +9,9 @@
 import { userBaseInfoUsingGET } from "./apis/user-controller";
 import { loginMiniGET } from "./apis/weixin-login";
 import { getToken } from "./utils";
+import store from '../store/index'
+import { userBaseInfoDataRespones } from "./apis/model";
+
 // 调用ui.login()方法，获取用户的code
 export const getlogin = () => {
   return new Promise((resolve, reject) => {
@@ -81,9 +84,20 @@ export const login = async () => {
   }
   const login_res = await getlogin();
   await loginMiniGET(login_res?.code);
-
-  await userBaseInfoUsingGET();
+  setLoginStatus(true)
+  getBaseInfo()
+ 
 };
+export const  getBaseInfo = async () => {
+  const data=await userBaseInfoUsingGET();
+  saveBaseInfoStore(data.data)
+}
+export const saveBaseInfoStore=(baseInfo:userBaseInfoDataRespones)=>{
+  store.commit('getUserInfo', baseInfo)//每次累加 5
+}
+export const setLoginStatus=(loginStatus:boolean)=>{
+  store.commit('setLoginStatus',loginStatus)
+}
 export function uuid(m) {
   const d = m > 16 ? 16 : m;
   const num = Math.random().toString();
