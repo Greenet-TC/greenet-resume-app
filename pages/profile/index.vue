@@ -47,7 +47,7 @@
       ></image>
       <view class="tui-header-center">
         <image
-          :src="baseInfo.avatar?baseInfo.avatar:baseInfo.sex===1?webURLBase+`/profile/man.png`:webURLBase+`/profile/woman.png`"
+          :src="baseInfo?.avatar?baseInfo?.avatar:baseInfo.sex===1?webURLBase+`/profile/man.png`:webURLBase+`/profile/woman.png`"
           class="tui-avatar"
           @tap="href(3)"
         ></image>
