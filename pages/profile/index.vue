@@ -157,7 +157,7 @@
             }}
           </view>
         </view>
-        <view class="open-vip-btn">
+        <view class="open-vip-btn" @tap="openVipService">
           <view class="open-vip-btn-text">
             {{ !!queryAccount?.vipType ? "立即续费" : "立即开通" }}
           </view>
@@ -539,6 +539,11 @@ export default {
     detail: function () {
       uni.navigateTo({
         url: "/pages/index/productDetail/productDetail",
+      });
+    },
+    openVipService: function () {
+      uni.navigateTo({
+        url: "/pages/profile/vipPage/index",
       });
     },
     initNavigation(e) {

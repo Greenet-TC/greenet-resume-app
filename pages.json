@@ -47,6 +47,13 @@
     {
       "path": "pages/profile/index",
       "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/profile/vipPage/index",
+      "style": {
         "navigationBarTitleText": "uni-app",
         "navigationStyle": "custom"
       }
