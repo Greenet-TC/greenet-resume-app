@@ -43,64 +43,94 @@
         class="vip-card-bg"
       ></image>
       <view class="vip-center-top">
+        <view class="header-profile-top">
+          <view class="self-info-name">
+            <image
+              :src="
+                baseInfo?.avatar
+                  ? baseInfo.avatar
+                  : baseInfo.sex === 1
+                  ? webURLBase + `/profile/man.png`
+                  : webURLBase + `/profile/woman.png`
+              "
+              class="tui-avatar"
+              @tap="href(3)"
+            ></image>
+            <view class="name-desc">
+              <view class="name">
+                <view class="name-link">
+                  {{ baseInfo?.username ?? "优加DA-0000用户" }}
+                </view>
 
-
-        <div className="header-profile-top">
-        <div className="self-info-name">
-          <image
-          :src="
-            baseInfo.avatar
-              ? baseInfo.avatar
-              : baseInfo.sex === 1
-              ? webURLBase + `/profile/man.png`
-              : webURLBase + `/profile/woman.png`
-          "
-          class="tui-avatar"
-          @tap="href(3)"
-        ></image>
-          <div className="name-desc">
-            <div className="name">
-              <a className="name-link" href="./">
-                {userBaseInfo?.username ?? '优加DA-0000用户'}
-              </a>
-              <img
-                alt="1"
-                src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/profile/icon-1.png"
-                className="name-img"
-              />
-            </div>
-            <div className="identify">
-              <div className="hove-to-green">
-                暂未认证，去认证
-                <span className="nc-icon">
-                  <svg
-                    focusable="false"
-                    viewBox="0 0 1024 1024"
-                    fill="currentColor"
-                    width="12"
-                    height="12"
-                    aria-hidden="true"
-                    data-v-79ba69ea=""
-                  >
-                    <path
-                      fill="currentColor"
-                      fill-rule="nonzero"
-                      d="M289.3514 187.8043c-19.8576-17.5625-21.7181-47.8974-4.1557-67.755 17.3869-19.659 47.292-21.679 67.1561-4.6767l.5989.521L723.848 443.9236c33.096 29.2708 36.1968 79.829 6.926 112.9249a80 80 0 0 1-6.115 6.1989l-.811.7271-370.8973 328.0299c-19.8576 17.5624-50.1925 15.7019-67.755-4.1557-17.3868-19.659-15.7371-49.5868 3.5654-67.2242l.5903-.5307L646.696 503.85 289.3514 187.8043z"
-                    ></path>
-                  </svg>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <a className="self-page" href="./">
-          个人主页
-        </a>
-      </div>
-        <view class="title-line-1">优加会员·轻松斩OFFER</view>
-      <view class="title-line-2">实习路上优加为您保驾护航</view>
+                <image
+                  alt="1"
+                  :src="webURLBase + `/profile/icon-1.png`"
+                  class="name-img"
+                />
+              </view>
+              <view class="identify">
+                <view class="hove-to-green"> 优加会员·轻松斩OFFER </view>
+              </view>
+            </view>
+          </view>
+        </view>
       </view>
-      
+    </view>
+    <view class="vip-items">
+      <view class="vip-card">
+        <view class="vip-text-label">
+          <view
+            :class="!!queryAccount?.vipType ? 'yj-vip-text vip' : 'yj-vip-text'"
+          >
+            优加会员
+          </view>
+          <image
+            :src="
+              !!queryAccount?.vipType
+                ? webURLBase + `/vip/vip-icon.png`
+                : webURLBase + `/profile/pre-vip.png`
+            "
+            class="vip-label-pic"
+            alt="1"
+          ></image>
+        </view>
+        <view class="yj-vip-desc">
+          <view class="yj-vip-desc">
+            {{
+              !!queryAccount?.vipType
+                ? `会员到期时间：${queryAccount?.endTime}`
+                : "实习路上优加为您保驾护航"
+            }}
+          </view>
+        </view>
+        <view class="open-vip-btn" @tap="openVipService">
+          <view class="open-vip-btn-text">
+            {{ !!queryAccount?.vipType ? "立即续费" : "立即开通" }}
+          </view>
+        </view>
+      </view>
+      <view class="vip-contant">
+        <scroll-view scroll-x>
+          <view class="vip-contant-top">
+            <view
+              class="vip-contant-top-item"
+              v-for="vip in memberShipData"
+              :key="vip.id"
+            >
+              <view class="vip-contant-top-item-title">{{ vip.title }} </view>
+              <view class="vip-contant-top-item-fee"
+                ><span class="fee-sign">¥</span>{{ vip.fee }}
+              </view>
+              <view class="vip-contant-top-item-prefee"
+                >¥ {{ vip.preFee }}
+              </view>
+              <view class="vip-contant-top-item-bottom"
+                >立省{{ vip.preFee - vip.fee }}元
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
     </view>
   </view>
 </template>
@@ -110,7 +140,8 @@
 import store from "@/store/index.ts";
 import { login } from "@/common/login";
 import { WEBURL } from "@/common/utils";
-import * as A from "@/components/common/tui-utils/tui-utils.js";
+import { memberShipData } from "@/common/contant";
+import dayjs from "dayjs";
 
 export default {
   onReachBottom: function () {
@@ -147,7 +178,9 @@ export default {
 
   onHide() {},
 
-  onLoad() {},
+  onLoad() {
+    console.log(1, memberShipData);
+  },
 
   data() {
     return {
@@ -157,7 +190,7 @@ export default {
       top: 0, //标题图标距离顶部距离
       opacity: 0,
       scrollTop: 0.5,
-
+      memberShipData,
       pageIndex: 1,
       loadding: false,
       pullUpOn: true,
@@ -290,20 +323,92 @@ export default {
 }
 .vip-center {
   width: 100%;
-  position: relative;
   // height: 464rpx;
   display: block;
-  &-top{
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
+  &-top {
+    position: absolute;
+    top: 0rpx;
+    left: 0;
+    width: 100%;
+    padding: 130rpx 40rpx 40rpx 40rpx;
+    .tui-avatar {
+      flex-shrink: 0;
+      width: 96rpx;
+      height: 96rpx;
+      display: block;
+      border-radius: 50%;
     }
+    .header-profile-top {
+      overflow: hidden;
+      .self-info-name {
+        align-items: center;
+        display: flex;
+        .name-desc {
+          height: 96rpx;
+          margin-left: 16rpx;
+          margin-top: 8rpx;
+          .name {
+            align-items: center;
+            display: flex;
+            height: 40rpx;
+            .name-img {
+              height: 28rpx;
+              margin-left: 8rpx;
+              width: 105rpx;
+            }
+            .name-link {
+              color: #ffffff;
+              font-weight: 500;
+            }
+          }
+          .identify {
+            color: #999 !important;
+            cursor: pointer;
+            font-size: 24rpx;
+            line-height: 36rpx;
+            margin-top: 8rpx;
+            width: -moz-max-content;
+            width: max-content;
+            .hove-to-green {
+              width: max-content;
+              display: flex;
+              align-items: center;
+            }
+            .nc-icon {
+              vertical-align: -0.15em;
+              -webkit-font-smoothing: antialiased;
+              -moz-osx-font-smoothing: grayscale;
+              display: inline-block;
+              font-style: normal;
+              line-height: 0;
+              text-align: center;
+              text-rendering: optimizeLegibility;
+              text-transform: none;
+            }
+          }
+        }
+      }
+
+      .self-page {
+        box-sizing: border-box;
+        color: #32ca99;
+        display: block;
+        font-size: 24rpx;
+        font-weight: 500;
+        height: 52rpx;
+        line-height: 52rpx;
+        position: absolute;
+        right: 32rpx;
+        text-align: center;
+        top: 132rpx;
+        width: 112rpx;
+      }
+    }
+  }
   .vip-card-bg {
     width: 100%;
     // height: 464rpx;
     display: block;
-    
     .title-line-1 {
       -webkit-text-fill-color: transparent;
       background: linear-gradient(
@@ -327,6 +432,184 @@ export default {
       line-height: 18px;
       margin-top: 8px;
       width: 144px;
+    }
+  }
+}
+.vip-items {
+  width: 100%;
+  height: 300px;
+  // background: #fff;
+  margin-top: -30rpx;
+  position: relative;
+  .vip-card {
+    background-size: cover;
+    border-radius: 16rpx 16rpx 0 0;
+    box-sizing: border-box;
+    height: 147rpx;
+    padding: 36rpx 39rpx 0 39rpx;
+    /* padding-top: 36rpx; */
+    left: 50%;
+    transform: translate(-50%, 0);
+    position: absolute;
+    top: -130rpx;
+    width: 90%;
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(20rpx);
+    &-bg {
+      border-radius: 24rpx;
+      height: 156rpx;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    .vip-text-label {
+      align-items: center;
+      color: #333;
+      display: flex;
+      font-weight: 500;
+      height: 48rpx;
+      width: 216rpx;
+      .yj-vip-text {
+        flex-shrink: 0;
+        font-size: 32rpx;
+        line-height: 48rpx;
+        &.vip {
+          -webkit-text-fill-color: transparent;
+          background: linear-gradient(
+            312deg,
+            #53f7e2,
+            #bafca3 46%,
+            #f2f07c 79%,
+            #ffe741
+          );
+          -webkit-background-clip: text;
+          color: #fff;
+          font-size: 32rpx;
+          line-height: 48rpx;
+        }
+      }
+      .vip-label-pic {
+        flex-shrink: 0;
+        height: 36rpx;
+        margin-left: 8rpx;
+        width: 80rpx;
+      }
+    }
+    .yj-vip-desc {
+      color: #999;
+      font-size: 24rpx;
+      line-height: 52rpx;
+    }
+    .open-vip-btn {
+      -webkit-box-pack: center;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      background: -webkit-linear-gradient(
+        135deg,
+        #ffdead,
+        #ffbd7f 21%,
+        #fff9d7 53%,
+        #ffebba
+      );
+      border-radius: 30rpx;
+      cursor: pointer;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      height: 48rpx;
+      -webkit-justify-content: center;
+      justify-content: center;
+      right: 45rpx;
+      position: absolute;
+      top: 54rpx;
+      width: 128rpx;
+      &-text {
+        color: #4c260e;
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 24rpx;
+      }
+    }
+  }
+  .vip-contant {
+    background: #ffffff;
+    width: 100%;
+    height: 200px;
+    &-top {
+      height: 340rpx;
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      padding-left: 32rpx;
+      padding-top: 45rpx;
+      padding-bottom: 32rpx;
+      &-item {
+        height: 210rpx;
+        flex-shrink: 0;
+        border-radius: 16rpx;
+        width: 173rpx;
+        background: #f5f6fa;
+        border: 2rpx solid #9c9c9c30;
+        margin-right: 20rpx;
+        // linear-gradient(44deg,#fff6f4,#fff);
+        padding: 30rpx 10rpx;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        &.active {
+          background: #fff6f4;
+          border: 2rpx solid #f64;
+        }
+        &-title {
+          height: 32rpx;
+          line-height: 32rpx;
+          margin-bottom: 28rpx;
+          font-size: 28rpx;
+          font-weight: 500;
+          color: #404040;
+        }
+        &-fee {
+          line-height: 48rpx;
+          text-align: center;
+          font-size: 48rpx;
+          font-weight: 600;
+          color: rgb(64, 64, 64);
+          .fee-sign {
+            padding-top: 8rpx;
+            padding-right: 8rpx;
+            font-size: 28rpx;
+            font-weight: 400;
+          }
+        }
+        &-prefee {
+          display: -webkit-box;
+          display: -ms-flexbox;
+          display: flex;
+          font-weight: 400;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          height: 50rpx;
+          font-size: 24rpx;
+          line-height: 50rpx;
+          margin-bottom: 20rpx;
+          color: #9c9c9c;
+          text-decoration: line-through;
+        }
+        &-bottom {
+          height: 28rpx;
+          background: #e9e9e970;
+          padding: 2rpx 18rpx;
+          border-radius: 28rpx;
+          line-height: 26rpx;
+          font-size: 21rpx;
+          font-weight: 400;
+          color: #9b9b9b;
+        }
+      }
     }
   }
 }

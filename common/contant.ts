@@ -755,3 +755,85 @@ const aa = [
     updateDate: "2023-01-16",
   },
 ];
+export interface membershipDataType {
+  id: number;
+  title: string;
+  fee: number;
+  count: number;
+  preFee: number;
+  content: any[];
+}
+export const memberShipData: membershipDataType[] = [
+  {
+    id: 1,
+    title: '终生会员',
+    fee: 99,
+    count: 100,
+    preFee: 199,
+    content: [
+      {
+        icon: '满足更多岗位投递',
+        text: '15份简历',
+        index: 1,
+      },
+      { icon: '一键AI智能检测', text: '不限次智能检测', index: 2 },
+      { icon: '中英文简历转换', text: '不限次智能翻译', index: 3 },
+      { icon: '解锁所有简历模板', text: '海量模版', index: 4 },
+      { icon: 'VIP求职社群', text: '专属社区', index: 5 },
+      { icon: '简历自动纠错', text: '100次简历纠错', index: 6 },
+      { icon: '历年求职面经', text: '免费面试经验', index: 7 },
+      { icon: '避免简历丢失', text: '长期简历托管', index: 8 },
+      { icon: '在线简历视频', text: '79元简历课程', index: 9 },
+      { icon: '购买服务立减', text: '50元代金优惠券', index: 10 },
+      { icon: '100%面试机会', text: '一次内推机会', index: 11 },
+    ],
+  },
+  {
+    id: 2,
+    title: '月会员',
+    fee: 19,
+    count: 10,
+    preFee: 25,
+    content: [
+      { icon: '满足更多岗位投递', text: '5份简历', index: 1 },
+      { icon: '一键AI智能检测', text: '10次智能检测', index: 2 },
+      { icon: '中英文简历转换', text: '5次智能翻译', index: 3 },
+      { icon: '解锁所有简历模板', text: '海量模版', index: 4 },
+      { icon: 'VIP求职社群', text: '专属社区', index: 5 },
+      { icon: '简历自动纠错', text: '10次简历纠错', index: 6 },
+      { icon: '历年求职面经', text: '1份免费面经', index: 7 },
+      { icon: '避免简历丢失', text: '长期简历托管', index: 8 },
+      { icon: '在线简历视频', text: '79元简历课程', index: 9 },
+      { icon: '购买服务立减', text: '50元代金优惠券', index: 10 },
+      { icon: '100%面试机会', text: '一次内推机会', index: 11 },
+    ],
+  },
+  {
+    id: 3,
+    title: '年会员',
+    fee: 79,
+    count: 10,
+    preFee: 99,
+    content: [
+      { icon: '满足更多岗位投递', text: '7份简历', index: 1 },
+      { icon: '一键AI智能检测', text: '20次智能检测', index: 2 },
+      { icon: '中英文简历转换', text: '20次智能翻译', index: 3 },
+      { icon: '解锁所有简历模板', text: '海量模版', index: 4 },
+      { icon: 'VIP求职社群', text: '专属社区', index: 5 },
+      { icon: '简历自动纠错', text: '20次简历纠错', index: 6 },
+      { icon: '历年求职面经', text: '2份面试经验', index: 7 },
+      { icon: '避免简历丢失', text: '1年简历托管', index: 8 },
+      { icon: '在线简历视频', text: '79元简历课程', index: 9 },
+      { icon: '购买服务立减', text: '50元代金优惠券', index: 10 },
+      { icon: '100%面试机会', text: '一次内推机会', index: 11 },
+    ],
+  },
+  {
+    id: 4,
+    title: '超级会员',
+    fee: 169,
+    count: 100,
+    preFee: 1199,
+    content: [],
+  },
+];
