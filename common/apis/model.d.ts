@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-02 18:18:35
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-02 19:38:47
+ * @LastEditTime: 2023-09-07 16:49:47
  * @FilePath: /greenet-resume-app/common/apis/model.d.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -38,6 +38,22 @@ export interface userBaseInfoDataRespones {
   sex: 1 | 2; //1male, 2female
   username: string;
 }
+export interface WechatPayControllerQueryAccountGETResponse {
+  bonus: number;
+  endTime: number;
+  history: string;
+  id: number;
+  startTime: number;
+  unionId: string;
+  vipType: string;
+}
+export interface WechatPayControllerResponseType<T> {
+  data: T;
+  error_msg: string;
+  pageInfo: PageInfoType;
+  result: number;
+}
+
 export interface WechatPayControllerQueryAccountGETResponse {
   bonus: number;
   endTime: number;

@@ -7,8 +7,8 @@
       @init="initNavigation"
       @change="opacityChange"
       :scrollTop="scrollTop"
-      title="我的"
-      backgroundColor="#fff"
+      title="个人中心"
+      backgroundColor="#ffffff"
       color="#333"
     >
       <view class="tui-header-box" :style="{ marginTop: top + 'px' }">
@@ -40,22 +40,27 @@
     </tui-navigation-bar>
     <!--header-->
     <view class="tui-mybg-box">
-      <image
-        :src="webURL + '/static/images/mall/my/img_bg_3x.png'"
-        class="tui-my-bg"
-        mode="widthFix"
-      ></image>
       <view class="tui-header-center">
         <image
-          :src="baseInfo.avatar?baseInfo.avatar:baseInfo.sex===1?webURLBase+`/profile/man.png`:webURLBase+`/profile/woman.png`"
+          :src="
+            baseInfo.avatar
+              ? baseInfo.avatar
+              : baseInfo.sex === 1
+              ? webURLBase + `/profile/man.png`
+              : webURLBase + `/profile/woman.png`
+          "
           class="tui-avatar"
           @tap="href(3)"
         ></image>
-        <view class="tui-info" v-if="getLoginStatus">
+        <view class="tui-info" v-if="getLoginStatus" @tap="loginClick">
           <view class="tui-nickname">
-            {{ baseInfo.username}}
+            {{ baseInfo.username }}
             <image
-              :src="webURLBase+`/vip/vip-icon.png`"
+              :src="
+                !!queryAccount?.vipType
+                  ? webURLBase + `/profile/pre-vip.png`
+                  : webURLBase + `/vip/vip-icon.png`
+              "
               class="tui-img-vip"
             ></image>
           </view>
@@ -87,11 +92,13 @@
         <!-- #ifdef MP -->
         <view class="tui-set-box">
           <view class="tui-icon-box tui-icon-message" @tap="href(7)">
-            <tui-icon name="message" color="#fff" :size="26"></tui-icon>
-            <view v-if="getLoginStatus" class="tui-badge tui-badge-white">1</view>
+            <tui-icon name="message" color="#494d5b" :size="26"></tui-icon>
+            <view v-if="getLoginStatus" class="tui-badge tui-badge-white"
+              >1</view
+            >
           </view>
           <view class="tui-icon-box tui-icon-setup" @tap="href(2)">
-            <tui-icon name="setup" color="#fff" :size="26"></tui-icon>
+            <tui-icon name="setup" color="#494d5b" :size="26"></tui-icon>
           </view>
         </view>
         <!-- #endif -->
@@ -299,8 +306,8 @@
 <script>
 // import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
 import store from "@/store/index.ts";
-import {login} from "@/common/login"
-import {WEBURL} from "@/common/utils"
+import { login } from "@/common/login";
+import { WEBURL } from "@/common/utils";
 export default {
   onReachBottom: function () {
     if (!this.pullUpOn) return;
@@ -332,14 +339,12 @@ export default {
 
   onShow() {
     this.localtoken = uni.getStorageSync("localtoken");
-   
   },
 
   onHide() {},
 
   onLoad() {
     console.log(store.state);
-  
   },
 
   data() {
@@ -425,7 +430,7 @@ export default {
       pageIndex: 1,
       loadding: false,
       pullUpOn: true,
-      webURLBase:WEBURL
+      webURLBase: WEBURL,
     };
   },
 
@@ -433,9 +438,12 @@ export default {
     baseInfo() {
       return store.state.userBaseInfo;
     },
-    getLoginStatus(){
-      return store.state.loginStatus
-    }
+    getLoginStatus() {
+      return store.state.loginStatus;
+    },
+    getQueryAccount() {
+      return store.state.queryAccount;
+    },
   },
 
   methods: {
@@ -491,15 +499,17 @@ export default {
     },
     initNavigation(e) {
       this.opacity = e.opacity;
+      console.log(e);
       this.top = e.top;
     },
     opacityChange(e) {
       this.opacity = e.opacity;
     },
-  
-    loginClick(){
-      login();
-    }
+
+    loginClick() {
+      // login();
+      getUserProfile();
+    },
   },
 
   onReachBottom: function () {
@@ -602,7 +612,7 @@ export default {
 
 .tui-mybg-box {
   width: 100%;
-  height: 464rpx;
+  height: 600rpx;
   position: relative;
 }
 
@@ -617,7 +627,7 @@ export default {
   width: 100%;
   height: 128rpx;
   left: 0;
-  top: 120rpx;
+  top: 130rpx;
   padding: 0 30rpx;
   box-sizing: border-box;
   display: flex;
@@ -642,7 +652,7 @@ export default {
   padding-left: 30rpx;
   font-size: 32rpx;
   line-height: 32rpx;
-  color: #fff;
+  color: #494d5b;
   display: flex;
   align-items: center;
 }
@@ -650,7 +660,7 @@ export default {
 .tui-nickname {
   font-size: 30rpx;
   font-weight: 500;
-  color: #fff;
+  color: #494d5b;
   display: flex;
   align-items: center;
 }
@@ -665,7 +675,7 @@ export default {
   width: 80%;
   font-size: 24rpx;
   font-weight: 400;
-  color: #fff;
+  color: #494d5b;
   opacity: 0.75;
   padding-top: 8rpx;
   white-space: nowrap;
@@ -684,11 +694,11 @@ export default {
   box-sizing: border-box;
   position: absolute;
   left: 0;
-  top: 280rpx;
+  top: 290rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #fff;
+  color: #494d5b;
 }
 
 .tui-btm-item {

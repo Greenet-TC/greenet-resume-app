@@ -2,13 +2,18 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-05-30 21:31:17
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-07 15:29:55
+ * @LastEditTime: 2023-09-07 16:55:38
  * @FilePath: /greenet-resume-app/App.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 
 <script>
-import { setLoginStatus, getBaseInfo, getlogin } from "./common/login";
+import {
+  setLoginStatus,
+  getQueryAccount,
+  getBaseInfo,
+  getlogin,
+} from "./common/login";
 import { loginMiniGET } from "./common/apis/weixin-login";
 
 export default {
@@ -16,6 +21,7 @@ export default {
     const { code } = await getlogin();
     await loginMiniGET(code);
     getBaseInfo();
+    getQueryAccount();
     setLoginStatus(true);
   },
 
