@@ -123,6 +123,46 @@
       </view>
     </view>
     <view class="tui-content-box">
+      <view class="vip-card">
+        <image
+          :src="
+            !!queryAccount?.vipType
+              ? webURLBase + `/vip/vip-bg.png`
+              : webURLBase + `/profile/vip-bg.png`
+          "
+          class="vip-card-bg"
+        ></image>
+        <view class="vip-text-label">
+          <view
+            :class="!!queryAccount?.vipType ? 'yj-vip-text vip' : 'yj-vip-text'"
+          >
+            优加会员
+          </view>
+          <image
+            :src="
+              !!queryAccount?.vipType
+                ? webURLBase + `/vip/vip-icon.png`
+                : webURLBase + `/profile/pre-vip.png`
+            "
+            class="vip-label-pic"
+            alt="1"
+          ></image>
+        </view>
+        <view class="yj-vip-desc">
+          <view class="yj-vip-desc">
+            {{
+              !!queryAccount?.vipType
+                ? `会员到期时间：${queryAccount?.endTime}`
+                : "实习路上优加为您保驾护航"
+            }}
+          </view>
+        </view>
+        <view class="open-vip-btn">
+          <view class="open-vip-btn-text">
+            {{ !!queryAccount?.vipType ? "立即续费" : "立即开通" }}
+          </view>
+        </view>
+      </view>
       <view class="tui-box tui-order-box">
         <tui-list-cell
           :arrow="true"
@@ -308,6 +348,9 @@
 import store from "@/store/index.ts";
 import { login } from "@/common/login";
 import { WEBURL } from "@/common/utils";
+import * as A from "@/components/common/tui-utils/tui-utils.js";
+import dayjs from "dayjs";
+
 export default {
   onReachBottom: function () {
     if (!this.pullUpOn) return;
@@ -343,9 +386,7 @@ export default {
 
   onHide() {},
 
-  onLoad() {
-    console.log(store.state);
-  },
+  onLoad() {},
 
   data() {
     return {
@@ -441,8 +482,11 @@ export default {
     getLoginStatus() {
       return store.state.loginStatus;
     },
-    getQueryAccount() {
-      return store.state.queryAccount;
+    queryAccount() {
+      return {
+        ...store.state.queryAccount,
+        endTime: dayjs(store.state.queryAccount?.endTime).format("YYYY-MM-DD"),
+      };
     },
   },
 
@@ -532,7 +576,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 .tui-header-box {
   width: 100%;
   padding: 0 30rpx 0 20rpx;
@@ -612,7 +656,7 @@ export default {
 
 .tui-mybg-box {
   width: 100%;
-  height: 600rpx;
+  height: 464rpx;
   position: relative;
 }
 
@@ -627,7 +671,7 @@ export default {
   width: 100%;
   height: 128rpx;
   left: 0;
-  top: 130rpx;
+  top: 120rpx;
   padding: 0 30rpx;
   box-sizing: border-box;
   display: flex;
@@ -857,5 +901,100 @@ export default {
   right: 0;
   transform: translateX(88%);
   top: -15rpx;
+}
+.vip-card {
+  background-size: cover;
+  border-radius: 24rpx;
+  box-sizing: border-box;
+  height: 147rpx;
+  padding-left: 32rpx;
+  padding-top: 36rpx;
+  position: relative;
+  width: 100%;
+  &-bg {
+    border-radius: 24rpx;
+    height: 156rpx;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+  .vip-text-label {
+    align-items: center;
+    color: #333;
+    display: flex;
+    font-weight: 500;
+    height: 48rpx;
+    width: 216rpx;
+    .yj-vip-text {
+      flex-shrink: 0;
+      font-size: 32rpx;
+      line-height: 48rpx;
+      &.vip {
+        -webkit-text-fill-color: transparent;
+        background: linear-gradient(
+          312deg,
+          #53f7e2,
+          #bafca3 46%,
+          #f2f07c 79%,
+          #ffe741
+        );
+        -webkit-background-clip: text;
+        color: #fff;
+        font-size: 32rpx;
+        line-height: 48rpx;
+      }
+    }
+    .vip-label-pic {
+      flex-shrink: 0;
+      height: 36rpx;
+      margin-left: 8rpx;
+      width: 80rpx;
+    }
+  }
+  .yj-vip-desc {
+    color: #999;
+    font-size: 24rpx;
+    line-height: 52rpx;
+  }
+  .open-vip-btn {
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    background: -webkit-linear-gradient(
+      135deg,
+      #ffdead,
+      #ffbd7f 21%,
+      #fff9d7 53%,
+      #ffebba
+    );
+    background: linear-gradient(
+      315deg,
+      #ffdead,
+      #ffbd7f 21%,
+      #fff9d7 53%,
+      #ffebba
+    );
+    border-radius: 30rpx;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    height: 48rpx;
+    -webkit-justify-content: center;
+    justify-content: center;
+    right: 45rpx;
+    position: absolute;
+    top: 54rpx;
+    width: 128rpx;
+    &-text {
+      color: #4c260e;
+      font-size: 24rpx;
+      font-weight: 500;
+      line-height: 24rpx;
+    }
+  }
 }
 </style>
