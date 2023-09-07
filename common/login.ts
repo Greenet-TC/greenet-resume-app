@@ -2,15 +2,19 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-08-11 16:26:15
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-02 21:27:11
+ * @LastEditTime: 2023-09-07 16:56:17
  * @FilePath: /greenet-resume-app/common/login.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { userBaseInfoUsingGET } from "./apis/user-controller";
 import { loginMiniGET } from "./apis/weixin-login";
-import { getToken } from "./utils";
-import store from '../store/index'
-import { userBaseInfoDataRespones } from "./apis/model";
+import { getToken, setToken } from "./utils";
+import store from "../store/index";
+import {
+  WechatPayControllerQueryAccountGETResponse,
+  userBaseInfoDataRespones,
+} from "./apis/model";
+import { WechatPayControllerQueryAccountGET } from "./apis/wei-xin-pay-controller";
 
 // 调用ui.login()方法，获取用户的code
 export const getlogin = () => {
@@ -83,21 +87,34 @@ export const login = async () => {
     uni.removeStorageSync("preLogin");
   }
   const login_res = await getlogin();
+  setToken(login_res?.code);
   await loginMiniGET(login_res?.code);
-  setLoginStatus(true)
-  getBaseInfo()
- 
+  setLoginStatus(true);
+  getBaseInfo();
 };
-export const  getBaseInfo = async () => {
-  const data=await userBaseInfoUsingGET();
-  saveBaseInfoStore(data.data)
-}
-export const saveBaseInfoStore=(baseInfo:userBaseInfoDataRespones)=>{
-  store.commit('getUserInfo', baseInfo)//每次累加 5
-}
-export const setLoginStatus=(loginStatus:boolean)=>{
-  store.commit('setLoginStatus',loginStatus)
-}
+export const getBaseInfo = async () => {
+  const data = await userBaseInfoUsingGET();
+  saveBaseInfoStore(data.data);
+};
+export const getQueryAccount = async () => {
+  const data = await WechatPayControllerQueryAccountGET();
+  setQueryAccountValue(data.data);
+};
+
+export const saveBaseInfoStore = (baseInfo: userBaseInfoDataRespones) => {
+  store.commit("getUserInfo", baseInfo);
+};
+export const setLoginStatus = (loginStatus: boolean) => {
+  store.commit("setLoginStatus", loginStatus);
+};
+export const setCookiesValue = (cookies: string) => {
+  store.commit("setCookies", cookies);
+};
+export const setQueryAccountValue = (
+  queryAccountvalue: WechatPayControllerQueryAccountGETResponse
+) => {
+  store.commit("setQueryAccount", queryAccountvalue);
+};
 export function uuid(m) {
   const d = m > 16 ? 16 : m;
   const num = Math.random().toString();

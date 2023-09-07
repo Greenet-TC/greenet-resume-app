@@ -101,7 +101,7 @@ export function getCookieValue(name) {
   return "";
 }
 
-const tokenKey = "xxl_sso_sessionid";
+const tokenKey = "wx_code";
 
 export function setToken(token) {
   return uni.setStorageSync(tokenKey, token);
@@ -113,4 +113,5 @@ export function getToken() {
 export function removeToken() {
   return uni.removeStorageSync(tokenKey);
 }
-export const WEBURL="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com"
+export const WEBURL =
+  "https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com";

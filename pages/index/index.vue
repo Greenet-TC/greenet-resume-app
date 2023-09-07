@@ -178,7 +178,7 @@
 </template>
 <script>
 import { companyInfo } from "../../common/contant";
-import { login ,getBaseInfo,setLoginStatus} from "../../common/login";
+import { login, getBaseInfo, setLoginStatus } from "../../common/login";
 import { getToken } from "../../common/utils";
 export default {
   //设置页面全屏
@@ -221,12 +221,15 @@ export default {
     uni.stopPullDownRefresh();
   },
 
-  onLoad() {
-   if(getToken()){
-    getBaseInfo()
-    setLoginStatus(true)
-   }
-  },
+  // onLoad: async function () {
+  //   console.log("Starting", getToken());
+  //   if (getToken()) {
+  //     const data = await loginMiniGET(setToken());
+  //     console.log(11111, data);
+  //     getBaseInfo();
+  //     setLoginStatus(true);
+  //   }
+  // },
 
   onShow() {
     if (!getToken()) {
@@ -320,7 +323,7 @@ export default {
         login();
       }
     },
-  }
+  },
 };
 </script>
 
