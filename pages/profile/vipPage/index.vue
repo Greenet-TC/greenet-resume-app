@@ -42,8 +42,65 @@
         :src="webURLBase + `/profile/vip-card-bg.png`"
         class="vip-card-bg"
       ></image>
-      <view class="title-line-1">优加会员·轻松斩OFFER</view>
+      <view class="vip-center-top">
+
+
+        <div className="header-profile-top">
+        <div className="self-info-name">
+          <image
+          :src="
+            baseInfo.avatar
+              ? baseInfo.avatar
+              : baseInfo.sex === 1
+              ? webURLBase + `/profile/man.png`
+              : webURLBase + `/profile/woman.png`
+          "
+          class="tui-avatar"
+          @tap="href(3)"
+        ></image>
+          <div className="name-desc">
+            <div className="name">
+              <a className="name-link" href="./">
+                {userBaseInfo?.username ?? '优加DA-0000用户'}
+              </a>
+              <img
+                alt="1"
+                src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/profile/icon-1.png"
+                className="name-img"
+              />
+            </div>
+            <div className="identify">
+              <div className="hove-to-green">
+                暂未认证，去认证
+                <span className="nc-icon">
+                  <svg
+                    focusable="false"
+                    viewBox="0 0 1024 1024"
+                    fill="currentColor"
+                    width="12"
+                    height="12"
+                    aria-hidden="true"
+                    data-v-79ba69ea=""
+                  >
+                    <path
+                      fill="currentColor"
+                      fill-rule="nonzero"
+                      d="M289.3514 187.8043c-19.8576-17.5625-21.7181-47.8974-4.1557-67.755 17.3869-19.659 47.292-21.679 67.1561-4.6767l.5989.521L723.848 443.9236c33.096 29.2708 36.1968 79.829 6.926 112.9249a80 80 0 0 1-6.115 6.1989l-.811.7271-370.8973 328.0299c-19.8576 17.5624-50.1925 15.7019-67.755-4.1557-17.3868-19.659-15.7371-49.5868 3.5654-67.2242l.5903-.5307L646.696 503.85 289.3514 187.8043z"
+                    ></path>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a className="self-page" href="./">
+          个人主页
+        </a>
+      </div>
+        <view class="title-line-1">优加会员·轻松斩OFFER</view>
       <view class="title-line-2">实习路上优加为您保驾护航</view>
+      </view>
+      
     </view>
   </view>
 </template>
@@ -54,7 +111,6 @@ import store from "@/store/index.ts";
 import { login } from "@/common/login";
 import { WEBURL } from "@/common/utils";
 import * as A from "@/components/common/tui-utils/tui-utils.js";
-import dayjs from "dayjs";
 
 export default {
   onReachBottom: function () {
@@ -234,12 +290,20 @@ export default {
 }
 .vip-center {
   width: 100%;
+  position: relative;
   // height: 464rpx;
   display: block;
+  &-top{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
   .vip-card-bg {
     width: 100%;
     // height: 464rpx;
     display: block;
+    
     .title-line-1 {
       -webkit-text-fill-color: transparent;
       background: linear-gradient(
