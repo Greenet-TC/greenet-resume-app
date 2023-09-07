@@ -58,8 +58,8 @@
             <image
               :src="
                 !!queryAccount?.vipType
-                  ? webURLBase + `/profile/pre-vip.png`
-                  : webURLBase + `/vip/vip-icon.png`
+                  ? webURLBase + `/vip/vip-icon.png`
+                  : webURLBase + `/profile/pre-vip.png`
               "
               class="tui-img-vip"
             ></image>
