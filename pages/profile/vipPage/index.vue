@@ -48,8 +48,8 @@
             <image
               :src="
                 baseInfo?.avatar
-                  ? baseInfo.avatar
-                  : baseInfo.sex === 1
+                  ? baseInfo?.avatar
+                  : baseInfo?.sex === 1
                   ? webURLBase + `/profile/man.png`
                   : webURLBase + `/profile/woman.png`
               "
@@ -329,7 +329,7 @@ export default {
     position: absolute;
     top: 0rpx;
     left: 0;
-    width: 100%;
+    width: calc(100%-80rpx);
     padding: 130rpx 40rpx 40rpx 40rpx;
     .tui-avatar {
       flex-shrink: 0;
@@ -340,6 +340,7 @@ export default {
     }
     .header-profile-top {
       overflow: hidden;
+
       .self-info-name {
         align-items: center;
         display: flex;
@@ -475,6 +476,7 @@ export default {
         flex-shrink: 0;
         font-size: 32rpx;
         line-height: 48rpx;
+        color: #fff;
         &.vip {
           -webkit-text-fill-color: transparent;
           background: linear-gradient(

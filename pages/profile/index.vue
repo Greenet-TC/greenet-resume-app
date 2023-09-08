@@ -43,9 +43,9 @@
       <view class="tui-header-center">
         <image
           :src="
-            baseInfo.avatar
-              ? baseInfo.avatar
-              : baseInfo.sex === 1
+            baseInfo?.avatar
+              ? baseInfo?.avatar
+              : baseInfo?.sex === 1
               ? webURLBase + `/profile/man.png`
               : webURLBase + `/profile/woman.png`
           "
@@ -54,7 +54,7 @@
         ></image>
         <view class="tui-info" v-if="getLoginStatus" @tap="loginClick">
           <view class="tui-nickname">
-            {{ baseInfo.username }}
+            {{ baseInfo?.username }}
             <image
               :src="
                 !!queryAccount?.vipType
