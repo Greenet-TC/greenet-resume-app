@@ -212,6 +212,25 @@
         </tui-radio>
         <text class="tui-text">同意《优加实习会员服务协议》及《隐私协议》</text>
       </view>
+      <view class="vip-rights">
+        <view class="vip-rights-title">会员权益</view>
+        <view class="vip-rights-list">
+          <view
+            class="vip-rights-list-item"
+            v-for="item in getActiveItem(activeId).content"
+            :key="item.index"
+          >
+            <view class="vip-rights-list-item-icon">
+              <image
+                :src="webURLBase + `/vip/${item.index}.png`"
+                class="img"
+              ></image>
+            </view>
+            <view class="vip-rights-list-item-text">{{ item.text }} </view>
+            <view class="vip-rights-list-item-sub">{{ item.icon }} </view>
+          </view>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -775,6 +794,54 @@ export default {
     font-size: 14px;
     margin-left: 5px;
     font-weight: 400;
+  }
+}
+.vip-rights {
+  padding: 10px 39rpx;
+  &-title {
+    //styleName: 四级17-卡片、二级页面标题/中粗|font_grade_4_medium;
+    font-family: PingFang SC;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 24px;
+    color: "#222222";
+  }
+  &-list {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    &-item {
+      width: 100px;
+      display: flex;
+      justify-items: center;
+      flex-direction: column;
+      align-items: center;
+      &-icon {
+        height: 50px;
+        width: 50px;
+        > .img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+      &-text {
+        height: 14px;
+        width: 100px !important;
+        margin: 4px 0;
+        font-weight: 400;
+        color: #404040;
+        font-size: 14px;
+        text-align: center;
+      }
+      &-sub {
+        font-size: 12px;
+        font-weight: 400;
+        color: #9c9c9c;
+        margin: 4px 0;
+      }
+    }
   }
 }
 </style>
