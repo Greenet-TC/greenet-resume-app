@@ -154,6 +154,64 @@
           </view>
         </scroll-view>
       </view>
+      <view class="vip-coupon">
+        <view class="vip-coupon-left"> 优惠券</view>
+        <view class="vip-coupon-right"
+          >兑换优惠券
+          <tui-icon name="arrowright" :size="24" color="#9c9c9c"></tui-icon
+        ></view>
+
+        <!-- <swiper
+          :indicator-dots="true"
+          :autoplay="true"
+          :interval="5000"
+          :duration="150"
+          class="vip-coupon-swiper"
+          :circular="true"
+          indicator-color="rgba(255, 255, 255, 0.8)"
+          indicator-active-color="#fff"
+        >
+          <swiper-item
+            v-for="(item, index) in [1, 2]"
+            :key="index"
+            @tap.stop="detail"
+          >
+            <image
+              :src="webURLBase + `/vip/coupon-${item}.png`"
+              class="vip-coupon-swiper-image"
+              mode="scaleToFill"
+            />
+          </swiper-item>
+        </swiper> -->
+      </view>
+      <tui-divider width="90%" height="50"></tui-divider>
+      <view class="vip-price">
+        <view class="vip-price-item">
+          <view class="vip-price-item-left">会员原价</view>
+          <view class="vip-price-item-right"
+            >{{ getActiveItem(activeId).fee }}.00</view
+          >
+        </view>
+        <view class="vip-price-item" :style="{ marginTop: '10px' }">
+          <view class="vip-price-item-left">优惠券</view>
+          <view class="vip-price-item-right">- ¥ {{ 0 }}.00</view>
+        </view>
+      </view>
+      <tui-divider width="90%" height="50"></tui-divider>
+      <view class="vip-paid">
+        <view class="vip-paid-text">实付金额：</view>
+        <view class="vip-paid-num">¥ {{ getActiveItem(activeId).fee }}.00</view>
+      </view>
+      <view class="vip-protocol">
+        <tui-radio
+          :checked="true"
+          :value="1"
+          color="#fa4e3e"
+          borderColor="#ffffff"
+        >
+        </tui-radio>
+        <text class="tui-text">同意《优加实习会员服务协议》及《隐私协议》</text>
+      </view>
     </view>
   </view>
 </template>
@@ -247,6 +305,11 @@ export default {
     },
     choiceVipType(e) {
       this.activeId = e;
+    },
+    getActiveItem(activeId) {
+      return this.memberShipData.filter((i) => {
+        return i.id === activeId;
+      })[0];
     },
   },
 
@@ -464,7 +527,7 @@ export default {
 }
 .vip-items {
   width: 100%;
-  height: 300px;
+  height: 600rpx;
   // background: #fff;
   margin-top: -30rpx;
   position: relative;
@@ -565,7 +628,7 @@ export default {
   .vip-contant {
     background: #ffffff;
     width: 100%;
-    height: 200px;
+    height: 185px;
     &-top {
       height: 340rpx;
       width: 100%;
@@ -646,6 +709,72 @@ export default {
         }
       }
     }
+  }
+  .vip-coupon {
+    // width: 100%;
+    height: 48rpx;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 39rpx;
+
+    &-left {
+      font-family: PingFang SC;
+      font-size: 35rpx;
+      font-weight: 400;
+      line-height: 48rpx;
+      color: #222222;
+    }
+    &-right {
+      font-family: PingFang SC;
+      font-size: 30rpx;
+      font-weight: 300;
+      color: #9c9c9c;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+.vip-price {
+  padding: 0 39rpx;
+  &-item {
+    height: 50rpx;
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #222222;
+  }
+}
+.vip-paid {
+  padding: 0 39rpx;
+  height: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  &-text {
+    //styleName: 六级15-列表、小标题、大按钮文本/常规|font_grade_6_regular;
+    font-family: PingFang SC;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+  }
+  &-num {
+    color: #fa4e3e;
+    font-weight: 500;
+    font-size: 23px;
+  }
+}
+.vip-protocol {
+  padding: 20rpx 39rpx;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  .tui-text {
+    color: #9c9c9c;
+    font-size: 14px;
+    margin-left: 5px;
+    font-weight: 400;
   }
 }
 </style>
