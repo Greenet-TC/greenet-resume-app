@@ -113,19 +113,28 @@
         <scroll-view scroll-x>
           <view class="vip-contant-top">
             <view
-              class="vip-contant-top-item"
+              :class="activeId===vip.id?'vip-contant-top-item active' :'vip-contant-top-item '"
               v-for="vip in memberShipData"
               :key="vip.id"
+              @tap="choiceVipType(vip.id)"
             >
               <view class="vip-contant-top-item-title">{{ vip.title }} </view>
-              <view class="vip-contant-top-item-fee"
-                ><span class="fee-sign">¥</span>{{ vip.fee }}
+              <view 
+
+              :class="activeId===vip.id?'vip-contant-top-item-fee active' :'vip-contant-top-item-fee'"
+                ><span class="fee-sign" 
+                
+                >¥</span>{{ vip.fee }}
               </view>
               <view class="vip-contant-top-item-prefee"
                 >¥ {{ vip.preFee }}
               </view>
-              <view class="vip-contant-top-item-bottom"
-                >立省{{ vip.preFee - vip.fee }}元
+              <view 
+              :class="activeId===vip.id?'vip-contant-top-item-bottom active' :'vip-contant-top-item-bottom'"
+                >{{ vip.id===1||vip.id===4?`立省${vip.preFee - vip.fee }元`:`仅需${ fix }元/天`}}
+                
+                
+                立省{{ vip.preFee - vip.fee }}元
               </view>
             </view>
           </view>
@@ -185,7 +194,6 @@ export default {
   data() {
     return {
       isLogin: false,
-
       webURL: "https://www.thorui.cn/wx",
       top: 0, //标题图标距离顶部距离
       opacity: 0,
@@ -195,6 +203,7 @@ export default {
       loadding: false,
       pullUpOn: true,
       webURLBase: WEBURL,
+      activeId: 1,
     };
   },
 
@@ -221,6 +230,10 @@ export default {
     },
     opacityChange(e) {
       this.opacity = e.opacity;
+    },
+    choiceVipType(e) {
+      this.activeId = e;
+     
     },
   },
 
@@ -579,6 +592,9 @@ export default {
           font-size: 48rpx;
           font-weight: 600;
           color: rgb(64, 64, 64);
+          &.active{
+            color: #f74d54
+          }
           .fee-sign {
             padding-top: 8rpx;
             padding-right: 8rpx;
@@ -610,6 +626,10 @@ export default {
           font-size: 21rpx;
           font-weight: 400;
           color: #9b9b9b;
+          &.active{
+            color: #f74d54;
+            background: #f74d54;
+          }
         }
       }
     }
