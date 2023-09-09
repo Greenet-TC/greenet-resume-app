@@ -113,28 +113,42 @@
         <scroll-view scroll-x>
           <view class="vip-contant-top">
             <view
-              :class="activeId===vip.id?'vip-contant-top-item active' :'vip-contant-top-item '"
+              :class="
+                activeId === vip.id
+                  ? 'vip-contant-top-item active'
+                  : 'vip-contant-top-item '
+              "
               v-for="vip in memberShipData"
               :key="vip.id"
               @tap="choiceVipType(vip.id)"
             >
               <view class="vip-contant-top-item-title">{{ vip.title }} </view>
-              <view 
-
-              :class="activeId===vip.id?'vip-contant-top-item-fee active' :'vip-contant-top-item-fee'"
-                ><span class="fee-sign" 
-                
-                >¥</span>{{ vip.fee }}
+              <view
+                :class="
+                  activeId === vip.id
+                    ? 'vip-contant-top-item-fee active'
+                    : 'vip-contant-top-item-fee'
+                "
+                ><span class="fee-sign">¥</span>{{ vip.fee }}
               </view>
               <view class="vip-contant-top-item-prefee"
                 >¥ {{ vip.preFee }}
               </view>
-              <view 
-              :class="activeId===vip.id?'vip-contant-top-item-bottom active' :'vip-contant-top-item-bottom'"
-                >{{ vip.id===1||vip.id===4?`立省${vip.preFee - vip.fee }元`:`仅需${ fix }元/天`}}
-                
-                
-                立省{{ vip.preFee - vip.fee }}元
+              <view
+                :class="
+                  activeId === vip.id
+                    ? 'vip-contant-top-item-bottom active'
+                    : 'vip-contant-top-item-bottom'
+                "
+                >{{
+                  vip.id === 1 || vip.id === 4
+                    ? `立省${vip.preFee - vip.fee}元`
+                    : `仅需${(vip.fee / (vip.id === 2 ? 30 : 365)).toFixed(
+                        2
+                      )}元/天`
+                }}
+
+                <!-- 立省{{ vip.preFee - vip.fee }}元 -->
               </view>
             </view>
           </view>
@@ -233,7 +247,6 @@ export default {
     },
     choiceVipType(e) {
       this.activeId = e;
-     
     },
   },
 
@@ -592,8 +605,8 @@ export default {
           font-size: 48rpx;
           font-weight: 600;
           color: rgb(64, 64, 64);
-          &.active{
-            color: #f74d54
+          &.active {
+            color: #ff3d3dd7;
           }
           .fee-sign {
             padding-top: 8rpx;
@@ -626,9 +639,9 @@ export default {
           font-size: 21rpx;
           font-weight: 400;
           color: #9b9b9b;
-          &.active{
-            color: #f74d54;
-            background: #f74d54;
+          &.active {
+            color: #ff3d3dd7;
+            background: rgba(253, 221, 213, 100);
           }
         }
       }
