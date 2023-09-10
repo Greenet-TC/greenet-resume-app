@@ -122,6 +122,12 @@
               :key="vip.id"
               @tap="choiceVipType(vip.id)"
             >
+              <view
+                class="vip-contant-top-item-tip"
+                v-if="vip.id === 1 || vip.id === 4"
+                >{{ vip.id === 1 ? "超值推荐" : "" }}
+                {{ vip.id === 4 ? "超高性价比" : "" }}
+              </view>
               <view class="vip-contant-top-item-title">{{ vip.title }} </view>
               <view
                 :class="
@@ -219,6 +225,9 @@
             class="vip-rights-list-item"
             v-for="item in getActiveItem(activeId).content"
             :key="item.index"
+            :style="{
+              opacity: item.index > setOpcityValue(activeId) ? 0.4 : 1,
+            }"
           >
             <view class="vip-rights-list-item-icon">
               <image
@@ -231,6 +240,36 @@
           </view>
         </view>
       </view>
+      <view class="vip-question">
+        <view class="vip-question-title">常见问题</view>
+
+        <block v-for="(item, index) in Vipquestions" :key="index">
+          <tui-collapse :index="index" :current="current" @click="change">
+            <template v-slot:title>
+              <tui-list-cell>{{ item.name }}</tui-list-cell>
+            </template>
+            <template v-slot:content>
+              <uParse :content="item.intro" />
+            </template>
+          </tui-collapse>
+        </block>
+      </view>
+    </view>
+    <!--tabbar-->
+    <view class="tui-tabbar">
+      <view>
+        <tui-button
+          shadow
+          width="600rpx"
+          height="70rpx"
+          :size="30"
+          type="danger"
+          class="vip-btn"
+          shape="circle"
+          @click="btnPay"
+          >{{ getActiveItem(activeId).fee }}开通立享特权</tui-button
+        >
+      </view>
     </view>
   </view>
 </template>
@@ -240,27 +279,27 @@
 import store from "@/store/index.ts";
 import { login } from "@/common/login";
 import { WEBURL } from "@/common/utils";
-import { memberShipData } from "@/common/contant";
+import { memberShipData, Vipquestions } from "@/common/contant";
 import dayjs from "dayjs";
 
 export default {
-  onReachBottom: function () {
-    if (!this.pullUpOn) return;
-    this.loadding = true;
-    if (this.pageIndex == 4) {
-      this.loadding = false;
-      this.pullUpOn = false;
-    } else {
-      let loadData = JSON.parse(JSON.stringify(this.productList));
-      loadData = loadData.splice(0, 10);
-      if (this.pageIndex == 1) {
-        loadData = loadData.reverse();
-      }
-      this.productList = this.productList.concat(loadData);
-      this.pageIndex = this.pageIndex + 1;
-      this.loadding = false;
-    }
-  },
+  // onReachBottom: function () {
+  //   if (!this.pullUpOn) return;
+  //   this.loadding = true;
+  //   if (this.pageIndex == 4) {
+  //     this.loadding = false;
+  //     this.pullUpOn = false;
+  //   } else {
+  //     let loadData = JSON.parse(JSON.stringify(this.productList));
+  //     loadData = loadData.splice(0, 10);
+  //     if (this.pageIndex == 1) {
+  //       loadData = loadData.reverse();
+  //     }
+  //     this.productList = this.productList.concat(loadData);
+  //     this.pageIndex = this.pageIndex + 1;
+  //     this.loadding = false;
+  //   }
+  // },
 
   onPullDownRefresh() {
     setTimeout(() => {
@@ -290,11 +329,36 @@ export default {
       opacity: 0,
       scrollTop: 0.5,
       memberShipData,
+      current: 0,
       pageIndex: 1,
       loadding: false,
       pullUpOn: true,
       webURLBase: WEBURL,
       activeId: 1,
+      Vipquestions,
+      dataList: [
+        {
+          name: "杜甫",
+          intro:
+            "杜甫的思想核心是儒家的仁政思想，他有“致君尧舜上，再使风俗淳”的宏伟抱负。杜甫虽然在世时名声并不显赫，但后来声名远播，对中国文学和日本文学都产生了深远的影响。杜甫共有约1500首诗歌被保留了下来，大多集于《杜工部集》。",
+          current: 0,
+          disabled: false,
+        },
+        {
+          name: "李清照",
+          intro:
+            "李清照出生于书香门第，早期生活优裕，其父李格非藏书甚富，她小时候就在良好的家庭环境中打下文学基础。出嫁后与夫赵明诚共同致力于书画金石的搜集整理。金兵入据中原时，流寓南方，境遇孤苦。所作词，前期多写其悠闲生活，后期多悲叹身世，情调感伤。形式上善用白描手法，自辟途径，语言清丽。",
+          current: -1,
+          disabled: false,
+        },
+        {
+          name: "鲁迅",
+          intro:
+            "鲁迅一生在文学创作、文学批评、思想研究、文学史研究、翻译、美术理论引进、基础科学介绍和古籍校勘与研究等多个领域具有重大贡献。他对于五四运动以后的中国社会思想文化发展具有重大影响，蜚声世界文坛，尤其在韩国、日本思想文化领域有极其重要的地位和影响，被誉为“二十世纪东亚文化地图上占最大领土的作家”。",
+          current: -1,
+          disabled: false,
+        },
+      ],
     };
   },
 
@@ -316,7 +380,6 @@ export default {
   methods: {
     initNavigation(e) {
       this.opacity = e.opacity;
-      console.log(e);
       this.top = e.top;
     },
     opacityChange(e) {
@@ -330,25 +393,44 @@ export default {
         return i.id === activeId;
       })[0];
     },
+    setOpcityValue(value) {
+      if (value === 1) {
+        return 7;
+      } else if (value === 2) {
+        return 4;
+      } else if (value === 3) {
+        return 6;
+      } else {
+        return 11;
+      }
+    },
+    change(e) {
+      this.current = e.index;
+    },
+    // change(e) {
+    // 	let index = e.index;
+    // 	let item = this.dataList[index];
+    // 	item.current = item.current == index ? -1 : index
+    // }
   },
 
-  onReachBottom: function () {
-    if (!this.pullUpOn) return;
-    this.loadding = true;
-    if (this.pageIndex == 4) {
-      this.loadding = false;
-      this.pullUpOn = false;
-    } else {
-      let loadData = JSON.parse(JSON.stringify(this.productList));
-      loadData = loadData.splice(0, 10);
-      if (this.pageIndex == 1) {
-        loadData = loadData.reverse();
-      }
-      this.productList = this.productList.concat(loadData);
-      this.pageIndex = this.pageIndex + 1;
-      this.loadding = false;
-    }
-  },
+  // onReachBottom: function () {
+  //   if (!this.pullUpOn) return;
+  //   this.loadding = true;
+  //   if (this.pageIndex == 4) {
+  //     this.loadding = false;
+  //     this.pullUpOn = false;
+  //   } else {
+  //     let loadData = JSON.parse(JSON.stringify(this.productList));
+  //     loadData = loadData.splice(0, 10);
+  //     if (this.pageIndex == 1) {
+  //       loadData = loadData.reverse();
+  //     }
+  //     this.productList = this.productList.concat(loadData);
+  //     this.pageIndex = this.pageIndex + 1;
+  //     this.loadding = false;
+  //   }
+  // },
 };
 </script>
 
@@ -437,7 +519,7 @@ export default {
     position: absolute;
     top: 0rpx;
     left: 0;
-    width: calc(100%-80rpx);
+    // width: calc(100%-80rpx);
     padding: 130rpx 40rpx 40rpx 40rpx;
     .tui-avatar {
       flex-shrink: 0;
@@ -546,7 +628,7 @@ export default {
 }
 .vip-items {
   width: 100%;
-  height: 600rpx;
+  margin-bottom: 91px;
   // background: #fff;
   margin-top: -30rpx;
   position: relative;
@@ -669,6 +751,24 @@ export default {
         align-items: center;
         display: flex;
         flex-direction: column;
+        position: relative;
+        &-tip {
+          position: absolute;
+          left: -1px;
+          border-radius: 8px 0;
+          top: -6px;
+          height: 17px;
+          padding: 1px 9px;
+          background: radial-gradient(
+            100% 100% at 100% 0,
+            #fb623f 0,
+            #ff813a 100%
+          );
+          color: #fff;
+          font-size: 12px;
+          text-align: center;
+          line-height: 17px;
+        }
         &.active {
           background: #fff6f4;
           border: 2rpx solid #f64;
@@ -812,6 +912,7 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
     &-item {
       width: 100px;
       display: flex;
@@ -843,5 +944,53 @@ export default {
       }
     }
   }
+}
+.vip-question {
+  padding: 10px 39rpx;
+  &-title {
+    //styleName: 四级17-卡片、二级页面标题/中粗|font_grade_4_medium;
+    font-family: PingFang SC;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 24px;
+    color: "#222222";
+  }
+}
+.tui-tabbar {
+  width: 100%;
+  height: 150rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  /* #ifdef H5 */
+  /* bottom: 50px; */
+  /* #endif */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  z-index: 9999;
+  .vip-btn {
+    background: -webkit-linear-gradient(
+      135deg,
+      #ffdead,
+      #ffbd7f 21%,
+      #fff9d7 53%,
+      #ffebba
+    );
+  }
+}
+.tui-tabbar::before {
+  content: "";
+  width: 100%;
+  border-top: 1rpx solid #d9d9d9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
 }
 </style>
