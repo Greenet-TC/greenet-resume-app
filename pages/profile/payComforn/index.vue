@@ -98,14 +98,15 @@ export default {
     },
     async btnPay(activeId) {
       const { code } = await getlogin();
-      const res = await WechatPayControllerCreateWeChatJsApiPOST({
+      const param = {
         total_fee: this.memberShipData.filter((item) => item.id === activeId)[0]
           .fee,
         body: this.memberShipData.filter((item) => item.id === activeId)[0]
           .title,
         vipType: activeId,
         code,
-      });
+      };
+      const res = await WechatPayControllerCreateWeChatJsApiPOST(param);
 
       console.log(11111, res);
 
@@ -113,10 +114,11 @@ export default {
         uni.requestPayment({
           provider: "wxpay", //支付类型-固定值
           appId: res.data.appId,
+          total_fee: param.total_fee,
           timeStamp: res.data.timeStamp, // 时间戳（单位：秒）
           nonceStr: res.data.nonceStr, // 随机字符串
           package: res.data.prepay_id, // 固定值
-          signType: "RSA", //固定值
+          signType: "MD5", //固定值
           paySign: res.data.sign, //签名
           success: function (res) {
             console.log("success:" + JSON.stringify(res));
