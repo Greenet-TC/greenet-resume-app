@@ -64,6 +64,7 @@
 
 <script>
 import { memberShipData } from "@/common/contant";
+import { getlogin } from "@/common/login";
 import { WechatPayControllerCreateWeChatJsApiPOST } from "@/common/apis/wei-xin-pay-controller";
 
 export default {
@@ -96,31 +97,41 @@ export default {
       this.$emit("close", {});
     },
     async btnPay(activeId) {
-      console.log(
-        this.memberShipData.filter((item) => item.id === activeId)[0]
-      );
-      const res = WechatPayControllerCreateWeChatJsApiPOST({
+      const { code } = await getlogin();
+      const res = await WechatPayControllerCreateWeChatJsApiPOST({
         total_fee: this.memberShipData.filter((item) => item.id === activeId)[0]
           .fee,
         body: this.memberShipData.filter((item) => item.id === activeId)[0]
           .title,
         vipType: activeId,
+        code,
       });
+
+      console.log(11111, res);
+
       if (res) {
         uni.requestPayment({
           provider: "wxpay", //支付类型-固定值
-          timeStamp: res.data.orderInfo.timeStamp, // 时间戳（单位：秒）
-          nonceStr: res.data.orderInfo.nonceStr, // 随机字符串
-          package: res.data.orderInfo.packageValue, // 固定值
-          signType: res.data.orderInfo.signType, //固定值
-          paySign: res.data.orderInfo.paySign, //签名
+          appId: res.data.appId,
+          timeStamp: res.data.timeStamp, // 时间戳（单位：秒）
+          nonceStr: res.data.nonceStr, // 随机字符串
+          package: res.data.prepay_id, // 固定值
+          signType: "RSA", //固定值
+          paySign: res.data.sign, //签名
           success: function (res) {
             console.log("success:" + JSON.stringify(res));
+            uni.showToast({
+              title: "支付成功",
+            });
             console.log("支付成功");
           },
           fail: function (err) {
             console.log("fail:" + JSON.stringify(err));
             console.log("支付失败");
+            uni.showToast({
+              title: "支付失败",
+              icon: "error",
+            });
           },
         });
       }
