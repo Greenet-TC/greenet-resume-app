@@ -254,7 +254,19 @@
           </tui-collapse>
         </block>
       </view>
+      <tui-footer
+        :fixed="false"
+        class="service-tui-footer"
+        copyright="Copyright © 2022-2025 Greenet-TC."
+      ></tui-footer>
     </view>
+    <!-- 支付弹窗 -->
+    <t-pay-way
+      :show="show"
+      @close="popupClose"
+      :fee="getActiveItem(activeId).fee"
+      :activeId="activeId"
+    ></t-pay-way>
     <!--tabbar-->
     <view class="tui-tabbar">
       <view>
@@ -277,12 +289,15 @@
 <script>
 // import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
 import store from "@/store/index.ts";
+import tPayWay from "../payComforn/index.vue";
+import uParse from "@/components/uni/uParse/src/wxParse";
 import { login } from "@/common/login";
 import { WEBURL } from "@/common/utils";
 import { memberShipData, Vipquestions } from "@/common/contant";
 import dayjs from "dayjs";
 
 export default {
+  components: { uParse, tPayWay },
   // onReachBottom: function () {
   //   if (!this.pullUpOn) return;
   //   this.loadding = true;
@@ -335,30 +350,8 @@ export default {
       pullUpOn: true,
       webURLBase: WEBURL,
       activeId: 1,
+      show: false,
       Vipquestions,
-      dataList: [
-        {
-          name: "杜甫",
-          intro:
-            "杜甫的思想核心是儒家的仁政思想，他有“致君尧舜上，再使风俗淳”的宏伟抱负。杜甫虽然在世时名声并不显赫，但后来声名远播，对中国文学和日本文学都产生了深远的影响。杜甫共有约1500首诗歌被保留了下来，大多集于《杜工部集》。",
-          current: 0,
-          disabled: false,
-        },
-        {
-          name: "李清照",
-          intro:
-            "李清照出生于书香门第，早期生活优裕，其父李格非藏书甚富，她小时候就在良好的家庭环境中打下文学基础。出嫁后与夫赵明诚共同致力于书画金石的搜集整理。金兵入据中原时，流寓南方，境遇孤苦。所作词，前期多写其悠闲生活，后期多悲叹身世，情调感伤。形式上善用白描手法，自辟途径，语言清丽。",
-          current: -1,
-          disabled: false,
-        },
-        {
-          name: "鲁迅",
-          intro:
-            "鲁迅一生在文学创作、文学批评、思想研究、文学史研究、翻译、美术理论引进、基础科学介绍和古籍校勘与研究等多个领域具有重大贡献。他对于五四运动以后的中国社会思想文化发展具有重大影响，蜚声世界文坛，尤其在韩国、日本思想文化领域有极其重要的地位和影响，被誉为“二十世纪东亚文化地图上占最大领土的作家”。",
-          current: -1,
-          disabled: false,
-        },
-      ],
     };
   },
 
@@ -406,6 +399,12 @@ export default {
     },
     change(e) {
       this.current = e.index;
+    },
+    btnPay() {
+      this.show = true;
+    },
+    popupClose() {
+      this.show = false;
     },
     // change(e) {
     // 	let index = e.index;
@@ -972,7 +971,7 @@ export default {
   padding: 0 30rpx;
   box-sizing: border-box;
   font-size: 24rpx;
-  z-index: 9999;
+  z-index: 996;
   .vip-btn {
     background: -webkit-linear-gradient(
       135deg,
@@ -992,5 +991,8 @@ export default {
   left: 0;
   -webkit-transform: scaleY(0.5);
   transform: scaleY(0.5);
+}
+.service-tui-footer {
+  margin-bottom: 50rpx;
 }
 </style>
