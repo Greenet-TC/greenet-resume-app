@@ -98,6 +98,7 @@ export default {
       this.$emit("close", {});
     },
     async btnPay(activeId) {
+      const self=this
       const { code } = await getlogin();
       const param = {
         total_fee: this.memberShipData.filter((item) => item.id === activeId)[0]
@@ -118,22 +119,17 @@ export default {
           signType: "MD5", //固定值
           paySign: res.data.sign, //签名
           success: function (res) {
-            console.log("success:" + JSON.stringify(res));
             uni.showToast({
               title: "支付成功",
             });
-            console.log("支付成功");
+            self.close()
             uni.navigateTo({
 						url: '/pages/profile/success/success'
 					});
+      
           },
           fail: function (err) {
-            console.log("fail:" + JSON.stringify(err));
-            console.log("支付失败");
-            // this.close();
-            uni.navigateTo({
-						url: '/pages/profile/success/success'
-					});
+            
             uni.showToast({
               title: "支付失败",
               icon: "error",
@@ -145,6 +141,7 @@ export default {
     },
     change(e) {
       console.log(e);
+      
     },
   },
 };
