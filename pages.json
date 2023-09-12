@@ -39,6 +39,20 @@
       }
     },
     {
+      "path": "pages/activityPage/schoolRecruitment/index",
+      "style": {
+        "navigationBarTitleText": "公司详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/activityPage/intership/index",
+      "style": {
+        "navigationBarTitleText": "公司详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/coures/index",
       "style": {
         "navigationBarTitleText": "精选课程"
