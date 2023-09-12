@@ -270,16 +270,8 @@
     <!--tabbar-->
     <view class="tui-tabbar">
       <view>
-        <tui-button
-          shadow
-          width="600rpx"
-          height="70rpx"
-          :size="30"
-          type="danger"
-          class="vip-btn"
-          shape="circle"
-          @click="btnPay"
-          >{{ getActiveItem(activeId).fee }}开通立享特权</tui-button
+        <view class="vip-btn" @click="btnPay"
+          >{{ getActiveItem(activeId).fee }}开通立享特权</view
         >
       </view>
     </view>
@@ -973,13 +965,24 @@ export default {
   font-size: 24rpx;
   z-index: 996;
   .vip-btn {
-    background: -webkit-linear-gradient(
-      135deg,
+    -webkit-box-pack: center;
+    align-items: center;
+    background: linear-gradient(
+      315deg,
       #ffdead,
       #ffbd7f 21%,
       #fff9d7 53%,
       #ffebba
     );
+    border-radius: 30rpx;
+    cursor: pointer;
+    display: flex;
+    height: 70rpx;
+    justify-content: center;
+    width: 650rpx;
+    color: #4c260e;
+    font-size: 34rpx;
+    font-weight: 500;
   }
 }
 .tui-tabbar::before {
