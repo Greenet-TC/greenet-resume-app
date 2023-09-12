@@ -108,17 +108,13 @@ export default {
         code,
       };
       const res = await WechatPayControllerCreateWeChatJsApiPOST(param);
-
-      console.log(11111, res);
-
       if (res) {
         uni.requestPayment({
           provider: "wxpay", //支付类型-固定值
-          appId: res.data.appId,
-          total_fee: param.total_fee,
           timeStamp: res.data.timeStamp, // 时间戳（单位：秒）
+          appId:res.data.appId,
           nonceStr: res.data.nonceStr, // 随机字符串
-          package: res.data.prepay_id, // 固定值
+          package: res.data.package, // 固定值
           signType: "MD5", //固定值
           paySign: res.data.sign, //签名
           success: function (res) {
@@ -127,10 +123,17 @@ export default {
               title: "支付成功",
             });
             console.log("支付成功");
+            uni.navigateTo({
+						url: '/pages/profile/success/success'
+					});
           },
           fail: function (err) {
             console.log("fail:" + JSON.stringify(err));
             console.log("支付失败");
+            // this.close();
+            uni.navigateTo({
+						url: '/pages/profile/success/success'
+					});
             uni.showToast({
               title: "支付失败",
               icon: "error",
@@ -139,8 +142,6 @@ export default {
         });
       }
       // console.log("WechatPayControllerCreateWeChatJsApiPOST", data);
-      // this.close();
-      // this.tui.href("/pages/template/mall/success/success");
     },
     change(e) {
       console.log(e);
