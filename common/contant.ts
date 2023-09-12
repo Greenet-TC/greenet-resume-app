@@ -766,74 +766,146 @@ export interface membershipDataType {
 export const memberShipData: membershipDataType[] = [
   {
     id: 1,
-    title: '终生会员',
+    title: "终生会员",
     fee: 99,
     count: 100,
     preFee: 199,
     content: [
       {
-        icon: '满足更多岗位投递',
-        text: '15份简历',
+        icon: "满足更多岗位投递",
+        text: "15份简历",
         index: 1,
       },
-      { icon: '一键AI智能检测', text: '不限次智能检测', index: 2 },
-      { icon: '中英文简历转换', text: '不限次智能翻译', index: 3 },
-      { icon: '解锁所有简历模板', text: '海量模版', index: 4 },
-      { icon: 'VIP求职社群', text: '专属社区', index: 5 },
-      { icon: '简历自动纠错', text: '100次简历纠错', index: 6 },
-      { icon: '历年求职面经', text: '免费面试经验', index: 7 },
-      { icon: '避免简历丢失', text: '长期简历托管', index: 8 },
-      { icon: '在线简历视频', text: '79元简历课程', index: 9 },
-      { icon: '购买服务立减', text: '50元代金优惠券', index: 10 },
-      { icon: '100%面试机会', text: '一次内推机会', index: 11 },
+      { icon: "一键AI智能检测", text: "不限次智能检测", index: 2 },
+      { icon: "中英文简历转换", text: "不限次智能翻译", index: 3 },
+      { icon: "解锁所有简历模板", text: "海量模版", index: 4 },
+      { icon: "VIP求职社群", text: "专属社区", index: 5 },
+      { icon: "简历自动纠错", text: "100次简历纠错", index: 6 },
+      { icon: "历年求职面经", text: "免费面试经验", index: 7 },
+      { icon: "避免简历丢失", text: "长期简历托管", index: 8 },
+      { icon: "在线简历视频", text: "79元简历课程", index: 9 },
+      { icon: "购买服务立减", text: "50元代金券", index: 10 },
+      { icon: "100%面试机会", text: "一次内推机会", index: 11 },
     ],
   },
   {
     id: 2,
-    title: '月会员',
+    title: "月会员",
     fee: 19,
     count: 10,
     preFee: 25,
     content: [
-      { icon: '满足更多岗位投递', text: '5份简历', index: 1 },
-      { icon: '一键AI智能检测', text: '10次智能检测', index: 2 },
-      { icon: '中英文简历转换', text: '5次智能翻译', index: 3 },
-      { icon: '解锁所有简历模板', text: '海量模版', index: 4 },
-      { icon: 'VIP求职社群', text: '专属社区', index: 5 },
-      { icon: '简历自动纠错', text: '10次简历纠错', index: 6 },
-      { icon: '历年求职面经', text: '1份免费面经', index: 7 },
-      { icon: '避免简历丢失', text: '长期简历托管', index: 8 },
-      { icon: '在线简历视频', text: '79元简历课程', index: 9 },
-      { icon: '购买服务立减', text: '50元代金优惠券', index: 10 },
-      { icon: '100%面试机会', text: '一次内推机会', index: 11 },
+      { icon: "满足更多岗位投递", text: "5份简历", index: 1 },
+      { icon: "一键AI智能检测", text: "10次智能检测", index: 2 },
+      { icon: "中英文简历转换", text: "5次智能翻译", index: 3 },
+      { icon: "解锁所有简历模板", text: "海量模版", index: 4 },
+      { icon: "VIP求职社群", text: "专属社区", index: 5 },
+      { icon: "简历自动纠错", text: "10次简历纠错", index: 6 },
+      { icon: "历年求职面经", text: "1份免费面经", index: 7 },
+      { icon: "避免简历丢失", text: "长期简历托管", index: 8 },
+      { icon: "在线简历视频", text: "79元简历课程", index: 9 },
+      { icon: "购买服务立减", text: "50元代金券", index: 10 },
+      { icon: "100%面试机会", text: "一次内推机会", index: 11 },
     ],
   },
   {
     id: 3,
-    title: '年会员',
+    title: "年会员",
     fee: 79,
     count: 10,
     preFee: 99,
     content: [
-      { icon: '满足更多岗位投递', text: '7份简历', index: 1 },
-      { icon: '一键AI智能检测', text: '20次智能检测', index: 2 },
-      { icon: '中英文简历转换', text: '20次智能翻译', index: 3 },
-      { icon: '解锁所有简历模板', text: '海量模版', index: 4 },
-      { icon: 'VIP求职社群', text: '专属社区', index: 5 },
-      { icon: '简历自动纠错', text: '20次简历纠错', index: 6 },
-      { icon: '历年求职面经', text: '2份面试经验', index: 7 },
-      { icon: '避免简历丢失', text: '1年简历托管', index: 8 },
-      { icon: '在线简历视频', text: '79元简历课程', index: 9 },
-      { icon: '购买服务立减', text: '50元代金优惠券', index: 10 },
-      { icon: '100%面试机会', text: '一次内推机会', index: 11 },
+      { icon: "满足更多岗位投递", text: "7份简历", index: 1 },
+      { icon: "一键AI智能检测", text: "20次智能检测", index: 2 },
+      { icon: "中英文简历转换", text: "20次智能翻译", index: 3 },
+      { icon: "解锁所有简历模板", text: "海量模版", index: 4 },
+      { icon: "VIP求职社群", text: "专属社区", index: 5 },
+      { icon: "简历自动纠错", text: "20次简历纠错", index: 6 },
+      { icon: "历年求职面经", text: "2份面试经验", index: 7 },
+      { icon: "避免简历丢失", text: "1年简历托管", index: 8 },
+      { icon: "在线简历视频", text: "79元简历课程", index: 9 },
+      { icon: "购买服务立减", text: "50元代金券", index: 10 },
+      { icon: "100%面试机会", text: "一次内推机会", index: 11 },
     ],
   },
   {
     id: 4,
-    title: '超级会员',
+    title: "超级会员",
     fee: 169,
     count: 100,
     preFee: 1199,
-    content: [],
+    content: [
+      { icon: "满足更多岗位投递", text: "7份简历", index: 1 },
+      { icon: "一键AI智能检测", text: "20次智能检测", index: 2 },
+      { icon: "中英文简历转换", text: "20次智能翻译", index: 3 },
+      { icon: "解锁所有简历模板", text: "海量模版", index: 4 },
+      { icon: "VIP求职社群", text: "专属社区", index: 5 },
+      { icon: "简历自动纠错", text: "20次简历纠错", index: 6 },
+      { icon: "历年求职面经", text: "2份面试经验", index: 7 },
+      { icon: "避免简历丢失", text: "1年简历托管", index: 8 },
+      { icon: "在线简历视频", text: "79元简历课程", index: 9 },
+      { icon: "购买服务立减", text: "50元代金券", index: 10 },
+      { icon: "100%面试机会", text: "一次内推机会", index: 11 },
+    ],
+  },
+];
+export const Vipquestions = [
+  {
+    name: "1.优加实习会员服务的内容包括哪些？",
+    intro: `<view style="color:#9c9c9c; font-size: 12px;
+    padding: 0px 10px;
+  line-height: 20px;">
+        <p>
+          优加实习已为<view style="color:#ff4f4c;display:inline-block" >10000+</view>的在校大学生提供实习简历优化、模拟面试、职业规划等服务，
+          <view style="color:#ff4f4c;display:inline-block">90%</view>的客户都成功获取Offer，在过程中优加总结出了一套大幅提高简历成功率的方法论。每一位成功导师皆有5-10年从业经验，并经过平台筛选，确保简历修改的标准。
+        </p>
+        <br />
+        <p>自<view style="color:#ff4f4c;display:inline-block">2021年6月起</view>，实习简历、实习信息、实习内推服务已全面升级，三大服务内容打造一站式绝佳体验，服务内容包括：
+        </p>
+        <br />
+        <p>1.实习信息发布：2023年优加实习联合多家企业，进行实习信息发布，实习信息反馈快，通过率高，实习信息实效性强； </p>
+        <p>
+          2.实习内推：优加实习23年实习内推全面升级，联合多家互联网、新能源大厂进行实习内推，被推简直达业务老板；
+        </p>
+        <p>
+          3. 实习咨询：针对购买在优加实习的客户，服务会包含一次30分钟的微信电话交流服务（实习资讯）。
+        </p>
+      </view>`,
+  },
+  {
+    name: "2.为何支付成功后我的会员没有生效？",
+    intro: `<view style="color:#9c9c9c; font-size: 12px;
+    padding: 0px 10px;
+  line-height: 20px;">
+        <p>
+        请检查您的网络状态、支付设置，以确保订单已完成支付；如您的账号长时间未更新会员状态，建议退出并重新登陆账号。
+          <view style="color:#ff4f4c;display:inline-block">90%</view>的客户都成功获取Offer，在过程中优加总结出了一套大幅提高简历成功率的方法论。每一位成功导师皆有5-10年从业经验，并经过平台筛选，确保简历修改的标准。
+        </p>
+        <br />
+        <p>如果按照以上操作后，您的会员仍然无法生效，请点击“更多问题”，在帖子中留言，将您的信息反馈给我们。
+        </p>
+        
+      </view>`,
+  },
+  {
+    name: "3.在哪里可以进行反馈？",
+    intro: `<view style="color:#9c9c9c; font-size: 12px;
+    padding: 0px 10px;
+  line-height: 20px;">
+        <p>
+        购买会员后将通过消息-通知为您发送会员助手二维码，如有更多疑问，可向会员助手进行反馈。
+        </p>
+      </view>`,
+  },
+  {
+    name: "4.会员是否会自动扣费？",
+    intro: `<view style="color:#9c9c9c; font-size: 12px;
+    padding: 0px 10px;
+  line-height: 20px;">
+        <p>
+        不会的，牛客目前没有提供连续扣费会员产品，您的会员到期后，我们不会自动扣费。如您需要继续体验会员服务
+          <view style="color:#ff4f4c;display:inline-block">需重新订购会员</view>。
+        </p>
+      </view>`,
   },
 ];

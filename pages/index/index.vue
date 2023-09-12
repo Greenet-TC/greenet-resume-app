@@ -178,7 +178,7 @@
 </template>
 <script>
 import { companyInfo } from "../../common/contant";
-import { login, getBaseInfo, setLoginStatus } from "../../common/login";
+import { login } from "../../common/login";
 import { getToken } from "../../common/utils";
 export default {
   //设置页面全屏

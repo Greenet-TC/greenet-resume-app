@@ -287,11 +287,6 @@ export default {
         });
         return;
       }
-      uni.setStorageSync("orderTyppe", this.orderTyppe);
-      uni.setStorageSync("orderCount", this.count);
-      uni.navigateTo({
-        url: "/pages/index/confirm-order/confirm-order",
-      });
     },
     setDetailShow(orderType) {
       this.serviceType[0].serviceContent.map((i) => {

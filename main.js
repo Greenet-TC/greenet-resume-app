@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-08-10 19:36:52
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-07 15:21:49
+ * @LastEditTime: 2023-09-11 17:58:19
  * @FilePath: /greenet-resume-app/main.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,7 +22,6 @@ http.create({
 //请求拦截
 
 http.interceptors.request.use((config) => {
-  console.log("store.state.cookies", store.state.cookies);
   const cookiesId = getToken();
   const sessionId = uni.getStorageSync("preLogin");
   if (!cookiesId && !sessionId) {
@@ -36,9 +35,12 @@ http.interceptors.request.use((config) => {
     });
     return Promise.reject();
   }
+
   if (store.state.cookies) {
     if (config.data) {
-      config.data["xxl_sso_sessionid"] = store.state.cookies;
+      if (config.method !== "post") {
+        config.data["xxl_sso_sessionid"] = store.state.cookies;
+      }
     } else {
       config.data = {
         xxl_sso_sessionid: store.state.cookies,

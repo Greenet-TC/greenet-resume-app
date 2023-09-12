@@ -48,8 +48,8 @@
             <image
               :src="
                 baseInfo?.avatar
-                  ? baseInfo.avatar
-                  : baseInfo.sex === 1
+                  ? baseInfo?.avatar
+                  : baseInfo?.sex === 1
                   ? webURLBase + `/profile/man.png`
                   : webURLBase + `/profile/woman.png`
               "
@@ -113,23 +113,174 @@
         <scroll-view scroll-x>
           <view class="vip-contant-top">
             <view
-              class="vip-contant-top-item"
+              :class="
+                activeId === vip.id
+                  ? 'vip-contant-top-item active'
+                  : 'vip-contant-top-item '
+              "
               v-for="vip in memberShipData"
               :key="vip.id"
+              @tap="choiceVipType(vip.id)"
             >
+              <view
+                class="vip-contant-top-item-tip"
+                v-if="vip.id === 1 || vip.id === 4"
+                >{{ vip.id === 1 ? "超值推荐" : "" }}
+                {{ vip.id === 4 ? "超高性价比" : "" }}
+              </view>
               <view class="vip-contant-top-item-title">{{ vip.title }} </view>
-              <view class="vip-contant-top-item-fee"
+              <view
+                :class="
+                  activeId === vip.id
+                    ? 'vip-contant-top-item-fee active'
+                    : 'vip-contant-top-item-fee'
+                "
                 ><span class="fee-sign">¥</span>{{ vip.fee }}
               </view>
               <view class="vip-contant-top-item-prefee"
                 >¥ {{ vip.preFee }}
               </view>
-              <view class="vip-contant-top-item-bottom"
-                >立省{{ vip.preFee - vip.fee }}元
+              <view
+                :class="
+                  activeId === vip.id
+                    ? 'vip-contant-top-item-bottom active'
+                    : 'vip-contant-top-item-bottom'
+                "
+                >{{
+                  vip.id === 1 || vip.id === 4
+                    ? `立省${vip.preFee - vip.fee}元`
+                    : `仅需${(vip.fee / (vip.id === 2 ? 30 : 365)).toFixed(
+                        2
+                      )}元/天`
+                }}
+
+                <!-- 立省{{ vip.preFee - vip.fee }}元 -->
               </view>
             </view>
           </view>
         </scroll-view>
+      </view>
+      <view class="vip-coupon">
+        <view class="vip-coupon-left"> 优惠券</view>
+        <view class="vip-coupon-right"
+          >兑换优惠券
+          <tui-icon name="arrowright" :size="24" color="#9c9c9c"></tui-icon
+        ></view>
+
+        <!-- <swiper
+          :indicator-dots="true"
+          :autoplay="true"
+          :interval="5000"
+          :duration="150"
+          class="vip-coupon-swiper"
+          :circular="true"
+          indicator-color="rgba(255, 255, 255, 0.8)"
+          indicator-active-color="#fff"
+        >
+          <swiper-item
+            v-for="(item, index) in [1, 2]"
+            :key="index"
+            @tap.stop="detail"
+          >
+            <image
+              :src="webURLBase + `/vip/coupon-${item}.png`"
+              class="vip-coupon-swiper-image"
+              mode="scaleToFill"
+            />
+          </swiper-item>
+        </swiper> -->
+      </view>
+      <tui-divider width="90%" height="50"></tui-divider>
+      <view class="vip-price">
+        <view class="vip-price-item">
+          <view class="vip-price-item-left">会员原价</view>
+          <view class="vip-price-item-right"
+            >{{ getActiveItem(activeId).fee }}.00</view
+          >
+        </view>
+        <view class="vip-price-item" :style="{ marginTop: '10px' }">
+          <view class="vip-price-item-left">优惠券</view>
+          <view class="vip-price-item-right">- ¥ {{ 0 }}.00</view>
+        </view>
+      </view>
+      <tui-divider width="90%" height="50"></tui-divider>
+      <view class="vip-paid">
+        <view class="vip-paid-text">实付金额：</view>
+        <view class="vip-paid-num">¥ {{ getActiveItem(activeId).fee }}.00</view>
+      </view>
+      <view class="vip-protocol">
+        <tui-radio
+          :checked="true"
+          :value="1"
+          color="#fa4e3e"
+          borderColor="#ffffff"
+        >
+        </tui-radio>
+        <text class="tui-text">同意《优加实习会员服务协议》及《隐私协议》</text>
+      </view>
+      <view class="vip-rights">
+        <view class="vip-rights-title">会员权益</view>
+        <view class="vip-rights-list">
+          <view
+            class="vip-rights-list-item"
+            v-for="item in getActiveItem(activeId).content"
+            :key="item.index"
+            :style="{
+              opacity: item.index > setOpcityValue(activeId) ? 0.4 : 1,
+            }"
+          >
+            <view class="vip-rights-list-item-icon">
+              <image
+                :src="webURLBase + `/vip/${item.index}.png`"
+                class="img"
+              ></image>
+            </view>
+            <view class="vip-rights-list-item-text">{{ item.text }} </view>
+            <view class="vip-rights-list-item-sub">{{ item.icon }} </view>
+          </view>
+        </view>
+      </view>
+      <view class="vip-question">
+        <view class="vip-question-title">常见问题</view>
+
+        <block v-for="(item, index) in Vipquestions" :key="index">
+          <tui-collapse :index="index" :current="current" @click="change">
+            <template v-slot:title>
+              <tui-list-cell>{{ item.name }}</tui-list-cell>
+            </template>
+            <template v-slot:content>
+              <uParse :content="item.intro" />
+            </template>
+          </tui-collapse>
+        </block>
+      </view>
+      <tui-footer
+        :fixed="false"
+        class="service-tui-footer"
+        copyright="Copyright © 2022-2025 Greenet-TC."
+      ></tui-footer>
+    </view>
+    <!-- 支付弹窗 -->
+    <t-pay-way
+      :show="show"
+      @close="popupClose"
+      :fee="getActiveItem(activeId).fee"
+      :activeId="activeId"
+    ></t-pay-way>
+    <!--tabbar-->
+    <view class="tui-tabbar">
+      <view>
+        <tui-button
+          shadow
+          width="600rpx"
+          height="70rpx"
+          :size="30"
+          type="danger"
+          class="vip-btn"
+          shape="circle"
+          @click="btnPay"
+          >{{ getActiveItem(activeId).fee }}开通立享特权</tui-button
+        >
       </view>
     </view>
   </view>
@@ -138,29 +289,32 @@
 <script>
 // import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
 import store from "@/store/index.ts";
+import tPayWay from "../payComforn/index.vue";
+import uParse from "@/components/uni/uParse/src/wxParse";
 import { login } from "@/common/login";
 import { WEBURL } from "@/common/utils";
-import { memberShipData } from "@/common/contant";
+import { memberShipData, Vipquestions } from "@/common/contant";
 import dayjs from "dayjs";
 
 export default {
-  onReachBottom: function () {
-    if (!this.pullUpOn) return;
-    this.loadding = true;
-    if (this.pageIndex == 4) {
-      this.loadding = false;
-      this.pullUpOn = false;
-    } else {
-      let loadData = JSON.parse(JSON.stringify(this.productList));
-      loadData = loadData.splice(0, 10);
-      if (this.pageIndex == 1) {
-        loadData = loadData.reverse();
-      }
-      this.productList = this.productList.concat(loadData);
-      this.pageIndex = this.pageIndex + 1;
-      this.loadding = false;
-    }
-  },
+  components: { uParse, tPayWay },
+  // onReachBottom: function () {
+  //   if (!this.pullUpOn) return;
+  //   this.loadding = true;
+  //   if (this.pageIndex == 4) {
+  //     this.loadding = false;
+  //     this.pullUpOn = false;
+  //   } else {
+  //     let loadData = JSON.parse(JSON.stringify(this.productList));
+  //     loadData = loadData.splice(0, 10);
+  //     if (this.pageIndex == 1) {
+  //       loadData = loadData.reverse();
+  //     }
+  //     this.productList = this.productList.concat(loadData);
+  //     this.pageIndex = this.pageIndex + 1;
+  //     this.loadding = false;
+  //   }
+  // },
 
   onPullDownRefresh() {
     setTimeout(() => {
@@ -185,16 +339,19 @@ export default {
   data() {
     return {
       isLogin: false,
-
       webURL: "https://www.thorui.cn/wx",
       top: 0, //标题图标距离顶部距离
       opacity: 0,
       scrollTop: 0.5,
       memberShipData,
+      current: 0,
       pageIndex: 1,
       loadding: false,
       pullUpOn: true,
       webURLBase: WEBURL,
+      activeId: 1,
+      show: false,
+      Vipquestions,
     };
   },
 
@@ -216,31 +373,63 @@ export default {
   methods: {
     initNavigation(e) {
       this.opacity = e.opacity;
-      console.log(e);
       this.top = e.top;
     },
     opacityChange(e) {
       this.opacity = e.opacity;
     },
+    choiceVipType(e) {
+      this.activeId = e;
+    },
+    getActiveItem(activeId) {
+      return this.memberShipData.filter((i) => {
+        return i.id === activeId;
+      })[0];
+    },
+    setOpcityValue(value) {
+      if (value === 1) {
+        return 7;
+      } else if (value === 2) {
+        return 4;
+      } else if (value === 3) {
+        return 6;
+      } else {
+        return 11;
+      }
+    },
+    change(e) {
+      this.current = e.index;
+    },
+    btnPay() {
+      this.show = true;
+    },
+    popupClose() {
+      this.show = false;
+    },
+    // change(e) {
+    // 	let index = e.index;
+    // 	let item = this.dataList[index];
+    // 	item.current = item.current == index ? -1 : index
+    // }
   },
 
-  onReachBottom: function () {
-    if (!this.pullUpOn) return;
-    this.loadding = true;
-    if (this.pageIndex == 4) {
-      this.loadding = false;
-      this.pullUpOn = false;
-    } else {
-      let loadData = JSON.parse(JSON.stringify(this.productList));
-      loadData = loadData.splice(0, 10);
-      if (this.pageIndex == 1) {
-        loadData = loadData.reverse();
-      }
-      this.productList = this.productList.concat(loadData);
-      this.pageIndex = this.pageIndex + 1;
-      this.loadding = false;
-    }
-  },
+  // onReachBottom: function () {
+  //   if (!this.pullUpOn) return;
+  //   this.loadding = true;
+  //   if (this.pageIndex == 4) {
+  //     this.loadding = false;
+  //     this.pullUpOn = false;
+  //   } else {
+  //     let loadData = JSON.parse(JSON.stringify(this.productList));
+  //     loadData = loadData.splice(0, 10);
+  //     if (this.pageIndex == 1) {
+  //       loadData = loadData.reverse();
+  //     }
+  //     this.productList = this.productList.concat(loadData);
+  //     this.pageIndex = this.pageIndex + 1;
+  //     this.loadding = false;
+  //   }
+  // },
 };
 </script>
 
@@ -329,7 +518,7 @@ export default {
     position: absolute;
     top: 0rpx;
     left: 0;
-    width: 100%;
+    // width: calc(100%-80rpx);
     padding: 130rpx 40rpx 40rpx 40rpx;
     .tui-avatar {
       flex-shrink: 0;
@@ -340,6 +529,7 @@ export default {
     }
     .header-profile-top {
       overflow: hidden;
+
       .self-info-name {
         align-items: center;
         display: flex;
@@ -437,7 +627,7 @@ export default {
 }
 .vip-items {
   width: 100%;
-  height: 300px;
+  margin-bottom: 91px;
   // background: #fff;
   margin-top: -30rpx;
   position: relative;
@@ -475,6 +665,7 @@ export default {
         flex-shrink: 0;
         font-size: 32rpx;
         line-height: 48rpx;
+        color: #fff;
         &.vip {
           -webkit-text-fill-color: transparent;
           background: linear-gradient(
@@ -537,7 +728,7 @@ export default {
   .vip-contant {
     background: #ffffff;
     width: 100%;
-    height: 200px;
+    height: 185px;
     &-top {
       height: 340rpx;
       width: 100%;
@@ -559,6 +750,24 @@ export default {
         align-items: center;
         display: flex;
         flex-direction: column;
+        position: relative;
+        &-tip {
+          position: absolute;
+          left: -1px;
+          border-radius: 8px 0;
+          top: -6px;
+          height: 17px;
+          padding: 1px 9px;
+          background: radial-gradient(
+            100% 100% at 100% 0,
+            #fb623f 0,
+            #ff813a 100%
+          );
+          color: #fff;
+          font-size: 12px;
+          text-align: center;
+          line-height: 17px;
+        }
         &.active {
           background: #fff6f4;
           border: 2rpx solid #f64;
@@ -577,6 +786,9 @@ export default {
           font-size: 48rpx;
           font-weight: 600;
           color: rgb(64, 64, 64);
+          &.active {
+            color: #ff3d3dd7;
+          }
           .fee-sign {
             padding-top: 8rpx;
             padding-right: 8rpx;
@@ -608,9 +820,179 @@ export default {
           font-size: 21rpx;
           font-weight: 400;
           color: #9b9b9b;
+          &.active {
+            color: #ff3d3dd7;
+            background: rgba(253, 221, 213, 100);
+          }
         }
       }
     }
   }
+  .vip-coupon {
+    // width: 100%;
+    height: 48rpx;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 39rpx;
+
+    &-left {
+      font-family: PingFang SC;
+      font-size: 35rpx;
+      font-weight: 400;
+      line-height: 48rpx;
+      color: #222222;
+    }
+    &-right {
+      font-family: PingFang SC;
+      font-size: 30rpx;
+      font-weight: 300;
+      color: #9c9c9c;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+.vip-price {
+  padding: 0 39rpx;
+  &-item {
+    height: 50rpx;
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #222222;
+  }
+}
+.vip-paid {
+  padding: 0 39rpx;
+  height: 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  &-text {
+    //styleName: 六级15-列表、小标题、大按钮文本/常规|font_grade_6_regular;
+    font-family: PingFang SC;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+  }
+  &-num {
+    color: #fa4e3e;
+    font-weight: 500;
+    font-size: 23px;
+  }
+}
+.vip-protocol {
+  padding: 20rpx 39rpx;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  .tui-text {
+    color: #9c9c9c;
+    font-size: 14px;
+    margin-left: 5px;
+    font-weight: 400;
+  }
+}
+.vip-rights {
+  padding: 10px 39rpx;
+  &-title {
+    //styleName: 四级17-卡片、二级页面标题/中粗|font_grade_4_medium;
+    font-family: PingFang SC;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 24px;
+    color: "#222222";
+  }
+  &-list {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    &-item {
+      width: 100px;
+      display: flex;
+      justify-items: center;
+      flex-direction: column;
+      align-items: center;
+      &-icon {
+        height: 50px;
+        width: 50px;
+        > .img {
+          height: 100%;
+          width: 100%;
+        }
+      }
+      &-text {
+        height: 14px;
+        width: 100px !important;
+        margin: 4px 0;
+        font-weight: 400;
+        color: #404040;
+        font-size: 14px;
+        text-align: center;
+      }
+      &-sub {
+        font-size: 12px;
+        font-weight: 400;
+        color: #9c9c9c;
+        margin: 4px 0;
+      }
+    }
+  }
+}
+.vip-question {
+  padding: 10px 39rpx;
+  &-title {
+    //styleName: 四级17-卡片、二级页面标题/中粗|font_grade_4_medium;
+    font-family: PingFang SC;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 24px;
+    color: "#222222";
+  }
+}
+.tui-tabbar {
+  width: 100%;
+  height: 150rpx;
+  background: #fff;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  /* #ifdef H5 */
+  /* bottom: 50px; */
+  /* #endif */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  z-index: 996;
+  .vip-btn {
+    background: -webkit-linear-gradient(
+      135deg,
+      #ffdead,
+      #ffbd7f 21%,
+      #fff9d7 53%,
+      #ffebba
+    );
+  }
+}
+.tui-tabbar::before {
+  content: "";
+  width: 100%;
+  border-top: 1rpx solid #d9d9d9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: scaleY(0.5);
+  transform: scaleY(0.5);
+}
+.service-tui-footer {
+  margin-bottom: 50rpx;
 }
 </style>
