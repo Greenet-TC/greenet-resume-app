@@ -767,7 +767,7 @@ export const memberShipData: membershipDataType[] = [
   {
     id: 1,
     title: "终生会员",
-    fee: 99,
+    fee: 1,
     count: 100,
     preFee: 199,
     content: [
@@ -791,7 +791,7 @@ export const memberShipData: membershipDataType[] = [
   {
     id: 2,
     title: "月会员",
-    fee: 19,
+    fee: 1,
     count: 10,
     preFee: 25,
     content: [
@@ -811,7 +811,7 @@ export const memberShipData: membershipDataType[] = [
   {
     id: 3,
     title: "年会员",
-    fee: 79,
+    fee: 1,
     count: 10,
     preFee: 99,
     content: [
@@ -831,7 +831,7 @@ export const memberShipData: membershipDataType[] = [
   {
     id: 4,
     title: "超级会员",
-    fee: 169,
+    fee: 1,
     count: 100,
     preFee: 1199,
     content: [
