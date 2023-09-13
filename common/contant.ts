@@ -767,7 +767,7 @@ export const memberShipData: membershipDataType[] = [
   {
     id: 1,
     title: "终生会员",
-    fee: 0.99,
+    fee: 99,
     count: 100,
     preFee: 199,
     content: [

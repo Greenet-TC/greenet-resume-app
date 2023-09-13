@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-13 10:26:21
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-13 17:25:30
+ * @LastEditTime: 2023-09-13 19:28:14
  * @FilePath: /greenet-resume-app/pages/profile/order/order.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE#
 -->
@@ -12,17 +12,24 @@
       <view class="order-item-top">
         <view class="order-item-title">支付记录</view>
       </view>
-      <view v-for="(item, index) in orderList" :key="index" class="pay-order">
+      <view v-for="item in orderList" :key="item.orderId" class="pay-order">
         <view class="pay-order-text">
-          {{ dayjs(item.createTime).format("YYYY/MM/DD")
-          }}{{ " " + getOrderStatus(item.orderStatus) }}
+          {{ dayjs(item.createTime).format("YYYY/MM/DD") }}
+          <span
+            :style="{
+              color:
+                item.orderStatus === 0
+                  ? '#9c9c9c80'
+                  : item.orderStatus === 1
+                  ? '#99FF99'
+                  : '#FF8888 ',
+            }"
+            >{{ " " + getOrderStatus(item.orderStatus) }}</span
+          >
         </view>
         <view class="pay-order-bill">
           {{ ` ${getOrderInfo(memberShipData, Number(item?.attach)).title} `
-          }}{{
-            "      " +
-            ` ${getOrderInfo(memberShipData, Number(item?.attach)).fee}元 `
-          }}
+          }}{{ "      " + ` ${item.price}.00元 ` }}
         </view>
       </view>
     </view>
