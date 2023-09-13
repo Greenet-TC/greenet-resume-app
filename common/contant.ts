@@ -909,3 +909,12 @@ export const Vipquestions = [
       </view>`,
   },
 ];
+export enum orderStatus {
+  NOPAY = 0,
+  SUCCESS = 1,
+  FAIL = 2,
+}
+export enum tradeType {
+  Native = "Native",
+  Jsapi = "Jsapi",
+}

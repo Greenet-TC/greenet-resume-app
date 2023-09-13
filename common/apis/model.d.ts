@@ -1,8 +1,10 @@
+import { tradeType } from "../contant";
+
 /*
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-02 18:18:35
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-11 13:00:51
+ * @LastEditTime: 2023-09-13 16:47:34
  * @FilePath: /greenet-resume-app/common/apis/model.d.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -68,4 +70,17 @@ export interface PayVipProps {
   total_fee: number; //支付金额
   body: string; //商品描述信息
   vipType: number; // 其他附加信息
+}
+export interface WechatPayControllerQueryAllOrdersType {
+  attach: string;
+  createTime: number;
+  customerId: number;
+  id: number;
+  orderId: string;
+  orderStatus: string;
+  tradeType: tradeType;
+}
+export interface pageInfo {
+  pageNum: number;
+  pageSize: number;
 }
