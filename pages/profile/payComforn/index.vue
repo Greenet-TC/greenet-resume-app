@@ -64,7 +64,7 @@
 
 <script>
 import { memberShipData } from "@/common/contant";
-import { getlogin } from "@/common/login";
+import { getlogin, getQueryAccount } from "@/common/login";
 import { WechatPayControllerCreateWeChatJsApiPOST } from "@/common/apis/wei-xin-pay-controller";
 import { WEBURL } from "@/common/utils";
 
@@ -98,7 +98,7 @@ export default {
       this.$emit("close", {});
     },
     async btnPay(activeId) {
-      const self=this
+      const self = this;
       const { code } = await getlogin();
       const param = {
         total_fee: this.memberShipData.filter((item) => item.id === activeId)[0]
@@ -113,7 +113,7 @@ export default {
         uni.requestPayment({
           provider: "wxpay", //支付类型-固定值
           timeStamp: res.data.timeStamp, // 时间戳（单位：秒）
-          appId:res.data.appId,
+          appId: res.data.appId,
           nonceStr: res.data.nonceStr, // 随机字符串
           package: res.data.package, // 固定值
           signType: "MD5", //固定值
@@ -122,14 +122,13 @@ export default {
             uni.showToast({
               title: "支付成功",
             });
-            self.close()
+            self.close();
             uni.navigateTo({
-						url: '/pages/profile/success/success'
-					});
-      
+              url: "/pages/profile/success/success",
+            });
+            getQueryAccount();
           },
           fail: function (err) {
-            
             uni.showToast({
               title: "支付失败",
               icon: "error",
@@ -141,7 +140,6 @@ export default {
     },
     change(e) {
       console.log(e);
-      
     },
   },
 };
