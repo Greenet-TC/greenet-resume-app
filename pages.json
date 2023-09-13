@@ -38,6 +38,12 @@
       }
     },
     {
+      "path": "pages/profile/order/order",
+      "style": {
+        "navigationBarTitleText": "订单中心"
+      }
+    },
+    {
       "path": "pages/job/companyDetail/index",
       "style": {
         "navigationBarTitleText": "公司详情",

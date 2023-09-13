@@ -10,7 +10,7 @@
         <view class="tui-title">订单已支付成功</view>
         <view class="tui-sub-title">恭喜解锁会员福利，赶快领取吧！</view>
         <image
-          :src="webURLBase+`/vip/IMG_0001%203.jpg`"
+          :src="webURLBase + `/vip/IMG_0001%203.jpg`"
           class="tui-Qr-code"
         ></image>
         <view class="tui-btn-box">
@@ -62,7 +62,9 @@ export default {
           url: "/pages/index/index",
         });
       } else {
-        this.tui.href("/pages/my/myOrder/myOrder");
+        uni.switchTab({
+          url: "/pages/profile/order/order",
+        });
       }
     },
   },
@@ -103,8 +105,8 @@ export default {
   display: block;
   margin-top: 30rpx;
 }
-.tui-Qr-code{
-    width: 250rpx;
+.tui-Qr-code {
+  width: 250rpx;
   height: 250rpx;
   display: block;
   margin-top: 30rpx;

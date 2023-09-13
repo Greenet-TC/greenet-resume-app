@@ -170,7 +170,7 @@
           :lineLeft="false"
           @click="href(4)"
         >
-          <view class="tui-cell-header">
+          <view class="tui-cell-header" @click="openOrder">
             <view class="tui-cell-title">我的订单</view>
             <view class="tui-cell-sub">查看全部订单</view>
           </view>
@@ -544,6 +544,11 @@ export default {
     openVipService: function () {
       uni.navigateTo({
         url: "/pages/profile/vipPage/index",
+      });
+    },
+    openOrder: function () {
+      uni.navigateTo({
+        url: "/pages/profile/order/order",
       });
     },
     initNavigation(e) {
