@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-02 18:18:35
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-11 13:00:51
+ * @LastEditTime: 2023-09-18 11:22:25
  * @FilePath: /greenet-resume-app/common/apis/model.d.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -68,4 +68,24 @@ export interface PayVipProps {
   total_fee: number; //支付金额
   body: string; //商品描述信息
   vipType: number; // 其他附加信息
+}
+export interface internshipPositionGetPageListParameType {
+  company: string;
+  createTime: number;
+  degree: string;
+  experience: string;
+  id: number;
+  jobType: string;
+  location: string;
+  pageNum: number;
+  pageSize: number;
+  positionAdvan: string;
+  positionDuty: string;
+  positionName: string;
+  positionRequired: string;
+  property: string;
+  salary: string;
+  updateTime: number;
+  urgent: true;
+  url: string;
 }

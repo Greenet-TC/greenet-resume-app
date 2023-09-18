@@ -212,6 +212,14 @@
 <script>
 import { companyInfo, JobInfo } from "@/common/contant";
 export default {
+  async onload() {
+    try {
+      const data = await internshipPositionGetPageListPOST();
+      console.log(data);
+    } catch (e) {
+      console.log(e.error_message);
+    }
+  },
   data() {
     return {
       companyInfo,
@@ -231,7 +239,6 @@ export default {
       });
     },
     moreDetail: function (e) {
-      
       uni.navigateTo({
         url: `/pages/job/companyDetail/index?id=${e.id}`,
       });
