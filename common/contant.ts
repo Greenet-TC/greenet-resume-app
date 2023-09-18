@@ -833,7 +833,7 @@ export const memberShipData: membershipDataType[] = [
     title: "超级会员",
     fee: 169,
     count: 100,
-    preFee: 1199,
+    preFee: 599,
     content: [
       { icon: "满足更多岗位投递", text: "7份简历", index: 1 },
       { icon: "一键AI智能检测", text: "20次智能检测", index: 2 },
@@ -909,3 +909,12 @@ export const Vipquestions = [
       </view>`,
   },
 ];
+export enum orderStatus {
+  NOPAY = 0,
+  SUCCESS = 1,
+  FAIL = 2,
+}
+export enum tradeType {
+  Native = "Native",
+  Jsapi = "Jsapi",
+}

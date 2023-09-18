@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-13 10:26:21
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-13 12:31:50
+ * @LastEditTime: 2023-09-15 10:14:10
  * @FilePath: /greenet-resume-app/pages/profile/order/order.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE#
 -->
@@ -12,19 +12,29 @@
       <view class="order-item-top">
         <view class="order-item-title">支付记录</view>
       </view>
-      <view v-for="(item, index) in orderList" :key="index" class="pay-order">
+      <view v-for="item in orderList" :key="item.orderId" class="pay-order">
         <view class="pay-order-text">
-          {{ dayjs(item.startTime).format("YYYY/MM/DD") }}{{ " " + "成功" }}
+          {{ dayjs(item.createTime).format("YYYY/MM/DD") }}
+          <span
+            :style="{
+              color:
+                item.orderStatus === 0
+                  ? '#9c9c9c80'
+                  : item.orderStatus === 1
+                  ? '#99FF99'
+                  : '#FF8888 ',
+            }"
+            >{{ " " + getOrderStatus(item.orderStatus) }}</span
+          >
         </view>
         <view class="pay-order-bill">
-          {{ ` ${getOrderInfo(memberShipData, item.vipType).title} `
-          }}{{
-            "      " +
-            ` ${getOrderInfo(memberShipData, item.vipType).fee}.00元 `
-          }}
+          {{ ` ${getOrderInfo(memberShipData, Number(item?.attach)).title} `
+          }}{{ "      " + ` ${item.price}.00元 ` }}
         </view>
       </view>
     </view>
+    <!--加载loadding-->
+    <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore>
   </view>
   <view v-else>
     <tui-no-data
@@ -39,28 +49,72 @@
 </template>
 
 <script>
-import store from "@/store/index.ts";
 import dayjs from "dayjs";
-import { memberShipData } from "@/common/contant";
+import { memberShipData, orderStatus } from "@/common/contant";
+import { WechatPayControllerQueryAllOrdersGET } from "@/common/apis/wei-xin-pay-controller";
 
 export default {
-  onLoad() {
-    console.log(1, JSON.parse(store.state.queryAccount.history));
+  async onLoad() {
+    const data = await WechatPayControllerQueryAllOrdersGET({
+      pageNum: this.pageIndex,
+      pageSize: this.pageSize,
+    });
+    if (data.data.list.length < this.pageSize) {
+      this.pullUpOn = false;
+    }
+    this.pageIndex = this.pageIndex + 1;
+    this.orderList = data.data.list;
   },
   data() {
-    return { memberShipData, dayjs };
+    return {
+      memberShipData,
+      dayjs,
+      orderList: [],
+      pageIndex: 0,
+      loadding: false,
+      pageSize: 20,
+      pullUpOn: true,
+    };
   },
-  computed: {
-    orderList() {
-      return JSON.parse(store.state.queryAccount.history);
-    },
-  },
+
   methods: {
     getOrderInfo(arr, viptype) {
       return arr.filter((i) => {
         return i.id === viptype;
       })[0];
     },
+    go() {
+      uni.switchTab({
+        url: "/pages/index/index",
+      });
+    },
+    getOrderStatus(status) {
+      switch (status) {
+        case orderStatus.NOPAY:
+          return "未支付";
+        case orderStatus.SUCCESS:
+          return "支付成功";
+        case orderStatus.FAIL:
+          return "支付失败";
+      }
+    },
+  },
+  onReachBottom: async function () {
+    if (!this.pullUpOn) return;
+    this.loadding = true;
+    const data = await WechatPayControllerQueryAllOrdersGET({
+      pageNum: this.pageIndex,
+      pageSize: this.pageSize,
+    });
+    if (data.data.list.length < this.pageSize) {
+      this.loadding = false;
+      this.pullUpOn = false;
+    } else {
+      let loadData = data.data.list;
+      this.orderList = this.orderList.concat(loadData);
+      this.pageIndex = this.pageIndex + 1;
+      this.loadding = false;
+    }
   },
 };
 </script>

@@ -62,7 +62,7 @@ export default {
           url: "/pages/index/index",
         });
       } else {
-        uni.switchTab({
+        uni.navigateTo({
           url: "/pages/profile/order/order",
         });
       }
