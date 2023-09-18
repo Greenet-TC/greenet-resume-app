@@ -11,5 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "dayjs": "^1.11.9"
+  },
+  "devDependencies": {
+    "@types/uni-app": "^1.4.5"
   }
 }
