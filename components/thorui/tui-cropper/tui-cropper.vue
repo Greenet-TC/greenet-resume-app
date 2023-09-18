@@ -181,9 +181,11 @@
 			setTimeout(() => {
 				this.props = '1,1';
 			}, 0);
-			setTimeout(() => {
-				this.$emit('ready', {});
-			}, 200);
+			this.$nextTick(() => {
+				setTimeout(() => {
+					this.$emit('ready', {});
+				}, 200);
+			})
 		},
 		methods: {
 			//网络图片转成本地文件[同步执行]
@@ -263,7 +265,7 @@
 						// #endif
 
 						// #ifndef MP-ALIPAY
-						let isBase64=this.isBase64
+						let isBase64 = this.isBase64
 						// #ifdef MP-BAIDU || MP-TOUTIAO || H5
 						isBase64 = false;
 						// #endif
@@ -415,6 +417,7 @@
 		backface-visibility: hidden;
 		transform-origin: center;
 	}
+
 	.tui-cropper__image-hidden {
 		visibility: hidden;
 		opacity: 0;

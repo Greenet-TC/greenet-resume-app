@@ -1,6 +1,6 @@
 <template>
 	<canvas :style="{ width: cv_width + 'px', height: cv_height + 'px' }" :canvas-id="posterId" :id="posterId"
-		class="tui-poster__cv"></canvas>
+		class="tui-poster__cv" v-if="posterId"></canvas>
 </template>
 
 <script>
@@ -51,10 +51,12 @@
 			this.ctx = null
 		},
 		mounted() {
-			setTimeout(() => {
-				this.ctx = uni.createCanvasContext(this.posterId, this)
-				this.$emit('ready', {})
-			}, 50)
+			this.$nextTick(()=>{
+				setTimeout(() => {
+					this.ctx = uni.createCanvasContext(this.posterId, this)
+					this.$emit('ready', {})
+				}, 50)
+			})
 		},
 		methods: {
 			toast(msg) {

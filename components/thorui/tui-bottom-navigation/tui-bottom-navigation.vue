@@ -1,10 +1,9 @@
 <template>
 	<view @touchmove.stop.prevent="stop">
-		<view class="tui-bottom-navigation" :class="{ 'tui-navigation-fixed': isFixed, 'tui-remove-splitLine': unlined }">
+		<view class="tui-bottom-navigation" :style="{ backgroundColor: isDarkMode ? '#202020' : backgroundColor }" :class="{ 'tui-navigation-fixed': isFixed, 'tui-remove-splitLine': unlined }">
 			<view
 				class="tui-navigation-item"
 				:class="{ 'tui-item-after_height': splitLineScale, 'tui-last-item': index == itemList.length - 1 }"
-				:style="{ backgroundColor: isDarkMode ? '#202020' : backgroundColor }"
 				v-for="(item, index) in itemList"
 				:key="index"
 			>
@@ -17,7 +16,7 @@
 					<text
 						class="tui-navigation-text"
 						:style="{
-							color: isDarkMode ? '#fff' : current == index && item.type == 1 ? selectedColor : item.color || color,
+							color: isDarkMode ? '#fff' : current == index && item.type == 1 ? getSelectColor : item.color || color,
 							fontWeight: current == index && bold && item.type == 1 ? 'bold' : 'normal',
 							fontSize: fontSize
 						}"
@@ -104,7 +103,7 @@ export default {
 		//选中颜色
 		selectedColor: {
 			type: String,
-			default: '#5677fc'
+			default: ''
 		},
 		fontSize: {
 			type: String,
@@ -166,6 +165,11 @@ export default {
 			showMenuIndex: -1 //显示的菜单index
 		};
 	},
+	computed:{
+		getSelectColor(){
+			return this.selectedColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc';
+		}
+	},
 	methods: {
 		getIcon: function(current, index, item) {
 			let url = item.iconPath;
@@ -223,7 +227,9 @@ export default {
 	position: fixed !important;
 	left: 0;
 	bottom: 0;
+	padding-bottom: constant(safe-area-inset-bottom);
 	padding-bottom: env(safe-area-inset-bottom);
+	box-sizing: content-box;
 }
 
 .tui-bottom-navigation::after {

@@ -3,12 +3,13 @@ import store from "@/store/index.ts";
 import {
   WechatPayControllerResponseType,
   internshipPositionGetPageListParameType,
+  internshipPositionGetPageListResponType,
 } from "./model";
 
 export async function internshipPositionGetPageListPOST(
   payload: internshipPositionGetPageListParameType
 ): Promise<
-  WechatPayControllerResponseType<internshipPositionGetPageListParameType>
+  WechatPayControllerResponseType<internshipPositionGetPageListResponType>
 > {
   const data = {
     ...payload,

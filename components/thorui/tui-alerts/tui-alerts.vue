@@ -24,7 +24,7 @@
 <script>
 	export default {
 		name: "tui-alerts",
-		emits: ['leftClick','click','close'],
+		emits: ['leftClick', 'click', 'close'],
 		props: {
 			//info, success, warn, waiting,clear
 			type: {
@@ -74,7 +74,7 @@
 				type: Boolean,
 				default: false
 			},
-			isRight:{
+			isRight: {
 				type: Boolean,
 				default: false
 			},
@@ -110,11 +110,12 @@
 		},
 		methods: {
 			getColor(type) {
-				const color = "#5677fc"
+				const global = uni && uni.$tui && uni.$tui.color;
+				const color = (global && global.primary) || '#5677fc'
 				const colors = {
-					'success': '#19be6b',
-					'warn': '#ff7900',
-					'clear': '#EB0909'
+					'success': (global && global.success) || '#07c160',
+					'warn': (global && global.warning) || '#ff7900',
+					'clear': (global && global.danger) || '#EB0909'
 				}
 				return colors[type] ? colors[type] : color;
 			},
@@ -166,7 +167,8 @@
 		box-sizing: border-box;
 		/* #endif */
 	}
-	.tui-desc__padding{
+
+	.tui-desc__padding {
 		padding-top: 3px;
 	}
 

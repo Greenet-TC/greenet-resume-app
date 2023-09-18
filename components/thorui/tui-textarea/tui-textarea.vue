@@ -1,43 +1,50 @@
 <template>
-	<view :class="{'tui-textarea__border':textareaBorder}" :style="{marginTop:marginTop+'rpx'}" @tap="fieldClick">
-		<view class="tui-textarea__wrap"
-			:class="{'tui-line__left':lineLeft,'tui-border__top':!borderTop || textareaBorder,'tui-border__bottom':!borderBottom || textareaBorder,'tui-textarea__flex-start':flexStart}"
-			:style="{padding:padding,backgroundColor:backgroundColor}">
-			<!-- #ifdef APP-NVUE -->
-			<view class="tui-textarea__required" v-if="required && !flexStart">
-				<text :style="{color:requiredColor,paddingTop:'2rpx'}">*</text>
-			</view>
-			<text class="tui-textarea__required" :style="{color:requiredColor,top:requiredTop}"
-				v-if="required && flexStart">*</text>
-			<!-- #endif -->
-			<!-- #ifndef APP-NVUE -->
-			<view class="tui-textarea__required" :class="{'tui-required__flex-start':flexStart}"
-				:style="{color:requiredColor,top:flexStart?requiredTop:'50%'}" v-if="required">*</view>
-			<!-- #endif -->
-			<view class="tui-textarea__label"
-				:style="{fontSize:labelSize+'rpx',color:labelColor,minWidth:labelWidth+'rpx'}" v-if="label">
-				<text :style="{fontSize:labelSize+'rpx',color:labelColor}">{{label}}</text>
-			</view>
-			<slot name="left"></slot>
-			<view class="tui-textarea__flex-1">
-				<textarea class="tui-textarea__self" :class="{'tui-text__right':textRight}"
-					:style="{height:height,minHeight:minHeight,fontSize:size+'rpx',color:color}"
-					placeholder-class="tui-placeholder" :name="name" :value="inputVal" :placeholder="placeholder"
-					:placeholderStyle="placeholderStyl" :disabled="disabled" :cursor-spacing="cursorSpacing"
-					:maxlength="maxlength" :focus="focused" :auto-height="autoHeight" :fixed="fixed"
-					:show-confirm-bar="showConfirmBar" :cursor="cursor" :selection-start="selectionStart"
-					:selection-end="selectionEnd" :adjust-position="adjustPosition" :hold-keyboard="holdKeyboard"
-					:show-count="false" :disable-default-padding="disableDefaultPadding" @focus="onFocus" @blur="onBlur"
-					@input="onInput" @confirm="onConfirm" @linechange="onLinechange"
-					@keyboardheightchange="onKeyboardheightchange"></textarea>
-				<view class="tui-textarea__counter" :style="{fontSize:counterSize+'rpx',color:counterColor}"
-					v-if="isCounter">
-					<text
-						:style="{fontSize:counterSize+'rpx',color:counterColor}">{{maxlength!=-1?`${count}/${maxlength}`:count}}</text>
-				</view>
-			</view>
-			<slot name="right"></slot>
+	<view class="tui-textarea__wrap"
+		:class="{'tui-border__top':borderTop && !textareaBorder,'tui-border__bottom':borderBottom && !textareaBorder,'tui-textarea__border-nvue':textareaBorder,'tui-textarea__flex-start':flexStart}"
+		:style="{padding:padding,backgroundColor:backgroundColor,marginTop:marginTop+'rpx',borderRadius:radius+'rpx',borderColor:borderColor}"
+		@tap="fieldClick">
+		<!-- #ifndef APP-NVUE -->
+		<view class="tui-textarea__border-top" v-if="borderTop && !textareaBorder"
+			:style="{borderTopColor:borderColor}"></view>
+		<view class="tui-textarea__border-bottom" :class="{'tui-line__left':lineLeft}"
+			v-if="borderBottom && !textareaBorder" :style="{borderBottomColor:borderColor}"></view>
+		<view class="tui-textarea__border" v-if="textareaBorder"
+			:style="{borderColor:borderColor,borderRadius:getRadius}"></view>
+		<!-- #endif -->
+		<!-- #ifdef APP-NVUE -->
+		<view class="tui-textarea__required" v-if="required && !flexStart">
+			<text :style="{color:getRequiredColor,paddingTop:'2rpx'}">*</text>
 		</view>
+		<text class="tui-textarea__required" :style="{color:getRequiredColor,top:requiredTop}"
+			v-if="required && flexStart">*</text>
+		<!-- #endif -->
+		<!-- #ifndef APP-NVUE -->
+		<view class="tui-textarea__required" :class="{'tui-required__flex-start':flexStart}"
+			:style="{color:getRequiredColor,top:flexStart?requiredTop:'50%'}" v-if="required">*</view>
+		<!-- #endif -->
+		<view class="tui-textarea__label" :style="{fontSize:labelSize+'rpx',color:labelColor,minWidth:labelWidth+'rpx'}"
+			v-if="label">
+			<text :style="{fontSize:labelSize+'rpx',color:labelColor}">{{label}}</text>
+		</view>
+		<slot name="left"></slot>
+		<view class="tui-textarea__flex-1">
+			<textarea class="tui-textarea__self" :class="{'tui-text__right':textRight}"
+				:style="{height:height,minHeight:minHeight,fontSize:size+'rpx',color:color}"
+				placeholder-class="tui-placeholder" :name="name" :value="inputVal" :placeholder="placeholder"
+				:placeholderStyle="placeholderStyl" :disabled="disabled" :cursor-spacing="cursorSpacing"
+				:maxlength="maxlength" :focus="focused" :auto-height="autoHeight" :fixed="fixed"
+				:show-confirm-bar="showConfirmBar" :cursor="cursor" :selection-start="selectionStart"
+				:selection-end="selectionEnd" :adjust-position="adjustPosition" :hold-keyboard="holdKeyboard"
+				:show-count="false" :disable-default-padding="disableDefaultPadding" @focus="onFocus" @blur="onBlur"
+				@input="onInput" @confirm="onConfirm" @linechange="onLinechange"
+				@keyboardheightchange="onKeyboardheightchange"></textarea>
+			<view class="tui-textarea__counter" :style="{fontSize:counterSize+'rpx',color:counterColor}"
+				v-if="isCounter">
+				<text
+					:style="{fontSize:counterSize+'rpx',color:counterColor}">{{maxlength!=-1?`${count}/${maxlength}`:count}}</text>
+			</view>
+		</view>
+		<slot name="right"></slot>
 	</view>
 </template>
 
@@ -46,7 +53,6 @@
 		name: "tui-textarea",
 		emits: ['input', 'update:modelValue', 'focus', 'blur', 'confirm', 'click', 'linechange', 'keyboardheightchange'],
 		//这里加group是为了避免在表单中使用时给组件加value属性
-		// #ifndef VUE3
 		// #ifdef MP-WEIXIN
 		//加group是为了避免在表单中使用时给组件加value属性
 		behaviors: ['wx://form-field-group'],
@@ -54,7 +60,6 @@
 		// #ifdef MP-BAIDU || MP-QQ
 		//如果在这些平台不需要也能识别，则删除
 		behaviors: ['uni://form-field'],
-		// #endif
 		// #endif
 		// #ifdef MP-WEIXIN
 		options: {
@@ -70,7 +75,7 @@
 			},
 			requiredColor: {
 				type: String,
-				default: '#EB0909'
+				default: ''
 			},
 			requiredTop: {
 				type: String,
@@ -201,6 +206,16 @@
 				type: Boolean,
 				default: false
 			},
+			//V2.3.0+
+			borderColor: {
+				type: String,
+				default: 'rgba(0, 0, 0, 0.1)'
+			},
+			//V2.3.0+
+			radius: {
+				type: [Number, String],
+				default: 0
+			},
 			// 是否显示上边框
 			borderTop: {
 				type: Boolean,
@@ -256,6 +271,14 @@
 				default: 28
 			}
 		},
+		computed: {
+			getRadius() {
+				return Number(this.radius) * 2 + 'rpx'
+			},
+			getRequiredColor() {
+				return this.requiredColor || (uni && uni.$tui && uni.$tui.color.danger) || '#EB0909'
+			}
+		},
 		data() {
 			return {
 				placeholderStyl: '',
@@ -301,7 +324,9 @@
 		},
 		mounted() {
 			this.$nextTick(() => {
-				this.focused = this.focus
+				setTimeout(() => {
+					this.focused = this.focus
+				}, 300)
 			})
 		},
 		methods: {
@@ -323,7 +348,7 @@
 			onInput(event) {
 				let value = event.detail.value;
 				if (this.trim) value = this.trimStr(value);
-				const lenth = value.length;
+				let lenth = value.length;
 				const max = Number(this.maxlength)
 				if (lenth > max && max !== -1) {
 					lenth = max;
@@ -373,16 +398,10 @@
 		flex: 1;
 		align-items: center;
 		position: relative;
-
 		/* #ifdef APP-NVUE */
-		border-top-width: 0.5px;
-		border-top-style: solid;
-		border-top-color: rgba(0, 0, 0, 0.1);
-		border-bottom-width: 0.5px;
-		border-bottom-style: solid;
-		border-bottom-color: rgba(0, 0, 0, 0.1);
 		padding: 26rpx 30rpx;
 		/* #endif */
+		border-width: 0;
 	}
 
 	.tui-textarea__flex-start {
@@ -390,8 +409,11 @@
 	}
 
 	/* #ifndef APP-NVUE */
-	.tui-textarea__wrap::before {
-		content: ' ';
+	.tui-line__left {
+		left: 30rpx !important;
+	}
+
+	.tui-textarea__border-top {
 		position: absolute;
 		top: 0;
 		right: 0;
@@ -404,9 +426,7 @@
 		pointer-events: none;
 	}
 
-
-	.tui-textarea__wrap::after {
-		content: ' ';
+	.tui-textarea__border-bottom {
 		position: absolute;
 		border-bottom: 1px solid var(--thorui-line-color, rgba(0, 0, 0, 0.1));
 		-webkit-transform: scaleY(0.5);
@@ -419,27 +439,17 @@
 		pointer-events: none;
 	}
 
-	.tui-line__left::after {
-		left: 30rpx !important;
-	}
-
-	.tui-border__top::before {
-		border-top: 0;
-	}
-
-	.tui-border__bottom::after {
-		border-bottom: 0;
-	}
-
 	/* #endif */
 
 	/* #ifdef APP-NVUE */
 	.tui-border__top {
-		border-top-width: 0;
+		border-top-width: 0.5px;
+		border-top-style: solid;
 	}
 
 	.tui-border__bottom {
-		border-bottom-width: 0;
+		border-bottom-width: 0.5px;
+		border-bottom-style: solid;
 	}
 
 	/* #endif */
@@ -519,22 +529,16 @@
 
 	/* #endif */
 
-	.tui-textarea__border {
-		border-radius: 4rpx;
-		position: relative;
-		/* #ifdef APP-NVUE */
-		border-style: solid;
+	/* #ifdef APP-NVUE */
+	.tui-textarea__border-nvue {
 		border-width: 0.5px;
-		border-color: #d1d1d1;
-		/* #endif */
-		/* #ifndef APP-NVUE */
-		border-width: 0;
-		/* #endif */
+		border-style: solid;
 	}
 
+	/* #endif */
+
 	/* #ifndef APP-NVUE */
-	.tui-textarea__border::after {
-		content: ' ';
+	.tui-textarea__border {
 		position: absolute;
 		height: 200%;
 		width: 200%;
@@ -543,19 +547,23 @@
 		transform: scale(0.5);
 		left: 0;
 		top: 0;
-		border-radius: 8rpx;
 		pointer-events: none;
 	}
 
 	/* #endif */
+
 	.tui-textarea__flex-1 {
 		flex: 1;
 	}
 
 	.tui-textarea__counter {
+		/* #ifndef APP-NVUE */
+		width: 100%;
+		/* #endif */
 		padding-top: 8rpx;
 		text-align: right;
 		/* #ifdef APP-NVUE */
+		width: 100%;
 		flex-direction: row;
 		flex: 1;
 		justify-content: flex-end;

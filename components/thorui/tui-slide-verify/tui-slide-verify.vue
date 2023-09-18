@@ -1,22 +1,50 @@
 <template>
-	<view class="tui-slide-vcode" :style="{width:slideBarWidth+'px',height:slideBlockWidth+'px',backgroundColor:backgroundColor}">
+	<view class="tui-slide-vcode"
+		:style="{width:slideBarWidth+'px',height:slideBlockWidth+'px',backgroundColor:backgroundColor}">
 		<text class="tui-text-flashover" :style="{fontSize:size+'rpx',background:getBgColor}">拖动滑块验证</text>
-		<view class="tui-slide-glided" :style="{backgroundColor:activeBgColor}">
+		<!-- #ifdef APP-PLUS || MP-WEIXIN || H5 -->
+		<view class="tui-slide-glided" :style="{backgroundColor:getActiveBgColor}">
 			<text :style="{fontSize:size+'rpx',color:activeColor}" v-if="isPass">{{passText}}</text>
+			<view v-else :style="{width: slideBarWidth + 'px',height: slideBlockWidth + 'px', fontSize:size + 'rpx'}"
+				class="tui-active__text">拖动滑块验证</view>
 		</view>
-		<view class="tui-slider-block" :style="{width:slideBlockWidth+'px',height:slideBlockWidth+'px',borderColor:isPass?activeBorderColor: borderColor}"
-		 :change:prop="parse.slidereset" :prop="reset" :data-slideBarWidth="slideBarWidth" :data-slideBlockWidth="slideBlockWidth"
-		 :data-errorRange="errorRange" :data-disabled="disabled" @touchstart="parse.touchstart" @touchmove="parse.touchmove"
-		 @touchend="parse.touchend">
-			<text class="tui-slide-icon tui-icon-double_arrow" :style="{fontSize:iconSize+'rpx',color:arrowColor}" v-if="!isPass"></text>
-			<text class="tui-slide-icon tui-icon-check_mark" :style="{fontSize:iconSize+'rpx',color:checkColor}" v-if="isPass"></text>
+		<view class="tui-slider-block"
+			:style="{width:slideBlockWidth+'px',height:slideBlockWidth+'px',borderColor:isPass?getActiveBorderColor: borderColor}"
+			:change:prop="parse.slidereset" :prop="reset" :data-slideBarWidth="slideBarWidth"
+			:data-slideBlockWidth="slideBlockWidth" :data-errorRange="errorRange" :data-disabled="disabled"
+			@touchstart="parse.touchstart" @touchmove="parse.touchmove" @touchend="parse.touchend" @mousedown="parse.mousedown">
+			<text class="tui-slide-icon tui-icon-double_arrow" :style="{fontSize:iconSize+'rpx',color:arrowColor}"
+				v-if="!isPass"></text>
+			<text class="tui-slide-icon tui-icon-check_mark" :style="{fontSize:iconSize+'rpx',color:getCheckColor}"
+				v-if="isPass"></text>
 		</view>
+		<!-- #endif -->
+
+		<!-- #ifndef APP-PLUS || MP-WEIXIN || H5 -->
+		<view class="tui-slide-glided" :style="{backgroundColor:getActiveBgColor,width:slipOverWidth+'px'}">
+			<text :style="{fontSize:size+'rpx',color:activeColor}" v-if="isPass">{{passText}}</text>
+			<view v-else :style="{width: slideBarWidth + 'px',height: slideBlockWidth + 'px', fontSize:size + 'rpx'}"
+				class="tui-active__text">拖动滑块验证</view>
+		</view>
+		<view class="tui-slider-block" :class="{'tui-slider__reset':resetAni}"
+			:style="{width:slideBlockWidth+'px',height:slideBlockWidth+'px',borderColor:isPass?getActiveBorderColor: borderColor,transform:transform}"
+			@touchstart="touchstart" @touchmove.stop.prevent="touchmove" @touchend="touchend">
+			<text class="tui-slide-icon tui-icon-double_arrow" :style="{fontSize:iconSize+'rpx',color:arrowColor}"
+				v-if="!isPass"></text>
+			<text class="tui-slide-icon tui-icon-check_mark" :style="{fontSize:iconSize+'rpx',color:getCheckColor}"
+				v-if="isPass"></text>
+		</view>
+		<!-- #endif -->
 	</view>
 </template>
+<!-- #ifdef APP-PLUS || MP-WEIXIN || H5 -->
 <script src="./tui-slide-verify.wxs" module="parse" lang="wxs"></script>
+<!-- #endif -->
 <script>
+	import mp from './index.js'
 	export default {
 		name: "tuiSlideVerify",
+		mixins: [mp],
 		emits: ['success'],
 		props: {
 			//滑动条宽度 px
@@ -37,7 +65,7 @@
 			//通过验证后滑块border颜色
 			activeBorderColor: {
 				type: String,
-				default: '#19be6b'
+				default: ''
 			},
 			//误差范围 px 距离右侧多少距离验证通过
 			errorRange: {
@@ -76,7 +104,7 @@
 			},
 			checkColor: {
 				type: String,
-				default: "#19be6b"
+				default: ""
 			},
 			//滑动条背景色
 			backgroundColor: {
@@ -86,7 +114,7 @@
 			//滑过区域背景颜色
 			activeBgColor: {
 				type: String,
-				default: "#19be6b"
+				default: ""
 			},
 			//通过提示文字
 			passText: {
@@ -98,6 +126,15 @@
 		computed: {
 			getBgColor() {
 				return `-webkit-gradient(linear, left top, right top, color-stop(0, ${this.color}), color-stop(.4, ${this.color}), color-stop(.5, white), color-stop(.6, ${this.color}), color-stop(1, ${this.color}))`
+			},
+			getActiveBorderColor() {
+				return this.activeBorderColor || (uni && uni.$tui && uni.$tui.color.success) || '#07c160';
+			},
+			getCheckColor() {
+				return this.checkColor || (uni && uni.$tui && uni.$tui.color.success) || '#07c160';
+			},
+			getActiveBgColor() {
+				return this.activeBgColor || (uni && uni.$tui && uni.$tui.color.success) || '#07c160';
 			}
 		},
 		watch: {
@@ -165,7 +202,6 @@
 	.tui-slide-glided {
 		width: 0;
 		height: 100%;
-		background-color: #19BE6B;
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -173,6 +209,7 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		overflow: hidden;
 	}
 
 	.tui-slider-block {
@@ -188,6 +225,9 @@
 		left: 0;
 		top: 0;
 		transition: border-color 0.08s;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
 	}
 
 	.tui-text-flashover {
@@ -214,5 +254,19 @@
 		to {
 			background-position: 90rpx;
 		}
+	}
+
+	.tui-active__text {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		left: 0;
+		top: 0;
+		color: #fff;
+	}
+
+	.tui-slider__reset {
+		transition: transform 0.25s;
 	}
 </style>

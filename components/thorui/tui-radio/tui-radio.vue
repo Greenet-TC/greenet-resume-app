@@ -4,7 +4,7 @@
 		@tap.stop="radioChange">
 		<view class="tui-check__mark" :style="{borderBottomColor:checkMarkColor,borderRightColor:checkMarkColor}"
 			v-if="val"></view>
-		<radio class="tui-radio__hidden" style="position: absolute;opacity: 0;" hidden :color="color" :disabled="disabled" :value="value" :checked="val"></radio>
+		<radio class="tui-radio__hidden" style="position: absolute;opacity: 0;" hidden :color="getColor" :disabled="disabled" :value="value" :checked="val"></radio>
 	</view>
 </template>
 
@@ -12,6 +12,7 @@
 	export default {
 		name: "tui-radio",
 		emits: ['change'],
+		behaviors: ['uni://form-field'],
 		options: {
 			virtualHost: true
 		},
@@ -31,7 +32,7 @@
 			//radio选中背景颜色
 			color: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//radio未选中时边框颜色
 			borderColor: {
@@ -51,6 +52,11 @@
 			scaleRatio: {
 				type: [Number, String],
 				default: 1
+			}
+		},
+		computed:{
+			getColor(){
+				return this.color || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		created() {
@@ -94,14 +100,14 @@
 		},
 		methods: {
 			getBackgroundStyle(val, isCheckMark) {
-				let color = val ? this.color : '#fff'
+				let color = val ? this.getColor : '#fff'
 				if (isCheckMark) {
 					color = 'transparent'
 				}
 				return color;
 			},
 			getBorderStyle(val, isCheckMark) {
-				let color = val ? this.color : this.borderColor;
+				let color = val ? this.getColor : this.borderColor;
 				if (isCheckMark) {
 					color = 'transparent'
 				}
@@ -181,6 +187,7 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
+		pointer-events: none;
 		/* #endif */
 		/* #ifdef APP-NVUE */
 		width: 100wx;

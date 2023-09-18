@@ -344,10 +344,8 @@
 </template>
 
 <script>
-// import { getlogin, wxLogin, getUserProfile } from "@/common/utils.js";
 import store from "@/store/index.ts";
-import { login } from "@/common/login";
-import { WEBURL } from "@/common/utils";
+import { WEBURL, getUserProfile } from "@/common/utils";
 import * as A from "@/components/common/tui-utils/tui-utils.js";
 import dayjs from "dayjs";
 
@@ -560,9 +558,10 @@ export default {
       this.opacity = e.opacity;
     },
 
-    loginClick() {
+    async loginClick() {
       // login();
-      getUserProfile();
+      const data = await getUserProfile();
+      console.log(data);
     },
   },
 

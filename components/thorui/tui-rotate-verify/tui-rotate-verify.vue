@@ -21,24 +21,24 @@
 				<view class="tui-verify__result" v-if="isShow || isPass"
 					:style="{ width: imgWidth + 'rpx', height: imgWidth + 'rpx', borderRadius: imgRadius }">
 					<text class="tui-rotate-icon" :class="[isPass?'tui-icon__success':'tui-icon__close']"
-						:style="{ color: isPass ? successColor : errorColor }"></text>
+						:style="{ color: isPass ? getSuccessColor : getErrorColor }"></text>
 				</view>
 			</view>
 			<view class="tui-slider_bar"
-				:style="{ width: sliderWidth + 'px', height: sliderHeight + 'px', border: sliderBarBorder, background: sliderBarBackground }">
+				:style="{ width: sliderWidth + 'px', height: sliderHeight + 'px', borderWidth: sliderBarBorderWidth+'rpx',borderStyle:sliderBarBorderStyle,borderColor:geSliderBarBorder, background: getSliderBarBackground(sliderBarBorderColor) }">
 				<!-- #ifdef APP-PLUS || H5 || MP-WEIXIN -->
 				<view class="tui-slider_block"
-					:style="{ width: sliderHeight + 'px', height: sliderHeight + 'px', background: blockBackground }"
+					:style="{ width: sliderHeight + 'px', height: sliderHeight + 'px', background: getBlockBackground }"
 					:change:prop="parse.slidereset" :prop="reset" :data-width="sliderWidth" :data-height="sliderHeight"
 					:data-errorRange="errorRange" :data-angle="angle" :data-disabled="isPass" :data-type="type"
-					@touchstart="parse.touchstart" @touchmove="parse.touchmove" @touchend="parse.touchend">
+					@touchstart="parse.touchstart" @touchmove="parse.touchmove" @touchend="parse.touchend" @mousedown="parse.mousedown">
 					<text class="tui-rotate-icon tui-icon__arrow"
 						:style="{ color: arrowColor, fontSize: arrowSize + 'rpx' }"></text>
 				</view>
 				<!-- #endif -->
 				<!-- #ifndef APP-PLUS || H5 || MP-WEIXIN -->
 				<view class="tui-slider_block" :class="{'tui-block__trans':resetAni}"
-					:style="{ width: sliderHeight + 'px', height: sliderHeight + 'px', background: blockBackground,transform:transform }"
+					:style="{ width: sliderHeight + 'px', height: sliderHeight + 'px', background: getBlockBackground,transform:transform }"
 					@touchstart="touchstart" @touchmove.stop.prevent="touchmove" @touchend="touchend">
 					<text class="tui-rotate-icon tui-icon__arrow"
 						:style="{ color: arrowColor, fontSize: arrowSize + 'rpx' }"></text>
@@ -157,18 +157,28 @@
 				type: Number,
 				default: 96
 			},
-			//滑动条边框
-			sliderBarBorder: {
+			//滑动条边框 宽度 V2.8.0+
+			sliderBarBorderWidth: {
+				type: [Number, String],
+				default: 2
+			},
+			//V2.8.0+
+			sliderBarBorderStyle: {
 				type: String,
-				default: '1rpx solid #5677fc'
+				default: 'solid'
+			},
+			//V2.8.0+
+			sliderBarBorderColor: {
+				type: String,
+				default: ''
 			},
 			sliderBarBackground: {
 				type: String,
-				default: 'rgba(86,119,252,.1)'
+				default: ''
 			},
 			blockBackground: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			arrowColor: {
 				type: String,
@@ -180,11 +190,11 @@
 			},
 			errorColor: {
 				type: String,
-				default: '#EB0909'
+				default: ''
 			},
 			successColor: {
 				type: String,
-				default: '#07c160'
+				default: ''
 			},
 			zIndex: {
 				type: Number,
@@ -225,6 +235,20 @@
 				}
 			}
 		},
+		computed: {
+			geSliderBarBorder() {
+				return this.sliderBarBorderColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			},
+			getBlockBackground() {
+				return this.blockBackground || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			},
+			getErrorColor() {
+				return this.errorColor || (uni && uni.$tui && uni.$tui.color.danger) || '#EB0909'
+			},
+			getSuccessColor() {
+				return this.successColor || (uni && uni.$tui && uni.$tui.color.success) || '#07c160'
+			}
+		},
 		data() {
 			return {
 				sliderWidth: 0,
@@ -237,6 +261,23 @@
 			this.initData();
 		},
 		methods: {
+			hexToRGB(hex) {
+				if (hex.length === 4) {
+					let text = hex.substring(1, 4);
+					hex = '#' + text + text;
+				}
+				let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+				return result ? {
+					r: parseInt(result[1], 16),
+					g: parseInt(result[2], 16),
+					b: parseInt(result[3], 16)
+				} : {};
+			},
+			getSliderBarBackground(color) {
+				const bg = color || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+				const rgb = this.hexToRGB(bg)
+				return this.sliderBarBackground || `rgba(${rgb.r},${rgb.g},${rgb.b},.1)`
+			},
 			initData() {
 				this.sliderWidth = uni.upx2px(this.sliderBarWidth);
 				this.sliderHeight = uni.upx2px(this.sliderBarHeight);
@@ -389,6 +430,9 @@
 		align-items: center;
 		justify-content: center;
 		box-sizing: border-box;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
 	}
 
 	.tui-block__trans {

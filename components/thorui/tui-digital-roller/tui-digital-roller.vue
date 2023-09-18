@@ -5,7 +5,7 @@
 			<view class="tui-digital__column"
 				:style="{transform:`translate3d(0, -${keys[index] * height}px, 0)`,transitionDuration:`${duration}s`,transitionTimingFunction:animation}">
 				<view class="tui-digital__item" v-for="(val,idx) in item" :key="idx"
-					:style="{color:color,fontSize:size+'rpx',fontWeight:bold?'bold':'normal',height:height+'px',lineHeight:size+'rpx'}">
+					:style="{color:getColor,fontSize:size+'rpx',fontWeight:bold?'bold':'normal',height:height+'px',lineHeight:size+'rpx'}">
 					{{val}}</view>
 			</view>
 		</view>
@@ -23,7 +23,7 @@
 			},
 			color: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//rpx
 			size: {
@@ -61,6 +61,11 @@
 			},
 			cellHeight(val) {
 				this.handleHeight(val)
+			}
+		},
+		computed:{
+			getColor(){
+				return this.color || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		data() {

@@ -1,12 +1,30 @@
 var _st = {}
 
+function isPC() {
+	if (typeof navigator !== 'object') return false;
+	var userAgentInfo = navigator.userAgent;
+	var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+	var flag = true;
+	for (var v = 0; v < Agents.length - 1; v++) {
+		if (userAgentInfo.indexOf(Agents[v]) > 0) {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}
+var isH5 = false
+if (typeof window === 'object') isH5 = true
+
 var isOutRange = function(x1, y1, x2, y2, x3, y3) {
 	return x1 < 0 || x1 >= y1 || x2 < 0 || x2 >= y2 || x3 < 0 || x3 >= y3
 };
 var isEdit = false;
+
 function bool(str) {
 	return str === 'true' || str == true ? true : false
 }
+
 var sortCore = function(sKey, eKey, st) {
 	var _ = st.basedata;
 	var excludeFix = function(cKey, type) {
@@ -94,7 +112,12 @@ var longPress = function(event, ownerInstance) {
 		st.basedata = JSON.parse(dataset.basedata)
 	}
 	var _ = st.basedata;
-	var sTouch = event.changedTouches ? event.changedTouches[0] : st.sTouch;
+	var sTouch = null;
+	if (isH5 && isPC()) {
+		sTouch = event;
+	} else {
+		sTouch = event.changedTouches ? event.changedTouches[0] : st.sTouch;
+	}
 	if (!sTouch) return;
 
 	st.cur = +dataset.index;
@@ -108,7 +131,7 @@ var longPress = function(event, ownerInstance) {
 
 	// #ifdef MP-WEIXIN
 	ownerInstance.callMethod("drag", {
-		dragging: true
+		wxdrag: true
 	});
 	// #endif
 
@@ -124,7 +147,7 @@ var longPress = function(event, ownerInstance) {
 		item.removeClass("tui-drag__transition").removeClass("tui-drag__current");
 		item.addClass(index == st.cur ? "tui-drag__current" : "tui-drag__transition");
 	})
-     
+
 	ownerInstance.callMethod("vibrate");
 	st.dragging = true;
 };
@@ -135,22 +158,39 @@ var touchStart = function(event, ownerInstance) {
 	state.list = _st.list
 	state.itemsInstance = _st.itemsInstance
 	state.basedata = _st.basedata
-	state.sTouch = event.changedTouches[0]
+	if (isH5 && isPC()) {
+		state.sTouch = event;
+	} else {
+		state.sTouch = event.changedTouches[0] || event.touches[0]
+	}
 	var dataset = ins.getDataset()
 	isEdit = bool(dataset.edit)
+	// #ifdef MP-WEIXIN
+	ownerInstance.callMethod("drag", {
+		wxdrag: false
+	});
+	// #endif
 }
 
-var touchMove = function(event, ownerInstance) {
-	var ins = event.instance;
-	var st = ins.getState();
+var touchMove = function(event, ownerInstance, pc_e) {
+	var ins = null
+	var st = {}
+	var mTouch = null;
+	if (isH5 && isPC()) {
+		mTouch = event;
+		st = pc_e.instance.getState()
+		ins = pc_e.instance;
+	} else {
+		mTouch = event.changedTouches[0] || event.touches[0]
+		ins = event.instance
+		st = ins.getState()
+	}
 	if (event.preventDefault && st.dragging) {
 		event.preventDefault()
 	}
 	var _ = st.basedata;
 
-	if (!st.dragging || !isEdit) return;
-	var mTouch = event.changedTouches[0];
-	if (!mTouch) return;
+	if (!st.dragging || !isEdit || !mTouch) return;
 
 	// 如果不是同一个触发点则返回
 	if (st.sId !== mTouch.identifier) return;
@@ -210,9 +250,16 @@ var touchMove = function(event, ownerInstance) {
 	triggerCustomEvent(list, "change", ownerInstance);
 }
 
-var touchEnd = function(event, ownerInstance) {
-	var ins = event.instance;
-	var st = ins.getState();
+var touchEnd = function(event, ownerInstance, pc_e) {
+	var ins = null
+	var st = {}
+	if (isH5 && isPC()) {
+		ins = pc_e.instance
+		st = pc_e.instance.getState()
+	} else {
+		st = event.instance.getState()
+		ins = event.instance
+	}
 
 	if (!st.dragging || !isEdit) return;
 	triggerCustomEvent(st.list, "sort_end", ownerInstance);
@@ -228,7 +275,7 @@ var touchEnd = function(event, ownerInstance) {
 	st.dragging = false;
 	// #ifdef MP-WEIXIN
 	ownerInstance.callMethod("drag", {
-		dragging: false
+		wxdrag: false
 	});
 	// #endif
 	st.cur = -1;
@@ -246,7 +293,7 @@ var listObserver = function(newVal, oldVal, ownerInstance, ins) {
 	_st.itemsInstance = ownerInstance.selectAllComponents('.tui-drag__item');
 
 	_st.list = newVal || [];
-    if (!_st.itemsInstance || _st.itemsInstance.length === 0) return;
+	if (!_st.itemsInstance || _st.itemsInstance.length === 0) return;
 	_st.list.forEach(function(item, index) {
 		var itemIns = _st.itemsInstance[index];
 		if (item && itemIns) {
@@ -257,12 +304,35 @@ var listObserver = function(newVal, oldVal, ownerInstance, ins) {
 		}
 	})
 }
+var movable = false;
+
+function mousedown(e, ins) {
+	if (!isH5 || !isPC()) return
+	touchStart(e, ins)
+	longPress(e, ins)
+	movable = true
+	window.onmousemove = function(event) {
+		if (!isH5 || !isPC() || !movable) return
+		touchMove(event, ins, e)
+	}
+	window.onmouseup = function(event) {
+		if (!isH5 || !isPC() || !movable) return
+		touchEnd(event, ins, e)
+		movable = false
+	}
+}
+
+function stopMove() {
+	return true
+}
 
 module.exports = {
 	longPress: longPress,
 	touchStart: touchStart,
 	touchMove: touchMove,
 	touchEnd: touchEnd,
+	mousedown: mousedown,
 	baseDataObserver: baseDataObserver,
-	listObserver: listObserver
+	listObserver: listObserver,
+	stopMove: stopMove
 }

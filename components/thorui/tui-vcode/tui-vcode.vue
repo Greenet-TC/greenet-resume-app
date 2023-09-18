@@ -1,6 +1,6 @@
 <template>
 	<canvas class="tui-vcode--box" :canvas-id="canvasId" :id="canvasId"
-		:style="{width:width + 'px',height: height + 'px'}" @tap="draw"></canvas>
+		:style="{width:width + 'px',height: height + 'px'}" @tap="draw" v-if="canvasId"></canvas>
 </template>
 
 <script>
@@ -23,6 +23,7 @@
 		const _b = randomNum(min, max)
 		return `rgb(${_r}, ${_g}, ${_b})`
 	}
+	const canvasId = `tui_${Math.ceil(Math.random() * 10e5).toString(36)}`
 	export default {
 		name: "tui-vcode",
 		emits: ['change'],
@@ -69,7 +70,6 @@
 			}
 		},
 		data() {
-			const canvasId = `tui_${Math.ceil(Math.random() * 10e5).toString(36)}`
 			return {
 				canvasId
 			};
@@ -78,9 +78,11 @@
 			this.ctx = null
 		},
 		mounted() {
-			setTimeout(() => {
-				this.draw()
-			}, 50)
+			this.$nextTick(()=>{
+				setTimeout(() => {
+					this.draw()
+				}, 50)
+			})
 		},
 		// #ifndef VUE3
 		beforeDestroy() {
