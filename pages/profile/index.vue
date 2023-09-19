@@ -176,7 +176,7 @@
           </view>
         </tui-list-cell>
         <view class="tui-order-list">
-          <view class="tui-order-item" @tap="href(4)">
+          <view class="tui-order-item" @tap="openOrder()">
             <view class="tui-icon-box">
               <image
                 src="/static/images/icon/profile/1.png"
@@ -186,7 +186,7 @@
             </view>
             <view class="tui-order-text">简历修改</view>
           </view>
-          <view class="tui-order-item" @tap="href(4)">
+          <view class="tui-order-item" @tap="openOrder()">
             <view class="tui-icon-box">
               <image
                 src="/static/images/icon/profile/2.png"
@@ -196,7 +196,7 @@
             </view>
             <view class="tui-order-text">模拟面试</view>
           </view>
-          <view class="tui-order-item" @tap="href(4)">
+          <view class="tui-order-item" @tap="openOrder()">
             <view class="tui-icon-box">
               <image
                 src="/static/images/icon/profile/3.png"
@@ -205,7 +205,7 @@
             </view>
             <view class="tui-order-text">实习内推</view>
           </view>
-          <view class="tui-order-item" @tap="href(4)">
+          <view class="tui-order-item" @tap="openOrder()">
             <view class="tui-icon-box">
               <image
                 src="/static/images/icon/profile/4.png"

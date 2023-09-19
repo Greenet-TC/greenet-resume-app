@@ -122,7 +122,7 @@
         <template v-slot:body>
           <view class="course-list-item-tag">
             <tui-tag
-              type="gray"
+              type="light-green"
               v-if="item.jobLocation"
               margin="0 14rpx 0 0"
               padding="10rpx"
@@ -131,7 +131,7 @@
             >
             <tui-tag
               v-if="item.jobAttributes"
-              type="gray"
+              type="light-green"
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="24rpx"
@@ -139,15 +139,16 @@
             >
             <tui-tag
               v-if="item.jobTime"
-              type="gray"
+              type="light-green"
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="24rpx"
+              plain
               >{{ item.jobTime }}</tui-tag
             >
             <tui-tag
               v-if="item.academicRequirements"
-              type="gray"
+              type="light-green"
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="24rpx"
@@ -216,9 +217,12 @@ export default {
   async onLoad() {
     try {
       const data = await internshipPositionGetPageListPOST({
-        page,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
       });
-      console.log(data);
+      this.intershipList = data.data;
+      this.pageInfo = data.pageInfo;
+      console.log(this.intershipList);
     } catch (e) {
       console.log(e);
     }
@@ -227,6 +231,14 @@ export default {
     return {
       companyInfo,
       JobInfo,
+      intershipList: [],
+      pageNum: 1,
+      pageSize: 20,
+      pageInfo: {
+        page: 0,
+        pageSize: 0,
+        totalCount: 0,
+      },
       banner: ["a.png", "b.png", "c.png", "d.png"],
     };
   },
