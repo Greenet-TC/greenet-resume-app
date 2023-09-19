@@ -1,3 +1,7 @@
+export interface IOptions {
+  value: number | string;
+  label: string;
+}
 export const serviceType = [
   {
     type: "1",
@@ -918,3 +922,140 @@ export enum tradeType {
   Native = "Native",
   Jsapi = "Jsapi",
 }
+export const positionNameOptions: IOptions[] = [
+  {
+    value: 0,
+    label: "运营",
+  },
+  {
+    value: 1,
+    label: "产品运营",
+  },
+  {
+    value: 2,
+    label: "产品经理",
+  },
+  {
+    value: 3,
+    label: "后端开发",
+  },
+  {
+    value: 4,
+    label: "前端开发",
+  },
+
+  {
+    value: 5,
+    label: "测试工程",
+  },
+  {
+    value: 6,
+    label: "采销经理",
+  },
+  {
+    value: 7,
+    label: "数据分析",
+  },
+  {
+    value: 8,
+    label: "HRBP",
+  },
+  {
+    value: 9,
+    label: "审计",
+  },
+  {
+    value: 10,
+    label: "金融相关",
+  },
+];
+export const JobProperity: IOptions[] = [
+  {
+    value: 1,
+    label: "实习",
+  },
+  {
+    value: 2,
+    label: "校招",
+  },
+  {
+    value: 3,
+    label: "社招",
+  },
+];
+export const experienceTime: IOptions[] = [
+  { value: 1, label: "无要求" },
+  { value: 2, label: "1-3年" },
+  { value: 3, label: "3-5年" },
+  { value: 4, label: "5-10年" },
+  { value: 5, label: "10年以上" },
+];
+export const companyScale: IOptions[] = [
+  { value: 1, label: "小于50人" },
+  { value: 2, label: "50～100人" },
+  { value: 3, label: "100～1000人" },
+  { value: 4, label: "1000～9999人" },
+  { value: 5, label: "9999+以上" },
+];
+export const companyFance: IOptions[] = [
+  { value: 1, label: "已上市" },
+  { value: 2, label: "融资中" },
+  { value: 3, label: "不需要融资" },
+];
+export const companyLocaltion: IOptions[] = [
+  { value: "北京", label: "北京" },
+  { value: "上海", label: "上海" },
+  { value: "深圳", label: "深圳" },
+  { value: "广州", label: "广州" },
+  { value: "杭州", label: "杭州" },
+  { value: "西安", label: "西安" },
+];
+export const industryOptions: IOptions[] = [
+  {
+    value: 1,
+    label: "互联网/IT",
+  },
+  {
+    value: 2,
+    label: "咨询/金融/四大/商业分析",
+  },
+  {
+    value: 3,
+    label: "新媒体",
+  },
+  {
+    value: 4,
+    label: "教育/培训",
+  },
+  {
+    value: 5,
+    label: "房地产/建筑",
+  },
+  {
+    value: 6,
+    label: "其他",
+  },
+];
+export const EducationOptions: IOptions[] = [
+  { label: "不填", value: 0 },
+  {
+    label: " 大专",
+    value: 1,
+  },
+  {
+    label: " 本科",
+    value: 2,
+  },
+  {
+    label: " 硕士",
+    value: 3,
+  },
+  {
+    label: " 博士",
+    value: 4,
+  },
+  {
+    label: " MBA",
+    value: 5,
+  },
+];

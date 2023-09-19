@@ -214,9 +214,10 @@ import { companyInfo, JobInfo } from "@/common/contant";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 export default {
   async onLoad() {
-    console.log(11111);
     try {
-      const data = await internshipPositionGetPageListPOST({});
+      const data = await internshipPositionGetPageListPOST({
+        page,
+      });
       console.log(data);
     } catch (e) {
       console.log(e);
