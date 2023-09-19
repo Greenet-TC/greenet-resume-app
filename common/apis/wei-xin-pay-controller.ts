@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-07 16:48:45
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-18 20:50:15
+ * @LastEditTime: 2023-09-19 11:22:43
  * @FilePath: /greenet-resume-app/common/apis/wei-xin-pay-controller.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -35,7 +35,7 @@ export async function WechatPayControllerCreateWeChatJsApiPOST(
     ...payload,
   };
   const result = await http.request({
-    url: `/api/WechatPayController/createWeChatJsApi?xxl_sso_sessionid: ${store.state.cookies}`,
+    url: `/api/WechatPayController/createWeChatJsApi`,
     method: "post",
     data,
   });

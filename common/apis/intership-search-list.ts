@@ -15,7 +15,7 @@ export async function internshipPositionGetPageListPOST(
     ...payload,
   };
   const result = await http.request({
-    url: `/api/internshipPosition/getPageList?xxl_sso_sessionid: ${store.state.cookies}`,
+    url: `/api/internshipPosition/getPageList`,
     method: "post",
     data,
   });
