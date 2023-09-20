@@ -195,16 +195,31 @@ import { companyInfo } from "../../common/contant";
 import { login, getBaseInfo, setLoginStatus } from "../../common/login";
 import { getToken } from "../../common/utils";
 export default {
-  //设置页面全屏
-  onPageScroll(e) {
-    // #ifdef APP-PLUS
-    let scrollTop = e.scrollTop;
-    if (scrollTop < 0) {
-      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
-    } else {
-      this.opacity = 1;
+  onShow() {
+    if (!getToken()) {
+      setTimeout(() => {
+        if (!getToken()) {
+          this.openActionSheet();
+        }
+      }, 3000);
     }
-    // #endif
+  },
+
+  onLoad() {
+    if (getToken()) {
+      getBaseInfo();
+      setLoginStatus(true);
+    }
+  },
+
+  onPullDownRefresh: function () {
+    let loadData = JSON.parse(JSON.stringify(this.productList));
+    loadData = loadData.splice(0, 10);
+    this.productList = loadData;
+    this.pageIndex = 1;
+    this.pullUpOn = true;
+    this.loadding = false;
+    uni.stopPullDownRefresh();
   },
 
   onReachBottom: function () {
@@ -225,31 +240,16 @@ export default {
     }
   },
 
-  onPullDownRefresh: function () {
-    let loadData = JSON.parse(JSON.stringify(this.productList));
-    loadData = loadData.splice(0, 10);
-    this.productList = loadData;
-    this.pageIndex = 1;
-    this.pullUpOn = true;
-    this.loadding = false;
-    uni.stopPullDownRefresh();
-  },
-
-  onLoad() {
-    if (getToken()) {
-      getBaseInfo();
-      setLoginStatus(true);
+  //设置页面全屏
+  onPageScroll(e) {
+    // #ifdef APP-PLUS
+    let scrollTop = e.scrollTop;
+    if (scrollTop < 0) {
+      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
+    } else {
+      this.opacity = 1;
     }
-  },
-
-  onShow() {
-    if (!getToken()) {
-      setTimeout(() => {
-        if (!getToken()) {
-          this.openActionSheet();
-        }
-      }, 3000);
-    }
+    // #endif
   },
 
   // 调用wx.getUserProfile接口
