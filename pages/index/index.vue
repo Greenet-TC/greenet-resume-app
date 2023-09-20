@@ -49,11 +49,25 @@
         <view class="tui-category-name">{{ item.name }}</view>
       </view>
     </view>
-    <image
-      src="/static/images/coupon/banner.png"
-      class="tui-img__coupon"
-      @tap="coupon"
-    ></image>
+    <view class="category-active">
+      <image
+        src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner.png"
+        class="tui-img__coupon"
+        @tap="coupon"
+      ></image>
+      <view class="coupon-contant">
+        <view class="coupon-contant-text">
+          <view class="coupon-contant-text-title">
+            优加实习城市信息共享群
+          </view>
+          <view class="coupon-contant-text-sub">
+            300+名企岗位内推offer轻松拿！
+          </view>
+        </view>
+        <view class="coupon-contant-btn">加入+</view>
+      </view>
+    </view>
+
     <!-- 头部 -->
     <view class="tui-title-contant">
       <tui-text size="35" fontWeight="500" block text="实习内推"></tui-text>
@@ -178,7 +192,7 @@
 </template>
 <script>
 import { companyInfo } from "../../common/contant";
-import { login } from "../../common/login";
+import { login, getBaseInfo, setLoginStatus } from "../../common/login";
 import { getToken } from "../../common/utils";
 export default {
   //设置页面全屏
@@ -221,15 +235,12 @@ export default {
     uni.stopPullDownRefresh();
   },
 
-  // onLoad: async function () {
-  //   console.log("Starting", getToken());
-  //   if (getToken()) {
-  //     const data = await loginMiniGET(setToken());
-  //     console.log(11111, data);
-  //     getBaseInfo();
-  //     setLoginStatus(true);
-  //   }
-  // },
+  onLoad() {
+    if (getToken()) {
+      getBaseInfo();
+      setLoginStatus(true);
+    }
+  },
 
   onShow() {
     if (!getToken()) {
@@ -323,11 +334,11 @@ export default {
         login();
       }
     },
-  },
+  }
 };
 </script>
 
-<style>
+<style lang="less">
 page {
   background-color: #f7f7f7;
 }
@@ -475,11 +486,56 @@ page {
   box-sizing: border-box;
   border-radius: 5px 5px 0 0;
 }
+.category-active {
+  height: 156rpx;
+  position: relative;
+  margin-top: 20rpx;
+  padding: 0 32rpx;
+  .tui-img__coupon {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: 20rpx;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  }
+  .coupon-contant {
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 32rpx;
+    width: 545rpx;
+    display: flex;
+    align-items: center;
 
-.tui-img__coupon {
-  width: 100%;
-  height: 200rpx;
-  display: block;
+    &-text {
+      padding: 32rpx 0rpx 32rpx 0;
+      flex-shrink: 1;
+      &-title {
+        font-size: 35rpx;
+        font-weight: 600;
+        color: #434a79;
+        line-height: 1.5;
+      }
+      &-sub {
+        font-size: 28rpx;
+        font-weight: 400;
+        color: #434a79;
+        line-height: 1.5;
+      }
+    }
+    &-btn {
+      width: 116rpx;
+    height: 56rpx;
+    background: #eaeaea;
+    border-radius: 26rpx;
+    text-align: center;
+    align-items: center;
+    line-height: 56rpx;
+    filter: blur(0.5px);
+      box-shadow: 0 15px 25px -4px rgba(0, 0, 0, 0.5), inset 0 -3px 4px -1px rgba(0, 0, 0, 0.2), 0 -10px 15px -1px rgba(255, 255, 255, 0.6), inset 0 3px 4px -1px rgba(255, 255, 255, 0.2), inset 0 0 5px 1px rgba(255, 255, 255, 0.8), inset 0 20px 30px 0 rgba(255, 255, 255, 0.2);
+        font-weight: 500;
+    }
+  }
 }
 
 .tui-bg-white {
