@@ -991,16 +991,16 @@ export const experienceTime: IOptions[] = [
   { value: 5, label: "10年以上" },
 ];
 export const companyScale: IOptions[] = [
-  { value: "FIFTY", label: "小于50人" },
-  { value: "HUNDRED", label: "50～100人" },
-  { value: "THOUSAND", label: "100～1000人" },
-  { value: "TEN_THOUSAND", label: "1000～9999人" },
-  { value: "THOUSAND_MORE", label: "9999+以上" },
+  { value: "1", label: "小于50人" },
+  { value: "2", label: "50～100人" },
+  { value: "3", label: "100～1000人" },
+  { value: "4", label: "1000～9999人" },
+  { value: "5", label: "9999+以上" },
 ];
 export const companyFance: IOptions[] = [
-  { value: "LISTED_DONE", label: "已上市" },
-  { value: "FINANCING", label: "融资中" },
-  { value: "FINANCING_UNDONE", label: "不需要融资" },
+  { value: "1", label: "已上市" },
+  { value: "2", label: "融资中" },
+  { value: "3", label: "不需要融资" },
 ];
 export const companyLocaltion: IOptions[] = [
   { value: "北京", label: "北京" },
@@ -1012,27 +1012,27 @@ export const companyLocaltion: IOptions[] = [
 ];
 export const industryOptions: IOptions[] = [
   {
-    value: "IT",
+    value: "1",
     label: "互联网/IT",
   },
   {
-    value: "FINANCE",
+    value: "2",
     label: "咨询/金融/四大/商业分析",
   },
   {
-    value: "MEDIA",
+    value: "3",
     label: "新媒体",
   },
   {
-    value: "EDU",
+    value: "4",
     label: "教育/培训",
   },
   {
-    value: "ESTATE",
+    value: "5",
     label: "房地产/建筑",
   },
   {
-    value: "OTHERS",
+    value: "6",
     label: "其他",
   },
 ];
