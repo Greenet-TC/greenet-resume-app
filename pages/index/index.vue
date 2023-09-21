@@ -334,7 +334,7 @@ export default {
         login();
       }
     },
-  }
+  },
 };
 </script>
 
@@ -525,15 +525,19 @@ page {
     }
     &-btn {
       width: 116rpx;
-    height: 56rpx;
-    background: #eaeaea;
-    border-radius: 26rpx;
-    text-align: center;
-    align-items: center;
-    line-height: 56rpx;
-    filter: blur(0.5px);
-      box-shadow: 0 15px 25px -4px rgba(0, 0, 0, 0.5), inset 0 -3px 4px -1px rgba(0, 0, 0, 0.2), 0 -10px 15px -1px rgba(255, 255, 255, 0.6), inset 0 3px 4px -1px rgba(255, 255, 255, 0.2), inset 0 0 5px 1px rgba(255, 255, 255, 0.8), inset 0 20px 30px 0 rgba(255, 255, 255, 0.2);
-        font-weight: 500;
+      height: 56rpx;
+      background: #eaeaea;
+      border-radius: 26rpx;
+      text-align: center;
+      align-items: center;
+      line-height: 56rpx;
+      box-shadow: 0 15px 25px -4px rgba(0, 0, 0, 0.5),
+        inset 0 -3px 4px -1px rgba(0, 0, 0, 0.2),
+        0 -10px 15px -1px rgba(255, 255, 255, 0.6),
+        inset 0 3px 4px -1px rgba(255, 255, 255, 0.2),
+        inset 0 0 5px 1px rgba(255, 255, 255, 0.8),
+        inset 0 20px 30px 0 rgba(255, 255, 255, 0.2);
+      font-weight: 500;
     }
   }
 }
