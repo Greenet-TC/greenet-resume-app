@@ -1,29 +1,44 @@
 <template>
-  <view>
+   <tui-loading v-if="loading" text="加载中..."></tui-loading>
+  <view v-else-if="positionInfo!==null&&companyInfo!==null">
+   
     <view class="job-tui-card">
       <tui-card
         :title="{
-          text: jobInfo.name,
-          size: 40,
+          text: positionInfo.positionName,
+          size: 45,
           color: 'black',
         }"
-        :isHot="jobInfo.isHot"
+        :isHot="positionInfo.urgent"
         :tag="{
-          text: jobInfo.jobAttributes,
+          text: `${dayjs(positionInfo.createTime).format('YYYY-MM-DD')}`,
           size: 26,
           color: '#f64',
         }"
       >
         <template v-slot:body>
-          <view class="job-tui-text">
-            <tui-text
-              padding="0rpx 0"
-              block
-              :text="jobInfo.salary + '·' + jobInfo.countMonths"
-              size="43"
-              color="#f64"
-              fontWeight="600"
-            ></tui-text>
+          <view class="position-card-body">
+            <view class="job-tui-text">
+              <tui-text
+                padding="0rpx 0"
+                block
+                :text="
+                  !!positionInfo.salary && !!positionInfo.salaryType
+                    ? `${positionInfo.salary}元/${
+                        getTargetElement(
+                          salaryType,
+                          positionInfo.salaryType.value
+                        )?.label
+                      }`
+                    : '薪资面议'
+                "
+                size="35"
+                color="#f64"
+                fontWeight="600"
+              ></tui-text> </view
+            ><tui-tag type="light-orange" padding="20rpx 30rpx">
+              {{ positionInfo.property?.label }}</tui-tag
+            >
           </view>
         </template>
         <template v-slot:footer>
@@ -33,7 +48,7 @@
               <tui-text
                 padding="0rpx 6rpx"
                 block
-                :text="jobInfo.jobLocation"
+                :text="positionInfo.location"
                 size="30x"
                 color="gray"
               ></tui-text
@@ -43,7 +58,7 @@
               <tui-text
                 padding="0rpx 6rpx"
                 block
-                :text="jobInfo.academicRequirements"
+                :text="positionInfo.degree?.label"
                 size="30x"
                 color="gray"
               ></tui-text
@@ -53,7 +68,7 @@
               <tui-text
                 padding="0rpx 6rpx"
                 block
-                :text="jobInfo.jobTime"
+                :text="positionInfo.experience?.label"
                 size="30x"
                 color="gray"
               ></tui-text
@@ -66,14 +81,14 @@
       <view class="job-detail-box">
         <view class="job-detail-box-tag">
           <tui-tag
-            v-if="getkey(companyInfo, jobInfo.companyId).industry"
-            type="gray"
+            v-if="companyInfo.sectorNumber?.label"
+            type="light-brownish"
             margin="0 14rpx 0 0"
             padding="10rpx"
             size="24rpx"
-            >{{ getkey(companyInfo, jobInfo.companyId).industry }}</tui-tag
+            >{{ companyInfo.sectorNumber?.label }}</tui-tag
           >
-          <view v-for="(item, index) in jobInfo.jobTag" :key="index">
+          <view v-for="(item, index) in positionInfo.positionTags" :key="index">
             <tui-tag
               type="light-green"
               margin="0 14rpx 0 0"
@@ -95,7 +110,7 @@
               padding="0rpx 0"
               color="gray"
               block
-              :text="`毕业要求 : ${jobInfo.academicRequirements} `"
+              :text="`毕业要求 : ${positionInfo.degree?.label} `"
               size="30"
             ></tui-text>
           </view>
@@ -104,52 +119,38 @@
               padding="0rpx 0"
               color="gray"
               block
-              :text="`工作地点 : ${jobInfo.jobLocation} `"
+              :text="`工作地点 : ${positionInfo.location} `"
               size="30"
             ></tui-text>
           </view>
         </view>
         <view class="job-detail-box">
-          <tui-text
-            padding="0rpx 0"
-            block
-            text="岗位职责:"
-            size="34"
-          ></tui-text>
+          <tui-section title="岗位职责" is-line background="#fff" lineCap="circle" lineColor="#8E44AD" size="38" padding="10rpx 20rpx" :lineRight="20" :lineWidth="10"></tui-section>
           <tui-text
             padding="16rpx 0"
             block
-            :text="jobInfo.jobDesc"
+            :text="positionInfo.positionDuty"
             size="28"
             color="#213547"
           ></tui-text>
         </view>
         <view class="job-detail-box">
-          <tui-text
-            padding="0rpx 0"
-            block
-            text="岗位要求:"
-            size="34"
-          ></tui-text>
+          <tui-section title="岗位要求" is-line background="#fff" lineCap="circle" lineColor="#8E44AD" size="38" padding="10rpx 20rpx" :lineRight="20" :lineWidth="10"></tui-section>
+         
           <tui-text
             padding="16rpx 0"
             block
-            :text="jobInfo.jobRequire"
+            :text="positionInfo.positionRequired"
             size="28"
             color="#213547"
           ></tui-text>
         </view>
-        <view class="job-detail-box" v-if="jobInfo?.jobAdvantage">
-          <tui-text
-            padding="0rpx 0"
-            block
-            text="岗位优势:"
-            size="34"
-          ></tui-text>
+        <view class="job-detail-box" v-if="positionInfo?.positionAdvan">
+          <tui-section title="岗位优势" is-line background="#fff" lineCap="circle" lineColor="#8E44AD" size="38" padding="10rpx 20rpx" :lineRight="20" :lineWidth="10"></tui-section>
           <tui-text
             padding="16rpx 0"
             block
-            :text="jobInfo.jobAdvantage"
+            :text="positionInfo.positionAdvan"
             size="28"
             color="#213547"
           ></tui-text>
@@ -172,7 +173,7 @@
           <tui-image-group
             :imageList="[
               {
-                src: getkey(companyInfo, jobInfo.companyId).logo,
+                src: companyInfo.logo,
               },
             ]"
             isGroup
@@ -182,14 +183,12 @@
           <view class="tui-recru-info-text">
             <tui-text
               block
-              :text="getkey(companyInfo, jobInfo.companyId).name"
+              :text="companyInfo.companyName"
               size="30"
             ></tui-text>
             <tui-text
               block
-              :text="`${getkey(companyInfo, jobInfo.companyId).industry} | ${
-                getkey(companyInfo, jobInfo.companyId).financing
-              } | ${getkey(companyInfo, jobInfo.companyId).scale}`"
+              :text="`${companyInfo.market?.label} | ${companyInfo.scale?.label} | ${companyInfo.sectorNumber?.label}`"
               size="22"
               type="gray"
             ></tui-text
@@ -198,7 +197,7 @@
         <tui-notice-bar
           single
           :padding="['0', '20rpx']"
-          :content="getkey(companyInfo, jobInfo.companyId).introduce"
+          :content="companyInfo.introduction"
         ></tui-notice-bar>
       </view>
     </view>
@@ -233,13 +232,10 @@
         <image
           src="../../../static/images/icon/share.svg"
           mode="widthFix"
-          :style="{
-            height: 80 + 'rpx',
-            width: 80 + 'rpx',
-          }"
+          class="share-icon"
         ></image>
-      </view> 
       </view>
+    </view>
     <tui-drawer
       mode="bottom"
       :visible="visible"
@@ -248,22 +244,25 @@
     >
       <view class="d-container">
         <tui-copy-text
-          :value="`投递邮箱: ${jobInfo.email}`"
-          :copyValue="jobInfo.email"
+          v-if="companyInfo.email"
+          :value="`投递邮箱: ${positionInfo.email}`"
+          :copyValue="positionInfo.email"
           color="#586c94"
           :copy="copy"
         ></tui-copy-text>
 
         <tui-copy-text
           value="投递链接: 复制"
-          :copyValue="getkey(companyInfo, jobInfo.companyId).webSite"
+          v-if="companyInfo.url"
+          :copyValue="positionInfo.url"
           color="#586c94"
           @copy="copy"
         ></tui-copy-text>
 
         <tui-copy-text
-          :value="`内推码: ${getkey(companyInfo, jobInfo.companyId).pushCode}`"
-          :copyValue="getkey(companyInfo, jobInfo.companyId).pushCode"
+          v-if="companyInfo.recommendCode?.[0]"
+          :value="`内推码: ${companyInfo.recommendCode?.[0]}`"
+          :copyValue="companyInfo.recommendCode?.[0]"
           color="#586c94"
           @copy="copy"
         ></tui-copy-text>
@@ -368,16 +367,48 @@
       </view>
     </tui-modal>
   </view>
+  <view v-else>
+    <tui-no-data
+      imgUrl="/static/images/toast/img_noorder_3x.png"
+      btnText="返回主页"
+      @click="go"
+    >
+      <text class="tui-color__black">页面请求数据出错~</text>
+      <!--如果需要自定义按钮，可在插槽中自定义，不使用默认按钮-->
+    </tui-no-data></view
+  >
 </template>
 
 <script>
 import thorui from "@/components/common/tui-clipboard/tui-clipboard.js";
+import { salaryType } from "@/common/contant";
 import poster from "@/components/common/tui-poster/tui-poster.js";
-import { companyInfo } from "@/common/contant";
+import { getTargetElement } from "@/common/utils";
+import dayjs from "dayjs";
+import { getPageListPost } from "@/common/apis/CompanyInfoController";
+import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 export default {
-  onLoad() {
-    this.jobInfo = uni.getStorageSync("jobInfo");
-
+  async onLoad(option) {
+    try {
+      this.loading = true;
+      const data = await internshipPositionGetPageListPOST({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        id: option.id,
+      });
+      this.positionInfo = data.data?.[0];
+      const company_data = await getPageListPost({
+        pageNum: 1,
+        pageSize: 50,
+        id: this.positionInfo.companyId,
+      });
+      this.companyInfo = company_data.data?.[0];
+      this.pageInfo = data.pageInfo;
+    } catch (e) {
+      this.loading = false;
+    } finally {
+      this.loading = false;
+    }
     let obj = {};
     // #ifdef MP-WEIXIN
     obj = wx.getMenuButtonBoundingClientRect();
@@ -427,24 +458,21 @@ export default {
 
   data() {
     return {
-      jobInfo: [],
-      companyInfo,
+      positionInfo: null,
+      getTargetElement,
+      companyInfo: null,
       removeGradient: false,
       visible: false,
+      dayjs,
       sharePopup: false,
       winWidth: uni.upx2px(560 * 2),
       winHeight: uni.upx2px(890 * 2),
       modalShow: false,
       posterImg: "",
+      salaryType,
     };
   },
   methods: {
-    getkey(companyInfo, id) {
-      return companyInfo.filter((item) => {
-        return item.id === id;
-      })[0];
-    },
-
     setRemoveGradient() {
       this.removeGradient = true;
     },
@@ -453,6 +481,11 @@ export default {
     },
     openDrawer() {
       this.visible = true;
+    },
+    go() {
+      uni.switchTab({
+        url: "/pages/index/index",
+      });
     },
     copy() {
       uni.showToast({
@@ -514,8 +547,8 @@ export default {
           mainPic: mainPic,
           qrcode: qrcode,
         };
-        let text = `${this.jobInfo.jobDesc}`;
-        let text2 = `${this.jobInfo.jobRequire}`;
+        let text = `${this.positionInfo.positionDuty}`;
+        let text2 = `${this.positionInfo.positionRequired}`;
         poster.drawShipInfoPoster(
           "posterId",
           this.winWidth,
@@ -523,13 +556,24 @@ export default {
           imgs,
           text,
           text2,
-          this.jobInfo.jobAttributes ?? "",
-          `${this.jobInfo.salary + "·" + this.jobInfo.countMonths}`,
-          `${this.jobInfo.jobLocation + "·" + this.jobInfo.jobTime}`,
-          `岗位名称：${this.jobInfo.name}`,
-          `公司名称：${
-            this.getkey(this.companyInfo, this.jobInfo.companyId).name
+          this.positionInfo.property.label ?? "",
+          `${
+            !!this.positionInfo.salary && !!this.positionInfo.salaryType
+              ? `${this.positionInfo.salary}元/${
+                  getTargetElement(
+                    salaryType,
+                    this.positionInfo.salaryType.value
+                  )?.label
+                }`
+              : "薪资面议"
           }`,
+          `${
+            this.positionInfo.location +
+            "·" +
+            this.positionInfo.experience.label
+          }`,
+          `岗位名称：${this.positionInfo.positionName}`,
+          `公司名称：${this.companyInfo.companyName}`,
           (res) => {
             uni.hideLoading();
             if (res) {
@@ -585,6 +629,11 @@ page {
   margin-bottom: 16rpx;
 }
 .job-tui-text {
+}
+.position-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0rpx 24rpx;
 }
 .job-footer-box {
@@ -830,5 +879,9 @@ page {
   transform-origin: center center;
   color: #ffffff;
   padding-top: 12rpx;
+}
+.share-icon {
+  width: 80rpx;
+  height: 80rpx;
 }
 </style>

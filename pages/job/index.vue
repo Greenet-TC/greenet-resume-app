@@ -111,11 +111,11 @@
           size: 32,
           color: 'black',
         }"
-        :isHot="item.isHot"
+        :isHot="true"
         :tag="{
           text:
             !!item.salary && !!item.salaryType
-              ? `${item.salary}元/ ${
+              ? `${item.salary}元/${
                   getTargetElement(salaryType, item.salaryType.value)?.label
                 } `
               : '薪资面议',
@@ -125,41 +125,46 @@
         @tap="toJobDetail(item)"
       >
         <template v-slot:body>
-          <view class="course-list-item-tag">
-            <tui-tag
-              type="light-green"
-              v-if="item.localtion"
-              margin="0 14rpx 0 0"
-              padding="10rpx"
-              size="24rpx"
-              >{{ item.localtion.join("/") }}</tui-tag
-            >
-            <tui-tag
-              v-if="item.property"
-              type="light-green"
-              margin="0 14rpx 0 0"
-              padding="10rpx"
-              size="24rpx"
-              >{{ item.property?.label }}</tui-tag
-            >
-            <tui-tag
-              v-if="item.experience"
-              type="light-green"
-              margin="0 14rpx 0 0"
-              padding="10rpx"
-              size="24rpx"
-              plain
-              >{{ item.experience?.label }}</tui-tag
-            >
-            <tui-tag
-              v-if="item.degree"
-              type="light-green"
-              margin="0 14rpx 0 0"
-              padding="10rpx"
-              size="24rpx"
-              >{{ item.degree?.label }}</tui-tag
-            >
-          </view>
+          <view class="intership-body">
+            <view class="course-list-item-tag">
+              <tui-tag
+                type="light-green"
+                v-if="item.location"
+                margin="0 14rpx 0 0"
+                padding="10rpx"
+                size="24rpx"
+                >{{ item.location }}</tui-tag
+              >
+              <tui-tag
+                v-if="item.property"
+                type="light-green"
+                margin="0 14rpx 0 0"
+                padding="10rpx"
+                size="24rpx"
+                >{{ item.property?.label }}</tui-tag
+              >
+              <tui-tag
+                v-if="item.experience"
+                type="light-green"
+                margin="0 14rpx 0 0"
+                padding="10rpx"
+                size="24rpx"
+                plain
+                >{{ item.experience?.label }}</tui-tag
+              >
+              <tui-tag
+                v-if="item.degree"
+                type="light-green"
+                margin="0 14rpx 0 0"
+                padding="10rpx"
+                size="24rpx"
+                >{{ item.degree?.label }}</tui-tag
+              >
+            </view>
+            <view class="intership-body-date">{{
+              dayjs(item.createTime).format("YYYY-MM-DD")
+            }}</view></view
+          >
         </template>
         <template v-slot:footer>
           <view class="tui-footer-job-info">
@@ -167,7 +172,7 @@
               <tui-image-group
                 :imageList="[
                   {
-                    src: getCompnayInfo(item.companyId)?.logo,
+                    src: item.companyInfo.logo,
                   },
                 ]"
                 isGroup
@@ -178,11 +183,7 @@
                 <tui-text block :text="item.company" size="30"></tui-text>
                 <tui-text
                   block
-                  :text="`${
-                    getCompnayInfo(item.companyId).sectoeNumber?.label
-                  } | ${getCompnayInfo(item.companyId).market?.label} | ${
-                    getCompnayInfo(item.companyId).scale?.label
-                  }`"
+                  :text="`${item.companyInfo.market.label} | ${item.companyInfo.scale.label} | ${item.companyInfo.sectorNumber.label}`"
                   size="22"
                   type="gray"
                 ></tui-text
@@ -190,7 +191,7 @@
             </view>
             <view class="tui-right-job-info">
               <tui-tag
-                v-if="item.isFree"
+                v-if="item.isFree ?? true"
                 type="light-blue"
                 padding="8rpx"
                 size="20rpx"
@@ -209,21 +210,24 @@
           </view>
         </template>
       </tui-card>
+      <tui-loading v-if="loading" text="加载中..."></tui-loading>
     </view>
   </view>
 </template>
 
 <script>
-import { companyInfo, JobInfo, salaryType } from "@/common/contant";
+import {   salaryType } from "@/common/contant";
 import { getTargetElement } from "@/common/utils";
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
+import dayjs from "dayjs";
 export default {
   async onLoad() {
+    this.loading = true;
     try {
       const company_data = await getPageListPost({
         pageNum: 1,
-        pageSize: 40,
+        pageSize: 50,
       });
       this.companyInfoList = company_data.data;
       const data = await internshipPositionGetPageListPOST({
@@ -231,16 +235,29 @@ export default {
         pageSize: this.pageSize,
       });
       this.intershipList = data.data;
+      this.intershipList = this.intershipList.map((i) => {
+        return {
+          ...i,
+          companyInfo: getTargetElement(
+            this.companyInfoList,
+            i.companyId,
+            "id"
+          ),
+        };
+      });
+
       this.pageInfo = data.pageInfo;
     } catch (e) {
       console.log(e);
+    } finally {
+      this.loading = false;
     }
   },
   data() {
     return {
-      companyInfo,
+      loading: false,
+      dayjs,
       companyInfoList: [],
-      JobInfo,
       intershipList: [],
       pageNum: 1,
       pageSize: 40,
@@ -255,20 +272,8 @@ export default {
     };
   },
   methods: {
-    getkey(companyInfo, id) {
-      return companyInfo.filter((item) => {
-        return item.id === id;
-      })[0];
-    },
-    async getCompnayInfo(companyId) {
-      const _company = await getPageListPost({
-        pageNum: 1,
-        pageSize: 1,
-        companyId,
-      });
-      console.log("----", _company.data[0].logo);
-      return _company.data[0];
-    },
+   
+
     moreCompany: function () {
       uni.navigateTo({
         url: "/pages/job/companyInfo/index",
@@ -288,7 +293,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 page {
   background-color: rgb(245, 246, 248);
 }
@@ -298,6 +303,16 @@ page {
 .tui-header-right {
   font-family: monospace !important;
 }
+.intership-body {
+  display: flex;
+    justify-content: space-between;
+    padding: 0 24rpx;
+    align-items: center;
+  &-date {
+    color: #9c9c9c;
+    font-size: 28rpx;
+  }
+}
 .course-list-item-tag {
   display: flex;
   flex-wrap: wrap;
@@ -305,7 +320,6 @@ page {
   justify-content: flex-start;
   align-items: flex-start;
   margin: 10rpx 0;
-  padding: 0 24rpx;
   color: rgb(185, 186, 188);
 }
 .tui-new-job-info {
