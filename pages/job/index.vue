@@ -216,6 +216,11 @@ import { internshipPositionGetPageListPOST } from "@/common/apis/intership-searc
 export default {
   async onLoad() {
     try {
+      const company_data = await getPageListPost({
+        pageNum: 1,
+        pageSize: 20,
+      });
+      this.companyInfoList = company_data.data;
       const data = await internshipPositionGetPageListPOST({
         pageNum: this.pageNum,
         pageSize: this.pageSize,
@@ -230,6 +235,7 @@ export default {
   data() {
     return {
       companyInfo,
+      companyInfoList: [],
       JobInfo,
       intershipList: [],
       pageNum: 1,
@@ -259,9 +265,8 @@ export default {
       });
     },
     toJobDetail(item) {
-      uni.setStorageSync("jobInfo", item);
       uni.navigateTo({
-        url: `/pages/job/jobInfo/index`,
+        url: `/pages/job/jobInfo/index?id=${item.id}`,
       });
     },
   },
