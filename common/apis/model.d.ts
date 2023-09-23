@@ -5,7 +5,7 @@ import { tradeType } from "../contant";
  * @Date: 2023-09-02 18:18:35
  * @LastEditors: maxueming maxueming@kuaishou.com
 <<<<<<< HEAD
- * @LastEditTime: 2023-09-18 11:57:12
+ * @LastEditTime: 2023-09-24 00:26:29
 =======
  * @LastEditTime: 2023-09-13 16:47:34
 >>>>>>> main
@@ -103,7 +103,6 @@ export interface internshipPositionGetPageListResponType {
   id: number;
   jobType: string;
   location: string;
-
   positionAdvan: string;
   positionDuty: string;
   positionName: string;
@@ -126,4 +125,59 @@ export interface WechatPayControllerQueryAllOrdersType {
 export interface pageInfo {
   pageNum: number;
   pageSize: number;
+}
+
+export interface CompanyInfoDTO {
+  /** 公司名称 */
+  companyName?: string;
+  /** 创建时间 */
+  createTime?: string;
+  id?: number;
+  /** 公司简介 */
+  introduction?: string;
+  /** logo */
+  logo?: string;
+  /** 上市情况 枚举 */
+  market?: number;
+  /** 当前页码数 */
+  pageNum?: number;
+  /** 页吗容量 */
+  pageSize?: number;
+  /** 内推码 */
+  recommendCode?: Array<string>;
+  /** 公司规模 枚举 */
+  scale?: number;
+  /** 行业number 枚举 */
+  sectorNumber?: number;
+  /** 更新时间 */
+  updateTime?: string;
+}
+
+export interface CommonResultListCompanyInfo {
+  code: number;
+  data: Array<CompanyInfo>;
+  message: string;
+  pageInfo: PageInfoType;
+}
+
+export interface CompanyInfo {
+  /** 公司名称 */
+  companyName: string;
+  /** 创建时间 */
+  createTime: string;
+  id: number;
+  /** 公司简介 */
+  introduction: string;
+  /** logo */
+  logo: string;
+  /** 上市情况 枚举 */
+  market: number;
+  /** 内推码 */
+  recommendCode: Array<string>;
+  /** 公司规模 枚举 */
+  scale: number;
+  /** 行业number 枚举 */
+  sectorNumber: number;
+  /** 更新时间 */
+  updateTime: string;
 }
