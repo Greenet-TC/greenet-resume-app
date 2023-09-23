@@ -21,7 +21,7 @@
 
 <script>
 	export default {
-		name: "tui-col",
+		name: "tuiCol",
 		// #ifdef MP-WEIXIN
 		options: {
 			virtualHost: true
@@ -90,7 +90,7 @@
 		created() {
 			// #ifdef APP-NVUE
 			let parent = this.$parent;
-			while (parent && parent.$options.componentName !== 'fuiRow') {
+			while (parent && parent.$options.componentName !== 'tuiRow') {
 				parent = parent.$parent;
 			}
 

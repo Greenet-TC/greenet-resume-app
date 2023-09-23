@@ -2,14 +2,10 @@
 	<view class="tui-waterfall__box"
 		:style="{ paddingLeft: leftGap, paddingRight: rightGap, background: backgroundColor, borderRadius: radius }">
 		<view class="tui-waterfall__list" id="tui-waterfall__left" :style="{ marginRight: columnGap }">
-			<view v-for="(item, index) in leftList" :key="index">
-				<slot name="left" :entity="item" :index="index" :isList="columnCount==1"></slot>
-			</view>
+			<slot name="left" :list="leftList" :isList="columnCount==1"></slot>
 		</view>
 		<view v-if="columnCount > 1" class="tui-waterfall__list" id="tui-waterfall__right">
-			<view v-for="(item, index) in rightList" :key="index">
-				<slot name="right" :entity="item" :index="index" :isList="columnCount==1"></slot>
-			</view>
+			<slot name="right" :list="rightList" :isList="columnCount==1"></slot>
 		</view>
 	</view>
 </template>
@@ -83,27 +79,35 @@
 				leftListConst: [],
 				leftList: [],
 				rightList: [],
-				init: true
+				newVal: 0,
+				oldVal: 0,
+				isRender: false
 			};
 		},
 		watch: {
 			listData(val) {
-				if (!this.init) {
+				this.newVal += 1;
+				if (this.isRender) {
+					this.isRender = false;
+					this.oldVal += 1;
 					this.columnChange();
 				}
 			},
 			columnCount(val) {
+				this.isRender = false;
 				this.columnChange(val);
 			}
 		},
 		mounted() {
-			this.init = false;
-			this.columnChange();
+			this.$nextTick(()=>{
+				this.columnChange();
+			})
 		},
 		methods: {
 			columnChange(val) {
 				if (this.columnCount < 2) {
 					this.leftList = [...this.listData];
+					this.isRender = true
 				} else {
 					if (val && val == 2) {
 						this.leftList = [...this.leftListConst]
@@ -151,12 +155,42 @@
 				this.leftList = this.leftList.concat(leftList);
 				this.leftListConst = this.leftListConst.concat(leftList);
 				this.rightList = this.rightList.concat(rightList);
+				this.isRender = true
 			},
-			async getArrayByHeight() {
+			async handleData(data) {
+				const item = data.shift()
+				await this.render(item);
+				if (data.length > 0) {
+					this.$nextTick(() => {
+						setTimeout(() => {
+							this.handleData(data)
+						}, 60)
+					})
+				} else {
+					this.isRender = true
+					if (this.newVal !== this.oldVal && this.oldVal !== 0) {
+						this.isRender = false;
+						this.columnChange();
+						this.oldVal = this.newVal;
+					} else {
+						this.oldVal = this.newVal;
+					}
+				}
+			},
+			getArrayByHeight() {
 				if (!this.listData && this.listData.length === 0) return;
 				let data = this.getDiffList();
-				for (let item of data) {
-					await this.render(item);
+				if (data.length > 0) {
+					this.handleData(data)
+				} else {
+					this.isRender = true
+					if (this.newVal !== this.oldVal && this.oldVal !== 0) {
+						this.isRender = false;
+						this.columnChange();
+						this.oldVal = this.newVal;
+					}else{
+						this.oldVal = this.newVal;
+					}
 				}
 			},
 			sleep(millisecond) {
@@ -168,7 +202,6 @@
 				}
 			},
 			async render(item) {
-				this.sleep(50)
 				let obj = await this.getContainerHeight();
 				return await new Promise((resolve, reject) => {
 					if (obj && typeof obj.leftHeight === 'number') {

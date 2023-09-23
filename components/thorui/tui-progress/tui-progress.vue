@@ -3,7 +3,7 @@
 		<view class="tui-progressbar__bg"
 			:style="{ height: width + 'rpx', borderRadius: radius, background: backgroundColor }">
 			<view class="tui-progress__bar"
-				:style="{ height: width + 'rpx', background: activeColor ,transform:`translate3d(-${translateX},0,0)`,transitionDuration:`${time}s`}">
+				:style="{ height: width + 'rpx', background: getActiveColor ,transform:`translate3d(-${translateX},0,0)`,transitionDuration:`${time}s`}">
 			</view>
 		</view>
 		<view class="tui-progress__percent"
@@ -56,7 +56,7 @@
 			//已选进度条颜色,可渐变
 			activeColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//未选择的进度条的颜色
 			backgroundColor: {
@@ -76,6 +76,11 @@
 		},
 		mounted() {
 			this.darwProgress();
+		},
+		computed:{
+			getActiveColor(){
+				return this.activeColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			}
 		},
 		data() {
 			return {

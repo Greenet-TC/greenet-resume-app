@@ -3,7 +3,7 @@
 		<view
 			class="tui-badge__bezier"
 			:class="{ 'tui-animate__bezier_y': animate }"
-			:style="{ width: width, height: height, borderRadius: height, backgroundColor: backgroundColor, transform: transform_y }"
+			:style="{ width: width, height: height, borderRadius: height, backgroundColor: getBgColor, transform: transform_y }"
 		>
 			<text v-if="!custom">1</text>
 			<slot></slot>
@@ -39,7 +39,7 @@ export default {
 		//动画badge背景颜色
 		backgroundColor: {
 			type: String,
-			default: '#EB0909'
+			default: ''
 		},
 		//badge left
 		left: {
@@ -83,6 +83,11 @@ export default {
 		params: {
 			type: [Number, String],
 			default: 0
+		}
+	},
+	computed:{
+		getBgColor(){
+			return this.backgroundColor || (uni && uni.$tui && uni.$tui.color.danger) || '#EB0909'
 		}
 	},
 	data() {

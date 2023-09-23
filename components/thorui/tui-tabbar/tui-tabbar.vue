@@ -8,14 +8,17 @@
 				@tap="tabbarSwitch(index, item.hump, item.pagePath, item.verify)">
 				<view class="tui-icon-box" :class="{ 'tui-tabbar-hump': item.hump }">
 					<image :src="current == index ? item.selectedIconPath : item.iconPath"
-						:class="[item.hump ? '' : 'tui-tabbar-icon']"></image>
+						:class="[item.hump ? '' : 'tui-tabbar-icon']" v-if="!item.name"></image>
+					<tui-icon :name="current===index?item.activeName:item.name" :customPrefix="item.customPrefix || ''"
+						:size="item.iconSize || iconSize" unit="rpx" :color="current == index?getActiveColor:color"
+						v-else></tui-icon>
 					<view :class="[item.isDot ? 'tui-badge-dot' : 'tui-badge']"
-						:style="{ color: badgeColor, backgroundColor: badgeBgColor }" v-if="item.num">
+						:style="{ color: badgeColor, backgroundColor: getBadgeBgColor }" v-if="item.num">
 						{{ item.isDot ? '' : item.num }}
 					</view>
 				</view>
 				<view class="tui-text-scale" :class="{ 'tui-text-hump': item.hump }"
-					:style="{ color: current == index ? selectedColor : color }">{{ item.text }}</view>
+					:style="{ color: current == index ? getActiveColor : color }">{{ item.text }}</view>
 			</view>
 		</block>
 		<view :style="{ background: backgroundColor }" :class="{ 'tui-hump-box': hump }"
@@ -24,9 +27,13 @@
 </template>
 
 <script>
+	// import tuiIcon from '@/components/thorui/tui-icon/tui-icon.vue'
 	export default {
 		name: 'tuiTabbar',
 		emits: ['click'],
+		// components:{
+		// 	tuiIcon
+		// },
 		props: {
 			//当前索引
 			current: {
@@ -41,7 +48,7 @@
 			//字体选中颜色
 			selectedColor: {
 				type: String,
-				default: '#5677FC'
+				default: ''
 			},
 			//背景颜色
 			backgroundColor: {
@@ -53,20 +60,15 @@
 				type: Boolean,
 				default: false
 			},
+			iconSize: {
+				type: [Number, String],
+				default: 52
+			},
 			//固定在底部
 			isFixed: {
 				type: Boolean,
 				default: true
 			},
-			//tabbar
-			// "pagePath": "/pages/my/my", 页面路径
-			// "text": "thor", 标题
-			// "iconPath": "thor_gray.png", 图标地址
-			// "selectedIconPath": "thor_active.png", 选中图标地址
-			// "hump": true, 是否为凸起图标
-			// "num": 2,   角标数量
-			// "isDot": true,  角标是否为圆点
-			// "verify": true  是否验证  （如登录）
 			tabBar: {
 				type: Array,
 				default () {
@@ -81,7 +83,7 @@
 			//角标背景颜色
 			badgeBgColor: {
 				type: String,
-				default: '#F74D54'
+				default: ''
 			},
 			unlined: {
 				type: Boolean,
@@ -98,11 +100,16 @@
 				default: 9999
 			}
 		},
-		watch: {
-			current() {}
-		},
 		data() {
 			return {};
+		},
+		computed:{
+			getActiveColor(){
+				return this.selectedColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc';
+			},
+			getBadgeBgColor(){
+				return this.badgeBgColor || (uni && uni.$tui && uni.$tui.color.pink) || '#f74d54';
+			}
 		},
 		methods: {
 			tabbarSwitch(index, hump, pagePath, verify) {
@@ -148,7 +155,7 @@
 		width: 100%;
 		border-top: 1px solid #b2b2b2;
 		position: absolute;
-		top: 0;
+		top: -1rpx;
 		left: 0;
 		transform: scaleY(0.5) translateZ(0);
 		transform-origin: 0 0;

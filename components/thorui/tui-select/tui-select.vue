@@ -17,9 +17,9 @@
 				<view class="tui-select--list">
 					<view class="tui-select--item" :style="{padding:padding}" @tap="itemClick(index)"
 						v-for="(model,index) in itemList" :key="index"
-						:class="{'tui-select--reverse':reverse,'tui-select--item-active':highlight}">
+						:class="{'tui-select--reverse':reverse,'tui-select--item-active':highlight && !model.disabled,'tui-select--disabled':model.disabled}">
 						<view class="tui-select--checkbox" :class="{'tui-select--is-checkmark ':isCheckMark}"
-							:style="{background:model.checked && !isCheckMark ?checkboxColor:'transparent',borderColor:model.checked && !isCheckMark ?checkboxColor:borderColor}">
+							:style="{background:model.checked && !isCheckMark ?getCheckboxColor:'transparent',borderColor:model.checked && !isCheckMark ?getCheckboxColor:borderColor}">
 							<view class="tui-select--checkmark"
 								:style="{borderBottomColor:checkmarkColor,borderRightColor:checkmarkColor}"
 								v-if="model.checked"></view>
@@ -27,7 +27,7 @@
 						<view class="tui-select--flex">
 							<view class="tui-select--icon-box"
 								:class="{'tui-select--icon-ml':!reverse,'tui-select--icon-mr':reverse}"
-								:style="{width:iconWidth+'rpx',height:iconWidth+'rpx'}" v-if="model.src">
+								:style="{width:iconWidth+'rpx',height:iconWidth+'rpx',background:iconBgColor}" v-if="model.src">
 								<image :src="model.src" :style="{width:iconWidth+'rpx',height:iconWidth+'rpx'}"
 									mode="widthFix"></image>
 							</view>
@@ -42,7 +42,7 @@
 				</view>
 			</scroll-view>
 			<view class="tui-select--btn-wrap">
-				<view class="tui-select--btn" :style="{background:btnBackground}">
+				<view class="tui-select--btn" :style="{background:getBtnBackground}">
 					<text class="tui-select--btn" :class="['tui-select--btn-text']" :style="{color:btnColor}"
 						@tap.stop="handleClick">{{btnText}}</text>
 				</view>
@@ -105,7 +105,7 @@
 			//选择框选中后颜色
 			checkboxColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			borderColor: {
 				type: String,
@@ -143,6 +143,11 @@
 				type: [Number, String],
 				default: 48
 			},
+			//v2.9.0+
+			iconBgColor:{
+				type:String,
+				default:'#F8F8F8'
+			},
 			size: {
 				type: [Number, String],
 				default: 30
@@ -157,7 +162,7 @@
 			},
 			btnBackground: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			btnColor: {
 				type: String,
@@ -179,6 +184,12 @@
 		computed: {
 			getStyles() {
 				return `background:${this.maskBackground};z-index:${Number(this.zIndex)-1};`
+			},
+			getCheckboxColor(){
+				return this.checkboxColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			},
+			getBtnBackground(){
+				return this.btnBackground || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		watch: {
@@ -203,14 +214,15 @@
 						vals = vals.map(item => {
 							return {
 								text: item,
-								checked: false
+								checked: false,
+								disabled: false
 							}
 						})
 					} else {
-						vals.map((item,index) => {
+						vals.map((item, index) => {
 							item.checked = item.checked || false
-							if(!this.multiple && item.checked){
-								this.index=index
+							if (!this.multiple && item.checked) {
+								this.index = index
 							}
 						})
 					}
@@ -220,6 +232,7 @@
 			itemClick(index) {
 				let vals = [...this.itemList]
 				let item = vals[index]
+				if (item && item.disabled) return;
 				if (this.multiple) {
 					item.checked = !item.checked;
 				} else {
@@ -325,6 +338,13 @@
 		cursor: pointer;
 		/* #endif */
 		position: relative;
+	}
+
+	.tui-select--disabled {
+		opacity: .5;
+		/* #ifdef H5 */
+		cursor: not-allowed;
+		/* #endif */
 	}
 
 	.tui-select--item-line {

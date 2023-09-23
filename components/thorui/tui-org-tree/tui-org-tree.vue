@@ -1,6 +1,6 @@
 <template>
 	<view class="tui-org__tree">
-		<tui-org-node v-for="(item,index) in treeData" :key="index" :node="item" :collapsible="collapsible"
+		<tui-org-node v-for="(item,index) in treeData" :key="index" :node="item" :fields="fields" :collapsible="collapsible"
 			@click="handleClick">
 		</tui-org-node>
 	</view>
@@ -22,6 +22,12 @@
 			collapsible: {
 				type: Boolean,
 				default: false
+			},
+			fields: {
+				type: Array,
+				default () {
+					return ['text', 'children']
+				}
 			}
 		},
 		methods: {

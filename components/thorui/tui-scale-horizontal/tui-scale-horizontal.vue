@@ -1,10 +1,10 @@
 <template>
 	<view class="tui-scale__box">
 		<view class="tui-scale__pointer"
-			:style="{width:pointerWidth+'px',height:pointerWidth+'px',background:pointerColor,top:pointerTop+'px'}"
+			:style="{width:pointerWidth+'px',height:pointerWidth+'px',background:getPointerColor,top:pointerTop+'px'}"
 			v-if="isPointer">
 			<view class="tui-scale__triangle"
-				:style="{top:pointerWidth+'px',borderLeftWidth:pointerWidth/2+'px',borderRightWidth:pointerWidth/2+'px',borderTopColor:pointerColor,borderTopWidth:pointerWidth+'px'}">
+				:style="{top:pointerWidth+'px',borderLeftWidth:pointerWidth/2+'px',borderRightWidth:pointerWidth/2+'px',borderTopColor:getPointerColor,borderTopWidth:pointerWidth+'px'}">
 			</view>
 		</view>
 		<scroll-view :throttle="false" scroll-x scroll-with-animation
@@ -131,12 +131,17 @@
 			//刻度尺指针颜色
 			pointerColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//刻度尺指针top值 px
 			pointerTop: {
 				type: Number,
 				default: -12
+			}
+		},
+		computed:{
+			getPointerColor(){
+				return this.pointerColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		data() {

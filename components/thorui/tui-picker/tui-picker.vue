@@ -11,24 +11,27 @@
 				<view class="tui-picker__title" :style="{fontSize:titleSize+'rpx',color:titleColor}">{{title}}</view>
 				<view class="tui-picker__btn-sure" hover-class="tui-picker__opcity" :hover-stay-time="150"
 					@tap.stop="picker"
-					:style="{color:confirmColor,fontSize:btnSize+'rpx',fontWeight:bold?'bold':'normal'}">{{confirmText}}
+					:style="{color:getConfirmColor,fontSize:btnSize+'rpx',fontWeight:bold?'bold':'normal'}">
+					{{confirmText}}
 				</view>
 			</view>
-			<picker-view :mask-style="maskStyle" :indicator-style="indicatorStyle" class="tui-picker__view"
-				:value="vals" @change="columnPicker" @pickstart="pickstart" @pickend="pickend">
-				<picker-view-column>
-					<view :style="{color:color,fontSize:size+'px'}" v-for="(item,index) in layer1__data" :key="index"
-						class="tui-picker__item">{{item}}</view>
-				</picker-view-column>
-				<picker-view-column v-if="layer==2 || layer==3">
-					<view :style="{color:color,fontSize:size+'px'}" v-for="(item,index) in layer2__data" :key="index"
-						class="tui-picker__item">{{item}}</view>
-				</picker-view-column>
-				<picker-view-column v-if="layer==3">
-					<view :style="{color:color,fontSize:size+'px'}" v-for="(item,index) in layer3__data" :key="index"
-						class="tui-picker__item">{{item}}</view>
-				</picker-view-column>
-			</picker-view>
+			<view @touchstart.stop="pickstart">
+				<picker-view :key="maskStyle+layer" :mask-style="maskStyle" :indicator-style="indicatorStyle"
+					class="tui-picker__view" :value="vals" immediate-change @change="columnPicker" @pickend="pickend">
+					<picker-view-column>
+						<view :style="{color:color,fontSize:size+'px'}" v-for="(item,index) in layer1__data"
+							:key="index" class="tui-picker__item">{{item}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="layer==2 || layer==3">
+						<view :style="{color:color,fontSize:size+'px'}" v-for="(item,index) in layer2__data"
+							:key="index" class="tui-picker__item">{{item}}</view>
+					</picker-view-column>
+					<picker-view-column v-if="layer==3">
+						<view :style="{color:color,fontSize:size+'px'}" v-for="(item,index) in layer3__data"
+							:key="index" class="tui-picker__item">{{item}}</view>
+					</picker-view-column>
+				</picker-view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -105,7 +108,7 @@
 			//确认按钮文本颜色
 			confirmColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//取消按钮文本
 			cancelText: {
@@ -153,6 +156,11 @@
 				default: 0
 			}
 		},
+		computed: {
+			getConfirmColor() {
+				return this.confirmColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			}
+		},
 		data() {
 			return {
 				visible: false,
@@ -161,30 +169,42 @@
 				layer2__data: [],
 				layer3__data: [],
 				isEnd: true,
-				timer: null
+				firstShow: false
 			};
 		},
 		created() {
 			this.initData(-1, 0, 0);
-			setTimeout(() => {
-				this.setDefaultOptions()
-			}, 50)
+			this.$nextTick(() => {
+				setTimeout(() => {
+					this.setDefaultOptions()
+				}, 50)
+			})
 			this.visible = this.show;
+			if (this.visible) {
+				this.firstShow = true
+			}
 		},
 		watch: {
 			show(val) {
 				this.visible = val;
+				if (val) {
+					this.firstShow = true
+				}
 			},
 			value(vals) {
 				if (vals && vals.length > 0) {
-					this.setDefaultOptions()
+					setTimeout(() => {
+						this.setDefaultOptions()
+					}, 20)
 				}
 			},
 			pickerData(newVal) {
 				this.initData(-1, 0, 0)
-				setTimeout(() => {
-					this.setDefaultOptions()
-				}, 50)
+				this.$nextTick(() => {
+					setTimeout(() => {
+						this.setDefaultOptions()
+					}, 50)
+				})
 			}
 		},
 		methods: {
@@ -215,26 +235,24 @@
 				}
 				return result;
 			},
-			loop() {
+			loop(index = 0) {
 				if (this.isEnd) {
 					this.pickerChange()
 				} else {
+					index++
+					if (index >= 40) {
+						this.isEnd = true
+					}
 					setTimeout(() => {
-						this.loop()
+						this.loop(index)
 					}, 50)
 				}
 			},
 			picker() {
 				this.hidePicker()
-				// #ifdef MP-WEIXIN
 				this.loop()
-				// #endif
-				// #ifndef MP-WEIXIN
-				this.pickerChange()
-				// #endif
 			},
 			pickerChange() {
-				if(!this.show) return;
 				let text = [];
 				let value = [];
 				let result = '';
@@ -336,6 +354,7 @@
 				}
 			},
 			columnPicker: function(e) {
+				if (!this.firstShow) return;
 				let value = e.detail.value;
 				if (this.layer == 1) {
 					this.layer__one(value)
@@ -344,6 +363,7 @@
 				} else {
 					this.layer__three(value)
 				}
+				this.isEnd = true
 			},
 			layer__one(value) {
 				if (this.vals[0] !== value[0]) {
@@ -370,22 +390,13 @@
 				}
 			},
 			pickstart(e) {
-				// #ifdef MP-WEIXIN
-				clearTimeout(this.timer)
 				this.isEnd = false;
-				// #endif
-				//仅微信小程序支持
 				this.$emit('pickstart', {
 					params: this.params
 				})
 			},
 			pickend(e) {
 				//仅微信小程序支持
-				// #ifdef MP-WEIXIN
-				this.timer = setTimeout(() => {
-					this.isEnd = true;
-				}, 100)
-				// #endif
 				this.$emit('pickend', {
 					params: this.params
 				})

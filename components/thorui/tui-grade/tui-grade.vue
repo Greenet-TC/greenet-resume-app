@@ -6,7 +6,7 @@
 				@tap="touchMoveTo" :style="{
 					width: (width < size ? size : width) + 'px',
 					fontSize: size + 'px',
-					color: index < intScore || (decimalScore > 0 && index == intScore) ? active : normal
+					color: index < intScore || (decimalScore > 0 && index == intScore) ? getActiveColor : normal
 				}"></view>
 		</block>
 	</view>
@@ -50,7 +50,7 @@
 			//选中颜色
 			active: {
 				type: String,
-				default: '#e41f19'
+				default: ''
 			},
 			//是否支持半星选择/展示
 			isHalf: {
@@ -66,6 +66,11 @@
 			params: {
 				type: [Number, String],
 				default: 0
+			}
+		},
+		computed:{
+			getActiveColor(){
+				return this.active || (uni && uni.$tui && uni.$tui.color.danger) || '#EB0909'
 			}
 		},
 		data() {

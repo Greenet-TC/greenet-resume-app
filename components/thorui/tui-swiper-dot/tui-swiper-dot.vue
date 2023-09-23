@@ -1,7 +1,7 @@
 <template>
 	<view v-if="type==1 || type==2" class="tui-swiper__dot" :style="{left:left,bottom:bottom}">
 		<view class="tui-dot__item" :class="{'tui-text__center':type==2}"
-			:style="{width:index==current?width:height,height:height,borderRadius:radius,backgroundColor:index==current?activeBgColor:backgroundColor,margin:margin,color:current==index?color:activeColor,fontSize:size+'rpx'}"
+			:style="{width:index==current?width:height,height:height,borderRadius:radius,backgroundColor:index==current?getActiveBgColor:backgroundColor,margin:margin,color:current==index?color:activeColor,fontSize:size+'rpx'}"
 			v-for="(item,index) in countArr" :key="index">{{type==2?index+1:''}}</view>
 	</view>
 	<view class="tui-swiper__dot" :style="{width:type==4?width:'100%', right:right,bottom:bottom}" v-else>
@@ -74,7 +74,7 @@
 			//当前展示item背景色
 			activeBgColor: {
 				type: String,
-				default: "#5677fc"
+				default: ""
 			},
 			//字体颜色
 			color: {
@@ -105,6 +105,11 @@
 		watch: {
 			count(val) {
 				this.countArr = this.generateArray(1, val)
+			}
+		},
+		computed:{
+			getActiveBgColor(){
+				return this.activeBgColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		data() {

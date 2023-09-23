@@ -1,25 +1,28 @@
 <template>
 	<view class="tui-searchbar__box" :style="{ backgroundColor: backgroundColor, padding: padding }">
+		<slot></slot>
 		<view class="tui-search-bar__form" :style="{height: height}">
 			<view class="tui-search-bar__box"
-				:style="{ height: height, borderRadius: radius, backgroundColor: inputBgColor }"  v-if="showInput" >
-				<icon class="tui-icon-search" type="search" :size="13"></icon>
+				:class="{'tui-searchbar__blur':!isFocus && !searchState && showLabel && !disabled}"
+				:style="{ height: height, borderRadius: radius, backgroundColor: inputBgColor }" v-if="showInput">
+				<icon class="tui-icon-search" type="search" :size="searchSize"></icon>
 				<input type="text" class="tui-search-bar__input" :placeholder="placeholder" :value="valueTxt"
 					:focus="isFocus" :disabled="disabled" confirm-type="search" @blur="inputBlur" @focus="inputFocus"
-					@input="inputChange" @confirm="search"/>
-				<icon type="clear" :size="15" class="tui-icon-clear" v-if="valueTxt.length > 0 && !disabled"
+					@input="inputChange" @confirm="search" />
+				<icon type="clear" :size="clearSize" class="tui-icon-clear" v-if="valueTxt.length > 0 && !disabled"
 					@tap.stop="clearInput"></icon>
 			</view>
-			<view class="tui-search-bar__label" :style="{height: height, borderRadius: radius, backgroundColor: inputBgColor }"
+			<view class="tui-search-bar__label"
+				:style="{height: height, borderRadius: radius, backgroundColor: inputBgColor }"
 				v-if="!isFocus && !searchState && showLabel" @tap="tapShowInput">
-				<icon class="tui-icon-search" type="search" :size="13"></icon>
+				<icon class="tui-icon-search" type="search" :size="searchSize"></icon>
 				<text class="tui-search-bar__text">{{ placeholder }}</text>
 			</view>
 		</view>
 		<view v-if="cancel && searchState && !valueTxt" class="tui-search-bar__cancel-btn"
 			:style="{ color: cancelColor }" @tap="hideInput">{{ cancelText }}</view>
 		<view v-if="valueTxt && !disabled && searchState" class="tui-search-bar__cancel-btn"
-			:style="{ color: searchColor }" @tap="search">{{ searchText }}</view>
+			:style="{ color: getSearchColor }" @tap="search">{{ searchText }}</view>
 	</view>
 </template>
 
@@ -37,16 +40,16 @@
 			//搜索栏padding
 			padding: {
 				type: String,
-				default: '8px 10px'
+				default: '16rpx 20rpx'
 			},
 			//input框高度
 			height: {
 				type: String,
-				default: '36px'
+				default: '72rpx'
 			},
 			radius: {
 				type: String,
-				default: '4px'
+				default: '8rpx'
 			},
 			//input框背景色
 			inputBgColor: {
@@ -88,7 +91,7 @@
 			},
 			searchColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//是否显示占位标签
 			showLabel: {
@@ -101,12 +104,19 @@
 				default: true
 			}
 		},
+		computed: {
+			getSearchColor() {
+				return this.searchColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			}
+		},
 		created() {
 			this.valueTxt = this.value;
 			this.isFocus = this.focus;
 			if (this.focus || this.valueTxt.length > 0) {
 				this.searchState = true;
 			}
+			this.clearSize = Math.ceil(uni.upx2px(30))
+			this.searchSize = Math.ceil(uni.upx2px(26))
 		},
 		watch: {
 			value(val) {
@@ -117,7 +127,9 @@
 			return {
 				searchState: false,
 				isFocus: false,
-				valueTxt: ''
+				valueTxt: '',
+				clearSize: 15,
+				searchSize: 13
 			};
 		},
 		methods: {
@@ -135,6 +147,10 @@
 			inputFocus(e) {
 				if (!this.showLabel) {
 					this.searchState = true
+				} else {
+					// #ifdef H5 || MP-ALIPAY
+					this.tapShowInput();
+					// #endif
 				}
 				this.$emit('focus', e.detail);
 			},
@@ -166,6 +182,12 @@
 				this.$emit('search', {
 					value: this.valueTxt
 				});
+			},
+			reset() {
+				this.searchState = false;
+				this.isFocus = false;
+				this.valueTxt = '';
+				uni.hideKeyboard()
 			}
 		}
 	};
@@ -189,19 +211,31 @@
 
 	.tui-search-bar__box {
 		width: 100%;
-		padding-left: 10px;
-		padding-right: 8px;
+		padding-left: 20rpx;
+		padding-right: 16rpx;
 		box-sizing: border-box;
 		z-index: 1;
 		display: flex;
 		align-items: center;
+		/* #ifdef H5 */
+		opacity: 1;
+		/* #endif */
 	}
 
+	/* #ifdef H5 || MP-ALIPAY */
+	.tui-searchbar__blur {
+		position: relative;
+		opacity: 0;
+		z-index: 3;
+	}
+
+	/* #endif */
+
 	.tui-search-bar__box .tui-search-bar__input {
-		padding: 0 8px;
+		padding: 0 16rpx;
 		width: 100%;
 		border: 0;
-		font-size: 14px;
+		font-size: 28rpx;
 		box-sizing: content-box;
 		background: transparent;
 	}
@@ -215,7 +249,7 @@
 	}
 
 	.tui-search-bar__box .tui-icon-clear {
-		margin-left: 2px;
+		margin-left: 4rpx;
 		flex-shrink: 0;
 	}
 
@@ -230,19 +264,22 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
 	}
 
 	.tui-search-bar__cancel-btn {
-		font-size: 15px;
-		margin-left: 8px;
-		line-height: 28px;
+		font-size: 30rpx;
+		margin-left: 16rpx;
+		line-height: 56rpx;
 		white-space: nowrap;
 		flex-shrink: 0;
 	}
 
 	.tui-search-bar__text {
 		display: inline-block;
-		font-size: 14px;
+		font-size: 28rpx;
 		vertical-align: middle;
 		padding-left: 12rpx;
 		color: rgba(0, 0, 0, 0.5);

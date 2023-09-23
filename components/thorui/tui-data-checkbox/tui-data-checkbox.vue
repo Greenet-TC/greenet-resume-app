@@ -1,10 +1,10 @@
 <template>
 	<view class="tui-data-checkbox" :style="{marginBottom:'-'+gap+'rpx'}">
 		<view class="tui-data__cb-item" :class="{'tui-data__cb-disabled':item.disable}"
-			:style="{width:width?width+'rpx':'auto',padding:padding,borderRadius:radius,marginRight:gap+'rpx',marginBottom:gap+'rpx',background:item.checked?activeBgColor:background,borderColor:item.checked?borderColor:background}"
+			:style="{width:width?width+'rpx':'auto',padding:padding,borderRadius:radius,marginRight:gap+'rpx',marginBottom:gap+'rpx',background:item.checked?activeBgColor:background,borderColor:item.checked?getBorderColor:(defaultBorderColor || background)}"
 			v-for="(item,index) in itemList" :key="index" @tap.stop="itemTap(index)">
 			<text class="tui-cb__text"
-				:style="{fontSize:size+'rpx',color:item.checked?activeColor:color}">{{item.text}}</text>
+				:style="{fontSize:size+'rpx',lineHeight:size+'rpx',color:item.checked?getActiveColor:color}">{{item.text}}</text>
 		</view>
 	</view>
 </template>
@@ -54,7 +54,7 @@
 			},
 			padding: {
 				type: String,
-				default: '16rpx 30rpx'
+				default: '20rpx 32rpx'
 			},
 			gap: {
 				type: [Number, String],
@@ -74,7 +74,7 @@
 			},
 			activeColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			background: {
 				type: String,
@@ -84,9 +84,21 @@
 				type: String,
 				default: 'rgba(86, 119, 252, 0.1)'
 			},
+			defaultBorderColor: {
+				type: String,
+				default: ''
+			},
 			borderColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
+			}
+		},
+		computed:{
+			getActiveColor(){
+				return this.activeColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			},
+			getBorderColor(){
+				return this.borderColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		watch: {
@@ -260,6 +272,7 @@
 		/* #ifdef H5 */
 		cursor: pointer;
 		/* #endif */
+		box-sizing: border-box;
 	}
 
 	.tui-cb__text {

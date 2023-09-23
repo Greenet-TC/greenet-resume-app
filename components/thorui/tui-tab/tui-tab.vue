@@ -2,18 +2,18 @@
 	<scroll-view class="tui-scroll__view"
 		:class="[isFixed && !isSticky?'tui-tabs__fixed':'',isSticky?'tui-tabs__sticky':'',classView]"
 		:style="{height: height+'rpx',background:backgroundColor,top: isFixed || isSticky ? top + 'px' : 'auto',zIndex:isFixed || isSticky?zIndex:'auto'}"
-		:scroll-x="scrolling" :scroll-with-animation="scrolling" :scroll-left="scrollLeft">
+		:scroll-x="scrolling" :scroll-with-animation="scrolling" :show-scrollbar="false" :scroll-left="scrollLeft">
 		<view class="tui-tabs__wrap">
 			<view class="tui-tabs__list" :class="[scroll ? 'tui-tabs__scroll' : '']" :style="{height: height+'rpx'}">
 				<view class="tui-tabs__item" :style="{height: height+'rpx'}" v-for="(item,index) in tabs" :key="index"
 					@tap="handleClick" :data-index="index">
 					<view class="tui-item__child" :class="[childClass]"
-						:style="{	color: currentTab == index ? selectedColor : color,fontSize: size + 'rpx',fontWeight: bold && currentTab == index ? 'bold' : 'normal'}">
+						:style="{color: currentTab == index ? getSelectedColor : color,fontSize: size + 'rpx',fontWeight: bold && currentTab == index ? 'bold' : 'normal',transform:`scale(${currentTab == index?scale:1})`}">
 						{{item}}
 					</view>
 				</view>
 				<view class="tui-tabs__line" :class="[needTransition ? 'tui-transition' : '']"
-					:style="{background: sliderBgColor,height:sliderHeight,borderRadius: sliderRadius,bottom: bottom,width: lineWidth+'px',transform: `translateX(${translateX}px)`}">
+					:style="{background: getSliderBgColor,height:sliderHeight,borderRadius: sliderRadius,bottom: bottom,width: lineWidth+'px',transform: `translateX(${translateX}px)`}">
 				</view>
 			</view>
 		</view>
@@ -72,12 +72,17 @@
 			//选中后字体颜色
 			selectedColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//选中后 是否加粗 ，未选中则无效
 			bold: {
 				type: Boolean,
 				default: false
+			},
+			//2.3.0+
+			scale: {
+				type: [Number, String],
+				default: 1
 			},
 			//滑块高度
 			sliderHeight: {
@@ -87,7 +92,7 @@
 			//滑块背景颜色
 			sliderBgColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//滑块 radius
 			sliderRadius: {
@@ -122,6 +127,14 @@
 			zIndex: {
 				type: [Number, String],
 				default: 996
+			}
+		},
+		computed:{
+			getSelectedColor(){
+				return this.selectedColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			},
+			getSliderBgColor(){
+				return this.sliderBgColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		watch: {
@@ -231,7 +244,7 @@
 					})
 					.exec();
 				// #endif
-				
+
 				// #ifdef MP-BAIDU
 				query
 					.select(`.${this.classView}`)
@@ -257,6 +270,7 @@
 </script>
 
 <style scoped>
+	
 	.tui-scroll__view {
 		width: 100%;
 		height: 80rpx;
@@ -312,6 +326,8 @@
 
 	.tui-item__child {
 		display: inline-block;
+		transition: transform 0.15s;
+		transform-origin: center center;
 	}
 
 	.tui-tabs__line {
@@ -325,4 +341,12 @@
 	.tui-tabs__line.tui-transition {
 		transition: width 0.3s, transform 0.3s;
 	}
+	/* #ifndef APP-NVUE */
+	::-webkit-scrollbar {
+		width: 0 !important;
+		height: 0 !important;
+		color: transparent !important;
+		display: none;
+	}
+	/* #endif */
 </style>

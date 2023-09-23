@@ -4,7 +4,8 @@
 		@tap.stop="checkboxChange">
 		<view class="tui-check__mark" :style="{borderBottomColor:checkMarkColor,borderRightColor:checkMarkColor}"
 			v-if="val"></view>
-		<checkbox class="tui-checkbox__hidden" style="position: absolute;opacity: 0;" hidden :color="color" :disabled="disabled" :value="value" :checked="val">
+		<checkbox class="tui-checkbox__hidden" style="position: absolute;opacity: 0;" hidden :color="color"
+			:disabled="disabled" :value="value" :checked="val">
 		</checkbox>
 	</view>
 </template>
@@ -25,6 +26,11 @@
 				type: Boolean,
 				default: false
 			},
+			//当设置checked 属性值时是否触发父级change方法
+			triggerGroup: {
+				type: Boolean,
+				default: true
+			},
 			disabled: {
 				type: Boolean,
 				default: false
@@ -32,7 +38,7 @@
 			//checkbox选中背景颜色
 			color: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//checkbox未选中时边框颜色
 			borderColor: {
@@ -78,7 +84,7 @@
 				this.val = newVal;
 			},
 			val(newVal) {
-				if (this.group) {
+				if (this.triggerGroup && this.group) {
 					this.group.changeValue(this.val, this);
 				}
 			}
@@ -95,14 +101,16 @@
 		},
 		methods: {
 			getBackgroundStyle(val, isCheckMark) {
-				let color = val ? this.color : '#fff'
+				const primary = (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc';
+				let color = val ? (this.color || primary) : '#fff'
 				if (isCheckMark) {
 					color = 'transparent'
 				}
 				return color;
 			},
 			getBorderStyle(val, isCheckMark) {
-				let color = val ? this.color : this.borderColor;
+				const primary = (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc';
+				let color = val ? (this.color || primary) : this.borderColor;
 				if (isCheckMark) {
 					color = 'transparent'
 				}
@@ -111,6 +119,9 @@
 			checkboxChange(e) {
 				if (this.disabled) return;
 				this.val = !this.val;
+				if (!this.triggerGroup && this.group) {
+					this.group.changeValue(this.val, this);
+				}
 				this.$emit('change', {
 					checked: this.val,
 					value: this.value
@@ -182,6 +193,7 @@
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
+		pointer-events: none;
 		/* #endif */
 		/* #ifdef APP-NVUE */
 		width: 100wx;

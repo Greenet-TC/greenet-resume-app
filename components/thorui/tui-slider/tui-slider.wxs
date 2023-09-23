@@ -18,6 +18,22 @@ function bool(str) {
 function format(value) {
 	return Math.round(Math.max(sliderObj.min, Math.min(value, sliderObj.max)) / sliderObj.step) * sliderObj.step;
 }
+function isPC() {
+	if (typeof navigator !== 'object') return false;
+	var userAgentInfo = navigator.userAgent;
+	var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+	var flag = true;
+	for (var v = 0; v < Agents.length - 1; v++) {
+		if (userAgentInfo.indexOf(Agents[v]) > 0) {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}
+var isH5 = false
+if (typeof window === 'object') isH5 = true
+
 
 function setInitValue(dataset, isChange) {
 	sliderObj.drag = false
@@ -35,6 +51,9 @@ function setInitValue(dataset, isChange) {
 function touchstart(e, ins) {
 	var state = e.instance.getState()
 	var touch = e.touches[0] || e.changedTouches[0]
+	if (isH5 && isPC()) {
+		touch = e;
+	}
 	var dataset = e.instance.getDataset()
 	state.startX = touch.pageX
 	setInitValue(dataset)
@@ -43,6 +62,9 @@ function touchstart(e, ins) {
 function sectionTouchstart(e, ins) {
 	var state = e.instance.getState()
 	var touch = e.touches[0] || e.changedTouches[0]
+	if (isH5 && isPC()) {
+		touch = e;
+	}
 	var dataset = e.instance.getDataset()
 	state.sectionStartX = touch.pageX
 	setInitValue(dataset)
@@ -110,10 +132,21 @@ function styleSectionChange(value, ins, isEnd, state) {
 	})
 }
 
-function touchmove(e, ins) {
+function touchmove(e, ins, event) {
 	if (sliderObj.disabled) return;
-	var state = e.instance.getState()
-	var touch = e.touches[0] || e.changedTouches[0]
+	if (e.preventDefault) {
+		// 阻止页面滚动
+		e.preventDefault()
+	}
+	var state = {}
+	var touch = {}
+	if (isH5 && isPC()) {
+		touch = e;
+		state = event.instance.getState()
+	} else {
+		touch = e.touches[0] || e.changedTouches[0]
+		state = e.instance.getState()
+	}
 	var pageX = touch.pageX;
 	sliderObj.drag = true
 	var left = pageX - state.startX + (state.lastLeft || 0);
@@ -127,10 +160,21 @@ function touchmove(e, ins) {
 	styleChange(value, ins, false)
 }
 
-function sectionTouchmove(e, ins) {
+function sectionTouchmove(e, ins, event) {
 	if (sliderObj.disabled) return;
-	var state = e.instance.getState()
-	var touch = e.touches[0] || e.changedTouches[0]
+	if (e.preventDefault) {
+		// 阻止页面滚动
+		e.preventDefault()
+	}
+	var state = {}
+	var touch = {}
+	if (isH5 && isPC()) {
+		touch = e;
+		state = event.instance.getState()
+	} else {
+		touch = e.touches[0] || e.changedTouches[0]
+		state = e.instance.getState()
+	}
 	var pageX = touch.pageX;
 	sliderObj.drag = true
 	var left = state.sectionStartX - pageX + (state.lastSectionLeft || 0);
@@ -144,10 +188,15 @@ function sectionTouchmove(e, ins) {
 	styleSectionChange(value, ins, false)
 }
 
-function touchend(e, ins) {
+function touchend(e, ins, event) {
 	if (sliderObj.disabled) return;
 	if (sliderObj.drag) {
-		var state = e.instance.getState()
+		var state = {}
+		if (isH5 && isPC()) {
+			state = event.instance.getState()
+		} else {
+			state = e.instance.getState()
+		}
 		var maxWidth = sliderObj.width - sliderObj.blockWidth;
 		var dvalue = sliderObj.max - sliderObj.min;
 		var value = (state.lastLeft / maxWidth) * dvalue + sliderObj.min;
@@ -157,10 +206,15 @@ function touchend(e, ins) {
 
 
 
-function sectionTouchend(e, ins) {
+function sectionTouchend(e, ins, event) {
 	if (sliderObj.disabled) return;
 	if (sliderObj.drag) {
-		var state = e.instance.getState()
+		var state = {}
+		if (isH5 && isPC()) {
+			state = event.instance.getState()
+		} else {
+			state = e.instance.getState()
+		}
 		var maxWidth = sliderObj.width - sliderObj.blockWidth;
 		var dvalue = sliderObj.max - sliderObj.min;
 		var value = (state.lastSectionLeft / maxWidth) * dvalue + sliderObj.min;
@@ -188,13 +242,49 @@ function sectionSlidevalue(value, oldValue, owner, ins) {
 	styleSectionChange(value, owner, true, state)
 }
 
+var movable = false;
+
+function mousedown(e, ins) {
+	if (!isH5 || !isPC()) return
+	touchstart(e, ins)
+	movable = true
+	window.onmousemove = function(event) {
+		if (!isH5 || !isPC() || !movable) return
+		touchmove(event, ins, e)
+	}
+	window.onmouseup = function(event) {
+		if (!isH5 || !isPC() || !movable) return
+		touchend(event, ins, e)
+		movable = false
+	}
+}
+
+var endMovable = false;
+
+function endMousedown(e, ins) {
+	if (!isH5 || !isPC()) return
+	sectionTouchstart(e, ins)
+	endMovable = true
+	window.onmousemove = function(event) {
+		if (!isH5 || !isPC() || !endMovable) return
+		sectionTouchmove(event, ins, e)
+	}
+	window.onmouseup = function(event) {
+		if (!isH5 || !isPC()) return
+		sectionTouchend(event, ins, e)
+		endMovable = false
+	}
+}
+
 module.exports = {
 	touchstart: touchstart,
 	touchmove: touchmove,
 	touchend: touchend,
+	mousedown: mousedown,
 	slidevalue: slidevalue,
 	sectionTouchstart: sectionTouchstart,
 	sectionTouchmove: sectionTouchmove,
 	sectionTouchend: sectionTouchend,
+	endMousedown: endMousedown,
 	sectionSlidevalue: sectionSlidevalue
 }

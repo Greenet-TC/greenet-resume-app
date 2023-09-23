@@ -3,12 +3,12 @@
 		<view class="tui-node__label"
 			:class="['tui-org__text-'+(node.align || ''),node.active || collapsed?'tui-node__label-active':'']"
 			@tap="handleClick">
-			{{ node.text }}
-			<view class="tui-org__collapsable" v-if="node.children && node.children.length > 0 && collapsed"></view>
+			{{ node[fields[0] || 'text'] }}
+			<view class="tui-org__collapsable" v-if="node[fields[1] || 'children'] && node[fields[1] || 'children'].length > 0 && collapsed"></view>
 		</view>
-		<template v-if="node.children && node.children.length > 0">
+		<template v-if="node[fields[1] || 'children'] && node[fields[1] || 'children'].length > 0">
 			<view class="tui-node__children" :style="{display:collapsed?'none':'flex'}" v-show="!collapsed">
-				<tui-org-node v-for="(item,index) in node.children" :key="index" :node="item" :collapsible="collapsible"
+				<tui-org-node v-for="(item,index) in node[fields[1] || 'children']" :key="index" :fields="fields" :node="item" :collapsible="collapsible"
 					@click="nodeClick">
 				</tui-org-node>
 			</view>
@@ -38,11 +38,17 @@
 			collapsible: {
 				type: Boolean,
 				default: false
+			},
+			fields: {
+				type: Array,
+				default () {
+					return ['text', 'children']
+				}
 			}
 		},
 		watch: {
 			node(val) {
-				if (val.collapsed !== this.collapsed && this.node.children && this.node.children.length > 0) {
+				if (val.collapsed !== this.collapsed && this.node[this.fields[1] || 'children'] && this.node[this.fields[1] || 'children'].length > 0) {
 					this.collapsed = val.collapsed || false;
 				}
 			}
@@ -57,7 +63,7 @@
 		},
 		methods: {
 			handleClick: function(e) {
-				if (this.collapsible && this.node.children && this.node.children.length > 0) {
+				if (this.collapsible && this.node[this.fields[1] || 'children'] && this.node[this.fields[1] || 'children'].length > 0) {
 					this.collapsed = !this.collapsed
 				}
 				this.$emit('click', this.node)
