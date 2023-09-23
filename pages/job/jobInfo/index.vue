@@ -1,6 +1,6 @@
 <template>
-   <tui-loading v-if="loading" text="加载中..."></tui-loading>
-  <view v-else>
+   
+  <view ><tui-loading v-if="loading" text="加载中..."></tui-loading>
     <view class="job-tui-card">
       <tui-card
         :title="{
