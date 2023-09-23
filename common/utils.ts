@@ -115,3 +115,20 @@ export function removeToken() {
 }
 export const WEBURL =
   "https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com";
+import { IOptions } from "./contant";
+
+export type ValueOf<T> = T[keyof T];
+
+export const getTargetElement = <
+  T extends IOptions,
+  K extends ValueOf<T>,
+  D extends keyof T
+>(
+  arr: T[],
+  value: K,
+  key: D
+): T => {
+  return arr.filter((i) => {
+    return i[key ?? "value"] === Number(value);
+  })[0];
+};

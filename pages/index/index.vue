@@ -131,7 +131,7 @@
           <view
             class="tui-new-item"
             :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
-            v-for="(item, index) in recruitInfo"
+            v-for="(item, index) in companyInfoList"
             :key="index"
             @tap="moreDetail(item)"
           >
@@ -143,10 +143,10 @@
                 height="70rpx"
               ></tui-image-group>
               <view class="tui-recru-info-text">
-                <tui-text block :text="item.name" size="30"></tui-text>
+                <tui-text block :text="item.companyName" size="30"></tui-text>
                 <tui-text
                   block
-                  :text="`${item.jobNum}个内推岗位`"
+                  :text="`${40}+个内推岗位`"
                   size="22"
                   type="gray"
                 ></tui-text>
@@ -190,7 +190,7 @@
   </view>
 </template>
 <script>
-import { companyInfo } from "../../common/contant";
+import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { login, getBaseInfo, setLoginStatus } from "../../common/login";
 import { getToken } from "../../common/utils";
 export default {
@@ -204,10 +204,15 @@ export default {
     }
   },
 
-  onLoad() {
+  async onLoad() {
     if (getToken()) {
       getBaseInfo();
       setLoginStatus(true);
+      const data = await getPageListPost({
+        pageNum: 1,
+        pageSize: 20,
+      });
+      this.companyInfoList = data.data;
     }
   },
 
@@ -278,9 +283,8 @@ export default {
           id: "4",
         },
       ],
-      recruitInfo: companyInfo.filter((e, i) => {
-        return i < 6;
-      }),
+
+      companyInfoList: [],
       pageIndex: 1,
       loadding: false,
       pullUpOn: false,
