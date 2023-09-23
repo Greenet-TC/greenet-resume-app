@@ -991,16 +991,16 @@ export const experienceTime: IOptions[] = [
   { value: 5, label: "10年以上" },
 ];
 export const companyScale: IOptions[] = [
-  { value: "1", label: "小于50人" },
-  { value: "2", label: "50～100人" },
-  { value: "3", label: "100～1000人" },
-  { value: "4", label: "1000～9999人" },
-  { value: "5", label: "9999+以上" },
+  { value: 1, label: "小于50人" },
+  { value: 2, label: "50～100人" },
+  { value: 3, label: "100～1000人" },
+  { value: 4, label: "1000～9999人" },
+  { value: 5, label: "9999+以上" },
 ];
 export const companyFance: IOptions[] = [
-  { value: "1", label: "已上市" },
-  { value: "2", label: "融资中" },
-  { value: "3", label: "不需要融资" },
+  { value: 1, label: "已上市" },
+  { value: 2, label: "融资中" },
+  { value: 3, label: "不需要融资" },
 ];
 export const companyLocaltion: IOptions[] = [
   { value: "北京", label: "北京" },
@@ -1012,27 +1012,27 @@ export const companyLocaltion: IOptions[] = [
 ];
 export const industryOptions: IOptions[] = [
   {
-    value: "1",
+    value: 1,
     label: "互联网/IT",
   },
   {
-    value: "2",
+    value: 2,
     label: "咨询/金融/四大/商业分析",
   },
   {
-    value: "3",
+    value: 3,
     label: "新媒体",
   },
   {
-    value: "4",
+    value: 4,
     label: "教育/培训",
   },
   {
-    value: "5",
+    value: 5,
     label: "房地产/建筑",
   },
   {
-    value: "6",
+    value: 6,
     label: "其他",
   },
 ];
@@ -1058,4 +1058,9 @@ export const EducationOptions: IOptions[] = [
     label: " MBA",
     value: 5,
   },
+];
+export const salaryType: IOptions[] = [
+  { value: 0, label: "日" },
+  { value: 1, label: "月" },
+  { value: 2, label: "年" },
 ];

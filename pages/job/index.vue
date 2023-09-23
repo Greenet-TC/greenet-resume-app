@@ -65,7 +65,7 @@
       <scroll-view scroll-x>
         <view class="tui-goods__list">
           <view
-            v-for="(item, index) in companyInfo"
+            v-for="(item, index) in companyInfoList"
             :key="index"
             class="tui-company-item"
             @tap="moreDetail(item)"
@@ -82,10 +82,10 @@
                 height="80rpx"
               ></tui-image-group>
               <view class="tui-recru-info-text">
-                <tui-text block :text="item.name" size="30"></tui-text>
+                <tui-text block :text="item.companyName" size="30"></tui-text>
                 <tui-text
                   block
-                  :text="`${item.jobNum} 内推岗位`"
+                  :text="`${100}+ 内推岗位`"
                   size="22"
                   type="gray"
                 ></tui-text
@@ -104,16 +104,21 @@
         </view>
       </scroll-view>
     </view>
-    <view class="job-card" v-for="(item, index) in JobInfo" :key="index">
+    <view class="job-card" v-for="item in intershipList" :key="item.id">
       <tui-card
         :title="{
-          text: item.name,
+          text: item.positionName,
           size: 32,
           color: 'black',
         }"
         :isHot="item.isHot"
         :tag="{
-          text: item.salary + '·' + item.countMonths,
+          text:
+            !!item.salary && !!item.salaryType
+              ? `${item.salary}元/ ${
+                  getTargetElement(salaryType, item.salaryType.value)?.label
+                } `
+              : '薪资面议',
           size: 26,
           color: '#f64',
         }"
@@ -123,36 +128,36 @@
           <view class="course-list-item-tag">
             <tui-tag
               type="light-green"
-              v-if="item.jobLocation"
+              v-if="item.localtion"
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="24rpx"
-              >{{ item.jobLocation }}</tui-tag
+              >{{ item.localtion.join("/") }}</tui-tag
             >
             <tui-tag
-              v-if="item.jobAttributes"
+              v-if="item.property"
               type="light-green"
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="24rpx"
-              >{{ item.jobAttributes }}</tui-tag
+              >{{ item.property?.label }}</tui-tag
             >
             <tui-tag
-              v-if="item.jobTime"
+              v-if="item.experience"
               type="light-green"
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="24rpx"
               plain
-              >{{ item.jobTime }}</tui-tag
+              >{{ item.experience?.label }}</tui-tag
             >
             <tui-tag
-              v-if="item.academicRequirements"
+              v-if="item.degree"
               type="light-green"
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="24rpx"
-              >{{ item.academicRequirements }}</tui-tag
+              >{{ item.degree?.label }}</tui-tag
             >
           </view>
         </template>
@@ -162,7 +167,7 @@
               <tui-image-group
                 :imageList="[
                   {
-                    src: getkey(companyInfo, item.companyId).logo,
+                    src: getCompnayInfo(item.companyId)?.logo,
                   },
                 ]"
                 isGroup
@@ -170,16 +175,14 @@
                 height="80rpx"
               ></tui-image-group>
               <view class="tui-recru-info-text">
+                <tui-text block :text="item.company" size="30"></tui-text>
                 <tui-text
                   block
-                  :text="getkey(companyInfo, item.companyId).name"
-                  size="30"
-                ></tui-text>
-                <tui-text
-                  block
-                  :text="`${getkey(companyInfo, item.companyId).industry} | ${
-                    getkey(companyInfo, item.companyId).financing
-                  } | ${getkey(companyInfo, item.companyId).scale}`"
+                  :text="`${
+                    getCompnayInfo(item.companyId).sectoeNumber?.label
+                  } | ${getCompnayInfo(item.companyId).market?.label} | ${
+                    getCompnayInfo(item.companyId).scale?.label
+                  }`"
                   size="22"
                   type="gray"
                 ></tui-text
@@ -211,14 +214,16 @@
 </template>
 
 <script>
-import { companyInfo, JobInfo } from "@/common/contant";
+import { companyInfo, JobInfo, salaryType } from "@/common/contant";
+import { getTargetElement } from "@/common/utils";
+import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 export default {
   async onLoad() {
     try {
       const company_data = await getPageListPost({
         pageNum: 1,
-        pageSize: 20,
+        pageSize: 40,
       });
       this.companyInfoList = company_data.data;
       const data = await internshipPositionGetPageListPOST({
@@ -227,7 +232,6 @@ export default {
       });
       this.intershipList = data.data;
       this.pageInfo = data.pageInfo;
-      console.log(this.intershipList);
     } catch (e) {
       console.log(e);
     }
@@ -239,7 +243,9 @@ export default {
       JobInfo,
       intershipList: [],
       pageNum: 1,
-      pageSize: 20,
+      pageSize: 40,
+      getTargetElement,
+      salaryType,
       pageInfo: {
         page: 0,
         pageSize: 0,
@@ -253,6 +259,15 @@ export default {
       return companyInfo.filter((item) => {
         return item.id === id;
       })[0];
+    },
+    async getCompnayInfo(companyId) {
+      const _company = await getPageListPost({
+        pageNum: 1,
+        pageSize: 1,
+        companyId,
+      });
+      console.log("----", _company.data[0].logo);
+      return _company.data[0];
     },
     moreCompany: function () {
       uni.navigateTo({
