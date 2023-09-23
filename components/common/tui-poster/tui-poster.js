@@ -136,7 +136,7 @@ const poster = {
     context.setFillStyle("gray");
     let w = uni.upx2px(468 * scaleRatio);
     //名称很长调用方法将文字折行，传参 文字内容text，画布context
-    let row = poster.wrapText(text, Math.floor(w), context, 2);
+    let row = poster.wrapText(text, Math.floor(w), context, 3);
     for (let i = 0; i < row.length; i++) {
       context.fillText(
         row[i],
@@ -149,7 +149,7 @@ const poster = {
     context.fillText(
       "岗位要求:",
       uni.upx2px(30 * scaleRatio),
-      uni.upx2px(525 * scaleRatio)
+      uni.upx2px(580 * scaleRatio)
     );
     context.setFontSize(uni.upx2px(26 * scaleRatio));
     context.setFillStyle("gray");
@@ -160,7 +160,7 @@ const poster = {
       context.fillText(
         row3[i],
         uni.upx2px(30 * scaleRatio),
-        uni.upx2px(564 * scaleRatio) + a * i
+        uni.upx2px(620 * scaleRatio) + a * i
       );
     }
     context.setFillStyle("#EB0909");
@@ -168,24 +168,24 @@ const poster = {
     context.fillText(
       jobAttributes,
       uni.upx2px(30 * scaleRatio),
-      uni.upx2px(676 * scaleRatio)
+      uni.upx2px(725 * scaleRatio)
     );
     let jobAttributesW1 = poster.getTextWidth(jobAttributes, context) || 35;
-    let priceArr = price.split("·");
+    let priceArr = price.split("/");
     context.setFillStyle("#EB0909");
     context.setFontSize(uni.upx2px(36 * scaleRatio));
     context.fillText(
       priceArr[0],
       uni.upx2px(56 * scaleRatio) + jobAttributesW1,
-      uni.upx2px(680 * scaleRatio)
+      uni.upx2px(730 * scaleRatio)
     );
     let w1 = poster.getTextWidth(priceArr[0], context) || 35;
     context.setFontSize(uni.upx2px(26 * scaleRatio));
     context.setFillStyle("#EB0909");
-    context.fillText(
-      `·${priceArr[1]}`,
+    priceArr[1]&&context.fillText(
+      `/${priceArr[1]}`,
       uni.upx2px(60 * scaleRatio) + w1 + jobAttributesW1,
-      uni.upx2px(680 * scaleRatio)
+      uni.upx2px(730 * scaleRatio)
     );
     context.setFillStyle("#999999");
     context.setFontSize(uni.upx2px(24 * scaleRatio));
@@ -194,7 +194,7 @@ const poster = {
       w1 +
       jobAttributesW1 +
       (poster.getTextWidth(`·${priceArr[1]}`, context) || 32);
-    context.fillText(`${originalPrice}`, w2, uni.upx2px(676 * scaleRatio));
+    context.fillText(`${originalPrice}`, w2, uni.upx2px(725 * scaleRatio));
 
     // 识别小程序二维码
     let x = winWidth - uni.upx2px(46 + 120) * scaleRatio;
@@ -210,13 +210,13 @@ const poster = {
     context.fillText(
       companyInfo,
       uni.upx2px(40 * scaleRatio),
-      uni.upx2px(780 * scaleRatio)
+      uni.upx2px(800 * scaleRatio)
     );
     context.setFontSize(uni.upx2px(24 * scaleRatio));
     context.fillText(
       "长按识别·立即体验",
       uni.upx2px(40 * scaleRatio),
-      uni.upx2px(835 * scaleRatio)
+      uni.upx2px(845 * scaleRatio)
     );
     context.draw(false, () => {
       poster.createPoster(canvasId, winWidth, winHeight, (res) => {
@@ -578,7 +578,7 @@ const poster = {
     });
   },
   //canvas多文字换行
-  wrapText(text, width, context, rows = 2) {
+  wrapText(text, width, context, rows = 3) {
     let txtArr = text.split("");
     let temp = "";
     let row = [];

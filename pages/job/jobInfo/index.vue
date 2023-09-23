@@ -293,7 +293,7 @@
       </view>
     </tui-drawer>
     <!--底部分享弹层-->
-    <tui-bottom-popup :show="sharePopup" @close="hideSharePopup">
+    <tui-bottom-popup :mask="false" :show="sharePopup" @close="hideSharePopup" >
       <view class="tui-share__box">
         <view class="tui-share__header">
           <text>分享</text>
@@ -537,8 +537,8 @@ export default {
           mainPic: mainPic,
           qrcode: qrcode,
         };
-        let text = `${this.positionInfo?.positionDuty}`;
-        let text2 = `${this.positionInfo?.positionRequired}`;
+        let text = `${this.positionInfo?.positionDuty.replace(/\+/g,'').replace(/[\r\n]/g,'')}`;
+        let text2 = `${this.positionInfo?.positionRequired.replace(/\+/g,'').replace(/[\r\n]/g,'')}`;
         poster.drawShipInfoPoster(
           "posterId",
           this.winWidth,
