@@ -216,10 +216,14 @@
           borderColor="#ffffff"
         >
         </tui-radio>
-        <text class="tui-text">同意《优加实习会员服务协议》及 </text>
-        <text :style="{ color: '#fa4e3e' }" class="tui-text" @tap="privacyAgree"
-          >《隐私协议》
-        </text>
+        <text class="tui-text"
+          >同意《优加实习会员服务协议》及
+
+          <tui-link
+            href="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/优加实习隐私政策.html"
+            text="《隐私协议》"
+          ></tui-link
+        ></text>
       </view>
       <view class="vip-rights">
         <view class="vip-rights-title">会员权益</view>
@@ -370,6 +374,9 @@ export default {
       this.opacity = e.opacity;
       this.top = e.top;
     },
+    back() {
+      uni.navigateBack();
+    },
     opacityChange(e) {
       this.opacity = e.opacity;
     },
@@ -400,12 +407,6 @@ export default {
     },
     popupClose() {
       this.show = false;
-    },
-    privacyAgree() {
-      console.log(111);
-      uni.navigateTo({
-        url: "/pages/profile/privacy/index",
-      });
     },
     // change(e) {
     // 	let index = e.index;

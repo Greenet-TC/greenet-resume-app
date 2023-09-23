@@ -49,11 +49,10 @@
         <view class="tui-category-name">{{ item.name }}</view>
       </view>
     </view>
-    <view class="category-active">
+    <view class="category-active" @tap="activePage">
       <image
         src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner.png"
         class="tui-img__coupon"
-        @tap="coupon"
       ></image>
       <view class="coupon-contant">
         <view class="coupon-contant-text">
@@ -319,6 +318,11 @@ export default {
         url: "/pages/job/companyInfo/index",
       });
     },
+    activePage: function () {
+      uni.navigateTo({
+        url: "/pages/activityPage/schoolRecruitment/index",
+      });
+    },
     //隐藏组件
     closeActionSheet: function () {
       this.showActionSheet = false;
@@ -491,6 +495,7 @@ page {
   position: relative;
   margin-top: 20rpx;
   padding: 0 32rpx;
+
   .tui-img__coupon {
     width: 100%;
     height: 100%;
