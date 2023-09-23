@@ -2,7 +2,7 @@
 	<view class="tui-form__box" :style="{backgroundColor:backgroundColor,padding:padding,borderRadius:radius}">
 		<slot></slot>
 		<view class="tui-form__errmsg"
-			:style="{top:tipTop+'px',padding:tipPadding,backgroundColor:tipBackgroundColor,borderRadius:tipRidus}"
+			:style="{top:tipTop+'px',padding:tipPadding,backgroundColor:getTipBgColor,borderRadius:tipRidus}"
 			v-if="showMessage" :class="{'tui-message__show':errorMsg}"><text class="tui-form__text"
 				:style="{fontSize:tipSize+'rpx',color:tipColor}">{{errorMsg}}</text></view>
 		<view class="tui-form__mask" v-if="disabled"></view>
@@ -55,13 +55,11 @@
 			},
 			//提示框top值 px
 			tipTop: {
-				type: Number
-					// #ifdef H5
-					,
-				default: 44
-					// #endif
-					// #ifndef H5
-					,
+				type: [Number, String],
+				// #ifdef H5
+				default: 44,
+				// #endif
+				// #ifndef H5
 				default: 0
 				// #endif
 			},
@@ -73,11 +71,11 @@
 			//错误提示框背景色
 			tipBackgroundColor: {
 				type: String,
-				default: '#f74d54'
+				default: ''
 			},
 			//错误提示字体大小
 			tipSize: {
-				type: Number,
+				type: [Number, String],
 				default: 28
 			},
 			//错误提示字体颜色
@@ -92,8 +90,14 @@
 			},
 			//错误消息显示时间 ms
 			duration: {
-				type: Number,
-				default: 2000
+				type: [Number, String],
+				default: 0
+			}
+		},
+		computed: {
+			getTipBgColor() {
+				return this.tipBackgroundColor || (uni && uni.$tui && uni.$tui.tuiForm.tipBackgroundColor) ||
+					'#f74d54';
 			}
 		},
 		data() {
@@ -134,9 +138,11 @@
 						if (this.showMessage) {
 							this.clearTimer()
 							this.errorMsg = checkRes;
+							const duration = this.duration || (uni && uni.$tui && uni.$tui.tuiForm.duration) ||
+								2000
 							this.timer = setTimeout(() => {
 								this.errorMsg = ''
-							}, this.duration)
+							}, Number(duration))
 						}
 						obj.isPass = false;
 						reject(obj)

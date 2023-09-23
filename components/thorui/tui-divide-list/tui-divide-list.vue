@@ -11,7 +11,7 @@
 					:style="{width:(item.width || width) +'rpx',height:(item.height || height) +'rpx'}" v-if="item.src">
 				</image>
 				<view :class="[item.isDot ? 'tui-badge-dot' : 'tui-badge']"
-					:style="{ color: badgeColor, background: badgeBgColor }" v-if="item.num || item.isDot">
+					:style="{ color: badgeColor, background: getBadgeBgColor }" v-if="item.num || item.isDot">
 					{{ item.isDot ? '' : item.num }}
 				</view>
 			</view>
@@ -97,13 +97,16 @@
 			//角标背景颜色
 			badgeBgColor: {
 				type: String,
-				default: '#F74D54'
+				default: ''
 			}
 		},
 		computed: {
 			getTop() {
 				let height = Number(this.dividerHeight) || 60
 				return (100 - height) / 2 + '%'
+			},
+			getBadgeBgColor(){
+				return this.badgeBgColor || (uni && uni.$tui && uni.$tui.color.pink) || '#f74d54'
 			}
 		},
 		methods: {

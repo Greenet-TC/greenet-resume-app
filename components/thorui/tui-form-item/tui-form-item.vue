@@ -1,24 +1,23 @@
 <template>
 	<view class="tui-form__item-wrap" :class="{'tui-form__highlight':highlight}"
-		:style="{padding:padding,background:background,marginTop:marginTop+'rpx',marginBottom:marginBottom+'rpx',borderRadius:radius}"
+		:style="{padding:getPadding,background:getBgColor,marginTop:marginTop+'rpx',marginBottom:marginBottom+'rpx',borderRadius:getRadius}"
 		@tap="handleClick">
 		<!-- #ifdef APP-NVUE -->
 		<view class="tui-form__asterisk" v-if="asterisk">
-			<text :style="{color:asteriskColor}">*</text>
+			<text :style="{color:getAsteriskColor}">*</text>
 		</view>
 		<!-- #endif -->
 		<!-- #ifndef APP-NVUE -->
-		<view class="tui-form__asterisk" v-if="asterisk" :style="{color:asteriskColor}">*</view>
+		<view class="tui-form__asterisk" v-if="asterisk" :style="{color:getAsteriskColor}">*</view>
 		<!-- #endif -->
-		<text :style="{width:labelWidth+'rpx',fontSize:labelSize+'rpx',color:labelColor,paddingRight:labelRight+'rpx'}"
-			v-if="label">{{label}}</text>
+		<view :style="getLabelStyl" v-if="label">{{label}}</view>
 		<view class="tui-form__item-content">
 			<slot></slot>
 		</view>
 		<slot name="right"></slot>
-		<view v-if="bottomBorder" :style="{background:borderColor,left:left+'rpx',right:right+'rpx'}"
+		<view v-if="bottomBorder" :style="{background:getBorderColor,left:left+'rpx',right:right+'rpx'}"
 			class="tui-form__item-bottom"></view>
-		<view class="tui-form__item-arrow" v-if="arrow" :style="{'border-color':arrowColor}">
+		<view class="tui-form__item-arrow" v-if="arrow" :style="{'border-color':getArrowColor}">
 		</view>
 	</view>
 </template>
@@ -30,7 +29,7 @@
 		props: {
 			padding: {
 				type: String,
-				default: '26rpx 30rpx'
+				default: ''
 			},
 			marginTop: {
 				type: [Number, String],
@@ -46,11 +45,16 @@
 			},
 			labelSize: {
 				type: [Number, String],
-				default: 32
+				default: 0
 			},
 			labelColor: {
 				type: String,
-				default: '#333'
+				default: ''
+			},
+			//2.3.0+
+			labelFontWeight: {
+				type: [Number, String],
+				default: 0
 			},
 			labelWidth: {
 				type: [Number, String],
@@ -66,11 +70,11 @@
 			},
 			asteriskColor: {
 				type: String,
-				default: '#EB0909'
+				default: ''
 			},
 			background: {
 				type: String,
-				default: '#fff'
+				default: ''
 			},
 			highlight: {
 				type: Boolean,
@@ -82,7 +86,7 @@
 			},
 			arrowColor: {
 				type: String,
-				default: '#c0c0c0'
+				default: ''
 			},
 			bottomBorder: {
 				type: Boolean,
@@ -90,7 +94,7 @@
 			},
 			borderColor: {
 				type: String,
-				default: '#eaeef1'
+				default: ''
 			},
 			left: {
 				type: [Number, String],
@@ -102,11 +106,37 @@
 			},
 			radius: {
 				type: String,
-				default: '0'
+				default: ''
 			},
 			index: {
 				type: [Number, String],
 				default: 0
+			}
+		},
+		computed: {
+			getPadding() {
+				return this.padding || (uni && uni.$tui && uni.$tui.tuiFormItem.padding) || '26rpx 30rpx';
+			},
+			getBgColor() {
+				return this.background || (uni && uni.$tui && uni.$tui.tuiFormItem.background) || '#fff';
+			},
+			getRadius() {
+				return this.radius || (uni && uni.$tui && uni.$tui.tuiFormItem.radius) || '0';
+			},
+			getAsteriskColor() {
+				return this.asteriskColor || (uni && uni.$tui && uni.$tui.tuiFormItem.asteriskColor) || '#EB0909';
+			},
+			getLabelStyl() {
+				const labelSize = this.labelSize || (uni && uni.$tui && uni.$tui.tuiFormItem.labelSize) || 32;
+				const labelColor = this.labelColor || (uni && uni.$tui && uni.$tui.tuiFormItem.labelColor) || '#333';
+				const weight = this.labelFontWeight || (uni && uni.$tui && uni.$tui.tuiFormItem.labelFontWeight) || 400;
+				return `width:${this.labelWidth}rpx;font-size:${labelSize}rpx;color:${labelColor};padding-right:${this.labelRight}rpx;font-weight:${weight};`
+			},
+			getArrowColor() {
+				return this.arrowColor || (uni && uni.$tui && uni.$tui.tuiFormItem.arrowColor) || '#c0c0c0';
+			},
+			getBorderColor() {
+				return this.borderColor || (uni && uni.$tui && uni.$tui.tuiFormItem.borderColor) || '#eaeef1';
 			}
 		},
 		methods: {

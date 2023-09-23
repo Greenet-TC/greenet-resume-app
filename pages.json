@@ -70,6 +70,7 @@
         "navigationBarTitleText": "精选课程"
       }
     },
+
     {
       "path": "pages/profile/index",
       "style": {
@@ -81,6 +82,12 @@
       "path": "pages/profile/vipPage/index",
       "style": {
         "navigationBarTitleText": "uni-app",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/profile/privacy/index",
+      "style": {
         "navigationStyle": "custom"
       }
     },

@@ -1,14 +1,15 @@
 <template>
 	<view class="tui-switch__input" :style="{zoom:nvue?1:scaleRatio,transform:`scale(${nvue?scaleRatio:1})`}">
-		<switch v-if="type==='switch'" @change="change" :name="name" :checked="val" :disabled="disabled" :color="color">
+		<switch v-if="type==='switch'" :class="{'tui-pevents':isLabel}" @change="change" :name="name" :checked="val"
+			:disabled="disabled" :color="getColor">
 		</switch>
 		<view class="tui-checkbox__self" :class="{'tui-checkbox__disabled':disabled}"
-			:style="{backgroundColor:val?color:'#fff',border:val?`1px solid ${color}`:`1px solid ${borderColor}`}"
+			:style="{backgroundColor:val?getColor:'#fff',border:val?`1px solid ${getColor}`:`1px solid ${borderColor}`}"
 			v-else>
 			<view class="tui-check__mark" :style="{borderBottomColor:checkMarkColor,borderRightColor:checkMarkColor}"
 				v-if="val"></view>
-			<switch class="tui-switch__hidden" style="position: absolute;opacity: 0;" @change="change" :name="name" type="checkbox" :checked="val"
-				:disabled="disabled"></switch>
+			<switch class="tui-switch__hidden" :class="{'tui-pevents':isLabel}" style="position: absolute;opacity: 0;"
+				@change="change" :name="name" type="checkbox" :checked="val" :disabled="disabled"></switch>
 		</view>
 	</view>
 </template>
@@ -17,13 +18,11 @@
 	export default {
 		name: "tui-switch",
 		emits: ['change'],
-		// #ifndef VUE3
 		// #ifdef MP-WEIXIN
 		behaviors: ['wx://form-field-group'],
 		// #endif
 		// #ifdef MP-BAIDU || MP-QQ
 		behaviors: ['uni://form-field'],
-		// #endif
 		// #endif
 		props: {
 			//开关选择器名称
@@ -47,7 +46,7 @@
 			//switch选中颜色
 			color: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//边框颜色，type=checkbox时生效
 			borderColor: {
@@ -64,6 +63,11 @@
 				default: 1
 			}
 		},
+		computed: {
+			getColor() {
+				return this.color || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			}
+		},
 		data() {
 			let nvue = false;
 			// #ifdef APP-NVUE
@@ -71,7 +75,8 @@
 			// #endif
 			return {
 				val: false,
-				nvue:nvue
+				nvue: nvue,
+				isLabel: false
 			};
 		},
 		watch: {
@@ -83,6 +88,7 @@
 			this.val = this.checked;
 			this.label = this.getParent();
 			if (this.label) {
+				this.isLabel = true
 				this.label.childrens.push(this)
 			}
 		},
@@ -120,6 +126,7 @@
 	.tui-switch__input {
 		display: inline-block;
 	}
+
 	/* #endif */
 	.tui-checkbox__self {
 		font-size: 0;
@@ -145,16 +152,16 @@
 	::v-deep .uni-switch-input {
 		margin-right: 0 !important;
 	}
-	
+
 	/* #endif */
-	
+
 	/* #ifdef APP-NVUE */
 	.uni-switch-input {
 		margin-right: 0 !important;
 	}
-	
+
 	/* #endif */
-	
+
 
 	/* #ifdef MP-WEIXIN */
 	.wx-switch-input {
@@ -193,13 +200,21 @@
 		-moz-appearance: none;
 		appearance: none;
 		/* #endif */
-		
+
 		/* #ifdef APP-NVUE */
 		width: 100wx;
 		height: 100wx;
 		border-width: 0;
 		/* #endif */
+
 	}
+
+	/* #ifdef H5 */
+	.tui-pevents {
+		pointer-events: none;
+	}
+
+	/* #endif */
 
 	.tui-checkbox__disabled {
 		opacity: 0.6;

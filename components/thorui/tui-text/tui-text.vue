@@ -1,10 +1,10 @@
 <template>
 	<view class="tui-text__wrap"
-		:class="[block?'tui-text__block':'tui-text__inline','tui-text__'+align,highlight && !disable?'tui-text__active':'']"
+		:class="[block?'tui-text__block':'tui-text__inline','tui-text__'+align,highlight && !disable?'tui-text__active':'',unShrink?'tui-flex__shrink':'']"
 		:style="{textAlign:align,padding:padding}" @tap="handleClick">
 		<slot></slot>
 		<text class="tui-text__content"
-			:style="{color:getColor,fontSize:size+unit,lineHeight:lineHeight?size+unit:'auto',textAlign:align,textDecoration:decoration,fontWeight:fontWeight}"
+			:style="{color:getColor,fontSize:getSize,lineHeight:lineHeight?getSize:'auto',textAlign:align,textDecoration:decoration,fontWeight:fontWeight}"
 			:selectable="selectable" :userSelect="userSelect"
 			:decode="decode">{{getText(text, textType, format)}}</text>
 		<slot name="right"></slot>
@@ -19,7 +19,7 @@
 			//样式：primary，success， warning，danger，gray，black，white
 			type: {
 				type: String,
-				default: 'black'
+				default: ''
 			},
 			text: {
 				type: [Number, String],
@@ -27,11 +27,11 @@
 			},
 			size: {
 				type: [Number, String],
-				default: 32
+				default: 0
 			},
 			unit: {
 				type: String,
-				default: 'rpx'
+				default: ''
 			},
 			color: {
 				type: String,
@@ -91,6 +91,10 @@
 				type: Boolean,
 				default: false
 			},
+			unShrink: {
+				type: Boolean,
+				default: false
+			},
 			disable: {
 				type: Boolean,
 				default: false
@@ -98,19 +102,27 @@
 		},
 		computed: {
 			getColor() {
-				let color = this.color || ''
+				let color = this.color;
 				if (!color && this.type) {
+					const global = uni && uni.$tui && uni.$tui.color;
 					color = {
-						primary: '#5677fc',
-						success: '#07c160',
-						warning: '#ff7900',
-						danger: '#EB0909',
+						primary: (global && global.primary) || '#5677fc',
+						success: (global && global.success) || '#07c160',
+						warning: (global && global.warning) || '#ff7900',
+						danger: (global && global.danger) || '#EB0909',
 						gray: '#999',
 						black: '#333',
-						white:'#fff'
+						white: '#fff'
 					} [this.type]
 				}
+				if (!color && !this.type) {
+					color = (uni && uni.$tui && uni.$tui.tuiText.color) || '#333';
+				}
 				return color
+			},
+			getSize() {
+				const unit = this.unit || (uni && uni.$tui && uni.$tui.tuiText.unit) || 'rpx'
+				return (this.size || (uni && uni.$tui && uni.$tui.tuiText.size) || 32) + unit
 			}
 		},
 		methods: {
@@ -174,6 +186,10 @@
 		display: flex;
 	}
 
+	.tui-flex__shrink {
+		flex-shrink: 0;
+	}
+
 	/* #endif */
 
 	.tui-text__center {
@@ -183,4 +199,9 @@
 	.tui-text__right {
 		justify-content: flex-end;
 	}
+	/* #ifndef APP-NVUE */
+	.tui-text__content{
+		word-break: break-all;
+	}
+	/* #endif */
 </style>

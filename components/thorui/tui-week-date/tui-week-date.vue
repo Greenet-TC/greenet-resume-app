@@ -2,18 +2,18 @@
 	<view class="tui-week-date" :style="{background:background}">
 		<view class="tui-arrow--box" @tap.stop="prevWeek">
 			<slot name="left"></slot>
-			<view v-if="arrow" class="tui-left--arrow" :style="{'border-right-color':arrowColor}"></view>
+			<view v-if="arrow" class="tui-left--arrow" :style="{'border-right-color':getArrowColor}"></view>
 		</view>
 		<view class="tui-week--item" @tap.stop="dateClick(index)" v-for="(item,index) in weeksArr" :key="index">
 			<view class="tui-week--label" :style="{fontSize:weekSize+'rpx',color:weekColor}">{{item.week}}</view>
 			<view class="tui-week--value"
-				:style="{fontSize:dateSize+'rpx',color:activeDate==item.date?activeColor:dateColor,background:activeDate==item.date?activeBackground:'transparent'}">
+				:style="{fontSize:dateSize+'rpx',color:activeDate==item.date?activeColor:dateColor,background:activeDate==item.date?getActiveBackground:'transparent'}">
 				{{formatNum(item.day)}}
 			</view>
 		</view>
 		<view class="tui-arrow--box" @tap.stop="nextWeek">
 			<slot name="right"></slot>
-			<view v-if="arrow" class="tui-right--arrow" :style="{'border-left-color':arrowColor}"></view>
+			<view v-if="arrow" class="tui-right--arrow" :style="{'border-left-color':getArrowColor}"></view>
 		</view>
 	</view>
 </template>
@@ -54,7 +54,7 @@
 			},
 			activeBackground: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			arrow: {
 				type: Boolean,
@@ -62,9 +62,17 @@
 			},
 			arrowColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			}
 
+		},
+		computed: {
+			getActiveBackground() {
+				return this.activeBackground || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			},
+			getArrowColor() {
+				return this.arrowColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			}
 		},
 		data() {
 			return {

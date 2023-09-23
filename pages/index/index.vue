@@ -495,6 +495,7 @@ page {
   position: relative;
   margin-top: 20rpx;
   padding: 0 32rpx;
+
   .tui-img__coupon {
     width: 100%;
     height: 100%;
@@ -535,7 +536,6 @@ page {
       text-align: center;
       align-items: center;
       line-height: 56rpx;
-      filter: blur(0.5px);
       box-shadow: 0 15px 25px -4px rgba(0, 0, 0, 0.5),
         inset 0 -3px 4px -1px rgba(0, 0, 0, 0.2),
         0 -10px 15px -1px rgba(255, 255, 255, 0.6),

@@ -1,27 +1,28 @@
 <template>
-	<view class="tui-button__container" :style="{width: width,height: height,margin:margin,borderRadius: radius}"
+	<view class="tui-button__container" :style="{width: getWidth,height: getHeight,margin:margin,borderRadius: getRadius}"
 		@touchstart="handleStart" @touchend="handleClick" @touchcancel="handleEnd">
 		<button class="tui-button" :class="[
 				bold ? 'tui-text__bold' : '',
 				time && (plain || link) ? 'tui-button__opacity' : '',
 				disabled && !disabledBackground ? 'tui-button__opacity' : '',
-				!width || width==='100%' || width===true?'tui-button__flex-1':'',
+				(!width || width==='100%' || width===true) && (!btnSize || btnSize===true)?'tui-button__flex-1':'',
 				time && !plain && !link ? 'tui-button__active' : ''
 			]" :style="{
-				width: width,
-				height: height,
-				lineHeight: height,
-				background: disabled && disabledBackground ? disabledBackground : (plain ? 'transparent' : background),
+				width: getWidth,
+				height: getHeight,
+				lineHeight: getHeight,
+				background: disabled && disabledBackground ? disabledBackground : (plain ? 'transparent' : getBackground),
 				borderWidth:borderWidth,
-				borderColor: borderColor ? borderColor : disabled && disabledBackground ? disabledBackground : (link?'transparent':background),
-				borderRadius: radius,
-				fontSize: size + 'rpx',
-				color: disabled && disabledBackground ? disabledColor : color
-			}" :loading="loading" :form-type="formType" :open-type="openType" @getuserinfo="bindgetuserinfo"
-			@getphonenumber="bindgetphonenumber" @contact="bindcontact" @error="binderror"
-			@opensetting="bindopensetting" :disabled="disabled" :scope="scope" @tap.stop="handleTap">
+				borderColor: borderColor ? borderColor : disabled && disabledBackground ? disabledBackground : (link?'transparent':getBackground),
+				borderRadius: getRadius,
+				fontSize: getSize + 'rpx',
+				color: disabled && disabledBackground ? disabledColor : getColor
+			}" :loading="loading" :form-type="formType" :open-type="openType" :app-parameter="appParameter"
+			@getuserinfo="bindgetuserinfo" @getphonenumber="bindgetphonenumber" @contact="bindcontact"
+			@error="binderror" @opensetting="bindopensetting" @chooseavatar="bindchooseavatar"
+			@launchapp="bindlaunchapp" :disabled="disabled" :scope="scope" @tap.stop="handleTap">
 			<text class="tui-button__text" :class="{'tui-text__bold':bold}" v-if="text"
-				:style="{fontSize: size + 'rpx',lineHeight:size + 'rpx',color: disabled && disabledBackground ? disabledColor : color}">{{text}}</text>
+				:style="{fontSize: getSize + 'rpx',lineHeight:getSize + 'rpx',color: disabled && disabledBackground ? disabledColor : getColor}">{{text}}</text>
 			<slot></slot>
 		</button>
 	</view>
@@ -31,16 +32,17 @@
 	export default {
 		name: 'tui-form-button',
 		emits: ['click', 'getuserinfo', 'contact', 'getphonenumber', 'error', 'opensetting'],
-		// #ifndef VUE3
 		// #ifdef MP-WEIXIN
 		behaviors: ['wx://form-field-button'],
 		// #endif
+		// #ifdef MP-BAIDU || MP-QQ
+		behaviors: ['uni://form-field'],
 		// #endif
 		props: {
 			//按钮背景色
 			background: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//按钮显示文本
 			text: {
@@ -50,7 +52,7 @@
 			//按钮字体颜色
 			color: {
 				type: String,
-				default: '#fff'
+				default: ''
 			},
 			//按钮禁用背景色
 			disabledBackground: {
@@ -68,7 +70,7 @@
 				default: '0.5px'
 				// #endif
 				// #ifndef APP-NVUE
-				default: '1rpx'
+				default: '1px'
 				// #endif
 			},
 			borderColor: {
@@ -83,12 +85,17 @@
 			//高度
 			height: {
 				type: String,
-				default: '96rpx'
+				default: ''
+			},
+			//medium 368*80 / small 240*80/ mini 116*64
+			btnSize: {
+				type: String,
+				default: ''
 			},
 			//字体大小，单位rpx
 			size: {
 				type: [Number, String],
-				default: 32
+				default: 0
 			},
 			bold: {
 				type: Boolean,
@@ -101,7 +108,7 @@
 			//圆角
 			radius: {
 				type: String,
-				default: '6rpx'
+				default: ''
 			},
 			plain: {
 				type: Boolean,
@@ -133,9 +140,51 @@
 				type: String,
 				default: ''
 			},
+			appParameter: {
+				type: String,
+				default: ''
+			},
 			index: {
 				type: [Number, String],
 				default: 0
+			}
+		},
+		computed: {
+			getWidth() {
+				//medium 184*40 / small 120 40/ mini 58*32
+				let width = this.width;
+				if (this.btnSize && this.btnSize !== true) {
+					width = {
+						'medium': '368rpx',
+						'small': '240rpx',
+						'mini': '116rpx'
+					} [this.btnSize] || this.width
+				}
+				return width
+			},
+			getHeight() {
+				//medium 184*40 / small 120 40/ mini 58*32
+				let height = this.height || (uni && uni.$tui && uni.$tui.tuiFormButton.height) || '96rpx';
+				if (this.btnSize && this.btnSize !== true) {
+					height = {
+						'medium': '80rpx',
+						'small': '80rpx',
+						'mini': '64rpx'
+					} [this.btnSize] || height
+				}
+				return height
+			},
+			getBackground() {
+				return this.background || (uni && uni.$tui && uni.$tui.tuiFormButton.background) || '#5677fc';
+			},
+			getColor() {
+				return this.color || (uni && uni.$tui && uni.$tui.tuiFormButton.color) || '#fff';
+			},
+			getRadius() {
+				return this.radius || (uni && uni.$tui && uni.$tui.tuiFormButton.radius) || '6rpx';
+			},
+			getSize() {
+				return this.size || (uni && uni.$tui && uni.$tui.tuiFormButton.size) || 32;
 			}
 		},
 		data() {
@@ -194,6 +243,16 @@
 				detail = {}
 			} = {}) {
 				this.$emit('opensetting', detail);
+			},
+			bindchooseavatar({
+				detail = {}
+			} = {}) {
+				this.$emit('chooseavatar', detail);
+			},
+			bindlaunchapp({
+				detail = {}
+			} = {}) {
+				this.$emit('launchapp', detail);
 			}
 		}
 	};
@@ -245,7 +304,7 @@
 
 	.tui-button__active::after {
 		content: ' ';
-		background-color: rgba(0, 0, 0, 0.1);
+		background: var(--tui-button-active, rgba(255, 255, 255, .1));
 		position: absolute;
 		width: 100%;
 		height: 100%;

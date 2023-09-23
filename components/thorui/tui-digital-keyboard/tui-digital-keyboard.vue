@@ -22,7 +22,7 @@
 				</view>
 				<view class="tui-keyboard__grid tui-dk__btn">
 					<view class="tui-key__item" :class="{'tui-dkBtn__disabled':disabled}" @tap.stop="confirm"
-						:style="{color:buttonColor,backgroundColor:buttonBackground,fontSize:buttonSize+'rpx',fontWeight:buttonFontBold?'bold':'normal'}"
+						:style="{color:buttonColor,background:getButtonBackground,fontSize:buttonSize+'rpx',fontWeight:buttonFontBold?'bold':'normal'}"
 						:hover-class="disabled?'':'tui-key__item-active'" :hover-stay-time="150">{{buttonText}}</view>
 				</view>
 			</view>
@@ -62,7 +62,7 @@
 			},
 			buttonBackground: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			buttonColor: {
 				type: String,
@@ -95,6 +95,11 @@
 		watch: {
 			isDecimal(val) {
 				this.initData(val)
+			}
+		},
+		computed: {
+			getButtonBackground() {
+				return this.buttonBackground || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		data() {

@@ -238,8 +238,9 @@
             width: 80 + 'rpx',
           }"
         ></image>
-      </view> </view
-    ><tui-drawer
+      </view> 
+      </view>
+    <tui-drawer
       mode="bottom"
       :visible="visible"
       @close="closeDrawer"

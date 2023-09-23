@@ -10,7 +10,7 @@
 			<view :id="elId_box"
 				:class="{'tui-notice__content':scrollable,'tui-notice__content-single':!scrollable && single}">
 				<text ref="animationEle" class="tui-notice__text" :id="elId"
-					:style="{color:color,fontSize:size+'rpx',lineHeight:scrollable && !isNvue?size+'rpx':'normal',fontWeight:bold?'bold':'',width:wrapWidth+'px', 'animationDuration': animationDuration,'-webkit-animationDuration': animationDuration,animationPlayState: webviewHide?'paused':animationPlayState,'-webkit-animationPlayState':webviewHide?'paused':animationPlayState, animationDelay: animationDelay, '-webkit-animationDelay':animationDelay}"
+					:style="{color:getColor,fontSize:size+'rpx',lineHeight:scrollable && !isNvue?size+'rpx':'normal',fontWeight:bold?'bold':'',width:wrapWidth+'px', 'animationDuration': animationDuration,'-webkit-animationDuration': animationDuration,animationPlayState: webviewHide?'paused':animationPlayState,'-webkit-animationPlayState':webviewHide?'paused':animationPlayState, animationDelay: animationDelay, '-webkit-animationDelay':animationDelay}"
 					:class="{'tui-notice__single':!scrollable && single,'tui-notice__scrollable':scrollable}">{{content}}</text>
 			</view>
 		</view>
@@ -45,7 +45,7 @@
 			},
 			color: {
 				type: String,
-				default: '#ff7900'
+				default: ''
 			},
 			bold: {
 				type: Boolean,
@@ -151,8 +151,15 @@
 			})
 			// #endif
 			this.$nextTick(() => {
-				this.initAnimation()
+				setTimeout(() => {
+					this.initAnimation()
+				}, 50)
 			})
+		},
+		computed:{
+			getColor(){
+				return this.color || (uni && uni.$tui && uni.$tui.color.warning) || '#ff7900'
+			}
 		},
 		watch: {
 			scrollable(val) {
@@ -164,7 +171,9 @@
 			},
 			content(val) {
 				this.$nextTick(() => {
-					this.initAnimation()
+					setTimeout(()=>{
+						this.initAnimation()
+					},50)
 				})
 			}
 		},

@@ -16,7 +16,7 @@
 			</view>
 			<view class="tui-radar__center" :style="{width:lineBold?'2px':'1px',height:lineBold?'2px':'1px'}">
 				<view class="tui-radar__hypotenuse" v-for="(l,idx) in hypotenuse" :key="l.id"
-					:style="{bottom: l.y+'px', left: l.x+'px',width: l.width+'px',transform: `rotate(${l.angle}deg)`,background:splitLineColor,height:lineBold?'2px':'1px'}">
+					:style="[{bottom: l.y+'px', left: l.x+'px',width: l.width+'px',transform: `rotate(${l.angle}deg)`,background:splitLineColor,height:lineBold?'2px':'1px'}]">
 				</view>
 				<view v-for="(item,index) in dataset" :key="index" @tap.stop="onDotTap(index)">
 					<view class="tui-radar__dataset" v-for="(d,i) in item.lines" :key="d.id"

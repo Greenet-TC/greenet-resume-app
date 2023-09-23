@@ -5,8 +5,8 @@
 	</radio-group>
 	<!-- #endif -->
 
-	<!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ -->
-	<tui-form-field :name="name" :value="val">
+	<!-- #ifdef MP-WEIXIN ||  MP-BAIDU || MP-QQ -->
+	<tui-form-field :name="name" v-model="val">
 		<slot></slot>
 	</tui-form-field>
 	<!-- #endif -->
@@ -16,10 +16,17 @@
 	export default {
 		name: "tui-radio-group",
 		emits: ['change', 'input', 'update:modelValue'],
-		// #ifndef VUE3
 		// #ifdef MP-WEIXIN
 		behaviors: ['wx://form-field-group'],
 		// #endif
+		// #ifdef MP-BAIDU || MP-QQ
+		//如果在这些平台不需要也能识别，则删除
+		behaviors: ['uni://form-field'],
+		// #endif
+		// #ifdef MP-WEIXIN
+		options: {
+			virtualHost: true
+		},
 		// #endif
 		props: {
 			name: {
@@ -64,6 +71,7 @@
 				// #endif
 			},
 			changeValue(value, target) {
+				if (this.val === value) return;
 				this.val = value;
 				this.childrens.forEach(item => {
 					if (item !== target) {

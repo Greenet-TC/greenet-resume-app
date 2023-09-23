@@ -41,7 +41,7 @@
 			<view class="tui-letter__item" :class="[index === treeItemCur ? 'tui-letter__cur' : '']"
 				v-for="(item, index) in listData" :key="index" @tap="letterClick(index,item.letter)">
 				<view class="tui-letter__key"
-					:style="{ background: index === treeItemCur ? activeKeyBackground : '', color: index === treeItemCur ? activeKeyColor : keyColor }">
+					:style="{ background: index === treeItemCur ? getActiveKeyBgColor : '', color: index === treeItemCur ? activeKeyColor : keyColor }">
 					{{ item.letter }}
 				</view>
 			</view>
@@ -144,7 +144,7 @@
 			},
 			activeColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			size: {
 				type: String,
@@ -172,7 +172,7 @@
 			},
 			activeKeyBackground: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//重新初始化[可异步加载时使用,设置大于0的数]
 			reinit: {
@@ -186,6 +186,12 @@
 			},
 			getChange() {
 				return `${this.top}-${this.bottom}-${this.reinit}`;
+			},
+			getActiveColor(){
+				return this.activeColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
+			},
+			getActiveKeyBgColor(){
+				return this.activeKeyBackground || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		watch: {
@@ -255,7 +261,7 @@
 							this.listItemCur = i;
 						} else if (scrollTop <= block.itemBottom - stickyTitleHeight) {
 							this.background_cur = this.activeBackground;
-							this.color_cur = this.activeColor;
+							this.color_cur = this.getActiveColor;
 							this.background_next = this.background;
 							this.color_next = this.color;
 							this.treeItemCur = i;
@@ -354,7 +360,7 @@
 				indicatorTop = this.indicatorTopList[treeItemCur];
 
 				this.background_cur = this.activeBackground;
-				this.color_cur = this.activeColor;
+				this.color_cur = this.getActiveColor;
 				this.background_next = this.background;
 				this.color_next = this.color;
 				this.treeItemCur = treeItemCur;
@@ -388,7 +394,7 @@
 				let remScale = (windowWidth || 375) / 375,
 					realTop = (this.top * remScale) / 2,
 					realBottom = (this.bottom * remScale) / 2,
-					colors = ColorUtil.gradient(this.activeColor, this.color, 100),
+					colors = ColorUtil.gradient(this.getActiveColor, this.color, 100),
 					backgroundColors = ColorUtil.gradient(this.activeBackground, this.background, 100);
 
 				this.remScale = remScale;
@@ -468,7 +474,9 @@
 			}
 		},
 		mounted() {
-			this.init();
+			this.$nextTick(()=>{
+				this.init();
+			})
 		}
 	};
 </script>

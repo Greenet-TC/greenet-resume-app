@@ -22,7 +22,7 @@
 						</view>
 						<view class="tui-column__bar" :class="{'tui-column__bar-round':columnCap==='round'}"
 							v-for="(bar,idx) in dataset" :key="idx"
-							:style="{width:columnBarWidth+'rpx',borderTopColor:getBarColor(bar.source[index],bar.color,bar.colorFormatter),background:getBarColor(bar.source[index],bar.color,bar.colorFormatter),height:((bar.source[index]-(isStack?(min/dataset.length):min))/splitNumber)*(yAxisLine.itemGap || 60) +'rpx'}"
+							:style="{width:columnBarWidth+'rpx',borderTopColor:getBarColor(bar.source[index],bar.color,bar.colorFormatter),background:getBarColor(bar.source[index],bar.color,bar.colorFormatter),height:getBarHeight(bar.source[index],dataset,splitNumber,yAxisLine.itemGap),marginBottom:getMarginBottom(bar.source[index],yAxisLine.itemGap)}"
 							@tap.stop="onBarTap(index,idx)">
 						</view>
 						<view class="tui-column__xAxis-text"
@@ -218,6 +218,11 @@
 			columnCap: {
 				type: String,
 				default: 'square'
+			},
+			//是否支持负数显示
+			isMinus: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -267,6 +272,24 @@
 		},
 		// #endif
 		methods: {
+			getBarHeight(value, dataset, splitNumber, itemGap) {
+				// ((bar.source[index]-(isStack?(min/dataset.length):min))/splitNumber)*(yAxisLine.itemGap || 60) +'rpx'
+				let min = this.min
+				if (this.isMinus && !this.isStack) {
+					value = Math.abs(value)
+					min = 0
+				}
+				return ((value - (this.isStack ? (min / dataset.length) : min)) / this.splitNumber) * (itemGap ||
+					60) + 'rpx'
+			},
+			getMarginBottom(value, itemGap) {
+				let mb = 0
+				if (this.isMinus && !this.isStack && Number(this.min) < 0) {
+					const min = value > 0 ? Math.abs(this.min) : (value - this.min)
+					mb = min / this.splitNumber * (itemGap || 60)
+				}
+				return mb + 'rpx'
+			},
 			generateArray(start, end) {
 				return Array.from(new Array(end + 1).keys()).slice(start);
 			},

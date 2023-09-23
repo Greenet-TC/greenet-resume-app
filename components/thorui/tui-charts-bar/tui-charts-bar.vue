@@ -14,7 +14,7 @@
 				v-for="(item,index) in yAxis" :key="index" :style="{padding:yAxisLine.itemPadding ||'30rpx 0'}">
 				<view class="tui-charts__bar" :class="{'tui-charts__bar-round':columnCap==='round'}"
 					v-for="(bar,idx) in dataset" :key="idx"
-					:style="{height:columnBarHeight+'rpx',borderRightColor:getBarColor(bar.source[index],bar.color,bar.colorFormatter),background:getBarColor(bar.source[index],bar.color,bar.colorFormatter),width:((bar.source[index]-(isStack?(min/dataset.length):min))/(maxValue-min))*width +'rpx'}"
+					:style="{height:columnBarHeight+'rpx',borderRightColor:getBarColor(bar.source[index],bar.color,bar.colorFormatter),background:getBarColor(bar.source[index],bar.color,bar.colorFormatter),width:getBarWidth(bar.source[index],dataset),marginLeft:getMarginLeft(bar.source[index])}"
 					@tap.stop="onBarTap(index,idx)">
 				</view>
 				<view class="tui-bar__val"
@@ -203,6 +203,10 @@
 			columnCap: {
 				type: String,
 				default: 'square'
+			},
+			isMinus: {
+				type: Boolean,
+				default: true
 			}
 		},
 		data() {
@@ -252,6 +256,23 @@
 			this.activeIndex = this.currentIndex;
 		},
 		methods: {
+			getBarWidth(value, dataset) {
+				// ((bar.source[index]-(isStack?(min/dataset.length):min))/(maxValue-min))*width +'rpx'
+				let min = this.min
+				if (this.isMinus && !this.isStack) {
+					value = Math.abs(value)
+					min = 0
+				}
+				return ((value - (this.isStack ? (min / dataset.length) : min)) / (this.maxValue - this.min)) * this.width + 'rpx'
+			},
+			getMarginLeft(value) {
+				let ml = 0
+				if (this.isMinus && !this.isStack && Number(this.min) < 0) {
+					const min = value > 0 ? Math.abs(this.min) : (value - this.min)
+					ml = min / (this.maxValue - this.min) * this.width
+				}
+				return ml + 'rpx'
+			},
 			generateArray(start, end) {
 				return Array.from(new Array(end + 1).keys()).slice(start);
 			},

@@ -8,7 +8,7 @@
 			<slot name="prev"></slot>
 		</view>
 		<view class="tui-pagination__num" v-if="isPage">
-			<text :style="{color:currentColor,fontSize:pageFontSize+'rpx'}">{{currentIndex}}</text>
+			<text :style="{color:getCurrentColor,fontSize:pageFontSize+'rpx'}">{{currentIndex}}</text>
 			<text :style="{color:pageColor,fontSize:pageFontSize+'rpx'}">/{{maxPage || 0}}</text>
 		</view>
 		<view class="tui-pagination__btn"
@@ -75,7 +75,7 @@
 			//当前页码字体颜色
 			currentColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			//页码字体颜色
 			pageColor: {
@@ -112,6 +112,9 @@
 					maxPage = Math.ceil(total / pageSize)
 				}
 				return maxPage
+			},
+			getCurrentColor(){
+				return this.currentColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		watch: {

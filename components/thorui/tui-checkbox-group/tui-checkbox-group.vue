@@ -6,7 +6,7 @@
 	<!-- #endif -->
 
 	<!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ -->
-	<tui-form-field :name="name" :value="vals">
+	<tui-form-field :name="name" v-model="vals">
 		<slot></slot>
 	</tui-form-field>
 	<!-- #endif -->
@@ -16,10 +16,12 @@
 	export default {
 		name: "tui-checkbox-group",
 		emits: ['change', 'input', 'update:modelValue'],
-		// #ifndef VUE3
 		// #ifdef MP-WEIXIN
 		behaviors: ['wx://form-field-group'],
 		// #endif
+		// #ifdef MP-BAIDU || MP-QQ
+		//如果在这些平台不需要也能识别，则删除
+		behaviors: ['uni://form-field'],
 		// #endif
 		props: {
 			name: {

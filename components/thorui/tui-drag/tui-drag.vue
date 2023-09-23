@@ -1,31 +1,19 @@
 <template>
 	<!-- #ifdef APP-PLUS || MP-WEIXIN || H5 -->
 	<view class="tui-drag__wrap" :list="list" :style="{ height: getHeight + 'rpx' }" :basedata="baseData"
-		:change:list="handler.listObserver" :change:basedata="handler.baseDataObserver">
+		:change:list="handler.listObserver" :change:basedata="handler.baseDataObserver"
+		:catch:touchmove="wxDrag?true:''">
 		<!-- #endif -->
 		<!-- #ifndef APP-PLUS || MP-WEIXIN || H5 -->
 		<view class="tui-drag__wrap" :style="{ height: getHeight + 'rpx' }">
 			<!-- #endif -->
-			<!-- #ifdef MP-WEIXIN -->
-			<view class="tui-drag__item" v-for="(item, index) in list" :key="item.id" :data-index="index"
-				:style="{ width:100 / columns + '%', height:  baseData.itemHeight + 'px' }"
-				@longpress="handler.longPress" :data-basedata="baseData" :data-edit="isEdit"
-				@touchstart="handler.touchStart" :catch:touchmove="dragging?handler.touchMove:''"
-				:catch:touchend="dragging?handler.touchEnd:''">
-				<slot :entity="item.data" :fixed="item.fixed" :index="index" :height="itemHeight" :isEdit="isEdit">
-				</slot>
-			</view>
-			<!-- #endif -->
-
-			<!-- #ifdef APP-PLUS || H5 -->
 			<view class="tui-drag__item" v-for="(item, index) in list" :key="item.id" :data-index="index"
 				:style="{ width: 100 / columns + '%', height: itemHeight + 'rpx' }" @longpress="handler.longPress"
 				:data-basedata="baseData" :data-edit="isEdit" @touchstart="handler.touchStart"
-				@touchmove="handler.touchMove" @touchend="handler.touchEnd">
+				@touchmove="handler.touchMove" @touchend="handler.touchEnd" @mousedown="handler.mousedown">
 				<slot :entity="item.data" :fixed="item.fixed" :index="index" :height="itemHeight" :isEdit="isEdit">
 				</slot>
 			</view>
-			<!-- #endif -->
 
 			<!-- #ifndef APP-PLUS || MP-WEIXIN || H5-->
 			<view class="tui-drag__item"
@@ -101,8 +89,9 @@
 				rows: 4, // 行数
 
 				list: [], // 渲染数据列
-				dragging: false,
-				isInit: true
+				dragging: true,
+				isInit: true,
+				wxDrag: true
 			};
 		},
 		watch: {
@@ -126,7 +115,9 @@
 		},
 		mounted() {
 			this.$nextTick(() => {
-				this.init();
+				setTimeout(() => {
+					this.init();
+				}, 50);
 			})
 		},
 		methods: {
@@ -142,7 +133,8 @@
 				});
 			},
 			drag(e) {
-				this.dragging = e.dragging;
+				this.wxDrag = e.wxdrag;
+				// this.dragging = e.dragging;
 			},
 			listChange(e) {
 				this.listWxs = e.list;
@@ -203,8 +195,9 @@
 			 */
 			init() {
 				// 初始必须为true以绑定wxs中的函数,
-				this.dragging = true;
+				this.wxDrag = true
 				this.isInit = true
+				this.dragging = false
 				let delItem = item => {
 					let obj = {
 						...item
@@ -259,6 +252,7 @@
 							this.listWxs = list;
 							setTimeout(() => {
 								this.isInit = false
+								this.dragging = true;
 							}, 500)
 							// #endif
 						})

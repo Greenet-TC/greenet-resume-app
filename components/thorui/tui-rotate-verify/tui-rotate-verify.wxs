@@ -8,10 +8,31 @@ var type = 1;
 function bool(str) {
 	return str === 'true' || str == true ? true : false
 }
+function isPC() {
+	if (typeof navigator !== 'object') return false;
+	var userAgentInfo = navigator.userAgent;
+	var Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+	var flag = true;
+	for (var v = 0; v < Agents.length - 1; v++) {
+		if (userAgentInfo.indexOf(Agents[v]) > 0) {
+			flag = false;
+			break;
+		}
+	}
+	return flag;
+}
+var isH5 = false
+if (typeof window === 'object') isH5 = true
+
 
 function touchstart(e, ins) {
 	var state = e.instance.getState()
-	var touch = e.touches[0] || e.changedTouches[0]
+	var touch = {}
+	if (isH5 && isPC()) {
+		touch = e;
+	} else {
+		touch = e.touches[0] || e.changedTouches[0]
+	}
 	var dataset = e.instance.getDataset()
 	state.startX = touch.pageX
 	sliderWidth = +dataset.width
@@ -42,10 +63,17 @@ function styleChange(left, deg, ins) {
 	})
 }
 
-function touchmove(e, ins) {
+function touchmove(e, ins, event) {
 	if (disabled) return;
-	var state = e.instance.getState()
-	var touch = e.touches[0] || e.changedTouches[0]
+	var state = {}
+	var touch = {}
+	if (isH5 && isPC()) {
+		touch = e;
+		state = event.instance.getState()
+	} else {
+		state = e.instance.getState()
+		touch = e.touches[0] || e.changedTouches[0]
+	}
 	var pageX = touch.pageX;
 	var left = pageX - state.startX + (state.lastLeft || 0);
 	left = left < 0 ? 0 : left;
@@ -57,9 +85,14 @@ function touchmove(e, ins) {
 	styleChange(left, deg, ins)
 }
 
-function touchend(e, ins) {
+function touchend(e, ins, event) {
 	if (disabled) return;
-	var state = e.instance.getState()
+	var state = {}
+	if (isH5 && isPC()) {
+		state = event.instance.getState()
+	} else {
+		state = e.instance.getState()
+	}
 	var left = sliderWidth - blockWidth
 	var deg = 360 / left * state.lastLeft + angle
 	if (type == 1) {
@@ -90,9 +123,28 @@ function slidereset(reset, oldreset, owner, ins) {
 	}
 }
 
+var movable = false;
+
+function mousedown(e, ins) {
+	if (!isH5 || !isPC()) return
+	touchstart(e, ins)
+	movable = true
+	window.onmousemove = function(event) {
+		if (!isH5 || !isPC() || !movable) return
+		touchmove(event, ins, e)
+	}
+	window.onmouseup = function(event) {
+		if (!isH5 || !isPC() || !movable) return
+		touchend(event, ins, e)
+		movable = false
+	}
+}
+
+
 module.exports = {
 	touchstart: touchstart,
 	touchmove: touchmove,
 	touchend: touchend,
+	mousedown: mousedown,
 	slidereset: slidereset
 }

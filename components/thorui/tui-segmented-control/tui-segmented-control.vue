@@ -1,9 +1,9 @@
 <template>
 	<view class="tui-segmented__control" :class="{'tui-segmented__disabled':disabled}">
 		<view class="tui-segmented__item" v-for="(item,index) in values" :key="index"
-			:style="{borderTopLeftRadius:index===0?radius:'0',borderBottomLeftRadius:index===0?radius:'0',borderTopRightRadius:index===values.length - 1?radius:'0',borderBottomRightRadius:index===values.length - 1?radius:'0',borderColor:activeColor,backgroundColor:currentIndex===index?activeColor:'transparent',height:height}"
+			:style="{borderTopLeftRadius:index===0?radius:'0',borderBottomLeftRadius:index===0?radius:'0',borderTopRightRadius:index===values.length - 1?radius:'0',borderBottomRightRadius:index===values.length - 1?radius:'0',borderColor:getActiveColor,backgroundColor:currentIndex===index?getActiveColor:'transparent',height:height}"
 			:class="{'tui-segmented__first':index===0}" @click="handleClick(index)">
-			<text :style="{fontSize:size,color:currentIndex===index?'#fff':activeColor}">{{item}}</text>
+			<text :style="{fontSize:size,color:currentIndex===index?'#fff':getActiveColor}">{{item}}</text>
 		</view>
 	</view>
 </template>
@@ -25,7 +25,7 @@
 			},
 			activeColor: {
 				type: String,
-				default: '#5677fc'
+				default: ''
 			},
 			height: {
 				type: String,
@@ -43,6 +43,11 @@
 			disabled: {
 				type: Boolean,
 				default: false
+			}
+		},
+		computed:{
+			getActiveColor(){
+				return this.activeColor || (uni && uni.$tui && uni.$tui.color.primary) || '#5677fc'
 			}
 		},
 		data() {
