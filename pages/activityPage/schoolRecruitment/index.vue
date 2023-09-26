@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-12 11:26:53
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-26 17:14:50
+ * @LastEditTime: 2023-09-26 21:35:55
  * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,7 +15,7 @@
       @change="opacityChange"
       :scrollTop="scrollTop"
       title="校招特训营"
-      backgroundColor="#ffffff"
+      backgroundColor="#ffffff80"
       color="#333"
     >
       <view class="tui-header-icon" :style="{ marginTop: top + 'px' }">
@@ -34,24 +34,29 @@
         ></tui-icon>
       </view>
     </tui-navigation-bar>
-    <img
-      src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/school-resume.png"
+    <!-- <img
+      src=""
       alt=""
+     
+    /> -->
+    <image
+      src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/school-resume.png"
+      mode=""
       class="school-active-img"
-    />
+      @click="previewImage(url)"
+    ></image>
+
     <view class="tui-tabbar">
       <view class="tui-btn-mr">
-        <tui-button
-          type="gray-green"
-          width="350rpx"
-          height="70rpx"
-          :size="30"
-          shape="circle"
-          shadow
-          @click="openDrawer"
-          >立即加入</tui-button
-        >
-      </view>
+        <cell
+          iconUrl="https://wwcdn.weixin.qq.com/node/wwmng/wwmng/style/images/independent/csPlugin/chatGroup_avatar_rect_2x$fc6f857c.png"
+          contactText="加入群聊"
+          :startmessage="startmessage"
+          :completemessage="completemessage"
+          paddingStyle="10 0 10 0"
+          :contactTextBlod="false"
+          url="https://work.weixin.qq.com/gm/722d7ee22748f08893e0852878c6c43c"
+      /></view>
       <view>
         <button open-type="share" class="tui-share-btn">
           <image
@@ -95,12 +100,23 @@ export default {
         url: "/pages/index/index",
       });
     },
+
+    previewImage(url) {
+      let photoList = [];
+      photoList.push(url);
+      uni.previewImage({
+        current: 0,
+        urls: photoList, // 图片路径必须是一个数组
+      });
+    },
     opacityChange(e) {
       this.opacity = e.opacity;
     },
     choiceVipType(e) {
       this.activeId = e;
     },
+    startmessage(e) {},
+    completemessage(e) {},
     back() {
       uni.navigateBack();
     },
@@ -184,8 +200,8 @@ export default {
 
 .tui-tabbar {
   width: 100%;
-  height: 150rpx;
-  background: #ffffff00;
+  height: 185rpx;
+  background: #ffffff20;
   position: fixed;
   left: 0;
   bottom: 0;
@@ -193,8 +209,8 @@ export default {
   /* bottom: 50px; */
   /* #endif */
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 0 30rpx;
   box-sizing: border-box;
   font-size: 24rpx;
@@ -202,6 +218,13 @@ export default {
 }
 .tui-btn-mr {
   margin-right: 30rpx;
+  width: 165px;
+  background: #ffffff;
+  height: 48px;
+  padding: 9px 10px 0 10px;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid #6496c8;
 }
 .tui-share-btn {
   flex: 1;
@@ -209,7 +232,7 @@ export default {
   background: transparent;
   margin: 0;
   padding: 0;
-  border-radius: 0;
+  border-radius: 50%;
   border: 0;
   line-height: 1;
 }
