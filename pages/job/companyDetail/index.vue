@@ -8,7 +8,7 @@
           <tui-image-group
             :imageList="[
               {
-                src: companyInfo.logo,
+                src: companyInfo?.logo,
               },
             ]"
             isGroup
@@ -18,7 +18,7 @@
           <view class="tui-recru-info-text">
             <tui-text
               block
-              :text="companyInfo.companyName"
+              :text="companyInfo?.companyName"
               size="40"
               color="#fff"
             ></tui-text>
@@ -63,6 +63,7 @@
           @scrolltoupper="bottomUpper"
           @scrolltolower="bottomLower"
         >
+          <tui-loading text="'加载中...'" v-if="loading"></tui-loading>
           <view
             class="job-card"
             v-for="(item, index) in positionInfo"
@@ -199,25 +200,34 @@ import tNavbar from "../../activityPage/tui-navbar/tui-navbar.vue";
 export default {
   components: { tNavbar },
   onLoad: async function (option) {
-    this.compant_id = option.id; //打印出上个页面传递的参数。
-    const company_data = await getPageListPost({
-      pageNum: 1,
-      pageSize: 50,
-      id: option.id,
-    });
-    this.companyInfo = company_data.data[0];
-    const data = await internshipPositionGetPageListPOST({
-      pageNum: this.pageNum,
-      pageSize: this.pageSize,
-      companyId: option.id,
-    });
-    this.positionInfo = data.data;
+    this.loading = true;
+    try {
+      this.compant_id = option.id; //打印出上个页面传递的参数。
+
+      const company_data = await getPageListPost({
+        pageNum: 1,
+        pageSize: 50,
+        id: option.id,
+      });
+      this.companyInfo = company_data.data[0];
+      const data = await internshipPositionGetPageListPOST({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        companyId: option.id,
+      });
+      this.positionInfo = data.data;
+    } catch (e) {
+      this.loading = false;
+    } finally {
+      this.loading = false;
+    }
   },
 
   data() {
     return {
       compant_id: "",
       dayjs,
+      loading: false,
       positionInfo: null,
       companyInfo: null,
       isScrollContant: false,

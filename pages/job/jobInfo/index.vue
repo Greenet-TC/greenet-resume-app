@@ -47,7 +47,11 @@
               <tui-text
                 padding="0rpx 6rpx"
                 block
-                :text="positionInfo?.location"
+                :text="
+                  Array.isArray(item.location)
+                    ? item.location.join('/')
+                    : item.location
+                "
                 size="30x"
                 color="gray"
               ></tui-text

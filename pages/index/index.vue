@@ -335,11 +335,16 @@ export default {
     openActionSheet: function (type) {
       this.showActionSheet = true;
     },
-    itemClick: function (e) {
+    itemClick: async function (e) {
       let index = e.index;
       this.closeActionSheet();
       if (index === 0) {
-        login();
+        await login();
+        const data = await getPageListPost({
+          pageNum: 1,
+          pageSize: 20,
+        });
+        this.companyInfoList = data.data;
       }
     },
   },
