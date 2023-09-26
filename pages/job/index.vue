@@ -133,7 +133,11 @@
                 margin="0 14rpx 0 0"
                 padding="10rpx"
                 size="24rpx"
-                >{{ item.location }}</tui-tag
+                >{{
+                  Array.isArray(item.location)
+                    ? item.location.join("/")
+                    : item.location
+                }}</tui-tag
               >
               <tui-tag
                 v-if="item.property"
@@ -149,7 +153,6 @@
                 margin="0 14rpx 0 0"
                 padding="10rpx"
                 size="24rpx"
-                plain
                 >{{ item.experience?.label }}</tui-tag
               >
               <tui-tag
@@ -216,7 +219,7 @@
 </template>
 
 <script>
-import {   salaryType } from "@/common/contant";
+import { salaryType } from "@/common/contant";
 import { getTargetElement } from "@/common/utils";
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
@@ -272,8 +275,6 @@ export default {
     };
   },
   methods: {
-   
-
     moreCompany: function () {
       uni.navigateTo({
         url: "/pages/job/companyInfo/index",
@@ -305,9 +306,9 @@ page {
 }
 .intership-body {
   display: flex;
-    justify-content: space-between;
-    padding: 0 24rpx;
-    align-items: center;
+  justify-content: space-between;
+  padding: 0 24rpx;
+  align-items: center;
   &-date {
     color: #9c9c9c;
     font-size: 28rpx;

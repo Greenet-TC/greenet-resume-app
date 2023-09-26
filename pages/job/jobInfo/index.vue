@@ -1,6 +1,6 @@
 <template>
-   
-  <view ><tui-loading v-if="loading" text="加载中..."></tui-loading>
+  <view
+    ><tui-loading v-if="loading" text="加载中..."></tui-loading>
     <view class="job-tui-card">
       <tui-card
         :title="{
@@ -87,7 +87,10 @@
             size="24rpx"
             >{{ companyInfo?.sectorNumber?.label }}</tui-tag
           >
-          <view v-for="(item, index) in positionInfo?.positionTags" :key="index">
+          <view
+            v-for="(item, index) in positionInfo?.positionTags"
+            :key="index"
+          >
             <tui-tag
               type="light-green"
               margin="0 14rpx 0 0"
@@ -124,7 +127,17 @@
           </view>
         </view>
         <view class="job-detail-box">
-          <tui-section title="岗位职责" is-line background="#fff" lineCap="circle" lineColor="#8E44AD" size="38" padding="10rpx 20rpx" :lineRight="20" :lineWidth="10"></tui-section>
+          <tui-section
+            title="岗位职责"
+            is-line
+            background="#fff"
+            lineCap="circle"
+            lineColor="#8E44AD"
+            size="38"
+            padding="10rpx 20rpx"
+            :lineRight="20"
+            :lineWidth="10"
+          ></tui-section>
           <tui-text
             padding="16rpx 0"
             block
@@ -134,8 +147,18 @@
           ></tui-text>
         </view>
         <view class="job-detail-box">
-          <tui-section title="岗位要求" is-line background="#fff" lineCap="circle" lineColor="#8E44AD" size="38" padding="10rpx 20rpx" :lineRight="20" :lineWidth="10"></tui-section>
-         
+          <tui-section
+            title="岗位要求"
+            is-line
+            background="#fff"
+            lineCap="circle"
+            lineColor="#8E44AD"
+            size="38"
+            padding="10rpx 20rpx"
+            :lineRight="20"
+            :lineWidth="10"
+          ></tui-section>
+
           <tui-text
             padding="16rpx 0"
             block
@@ -145,7 +168,17 @@
           ></tui-text>
         </view>
         <view class="job-detail-box" v-if="positionInfo?.positionAdvan">
-          <tui-section title="岗位优势" is-line background="#fff" lineCap="circle" lineColor="#8E44AD" size="38" padding="10rpx 20rpx" :lineRight="20" :lineWidth="10"></tui-section>
+          <tui-section
+            title="岗位优势"
+            is-line
+            background="#fff"
+            lineCap="circle"
+            lineColor="#8E44AD"
+            size="38"
+            padding="10rpx 20rpx"
+            :lineRight="20"
+            :lineWidth="10"
+          ></tui-section>
           <tui-text
             padding="16rpx 0"
             block
@@ -293,7 +326,7 @@
       </view>
     </tui-drawer>
     <!--底部分享弹层-->
-    <tui-bottom-popup :mask="false" :show="sharePopup" @close="hideSharePopup" >
+    <tui-bottom-popup :mask="false" :show="sharePopup" @close="hideSharePopup">
       <view class="tui-share__box">
         <view class="tui-share__header">
           <text>分享</text>
@@ -366,7 +399,6 @@
       </view>
     </tui-modal>
   </view>
- 
 </template>
 
 <script>
@@ -537,8 +569,12 @@ export default {
           mainPic: mainPic,
           qrcode: qrcode,
         };
-        let text = `${this.positionInfo?.positionDuty.replace(/\+/g,'').replace(/[\r\n]/g,'')}`;
-        let text2 = `${this.positionInfo?.positionRequired.replace(/\+/g,'').replace(/[\r\n]/g,'')}`;
+        let text = `${this.positionInfo?.positionDuty
+          .replace(/\+/g, "")
+          .replace(/[\r\n]/g, "")}`;
+        let text2 = `${this.positionInfo?.positionRequired
+          .replace(/\+/g, "")
+          .replace(/[\r\n]/g, "")}`;
         poster.drawShipInfoPoster(
           "posterId",
           this.winWidth,
@@ -617,6 +653,7 @@ page {
 }
 .job-detail-box {
   margin-bottom: 16rpx;
+  font-family: cursive;
 }
 .job-tui-text {
 }
