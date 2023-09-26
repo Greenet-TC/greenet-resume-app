@@ -48,9 +48,9 @@
                 padding="0rpx 6rpx"
                 block
                 :text="
-                  Array.isArray(item.location)
-                    ? item.location.join('/')
-                    : item.location
+                  Array.isArray(positionInfo.location)
+                    ? positionInfo.location.join('/')
+                    : positionInfo.location
                 "
                 size="30x"
                 color="gray"

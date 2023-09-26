@@ -1,6 +1,20 @@
 <template>
   <view class="container">
-    <tNavbar :title="'首页'"></tNavbar>
+    <view class="tui-header-icon" :style="{ marginTop: 48 + 'px' }">
+      <tui-icon
+        name="arrowleft"
+        :color="'rgb(96,98,102)'"
+        @click="back"
+        size="19"
+      ></tui-icon>
+      <view class="tui-header-icon-divider"></view>
+      <tui-icon
+        name="home"
+        :color="'rgb(96,98,102)'"
+        @click="home"
+        size="19"
+      ></tui-icon>
+    </view>
 
     <view class="container-header">
       <view class="tui-new-job-info-box">
@@ -42,7 +56,7 @@
         <tui-text
           block
           class="companyInfo-introduction"
-          :text="companyInfo.introduction"
+          :text="companyInfo?.introduction"
           color="#FFFAFA"
         ></tui-text>
       </view>
@@ -409,6 +423,32 @@ page {
   &-date {
     color: #9c9c9c;
     font-size: 28rpx;
+  }
+}
+.tui-header-icon {
+  margin-left: 0px;
+  width: 80px;
+  position: fixed;
+  top: 0;
+  padding: 0 16rpx;
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 0.5px solid #dadbde;
+  padding: 0 16rpx;
+  align-items: center;
+  height: 32px;
+  transform: translateZ(0);
+  z-index: 99999;
+  box-sizing: border-box;
+  &-divider {
+    border-left: 1px solid rgb(214, 215, 217);
+    height: 16px;
+    border-top-color: rgb(214, 215, 217);
+    border-right-color: rgb(214, 215, 217);
+    border-bottom-color: rgb(214, 215, 217);
+    margin: 0px 8px;
   }
 }
 </style>

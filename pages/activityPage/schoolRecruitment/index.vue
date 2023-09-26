@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-12 11:26:53
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-09-24 20:35:23
+ * @LastEditTime: 2023-09-26 17:14:50
  * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,8 +21,16 @@
       <view class="tui-header-icon" :style="{ marginTop: top + 'px' }">
         <tui-icon
           name="arrowleft"
-          :color="opacity > 0.85 ? '#333' : '#ffffff0'"
+          :color="opacity > 0.85 ? 'rgb(96,98,102)' : '#ffffff0'"
           @click="back"
+          size="19"
+        ></tui-icon>
+        <view class="tui-header-icon-divider"></view>
+        <tui-icon
+          name="home"
+          :color="opacity > 0.85 ? 'rgb(96,98,102)' : '#ffffff0'"
+          @click="home"
+          size="19"
         ></tui-icon>
       </view>
     </tui-navigation-bar>
@@ -82,6 +90,11 @@ export default {
       this.opacity = e.opacity;
       this.top = e.top;
     },
+    home() {
+      uni.switchTab({
+        url: "/pages/index/index",
+      });
+    },
     opacityChange(e) {
       this.opacity = e.opacity;
     },
@@ -127,16 +140,30 @@ export default {
 </script>
 <style lang="less">
 .tui-header-icon {
-  width: 100%;
+  margin-left: 10px;
+  width: 80px;
   position: fixed;
   top: 0;
-  padding: 0 12rpx;
+  padding: 0 16rpx;
+  border-radius: 100px;
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 0.5px solid #dadbde;
+  padding: 0 16rpx;
   align-items: center;
   height: 32px;
   transform: translateZ(0);
   z-index: 99999;
   box-sizing: border-box;
+  &-divider {
+    border-left: 1px solid rgb(214, 215, 217);
+    height: 16px;
+    border-top-color: rgb(214, 215, 217);
+    border-right-color: rgb(214, 215, 217);
+    border-bottom-color: rgb(214, 215, 217);
+    margin: 0px 8px;
+  }
 }
 
 .school-active {
