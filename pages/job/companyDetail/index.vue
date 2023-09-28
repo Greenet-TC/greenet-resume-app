@@ -78,10 +78,21 @@
           @scrolltolower="bottomLower"
         >
           <tui-loading text="'加载中...'" v-if="loading"></tui-loading>
+          <view v-if="!positionInfo.length">
+            <tui-no-data
+              imgUrl="/static/images/toast/img_noorder_3x.png"
+              btnText="去看看"
+              @click="go"
+            >
+              <text class="tui-color__black">您还没有任何订单~</text>
+              <!--如果需要自定义按钮，可在插槽中自定义，不使用默认按钮-->
+            </tui-no-data></view
+          >
           <view
             class="job-card"
             v-for="(item, index) in positionInfo"
             :key="index"
+            v-else
           >
             <tui-card
               :title="{
@@ -275,6 +286,14 @@ export default {
       uni.navigateTo({
         url: `/pages/job/jobInfo/index?id=${item.id}`,
       });
+    },
+    home() {
+      uni.switchTab({
+        url: "/pages/index/index",
+      });
+    },
+    back() {
+      uni.navigateBack();
     },
     // bottomLower: function () {
     //   this.isScrollContant = true;

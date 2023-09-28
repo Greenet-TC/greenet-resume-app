@@ -3,7 +3,8 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "优加实习"
+        "navigationBarTitleText": "优加实习",
+        "navigationStyle": "custom"
       }
     },
 
@@ -22,7 +23,8 @@
     {
       "path": "pages/job/index",
       "style": {
-        "navigationBarTitleText": "求职信息"
+        "navigationBarTitleText": "求职信息",
+        "enablePullDownRefresh": true
       }
     },
     {

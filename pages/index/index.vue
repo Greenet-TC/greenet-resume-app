@@ -23,7 +23,7 @@
               @tap.stop="detail"
             >
               <image
-                :src="'/static/images/banner/' + item"
+                :src="webURLBase + `/home/home-${item}`"
                 class="tui-slide-image"
                 mode="scaleToFill"
               />
@@ -33,133 +33,135 @@
       </view>
     </view>
 
-    <view class="tui-product-category">
-      <view
-        class="tui-category-item"
-        v-for="(item, index) in category"
-        :key="index"
-        :data-key="item.id"
-        @tap="resumeEdit"
-      >
+    <view class="tui-container-a">
+      <view class="tui-product-category">
+        <view
+          class="tui-category-item"
+          v-for="(item, index) in category"
+          :key="index"
+          :data-key="item.id"
+          @tap="resumeEdit"
+        >
+          <image
+            :src="'/static/images/icon/' + item.img"
+            class="tui-category-img"
+            mode="scaleToFill"
+          ></image>
+          <view class="tui-category-name">{{ item.name }}</view>
+        </view>
+      </view>
+      <view class="category-active" @tap="activePage">
         <image
-          :src="'/static/images/icon/' + item.img"
-          class="tui-category-img"
-          mode="scaleToFill"
+          src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner.png"
+          class="tui-img__coupon"
         ></image>
-        <view class="tui-category-name">{{ item.name }}</view>
-      </view>
-    </view>
-    <view class="category-active" @tap="activePage">
-      <image
-        src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner.png"
-        class="tui-img__coupon"
-      ></image>
-      <view class="coupon-contant">
-        <view class="coupon-contant-text">
-          <view class="coupon-contant-text-title">
-            优加实习城市信息共享群
+        <view class="coupon-contant">
+          <view class="coupon-contant-text">
+            <view class="coupon-contant-text-title">
+              优加实习城市信息共享群
+            </view>
+            <view class="coupon-contant-text-sub">
+              300+名企岗位内推offer轻松拿！
+            </view>
           </view>
-          <view class="coupon-contant-text-sub">
-            300+名企岗位内推offer轻松拿！
-          </view>
+          <view class="coupon-contant-btn">加入+</view>
         </view>
-        <view class="coupon-contant-btn">加入+</view>
       </view>
-    </view>
 
-    <!-- 头部 -->
-    <view class="tui-title-contant">
-      <tui-text size="35" fontWeight="500" block text="实习内推"></tui-text>
-      <tui-button
-        width="140rpx"
-        size="24"
-        shape="circle"
-        type="gray-primary"
-        height="50rpx"
-        disabledGray
-        @tap="moreCompany"
-        >更多内推</tui-button
-      >
-    </view>
-    <view class="tui-product-box">
-      <!--简历模板-->
-      <view class="tui-block__box">
-        <view class="tui-group-name" @tap="more">
-          <view>
-            <text>热招岗位</text>
-            <text class="tui-sub__desc">大家都在投递</text>
-          </view>
-          <view class="tui-more__box">
-            <text>100+ 岗位</text>
-            <tui-icon
-              name="arrowright"
-              :size="30"
-              unit="rpx"
-              color="#999"
-            ></tui-icon>
-          </view>
-        </view>
-        <view class="tui-new-box">
-          <view class="tui-new-job-info-box">
-            <view class="tui-new-job-info">
-              <tui-image-group
-                :imageList="[
-                  {
-                    src: `https://uploadfiles.nowcoder.com/files/20181102/4575098_1541147538969_826546_1499420128657_7.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill`,
-                  },
-                ]"
-                isGroup
-                width="80rpx"
-                height="80rpx"
-              ></tui-image-group>
-              <view class="tui-recru-info-text">
-                <tui-text block text="阿里巴巴" size="30"></tui-text>
-                <tui-text
-                  block
-                  text="`互联网 | 已上市 | 10000 + 人`"
-                  size="22"
-                  type="gray"
-                ></tui-text
-              ></view>
+      <!-- 头部 -->
+      <view class="tui-title-contant">
+        <tui-text size="35" fontWeight="500" block text="实习内推"></tui-text>
+        <tui-button
+          width="140rpx"
+          size="24"
+          shape="circle"
+          type="gray-primary"
+          height="50rpx"
+          disabledGray
+          @tap="moreCompany"
+          >更多内推</tui-button
+        >
+      </view>
+      <view class="tui-product-box">
+        <!--简历模板-->
+        <view class="tui-block__box">
+          <view class="tui-group-name" @tap="more">
+            <view>
+              <text>热招岗位</text>
+              <text class="tui-sub__desc">大家都在投递</text>
             </view>
-            <tui-notice-bar
-              single
-              :padding="['0', '20rpx']"
-              content="阿里巴巴集团的业务包括核心商业、云计算、本地生活服务、数字媒体及娱乐以及创新业务。围绕着阿里巴巴的平台与业务，一个涵盖了消费者、商家、品牌"
-            ></tui-notice-bar>
-          </view>
-          <view
-            class="tui-new-item"
-            :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
-            v-for="(item, index) in companyInfoList"
-            :key="index"
-            @tap="moreDetail(item)"
-          >
-            <view class="tui-recru-info-item">
-              <tui-image-group
-                :imageList="[{ src: item.logo }]"
-                isGroup
-                width="70rpx"
-                height="70rpx"
-              ></tui-image-group>
-              <view class="tui-recru-info-text">
-                <tui-text block :text="item.companyName" size="30"></tui-text>
-                <tui-text
-                  block
-                  :text="`${40}+个内推岗位`"
-                  size="22"
-                  type="gray"
-                ></tui-text>
-              </view>
-            </view>
-            <view class="job-company-detail">
-              <text>详情</text>
+            <view class="tui-more__box">
+              <text>100+ 岗位</text>
               <tui-icon
                 name="arrowright"
                 :size="30"
                 unit="rpx"
                 color="#999"
               ></tui-icon>
+            </view>
+          </view>
+          <view class="tui-new-box">
+            <view class="tui-new-job-info-box">
+              <view class="tui-new-job-info">
+                <tui-image-group
+                  :imageList="[
+                    {
+                      src: `https://uploadfiles.nowcoder.com/files/20181102/4575098_1541147538969_826546_1499420128657_7.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill`,
+                    },
+                  ]"
+                  isGroup
+                  width="80rpx"
+                  height="80rpx"
+                ></tui-image-group>
+                <view class="tui-recru-info-text">
+                  <tui-text block text="阿里巴巴" size="30"></tui-text>
+                  <tui-text
+                    block
+                    text="`互联网 | 已上市 | 10000 + 人`"
+                    size="22"
+                    type="gray"
+                  ></tui-text
+                ></view>
+              </view>
+              <tui-notice-bar
+                single
+                :padding="['0', '20rpx']"
+                content="阿里巴巴集团的业务包括核心商业、云计算、本地生活服务、数字媒体及娱乐以及创新业务。围绕着阿里巴巴的平台与业务，一个涵盖了消费者、商家、品牌"
+              ></tui-notice-bar>
+            </view>
+            <view
+              class="tui-new-item"
+              :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
+              v-for="(item, index) in companyInfoList"
+              :key="index"
+              @tap="moreDetail(item)"
+            >
+              <view class="tui-recru-info-item">
+                <tui-image-group
+                  :imageList="[{ src: item.logo }]"
+                  isGroup
+                  width="70rpx"
+                  height="70rpx"
+                ></tui-image-group>
+                <view class="tui-recru-info-text">
+                  <tui-text block :text="item.companyName" size="30"></tui-text>
+                  <tui-text
+                    block
+                    :text="`${40}+个内推岗位`"
+                    size="22"
+                    type="gray"
+                  ></tui-text>
+                </view>
+              </view>
+              <view class="job-company-detail">
+                <text>详情</text>
+                <tui-icon
+                  name="arrowright"
+                  :size="30"
+                  unit="rpx"
+                  color="#999"
+                ></tui-icon>
+              </view>
             </view>
           </view>
         </view>
@@ -193,6 +195,8 @@
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { login, getBaseInfo, setLoginStatus } from "../../common/login";
 import { getToken } from "../../common/utils";
+import { WEBURL } from "@/common/utils";
+
 export default {
   onShow() {
     if (!getToken()) {
@@ -260,7 +264,7 @@ export default {
 
   data() {
     return {
-      banner: ["a.png", "b.png", "c.png", "d.png"],
+      banner: ["0.png", "1.png", "2.png", "3.png"],
       category: [
         {
           img: "cv.png",
@@ -283,7 +287,7 @@ export default {
           id: "4",
         },
       ],
-
+      webURLBase: WEBURL,
       companyInfoList: [],
       pageIndex: 1,
       loadding: false,
@@ -362,32 +366,36 @@ page {
 }
 
 .tui-header-banner {
-  padding-top: 100rpx;
   box-sizing: border-box;
   /* background: #e41f19; */
+  position: fixed;
+  height: 900px;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: -2;
 }
 
 .tui-banner-bg {
   display: flex;
-  height: 120rpx;
+  height: 700rpx;
   /* background-color: #e41f19; */
   position: relative;
 }
 
 .tui-banner-box {
   width: 100%;
-  padding: 0 10rpx;
+  // padding: 0 10rpx;
   box-sizing: border-box;
-  position: absolute;
+  // position: absolute;
   /* overflow: hidden; */
-  z-index: 99;
-  bottom: -80rpx;
+  // bottom: -80rpx;
   left: 0;
 }
 
 .tui-banner-swiper {
   width: 100%;
-  height: 300rpx;
+  height: 950rpx;
   border-radius: 10rpx;
   overflow: hidden;
   transform: translateY(0);
@@ -396,7 +404,7 @@ page {
 
 .tui-slide-image {
   width: 100%;
-  height: 300rpx;
+  height: 950rpx;
   display: block;
 }
 
@@ -455,17 +463,32 @@ page {
 /* #endif */
 
 .tui-product-category {
-  padding: 80rpx 20rpx 30rpx 20rpx;
+  padding: 0rpx 10rpx 30rpx;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   font-size: 24rpx;
+  width: 357px;
   color: #555;
   margin-top: 20rpx;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(80rpx);
+  top: 310px;
+  left: 50%;
+  transform: translate(-50%);
+  // background: #fff;
+  border-radius: 10px 10px 0 0;
+  z-index: -1;
 }
-
+.tui-container-a {
+  margin-top: 398px;
+  background: #ffffff;
+}
 .tui-category-item {
   width: 20%;
   height: 118rpx;
@@ -473,7 +496,7 @@ page {
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  padding-top: 30rpx;
+  padding-top: 22rpx;
 }
 
 .tui-category-img {
@@ -503,7 +526,7 @@ page {
   height: 156rpx;
   position: relative;
   margin-top: 20rpx;
-  padding: 0 32rpx;
+  padding: 20px 32rpx 0 32rpx;
 
   .tui-img__coupon {
     width: 100%;

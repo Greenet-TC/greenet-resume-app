@@ -194,6 +194,17 @@
             </view>
             <view class="tui-right-job-info">
               <tui-tag
+                type="danger"
+                padding="8rpx"
+                shape="circle"
+                size="20rpx"
+                :v-if="
+                  dayjs(item.createTime).format('YYYY-MM-DD') ===
+                  dayjs(new Date()).format('YYYY-MM-DD')
+                "
+                >最新</tui-tag
+              >
+              <tui-tag
                 v-if="item.isFree ?? true"
                 type="light-blue"
                 padding="8rpx"
@@ -215,6 +226,7 @@
       </tui-card>
       <tui-loading v-if="loading" text="加载中..."></tui-loading>
     </view>
+    <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore>
   </view>
 </template>
 
@@ -248,7 +260,10 @@ export default {
           ),
         };
       });
-
+      if (data.data.length < this.pageSize) {
+        this.pullUpOn = false;
+      }
+      this.pageNum = this.pageNum + 1;
       this.pageInfo = data.pageInfo;
     } catch (e) {
       console.log(e);
@@ -259,11 +274,12 @@ export default {
   data() {
     return {
       loading: false,
+      loadding: false,
       dayjs,
       companyInfoList: [],
       intershipList: [],
-      pageNum: 1,
-      pageSize: 40,
+      pageNum: 0,
+      pageSize: 10,
       getTargetElement,
       salaryType,
       pageInfo: {
@@ -271,6 +287,7 @@ export default {
         pageSize: 0,
         totalCount: 0,
       },
+      pullUpOn: true,
       banner: ["a.png", "b.png", "c.png", "d.png"],
     };
   },
@@ -290,6 +307,74 @@ export default {
         url: `/pages/job/jobInfo/index?id=${item.id}`,
       });
     },
+  },
+  onPullDownRefresh: async function () {
+    if (!this.pullUpOn) {
+      uni.showToast({
+        title: "无更多内容",
+        duration: 1000,
+      });
+      uni.stopPullDownRefresh();
+    }
+    this.loadding = true;
+    const data = await internshipPositionGetPageListPOST({
+      pageNum: this.pageNum,
+      pageSize: this.pageSize,
+    });
+    if (data.data.length < this.pageSize) {
+      this.loadding = false;
+      this.pullUpOn = false;
+      uni.stopPullDownRefresh();
+    } else {
+      let loadData = data.data;
+      loadData = loadData.map((i) => {
+        return {
+          ...i,
+          companyInfo: getTargetElement(
+            this.companyInfoList,
+            i.companyId,
+            "id"
+          ),
+        };
+      });
+      this.intershipList = loadData;
+
+      this.loadding = false;
+      uni.stopPullDownRefresh();
+    }
+  },
+
+  onReachBottom: async function () {
+    if (!this.pullUpOn) {
+      uni.showToast({
+        title: "到底了",
+        duration: 1000,
+      });
+    }
+    this.loadding = true;
+    const data = await internshipPositionGetPageListPOST({
+      pageNum: this.pageNum,
+      pageSize: this.pageSize,
+    });
+    if (data.data.length < this.pageSize) {
+      this.loadding = false;
+      this.pullUpOn = false;
+    } else {
+      let loadData = data.data;
+      loadData = loadData.map((i) => {
+        return {
+          ...i,
+          companyInfo: getTargetElement(
+            this.companyInfoList,
+            i.companyId,
+            "id"
+          ),
+        };
+      });
+      this.intershipList = this.intershipList.concat(loadData);
+      this.pageNum = this.pageNum + 1;
+      this.loadding = false;
+    }
   },
 };
 </script>
@@ -325,7 +410,7 @@ page {
 }
 .tui-new-job-info {
   height: 80rpx;
-  width: 80%;
+  width: 70%;
   display: flex;
   justify-content: left;
   padding: 20rpx 24rpx;
@@ -578,6 +663,9 @@ page {
   justify-content: space-between;
 }
 .tui-right-job-info {
-  padding: 40rpx 24rpx 20rpx 0;
+  padding: 40rpx 20rpx 20rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
