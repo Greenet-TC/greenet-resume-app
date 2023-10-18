@@ -67,8 +67,6 @@
           <view class="coupon-contant-btn">加入+</view>
         </view>
       </view>
-
-      <!-- 头部 -->
       <view class="tui-title-contant">
         <tui-text size="35" fontWeight="500" block text="实习内推"></tui-text>
         <tui-button
@@ -82,6 +80,52 @@
           >更多内推</tui-button
         >
       </view>
+      <view class="tui-block__box">
+  
+      <scroll-view scroll-x>
+        <view class="tui-goods__list">
+          <view
+            v-for="(item, index) in companyInfoList"
+            :key="index"
+            class="tui-company-item"
+            @tap="moreDetail(item)"
+          >
+            <view class="tui-new-comp-info">
+              <tui-image-group
+                :imageList="[
+                  {
+                    src: item.logo,
+                  },
+                ]"
+                isGroup
+                width="80rpx"
+                height="80rpx"
+              ></tui-image-group>
+              <view class="tui-recru-info-text">
+                <tui-text block :text="item.companyName" size="30"></tui-text>
+                <tui-text
+                  block
+                  :text="`${100}+ 内推岗位`"
+                  size="22"
+                  type="gray"
+                ></tui-text
+              ></view>
+            </view>
+            <view class="job-company-detail">
+              <!-- <text>详情</text> -->
+              <tui-icon
+                name="arrowright"
+                :size="30"
+                unit="rpx"
+                color="#999"
+              ></tui-icon>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+      <!-- 头部 -->
+      
       <view class="tui-product-box">
         <!--简历模板-->
         <view class="tui-block__box">
@@ -196,38 +240,17 @@ import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { login, getBaseInfo, setLoginStatus } from "../../common/login";
 import { getToken } from "../../common/utils";
 import { WEBURL } from "@/common/utils";
-
 export default {
-  onShow() {
-    if (!getToken()) {
-      setTimeout(() => {
-        if (!getToken()) {
-          this.openActionSheet();
-        }
-      }, 3000);
+  //设置页面全屏
+  onPageScroll(e) {
+    // #ifdef APP-PLUS
+    let scrollTop = e.scrollTop;
+    if (scrollTop < 0) {
+      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
+    } else {
+      this.opacity = 1;
     }
-  },
-
-  async onLoad() {
-    if (getToken()) {
-      getBaseInfo();
-      setLoginStatus(true);
-      const data = await getPageListPost({
-        pageNum: 1,
-        pageSize: 20,
-      });
-      this.companyInfoList = data.data;
-    }
-  },
-
-  onPullDownRefresh: function () {
-    let loadData = JSON.parse(JSON.stringify(this.productList));
-    loadData = loadData.splice(0, 10);
-    this.productList = loadData;
-    this.pageIndex = 1;
-    this.pullUpOn = true;
-    this.loadding = false;
-    uni.stopPullDownRefresh();
+    // #endif
   },
 
   onReachBottom: function () {
@@ -248,16 +271,36 @@ export default {
     }
   },
 
-  //设置页面全屏
-  onPageScroll(e) {
-    // #ifdef APP-PLUS
-    let scrollTop = e.scrollTop;
-    if (scrollTop < 0) {
-      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
-    } else {
-      this.opacity = 1;
+  onPullDownRefresh: function () {
+    let loadData = JSON.parse(JSON.stringify(this.productList));
+    loadData = loadData.splice(0, 10);
+    this.productList = loadData;
+    this.pageIndex = 1;
+    this.pullUpOn = true;
+    this.loadding = false;
+    uni.stopPullDownRefresh();
+  },
+
+  async onLoad() {
+    if (getToken()) {
+      getBaseInfo();
+      setLoginStatus(true);
+      const data = await getPageListPost({
+        pageNum: 1,
+        pageSize: 20,
+      });
+      this.companyInfoList = data.data;
     }
-    // #endif
+  },
+
+  onShow() {
+    if (!getToken()) {
+      setTimeout(() => {
+        if (!getToken()) {
+          this.openActionSheet();
+        }
+      }, 3000);
+    }
   },
 
   // 调用wx.getUserProfile接口
@@ -351,7 +394,7 @@ export default {
         this.companyInfoList = data.data;
       }
     },
-  },
+  }
 };
 </script>
 
@@ -470,7 +513,7 @@ page {
   justify-content: space-between;
   flex-wrap: wrap;
   font-size: 24rpx;
-  width: 357px;
+  width: 390px;
   color: #555;
   margin-top: 20rpx;
   position: absolute;
@@ -478,7 +521,7 @@ page {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(80rpx);
-  top: 310px;
+  top: 266px;
   left: 50%;
   transform: translate(-50%);
   // background: #fff;
@@ -486,7 +529,7 @@ page {
   z-index: -1;
 }
 .tui-container-a {
-  margin-top: 398px;
+  margin-top: 360px;
   background: #ffffff;
 }
 .tui-category-item {
@@ -538,7 +581,7 @@ page {
   .coupon-contant {
     position: absolute;
     height: 100%;
-    top: 0;
+    top: 20rpx;
     right: 32rpx;
     width: 545rpx;
     display: flex;
@@ -736,4 +779,148 @@ page {
 .tui-footer-box {
   display: block;
 }
+/*秒杀商品*/
+.tui-block__box {
+  padding: 0 25rpx 25rpx;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+.tui-goods__list {
+  display: flex;
+  align-items: center;
+}
+
+.tui-goods__item {
+  background-color: #fff;
+  width: 150rpx;
+  height: 230rpx;
+  border-radius: 6rpx;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin-right: 18rpx;
+}
+
+.tui-goods__imgbox {
+  width: 150rpx;
+  height: 150rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.tui-goods__img {
+  max-width: 150rpx;
+  max-height: 150rpx;
+  display: block;
+}
+.tui-pri__box {
+  max-width: 150rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tui-sale-pri {
+  display: flex;
+  align-items: flex-end;
+  padding: 10rpx 0 8rpx;
+  box-sizing: border-box;
+  font-size: 28rpx;
+  line-height: 28rpx;
+  color: #eb0909;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tui-size-sm {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  transform: scale(0.8);
+  transform-origin: 0 50%;
+}
+
+.tui-original__pri {
+  font-size: 24rpx;
+  line-height: 24rpx;
+  color: #999999;
+  transform-origin: center 10%;
+  transform: scale(0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: line-through;
+}
+
+.tui-group-name {
+  width: 100%;
+  font-size: 34rpx;
+  line-height: 34rpx;
+  font-weight: bold;
+  text-align: center;
+  padding: 30rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #333;
+}
+.tui-seckill__box {
+  display: flex;
+  align-items: center;
+}
+.tui-seckill__img {
+  width: 160rpx;
+  height: 34rpx;
+}
+.tui-countdown__box {
+  width: 228rpx;
+  display: flex;
+  align-items: center;
+
+  color: #fff;
+  background-color: #fff;
+  font-weight: 400;
+  border: 1rpx solid #eb0909;
+  height: 40rpx;
+  border-radius: 30px;
+  overflow: hidden;
+  margin-left: 25rpx;
+}
+.tui-countdown__title {
+  width: 100rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eb0909;
+  flex-shrink: 0;
+  font-size: 24rpx;
+  line-height: 24rpx;
+}
+
+.tui-flex__center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}.tui-company-item {
+  margin: 0 4rpx;
+  position: relative;
+}
+.tui-new-comp-info {
+  height: 80rpx;
+  width: 280rpx;
+  display: flex;
+  justify-content: left;
+  padding: 20rpx 10rpx;
+  border-radius: 10rpx;
+} 
 </style>

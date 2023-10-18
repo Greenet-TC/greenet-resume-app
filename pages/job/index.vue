@@ -1,8 +1,8 @@
 <template>
   <view>
-    <view class="tui-header-banner">
+    <!-- <view class="tui-header-banner">
       <view class="tui-banner-bg">
-        <!--banner-->
+       
         <view class="tui-banner-box">
           <swiper
             :indicator-dots="true"
@@ -28,8 +28,10 @@
           </swiper>
         </view>
       </view>
-    </view>
-    <view class="tui-block__box">
+    </view> -->
+    <tui-sticky :scrollTop="scrollTop" stickyHeight="344rpx">
+ <template v-slot:header>
+  <view class="tui-block__box">
       <view class="tui-group-name">
         <view class="tui-seckill__box">
           <tui-text
@@ -104,6 +106,11 @@
         </view>
       </scroll-view>
     </view>
+      <tui-tab :tabs="['全部','实习','校招',]" scroll :size="30" bold color="rgb(31 41 55)"  selectedColor="rgb(31 41 55)" sliderBgColor="#f64" sliderRadius="4px" @change="change" sliderHeight="4px" backgroundColor="rgb(245, 246, 248)"  :scale="1.1"></tui-tab>    
+   
+ </template>
+</tui-sticky>
+   
     <view class="job-card" v-for="item in intershipList" :key="item.id">
       <tui-card
         :title="{
@@ -165,7 +172,7 @@
               >
             </view>
             <view class="intership-body-date">{{
-              dayjs(item.createTime).format("YYYY-MM-DD")
+             getFormateDateTime(item.createTime) 
             }}</view></view
           >
         </template>
@@ -198,10 +205,7 @@
                 padding="8rpx"
                 shape="circle"
                 size="20rpx"
-                :v-if="
-                  dayjs(item.createTime).format('YYYY-MM-DD') ===
-                  dayjs(new Date()).format('YYYY-MM-DD')
-                "
+                v-if="dayjs(item.createTime).format('YYYY-MM-DD') === dayjs(new Date()).format('YYYY-MM-DD')"
                 >最新</tui-tag
               >
               <tui-tag
@@ -232,25 +236,29 @@
 
 <script>
 import { salaryType } from "@/common/contant";
-import { getTargetElement } from "@/common/utils";
+import { getTargetElement,getFormateDateTime } from "@/common/utils";
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import dayjs from "dayjs";
 export default {
-  async onLoad() {
-    this.loading = true;
-    try {
-      const company_data = await getPageListPost({
-        pageNum: 1,
-        pageSize: 50,
+  onReachBottom: async function () {
+    if (!this.pullUpOn) {
+      uni.showToast({
+        title: "到底了",
+        duration: 1000,
       });
-      this.companyInfoList = company_data.data;
-      const data = await internshipPositionGetPageListPOST({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-      });
-      this.intershipList = data.data;
-      this.intershipList = this.intershipList.map((i) => {
+    }
+    this.loadding = true;
+    const data = await internshipPositionGetPageListPOST({
+      pageNum: this.pageNum,
+      pageSize: this.pageSize, property:this.property
+    });
+    if (data.data.length < this.pageSize) {
+      this.loadding = false;
+      this.pullUpOn = false;
+    } else {
+      let loadData = data.data;
+      loadData = loadData.map((i) => {
         return {
           ...i,
           companyInfo: getTargetElement(
@@ -260,54 +268,12 @@ export default {
           ),
         };
       });
-      if (data.data.length < this.pageSize) {
-        this.pullUpOn = false;
-      }
+      this.intershipList = this.intershipList.concat(loadData);
       this.pageNum = this.pageNum + 1;
-      this.pageInfo = data.pageInfo;
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.loading = false;
+      this.loadding = false;
     }
   },
-  data() {
-    return {
-      loading: false,
-      loadding: false,
-      dayjs,
-      companyInfoList: [],
-      intershipList: [],
-      pageNum: 0,
-      pageSize: 10,
-      getTargetElement,
-      salaryType,
-      pageInfo: {
-        page: 0,
-        pageSize: 0,
-        totalCount: 0,
-      },
-      pullUpOn: true,
-      banner: ["a.png", "b.png", "c.png", "d.png"],
-    };
-  },
-  methods: {
-    moreCompany: function () {
-      uni.navigateTo({
-        url: "/pages/job/companyInfo/index",
-      });
-    },
-    moreDetail: function (e) {
-      uni.navigateTo({
-        url: `/pages/job/companyDetail/index?id=${e.id}`,
-      });
-    },
-    toJobDetail(item) {
-      uni.navigateTo({
-        url: `/pages/job/jobInfo/index?id=${item.id}`,
-      });
-    },
-  },
+
   onPullDownRefresh: async function () {
     if (!this.pullUpOn) {
       uni.showToast({
@@ -319,7 +285,8 @@ export default {
     this.loadding = true;
     const data = await internshipPositionGetPageListPOST({
       pageNum: this.pageNum,
-      pageSize: this.pageSize,
+      pageSize: this.pageSize, property:this.property
+    
     });
     if (data.data.length < this.pageSize) {
       this.loadding = false;
@@ -344,24 +311,20 @@ export default {
     }
   },
 
-  onReachBottom: async function () {
-    if (!this.pullUpOn) {
-      uni.showToast({
-        title: "到底了",
-        duration: 1000,
+  async onLoad() {
+    this.loading = true;
+    try {
+      const company_data = await getPageListPost({
+        pageNum: 1,
+        pageSize: 50,
       });
-    }
-    this.loadding = true;
-    const data = await internshipPositionGetPageListPOST({
-      pageNum: this.pageNum,
-      pageSize: this.pageSize,
-    });
-    if (data.data.length < this.pageSize) {
-      this.loadding = false;
-      this.pullUpOn = false;
-    } else {
-      let loadData = data.data;
-      loadData = loadData.map((i) => {
+      this.companyInfoList = company_data.data;
+      const data = await internshipPositionGetPageListPOST({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize, property:this.property
+      });
+      this.intershipList = data.data;
+      this.intershipList = this.intershipList.map((i) => {
         return {
           ...i,
           companyInfo: getTargetElement(
@@ -371,11 +334,95 @@ export default {
           ),
         };
       });
-      this.intershipList = this.intershipList.concat(loadData);
+      if (data.data.length < this.pageSize) {
+        this.pullUpOn = false;
+      }
       this.pageNum = this.pageNum + 1;
-      this.loadding = false;
+      this.pageInfo = data.pageInfo;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loading = false;
     }
   },
+  onPageScroll(e) {
+ 	this.scrollTop = e.scrollTop
+ },
+
+  data() {
+    return {
+      loading: false,
+      loadding: false,
+      dayjs,getFormateDateTime,
+      scrollTop: 0,
+      companyInfoList: [],
+      intershipList: [],
+      pageNum: 0,
+      pageSize: 10,
+      property:undefined,
+      getTargetElement,
+      salaryType,
+      pageInfo: {
+        page: 0,
+        pageSize: 0,
+        totalCount: 0,
+      },
+      pullUpOn: true,
+      banner: ["a.png", "b.png", "c.png", "d.png"],
+    };
+  },
+
+  methods: {
+    moreCompany: function () {
+      uni.navigateTo({
+        url: "/pages/job/companyInfo/index",
+      });
+    },
+    moreDetail: function (e) {
+      uni.navigateTo({
+        url: `/pages/job/companyDetail/index?id=${e.id}`,
+      });
+    },
+    toJobDetail(item) {
+      uni.navigateTo({
+        url: `/pages/job/jobInfo/index?id=${item.id}`,
+      });
+    },
+    
+    async change(value){
+      this.property=value.index?value.index:undefined
+      this.loading = true;
+    try {
+      const data = await internshipPositionGetPageListPOST({
+        pageNum: 0,
+        pageSize: this.pageSize, 
+        property:this.property
+
+      });
+      this.intershipList = data.data;
+      this.intershipList = this.intershipList.map((i) => {
+        return {
+          ...i,
+          companyInfo: getTargetElement(
+            this.companyInfoList,
+            i.companyId,
+            "id"
+          ),
+        };
+      });
+      if (data.data.length < this.pageSize) {
+        this.pullUpOn = false;
+      }
+      this.pageNum = 1;
+      this.pageInfo = data.pageInfo;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      this.loading = false;
+    }
+      
+    }
+  }
 };
 </script>
 
@@ -430,7 +477,6 @@ page {
   background-color: #ffffff;
   border-radius: 20rpx;
   overflow: hidden;
-  margin: 100rpx 20rpx 20rpx 20rpx;
 }
 .tui-goods__list {
   display: flex;
@@ -667,5 +713,11 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.tab-stick-box{
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(80rpx);
 }
 </style>
