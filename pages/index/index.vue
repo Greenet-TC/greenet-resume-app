@@ -81,51 +81,50 @@
         >
       </view>
       <view class="tui-block__box">
-  
-      <scroll-view scroll-x>
-        <view class="tui-goods__list">
-          <view
-            v-for="(item, index) in companyInfoList"
-            :key="index"
-            class="tui-company-item"
-            @tap="moreDetail(item)"
-          >
-            <view class="tui-new-comp-info">
-              <tui-image-group
-                :imageList="[
-                  {
-                    src: item.logo,
-                  },
-                ]"
-                isGroup
-                width="80rpx"
-                height="80rpx"
-              ></tui-image-group>
-              <view class="tui-recru-info-text">
-                <tui-text block :text="item.companyName" size="30"></tui-text>
-                <tui-text
-                  block
-                  :text="`${100}+ 内推岗位`"
-                  size="22"
-                  type="gray"
-                ></tui-text
-              ></view>
-            </view>
-            <view class="job-company-detail">
-              <!-- <text>详情</text> -->
-              <tui-icon
-                name="arrowright"
-                :size="30"
-                unit="rpx"
-                color="#999"
-              ></tui-icon>
+        <scroll-view scroll-x>
+          <view class="tui-goods__list">
+            <view
+              v-for="(item, index) in companyInfoList"
+              :key="index"
+              class="tui-company-item"
+              @tap="moreDetail(item)"
+            >
+              <view class="tui-new-comp-info">
+                <tui-image-group
+                  :imageList="[
+                    {
+                      src: item.logo,
+                    },
+                  ]"
+                  isGroup
+                  width="80rpx"
+                  height="80rpx"
+                ></tui-image-group>
+                <view class="tui-recru-info-text">
+                  <tui-text block :text="item.companyName" size="30"></tui-text>
+                  <tui-text
+                    block
+                    :text="`${100}+ 内推岗位`"
+                    size="22"
+                    type="gray"
+                  ></tui-text
+                ></view>
+              </view>
+              <view class="job-company-detail">
+                <!-- <text>详情</text> -->
+                <tui-icon
+                  name="arrowright"
+                  :size="30"
+                  unit="rpx"
+                  color="#999"
+                ></tui-icon>
+              </view>
             </view>
           </view>
-        </view>
-      </scroll-view>
-    </view>
+        </scroll-view>
+      </view>
       <!-- 头部 -->
-      
+
       <view class="tui-product-box">
         <!--简历模板-->
         <view class="tui-block__box">
@@ -394,7 +393,7 @@ export default {
         this.companyInfoList = data.data;
       }
     },
-  }
+  },
 };
 </script>
 
@@ -513,20 +512,18 @@ page {
   justify-content: space-between;
   flex-wrap: wrap;
   font-size: 24rpx;
-  width: 390px;
+  width: 362px;
   color: #555;
   margin-top: 20rpx;
   position: absolute;
   background: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  box-shadow: -1 0 10px rgba(0, 0, 0, 0.35);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(80rpx);
-  top: 266px;
+  top: 274px;
   left: 50%;
   transform: translate(-50%);
-  // background: #fff;
-  border-radius: 10px 10px 0 0;
-  z-index: -1;
+  border-radius: 10px 10px 15px 15px;
 }
 .tui-container-a {
   margin-top: 360px;
@@ -910,8 +907,8 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-
-}.tui-company-item {
+}
+.tui-company-item {
   margin: 0 4rpx;
   position: relative;
 }
@@ -922,5 +919,5 @@ page {
   justify-content: left;
   padding: 20rpx 10rpx;
   border-radius: 10rpx;
-} 
+}
 </style>

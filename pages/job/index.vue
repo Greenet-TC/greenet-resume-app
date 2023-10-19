@@ -29,88 +29,114 @@
         </view>
       </view>
     </view> -->
-    <tui-sticky :scrollTop="scrollTop" stickyHeight="344rpx">
- <template v-slot:header>
-  <view class="tui-block__box">
-      <view class="tui-group-name">
-        <view class="tui-seckill__box">
-          <tui-text
-            padding="0rpx 0"
-            block
-            text="更多招聘信息"
-            size="34"
-            fontWeight="600"
-          ></tui-text>
-          <view class="tui-countdown__box">
-            <view class="tui-countdown__title">距结束</view>
-            <view class="tui-flex__center">
-              <tui-countdown
-                :time="3800"
-                backgroundColor="transparent"
-                borderColor="transparent"
-                color="#EB0909"
-                colonColor="#EB0909"
-              ></tui-countdown>
-            </view>
+    <tui-sticky :scrollTop="scrollTop" stickyHeight="530rpx">
+      <template v-slot:header>
+        <view class="top-sticky-after"></view>
+        <view class="top-sticky-container">
+          <view class="top-sticky-container-search">
+            <tui-searchbar
+              radius="40rpx"
+              placeholder="搜索岗位/公司/行业名称等"
+              backgroundColor="rgb(245, 246, 248,0)"
+            ></tui-searchbar>
           </view>
-        </view>
-        <view class="tui-more__box" @tap="moreCompany">
-          <text>更多</text>
-          <tui-icon
-            name="arrowright"
-            :size="36"
-            unit="rpx"
-            color="#999"
-          ></tui-icon>
-        </view>
-      </view>
-      <scroll-view scroll-x>
-        <view class="tui-goods__list">
-          <view
-            v-for="(item, index) in companyInfoList"
-            :key="index"
-            class="tui-company-item"
-            @tap="moreDetail(item)"
-          >
-            <view class="tui-new-comp-info">
-              <tui-image-group
-                :imageList="[
-                  {
-                    src: item.logo,
-                  },
-                ]"
-                isGroup
-                width="80rpx"
-                height="80rpx"
-              ></tui-image-group>
-              <view class="tui-recru-info-text">
-                <tui-text block :text="item.companyName" size="30"></tui-text>
+          <view class="tui-block__box">
+            <view class="tui-group-name">
+              <view class="tui-seckill__box">
                 <tui-text
+                  padding="0rpx 0"
                   block
-                  :text="`${100}+ 内推岗位`"
-                  size="22"
-                  type="gray"
-                ></tui-text
-              ></view>
+                  text="更多招聘信息"
+                  size="34"
+                  fontWeight="600"
+                ></tui-text>
+                <view class="tui-countdown__box">
+                  <view class="tui-countdown__title">距结束</view>
+                  <view class="tui-flex__center">
+                    <tui-countdown
+                      :time="3800"
+                      backgroundColor="transparent"
+                      borderColor="transparent"
+                      color="#EB0909"
+                      colonColor="#EB0909"
+                    ></tui-countdown>
+                  </view>
+                </view>
+              </view>
+              <view class="tui-more__box" @tap="moreCompany">
+                <text>更多</text>
+                <tui-icon
+                  name="arrowright"
+                  :size="36"
+                  unit="rpx"
+                  color="#999"
+                ></tui-icon>
+              </view>
             </view>
-            <view class="job-company-detail">
-              <!-- <text>详情</text> -->
-              <tui-icon
-                name="arrowright"
-                :size="30"
-                unit="rpx"
-                color="#999"
-              ></tui-icon>
-            </view>
+            <scroll-view scroll-x>
+              <view class="tui-goods__list">
+                <view
+                  v-for="(item, index) in companyInfoList"
+                  :key="index"
+                  class="tui-company-item"
+                  @tap="moreDetail(item)"
+                >
+                  <view class="tui-new-comp-info">
+                    <tui-image-group
+                      :imageList="[
+                        {
+                          src: item.logo,
+                        },
+                      ]"
+                      isGroup
+                      width="80rpx"
+                      height="80rpx"
+                    ></tui-image-group>
+                    <view class="tui-recru-info-text">
+                      <tui-text
+                        block
+                        :text="item.companyName"
+                        size="30"
+                      ></tui-text>
+                      <tui-text
+                        block
+                        :text="`${100}+ 内推岗位`"
+                        size="22"
+                        type="gray"
+                      ></tui-text
+                    ></view>
+                  </view>
+                  <view class="job-company-detail">
+                    <!-- <text>详情</text> -->
+                    <tui-icon
+                      name="arrowright"
+                      :size="30"
+                      unit="rpx"
+                      color="#999"
+                    ></tui-icon>
+                  </view>
+                </view>
+              </view>
+            </scroll-view>
           </view>
+          <tui-tab
+            :tabs="['全部', '实习', '校招']"
+            scroll
+            :size="30"
+            bold
+            color="rgb(31 41 55)"
+            selectedColor="rgb(31 41 55)"
+            sliderBgColor="#f64"
+            sliderRadius="4px"
+            @change="change"
+            sliderHeight="4px"
+            backgroundColor="rgb(245, 246, 248,0)"
+            :scale="1.1"
+          ></tui-tab>
         </view>
-      </scroll-view>
-    </view>
-      <tui-tab :tabs="['全部','实习','校招',]" scroll :size="30" bold color="rgb(31 41 55)"  selectedColor="rgb(31 41 55)" sliderBgColor="#f64" sliderRadius="4px" @change="change" sliderHeight="4px" backgroundColor="rgb(245, 246, 248)"  :scale="1.1"></tui-tab>    
-   
- </template>
-</tui-sticky>
-   
+      </template>
+    </tui-sticky>
+
     <view class="job-card" v-for="item in intershipList" :key="item.id">
       <tui-card
         :title="{
@@ -172,7 +198,7 @@
               >
             </view>
             <view class="intership-body-date">{{
-             getFormateDateTime(item.createTime) 
+              getFormateDateTime(item.createTime)
             }}</view></view
           >
         </template>
@@ -205,7 +231,10 @@
                 padding="8rpx"
                 shape="circle"
                 size="20rpx"
-                v-if="dayjs(item.createTime).format('YYYY-MM-DD') === dayjs(new Date()).format('YYYY-MM-DD')"
+                v-if="
+                  dayjs(item.createTime).format('YYYY-MM-DD') ===
+                  dayjs(new Date()).format('YYYY-MM-DD')
+                "
                 >最新</tui-tag
               >
               <tui-tag
@@ -236,7 +265,7 @@
 
 <script>
 import { salaryType } from "@/common/contant";
-import { getTargetElement,getFormateDateTime } from "@/common/utils";
+import { getTargetElement, getFormateDateTime } from "@/common/utils";
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import dayjs from "dayjs";
@@ -251,7 +280,8 @@ export default {
     this.loadding = true;
     const data = await internshipPositionGetPageListPOST({
       pageNum: this.pageNum,
-      pageSize: this.pageSize, property:this.property
+      pageSize: this.pageSize,
+      property: this.property,
     });
     if (data.data.length < this.pageSize) {
       this.loadding = false;
@@ -285,8 +315,8 @@ export default {
     this.loadding = true;
     const data = await internshipPositionGetPageListPOST({
       pageNum: this.pageNum,
-      pageSize: this.pageSize, property:this.property
-    
+      pageSize: this.pageSize,
+      property: this.property,
     });
     if (data.data.length < this.pageSize) {
       this.loadding = false;
@@ -321,7 +351,8 @@ export default {
       this.companyInfoList = company_data.data;
       const data = await internshipPositionGetPageListPOST({
         pageNum: this.pageNum,
-        pageSize: this.pageSize, property:this.property
+        pageSize: this.pageSize,
+        property: this.property,
       });
       this.intershipList = data.data;
       this.intershipList = this.intershipList.map((i) => {
@@ -346,20 +377,21 @@ export default {
     }
   },
   onPageScroll(e) {
- 	this.scrollTop = e.scrollTop
- },
+    this.scrollTop = e.scrollTop;
+  },
 
   data() {
     return {
       loading: false,
       loadding: false,
-      dayjs,getFormateDateTime,
+      dayjs,
+      getFormateDateTime,
       scrollTop: 0,
       companyInfoList: [],
       intershipList: [],
       pageNum: 0,
       pageSize: 10,
-      property:undefined,
+      property: undefined,
       getTargetElement,
       salaryType,
       pageInfo: {
@@ -388,47 +420,68 @@ export default {
         url: `/pages/job/jobInfo/index?id=${item.id}`,
       });
     },
-    
-    async change(value){
-      this.property=value.index?value.index:undefined
-      this.loading = true;
-    try {
-      const data = await internshipPositionGetPageListPOST({
-        pageNum: 0,
-        pageSize: this.pageSize, 
-        property:this.property
 
-      });
-      this.intershipList = data.data;
-      this.intershipList = this.intershipList.map((i) => {
-        return {
-          ...i,
-          companyInfo: getTargetElement(
-            this.companyInfoList,
-            i.companyId,
-            "id"
-          ),
-        };
-      });
-      if (data.data.length < this.pageSize) {
-        this.pullUpOn = false;
+    async change(value) {
+      this.property = value.index ? value.index : undefined;
+      this.loading = true;
+      try {
+        const data = await internshipPositionGetPageListPOST({
+          pageNum: 0,
+          pageSize: this.pageSize,
+          property: this.property,
+        });
+        this.intershipList = data.data;
+        this.intershipList = this.intershipList.map((i) => {
+          return {
+            ...i,
+            companyInfo: getTargetElement(
+              this.companyInfoList,
+              i.companyId,
+              "id"
+            ),
+          };
+        });
+        if (data.data.length < this.pageSize) {
+          this.pullUpOn = false;
+        }
+        this.pageNum = 1;
+        this.pageInfo = data.pageInfo;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.loading = false;
       }
-      this.pageNum = 1;
-      this.pageInfo = data.pageInfo;
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.loading = false;
-    }
-      
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="less">
 page {
   background-color: rgb(245, 246, 248);
+}
+
+// 吸顶容器
+.top-sticky-container {
+  height: 444rpx;
+  width: 100%;
+  padding-top: 76rpx;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  &-search {
+    width: 480rpx;
+  }
+}
+.top-sticky-after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 222px;
+  border-radius: 50%;
+  background: rgba(0, 249, 203, 0.2);
+  filter: blur(30px);
 }
 .job-card {
   margin-bottom: 20rpx;
@@ -473,10 +526,12 @@ page {
 } /*秒杀商品*/
 .tui-block__box {
   padding: 0 25rpx 25rpx;
+  margin: 0 25rpx;
   box-sizing: border-box;
-  background-color: #ffffff;
+  background-color: #ffffff60;
   border-radius: 20rpx;
   overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 .tui-goods__list {
   display: flex;
@@ -714,7 +769,7 @@ page {
   align-items: center;
   justify-content: space-between;
 }
-.tab-stick-box{
+.tab-stick-box {
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   -webkit-backdrop-filter: blur(10px);
