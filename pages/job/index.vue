@@ -1,34 +1,6 @@
 <template>
   <view>
-    <!-- <view class="tui-header-banner">
-      <view class="tui-banner-bg">
-       
-        <view class="tui-banner-box">
-          <swiper
-            :indicator-dots="true"
-            :autoplay="true"
-            :interval="5000"
-            :duration="150"
-            class="tui-banner-swiper"
-            :circular="true"
-            indicator-color="rgba(255, 255, 255, 0.8)"
-            indicator-active-color="#fff"
-          >
-            <swiper-item
-              v-for="(item, index) in banner"
-              :key="index"
-              @tap.stop="detail"
-            >
-              <image
-                :src="'/static/images/banner/' + item"
-                class="tui-slide-image"
-                mode="scaleToFill"
-              />
-            </swiper-item>
-          </swiper>
-        </view>
-      </view>
-    </view> -->
+   
     <tui-sticky :scrollTop="scrollTop" stickyHeight="530rpx">
       <template v-slot:header>
         <view class="top-sticky-after"></view>
@@ -142,7 +114,7 @@
         :title="{
           text: item.positionName,
           size: 32,
-          color: 'black',
+          color: 'rgb(31 41 55)',
         }"
         :isHot="true"
         :tag="{
@@ -164,8 +136,8 @@
                 type="light-green"
                 v-if="item.location"
                 margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
+                padding="8rpx"
+                size="20rpx"
                 >{{
                   Array.isArray(item.location)
                     ? item.location.join("/")
@@ -176,25 +148,34 @@
                 v-if="item.property"
                 type="light-green"
                 margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
+                padding="8rpx"
+                size="20rpx"
                 >{{ item.property?.label }}</tui-tag
               >
               <tui-tag
                 v-if="item.experience"
                 type="light-green"
                 margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
+                padding="8rpx"
+                size="20rpx"
                 >{{ item.experience?.label }}</tui-tag
               >
               <tui-tag
                 v-if="item.degree"
                 type="light-green"
                 margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
+                padding="8rpx"
+                size="20rpx"
                 >{{ item.degree?.label }}</tui-tag
+              >
+         
+            <tui-tag
+                v-if="item.jobType"
+                type="light-green"
+                margin="0 14rpx 0 0"
+                padding="8rpx"
+                size="20rpx"
+                >{{ item.jobType?.label }}</tui-tag
               >
             </view>
             <view class="intership-body-date">{{

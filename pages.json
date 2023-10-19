@@ -97,7 +97,8 @@
     {
       "path": "pages/job/jobInfo/index",
       "style": {
-        "navigationBarTitleText": "职位详情"
+        "navigationBarTitleText": "职位详情",
+        "navigationStyle": "custom"
       }
     }
   ],
