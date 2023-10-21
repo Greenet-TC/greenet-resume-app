@@ -128,7 +128,7 @@
           >
           <view
             v-for="(item, index) in positionInfo?.positionTags"
-            :key="index"
+            :key="index+''"
           >
             <tui-tag
               type="light-green"

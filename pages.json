@@ -68,6 +68,17 @@
       }
     },
     {
+      "path": "pages/common/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"backgroundColorTop": "#fff",
+				"backgroundColorBottom": "#fff",
+				"app-plus": {
+					"bounce": "vertical"
+				}
+			}
+    },
+    {
       "path": "pages/coures/index",
       "style": {
         "navigationBarTitleText": "精选课程"

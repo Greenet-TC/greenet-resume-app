@@ -1,15 +1,22 @@
 <template>
   <view>
-   
     <tui-sticky :scrollTop="scrollTop" stickyHeight="530rpx">
       <template v-slot:header>
         <view class="top-sticky-after"></view>
         <view class="top-sticky-container">
           <view class="top-sticky-container-search">
+            <!-- <view class="tui-search__bar">
+              <view class="tui-searchbox" @tap="search">
+                <icon type="search" :size="13" color="#999"></icon>
+                <text class="tui-search-text">搜索岗位/公司/行业名称等</text>
+              </view>
+            </view> -->
             <tui-searchbar
               radius="40rpx"
               placeholder="搜索岗位/公司/行业名称等"
               backgroundColor="rgb(245, 246, 248,0)"
+              @search="search"
+              @clear="clear"
             ></tui-searchbar>
           </view>
           <view class="tui-block__box">
@@ -91,8 +98,9 @@
               </view>
             </scroll-view>
           </view>
+       
           <tui-tab
-            :tabs="['全部', '实习', '校招']"
+            :tabs="tabLists"
             scroll
             :size="30"
             bold
@@ -168,8 +176,8 @@
                 size="20rpx"
                 >{{ item.degree?.label }}</tui-tag
               >
-         
-            <tui-tag
+
+              <tui-tag
                 v-if="item.jobType"
                 type="light-green"
                 margin="0 14rpx 0 0"
@@ -250,7 +258,12 @@ import { getTargetElement, getFormateDateTime } from "@/common/utils";
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import dayjs from "dayjs";
+
+
+const proprtyList=['全部', '实习', '校招']
+const searchTabList=['职位','公司']
 export default {
+  
   onReachBottom: async function () {
     if (!this.pullUpOn) {
       uni.showToast({
@@ -373,6 +386,7 @@ export default {
       pageNum: 0,
       pageSize: 10,
       property: undefined,
+      positionName:undefined,
       getTargetElement,
       salaryType,
       pageInfo: {
@@ -382,6 +396,18 @@ export default {
       },
       pullUpOn: true,
       banner: ["a.png", "b.png", "c.png", "d.png"],
+      selectH: 0,
+      tabLists:proprtyList,
+      dropdownList: [
+        {
+          name: "价格升序",
+          selected: false,
+        },
+        {
+          name: "价格降序",
+          selected: false,
+        },
+      ],tabIndex: 0, //顶部筛选索引
     };
   },
 
@@ -390,6 +416,44 @@ export default {
       uni.navigateTo({
         url: "/pages/job/companyInfo/index",
       });
+    },
+    search: function (value) {
+      this.getSearchInterShipInfo(value);
+    },
+    clear:function(){
+      this.getSearchInterShipInfo(undefined);
+    },
+    getSearchInterShipInfo:async function(value){
+      this.positionName = value ? value.value : undefined;
+      this.loading = true;
+      try {
+        const data = await internshipPositionGetPageListPOST({
+          pageNum: 0,
+          pageSize: this.pageSize,
+          property: this.property,
+          positionName:this.positionName 
+        });
+        this.intershipList = data.data;
+        this.intershipList = this.intershipList.map((i) => {
+          return {
+            ...i,
+            companyInfo: getTargetElement(
+              this.companyInfoList,
+              i.companyId,
+              "id"
+            ),
+          };
+        });
+        if (data.data.length < this.pageSize) {
+          this.pullUpOn = false;
+        }
+        this.pageNum = 1;
+        this.pageInfo = data.pageInfo;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.loading = false;
+      }
     },
     moreDetail: function (e) {
       uni.navigateTo({
@@ -401,7 +465,25 @@ export default {
         url: `/pages/job/jobInfo/index?id=${item.id}`,
       });
     },
-
+    screen: function (e) {
+      this.hideDropdownList();
+      let index = e.currentTarget.dataset.index;
+      if (index == -1 || index == 1) {
+        this.tabIndex = index;
+      } else if (index == 0) {
+        this.showDropdownList();
+      } else if (index == 2) {
+        this.isList = !this.isList;
+      } else if (index == 3) {
+        this.drawer = true;
+      }
+    },
+    showDropdownList: function () {
+      this.selectH = 176;
+    },
+    hideDropdownList: function () {
+      this.selectH = 0;
+    },
     async change(value) {
       this.property = value.index ? value.index : undefined;
       this.loading = true;
@@ -410,6 +492,7 @@ export default {
           pageNum: 0,
           pageSize: this.pageSize,
           property: this.property,
+          positionName:this.positionName 
         });
         this.intershipList = data.data;
         this.intershipList = this.intershipList.map((i) => {
@@ -453,6 +536,85 @@ page {
     width: 480rpx;
   }
 }
+//search
+// .tui-search__bar {
+//   width: 100%;
+//   background: rgba(245, 246, 248, 0);
+//   padding: 15rpx 20rpx 25rpx 20rpx;
+//   box-sizing: border-box;
+// }
+
+// .tui-searchbox {
+//   width: 100%;
+//   height: 64rpx;
+//   margin-right: 30rpx;
+//   border-radius: 15px;
+//   font-size: 24rpx;
+//   background: #fff;
+//   padding: 6rpx 20rpx;
+//   box-sizing: border-box;
+//   color: #999;
+//   display: flex;
+//   align-items: center;
+//   overflow: hidden;
+// }
+
+// .tui-search-text {
+//   padding-left: 16rpx;
+// }
+
+/**screen start */
+.tui-screen__box {
+  width: 100%;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28rpx;
+  color: #333;
+  position: relative;
+  background: #ffffff00;
+}
+.tui-screen-item {
+  height: 28rpx;
+  line-height: 28rpx;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tui-btmItem-active {
+  background-color: #fcedea !important;
+  color: #e41f19;
+  font-weight: bold;
+  position: relative;
+}
+
+.tui-btmItem-active::after {
+  content: "";
+  position: absolute;
+  border: 1rpx solid #e41f19;
+  width: 100%;
+  height: 100%;
+  border-radius: 40rpx;
+  left: 0;
+  top: 0;
+}
+
+.tui-addr-left {
+  padding-left: 6rpx;
+}
+
+.tui-bold {
+  font-weight: bold;
+}
+
+.tui-active {
+  color: #e41f19;
+}
+/**screen end */
+
 .top-sticky-after {
   content: "";
   position: absolute;
