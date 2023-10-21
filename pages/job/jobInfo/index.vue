@@ -454,7 +454,7 @@
     >
       <view class="d-container">
         <tui-copy-text
-          v-if="companyInfo?.email"
+          v-if="positionInfo?.email"
           :value="`投递邮箱: ${positionInfo?.email}`"
           :copyValue="positionInfo?.email"
           color="#586c94"
@@ -463,7 +463,7 @@
 
         <tui-copy-text
           value="投递链接: 复制"
-          v-if="companyInfo?.url"
+          v-if="positionInfo?.url"
           :copyValue="positionInfo?.url"
           color="#586c94"
           @copy="copy"
