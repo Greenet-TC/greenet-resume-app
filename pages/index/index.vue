@@ -172,147 +172,140 @@
                 content="阿里巴巴集团的业务包括核心商业、云计算、本地生活服务、数字媒体及娱乐以及创新业务。围绕着阿里巴巴的平台与业务，一个涵盖了消费者、商家、品牌"
               ></tui-notice-bar>
             </view>
-          
           </view>
-          
         </view>
       </view>
       <view class="job-card" v-for="item in intershipList" :key="item.id">
-              <tui-card
-                :title="{
-                  text: item.positionName,
-                  size: 32,
-                  color: 'rgb(31 41 55)',
-                }"
-                :isHot="true"
-                :tag="{
-                  text:
-                    !!item.salary && !!item.salaryType
-                      ? `${item.salary}元/${
-                          getTargetElement(salaryType, item.salaryType.value)
-                            ?.label
-                        } `
-                      : '薪资面议',
-                  size: 26,
-                  color: '#f64',
-                }"
-                @tap="toJobDetail(item)"
-              >
-                <template v-slot:body>
-                  <view class="intership-body">
-                    <view class="course-list-item-tag">
-                      <tui-tag
-                        type="light-green"
-                        v-if="item.location"
-                        margin="0 14rpx 0 0"
-                        padding="10rpx"
-                        size="24rpx"
-                        >{{
-                          Array.isArray(item.location)
-                            ? item.location.join("/")
-                            : item.location
-                        }}</tui-tag
-                      >
-                      <tui-tag
-                        v-if="item.property"
-                        type="light-green"
-                        margin="0 14rpx 0 0"
-                        padding="10rpx"
-                        size="24rpx"
-                        >{{ item.property?.label }}</tui-tag
-                      >
-                      <tui-tag
-                        v-if="item.experience"
-                        type="light-green"
-                        margin="0 14rpx 0 0"
-                        padding="10rpx"
-                        size="24rpx"
-                        >{{ item.experience?.label }}</tui-tag
-                      >
-                      <tui-tag
-                        v-if="item.degree"
-                        type="light-green"
-                        margin="0 14rpx 0 0"
-                        padding="10rpx"
-                        size="24rpx"
-                        >{{ item.degree?.label }}</tui-tag
-                      ><tui-tag
-                        v-if="item.jobType"
-                        type="light-green"
-                        margin="0 14rpx 0 0"
-                        padding="8rpx"
-                        size="20rpx"
-                        >{{ item.jobType?.label }}</tui-tag
-                      >
-                    </view>
-                    <view class="intership-body-date">{{
-                      getFormateDateTime(item.createTime)
-                    }}</view></view
-                  >
-                </template>
-                <template v-slot:footer>
-                  <view class="tui-footer-job-info">
-                    <view class="tui-new-job-info">
-                      <tui-image-group
-                        :imageList="[
-                          {
-                            src: item.companyInfo?.logo,
-                          },
-                        ]"
-                        isGroup
-                        width="80rpx"
-                        height="80rpx"
-                      ></tui-image-group>
-                      <view class="tui-recru-info-text">
-                        <tui-text
-                          block
-                          :text="item.company"
-                          size="30"
-                        ></tui-text>
-                        <tui-text
-                          block
-                          :text="`${item.companyInfo.market.label} | ${item.companyInfo.scale.label} | ${item.companyInfo.sectorNumber.label}`"
-                          size="22"
-                          type="gray"
-                        ></tui-text
-                      ></view>
-                    </view>
-                    <view class="tui-right-job-info">
-                      <tui-tag
-                        type="danger"
-                        padding="8rpx"
-                        shape="circle"
-                        size="20rpx"
-                        v-if="
-                          dayjs(item.createTime).format('YYYY-MM-DD') ===
-                          dayjs(new Date()).format('YYYY-MM-DD')
-                        "
-                        >最新</tui-tag
-                      >
-                      <tui-tag
-                        v-if="item.isFree ?? true"
-                        type="light-blue"
-                        padding="8rpx"
-                        size="20rpx"
-                        >免费</tui-tag
-                      >
-                      <image
-                        v-else
-                        src="../../static/images/icon/vip.svg"
-                        mode="widthFix"
-                        :style="{
-                          height: 50 + 'rpx',
-                          width: 50 + 'rpx',
-                        }"
-                      ></image>
-                    </view>
-                  </view>
-                </template>
-              </tui-card>
-              <tui-loading v-if="loading" text="加载中..."></tui-loading>
+        <tui-card
+          :title="{
+            text: item.positionName,
+            size: 32,
+            color: 'rgb(31 41 55)',
+          }"
+          :isHot="true"
+          :tag="{
+            text:
+              !!item.salary && !!item.salaryType
+                ? `${item.salary}元/${
+                    getTargetElement(salaryType, item.salaryType.value)?.label
+                  } `
+                : '薪资面议',
+            size: 26,
+            color: '#f64',
+          }"
+          @tap="toJobDetail(item)"
+        >
+          <template v-slot:body>
+            <view class="intership-body">
+              <view class="course-list-item-tag">
+                <tui-tag
+                  type="light-green"
+                  v-if="item.location"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{
+                    Array.isArray(item.location)
+                      ? item.location.join("/")
+                      : item.location
+                  }}</tui-tag
+                >
+                <tui-tag
+                  v-if="item.property"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{ item.property?.label }}</tui-tag
+                >
+                <tui-tag
+                  v-if="item.experience"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{ item.experience?.label }}</tui-tag
+                >
+                <tui-tag
+                  v-if="item.degree"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{ item.degree?.label }}</tui-tag
+                ><tui-tag
+                  v-if="item.jobType"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="8rpx"
+                  size="20rpx"
+                  >{{ item.jobType?.label }}</tui-tag
+                >
+              </view>
+              <view class="intership-body-date">{{
+                getFormateDateTime(item.createTime)
+              }}</view></view
+            >
+          </template>
+          <template v-slot:footer>
+            <view class="tui-footer-job-info">
+              <view class="tui-new-job-info">
+                <tui-image-group
+                  :imageList="[
+                    {
+                      src: item.companyInfo?.logo,
+                    },
+                  ]"
+                  isGroup
+                  width="80rpx"
+                  height="80rpx"
+                ></tui-image-group>
+                <view class="tui-recru-info-text">
+                  <tui-text block :text="item.company" size="30"></tui-text>
+                  <tui-text
+                    block
+                    :text="`${item.companyInfo.market.label} | ${item.companyInfo.scale.label} | ${item.companyInfo.sectorNumber.label}`"
+                    size="22"
+                    type="gray"
+                  ></tui-text
+                ></view>
+              </view>
+              <view class="tui-right-job-info">
+                <tui-tag
+                  type="danger"
+                  padding="8rpx"
+                  shape="circle"
+                  size="20rpx"
+                  v-if="
+                    dayjs(item.createTime).format('YYYY-MM-DD') ===
+                    dayjs(new Date()).format('YYYY-MM-DD')
+                  "
+                  >最新</tui-tag
+                >
+                <tui-tag
+                  v-if="item.isFree ?? true"
+                  type="light-blue"
+                  padding="8rpx"
+                  size="20rpx"
+                  >免费</tui-tag
+                >
+                <image
+                  v-else
+                  src="../../static/images/icon/vip.svg"
+                  mode="widthFix"
+                  :style="{
+                    height: 50 + 'rpx',
+                    width: 50 + 'rpx',
+                  }"
+                ></image>
+              </view>
             </view>
+          </template>
+        </tui-card>
+        <tui-loading v-if="loading" text="加载中..."></tui-loading>
+      </view>
     </view>
-    
+
     <!-- 优秀简历 -->
 
     <!--加载loadding-->
@@ -344,7 +337,7 @@ import { login, getBaseInfo, setLoginStatus } from "../../common/login";
 import { getToken } from "../../common/utils";
 import { salaryType } from "@/common/contant";
 import dayjs from "dayjs";
-import { WEBURL, getTargetElement ,getFormateDateTime} from "@/common/utils";
+import { WEBURL, getTargetElement, getFormateDateTime } from "@/common/utils";
 export default {
   //设置页面全屏
   onPageScroll(e) {
@@ -387,36 +380,33 @@ export default {
   },
 
   async onLoad() {
-    if (getToken()) {
-      getBaseInfo();
-      setLoginStatus(true);
-      const _data = await getPageListPost({
-        pageNum: 1,
-        pageSize: 50,
-      });
-      this.companyInfoList = _data.data;
+    setTimeout(async () => {
+      if (getToken()) {
+        getBaseInfo();
+        setLoginStatus(true);
+        const _data = await getPageListPost({
+          pageNum: 1,
+          pageSize: 50,
+        });
+        this.companyInfoList = _data.data;
 
-      const data = await internshipPositionGetPageListPOST({
-        pageNum: 1,
-        pageSize: 10,
-      });
-      this.intershipList = data.data;
-      this.intershipList = this.intershipList.map((i) => {
-        return {
-          ...i,
-          companyInfo: getTargetElement(
-            this.companyInfoList,
-            i.companyId,
-            "id"
-          ),
-        };
-      });
-      if (data.data.length < this.pageSize) {
-        this.pullUpOn = false;
+        const data = await internshipPositionGetPageListPOST({
+          pageNum: 1,
+          pageSize: 10,
+        });
+        this.intershipList = data.data;
+        this.intershipList = this.intershipList.map((i) => {
+          return {
+            ...i,
+            companyInfo: getTargetElement(
+              this.companyInfoList,
+              i.companyId,
+              "id"
+            ),
+          };
+        });
       }
-      this.pageNum = this.pageNum + 1;
-      this.pageInfo = data.pageInfo;
-    }
+    }, 1000);
   },
 
   onShow() {
@@ -456,14 +446,19 @@ export default {
           id: "4",
         },
       ],
+
       webURLBase: WEBURL,
       companyInfoList: [],
       intershipList: [],
       pageIndex: 1,
       loadding: false,
       pullUpOn: false,
-      opacity: 1,dayjs,salaryType,
-      showActionSheet: false,getFormateDateTime,getTargetElement,
+      opacity: 1,
+      dayjs,
+      salaryType,
+      showActionSheet: false,
+      getFormateDateTime,
+      getTargetElement,
       itemList: [
         {
           text: "登录",
@@ -500,7 +495,8 @@ export default {
       uni.navigateTo({
         url: "/pages/activityPage/schoolRecruitment/index",
       });
-    }, toJobDetail(item) {
+    },
+    toJobDetail(item) {
       uni.navigateTo({
         url: `/pages/job/jobInfo/index?id=${item.id}`,
       });
@@ -658,7 +654,8 @@ page {
   border-radius: 10px 10px 15px 15px;
 }
 .tui-container-a {
-  margin-top: 360px; background: #ffffff;
+  margin-top: 360px;
+  background: #ffffff;
 }
 .tui-category-item {
   width: 20%;
@@ -1028,10 +1025,12 @@ page {
   justify-content: left;
   padding: 20rpx 10rpx;
   border-radius: 10rpx;
-}.job-card {
+}
+.job-card {
   margin-bottom: 20rpx;
   width: 100%;
-}.intership-body {
+}
+.intership-body {
   display: flex;
   justify-content: space-between;
   padding: 0 24rpx;
@@ -1040,7 +1039,8 @@ page {
     color: #9c9c9c;
     font-size: 28rpx;
   }
-}.course-list-item-tag {
+}
+.course-list-item-tag {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -1064,7 +1064,8 @@ page {
   justify-content: left;
   padding: 20rpx 10rpx;
   border-radius: 10rpx;
-}.tui-footer-job-info {
+}
+.tui-footer-job-info {
   display: flex;
   justify-content: space-between;
 }

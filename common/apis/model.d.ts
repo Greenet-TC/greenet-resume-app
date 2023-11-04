@@ -4,11 +4,7 @@ import { tradeType } from "../contant";
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-02 18:18:35
  * @LastEditors: maxueming maxueming@kuaishou.com
-<<<<<<< HEAD
- * @LastEditTime: 2023-09-24 00:26:29
-=======
- * @LastEditTime: 2023-09-13 16:47:34
->>>>>>> main
+ * @LastEditTime: 2023-11-04 17:53:42
  * @FilePath: /greenet-resume-app/common/apis/model.d.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -180,4 +176,50 @@ export interface CompanyInfo {
   sectorNumber: number;
   /** 更新时间 */
   updateTime: string;
+}
+export interface ArticleDto {
+  articleId?: number;
+  articleTitle?: string;
+  categoryFirst?: string;
+  categorySecond?: string;
+  categoryThird?: string;
+  collectNum?: number;
+  commentNum?: number;
+  content?: string;
+  coverUrl?: string;
+  createTime?: string;
+  id?: number;
+  isFree?: boolean;
+  pageNum?: number;
+  pageSize?: number;
+  summery?: string;
+  supportNum?: number;
+  tags?: Array<string>;
+  updateTime?: string;
+  viewNum?: number;
+}
+export interface CommonPageResultListArticle {
+  code: number;
+  data: Array<Article>;
+  message: string;
+  pageInfo: PageInfoType;
+}
+export interface Article {
+  articleId: number;
+  articleTitle: string;
+  categoryFirst: string;
+  categorySecond: string;
+  categoryThird: string;
+  collectNum: number;
+  commentNum: number;
+  content: string;
+  coverUrl: string;
+  createTime: string;
+  id: number;
+  isFree: boolean;
+  summery: string;
+  supportNum: number;
+  tags: Array<string>;
+  updateTime: string;
+  viewNum: number;
 }

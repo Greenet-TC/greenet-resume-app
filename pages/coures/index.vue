@@ -11,6 +11,9 @@
         isFixed
       ></tui-tab>
     </view>
+    <view class="sort-list">
+      <view class="sort-card"> </view>
+    </view>
     <view class="greenet-content-list">
       <view v-for="item in couresList" :key="item.couresId">
         <view class="greenet-course-list-item">
@@ -58,12 +61,19 @@
 </template>
 
 <script>
+import { getArticleListPost } from "@/common/apis/article-controller";
 export default {
-  onLoad() {},
+  async onLoad() {
+    const data = await getArticleListPost({
+      pageNum: this.pageNum,
+      pageSize: this.pageSize,
+    });
+    console.log(111, data);
+  },
   data() {
     return {
       current: 0,
-      tabs: ["全部", "企业项目"],
+      tabs: ["全部", "产品经理", "前端开发", "后端开发", "运营", "数据分析"],
       couresList: [
         {
           couresId: "11",
@@ -147,6 +157,8 @@ export default {
           applicantNum: "92人报名",
         },
       ],
+      pageNum: 0,
+      pageSize: 10,
     };
   },
   methods: {
@@ -159,7 +171,7 @@ export default {
 
 <style>
 page {
-  background-color: #f7f7f7;
+  background-color: rgb(234, 234, 241);
 }
 .content {
   display: flex;
@@ -245,5 +257,18 @@ page {
   font-weight: 400;
   color: #9c9c9c;
   text-decoration: line-through;
+}
+.sort-list {
+  height: 100%;
+  width: 100%;
+  margin: 100rpx 0;
+}
+.sort-card {
+  background: #ffffff;
+  height: 300px;
+  margin: 0 20rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 </style>
