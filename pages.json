@@ -24,7 +24,8 @@
       "path": "pages/job/index",
       "style": {
         "navigationBarTitleText": "求职信息",
-        "enablePullDownRefresh": true
+        "enablePullDownRefresh": true,
+        "navigationStyle": "custom"
       }
     },
     {
@@ -67,6 +68,17 @@
       }
     },
     {
+      "path": "pages/common/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"backgroundColorTop": "#fff",
+				"backgroundColorBottom": "#fff",
+				"app-plus": {
+					"bounce": "vertical"
+				}
+			}
+    },
+    {
       "path": "pages/coures/index",
       "style": {
         "navigationBarTitleText": "精选课程"
@@ -96,7 +108,8 @@
     {
       "path": "pages/job/jobInfo/index",
       "style": {
-        "navigationBarTitleText": "职位详情"
+        "navigationBarTitleText": "职位详情",
+        "navigationStyle": "custom"
       }
     }
   ],

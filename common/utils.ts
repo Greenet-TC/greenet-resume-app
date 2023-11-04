@@ -115,6 +115,7 @@ export function removeToken() {
 }
 export const WEBURL =
   "https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com";
+import dayjs from "dayjs";
 import { IOptions } from "./contant";
 
 export type ValueOf<T> = T[keyof T];
@@ -132,3 +133,37 @@ export const getTargetElement = <
     return i[key ?? "value"] === Number(value);
   })[0];
 };
+
+
+export const getFormateDateTime=(time:number)=>{
+if(getTimeType(time,30*60)){
+return "30min前"
+}else if(getTimeType(time,60*60)){
+  return "1小时前"
+}else if(getTimeType(time,60*60*6)){
+  return "6小时前"
+}else if(getTimeType(time,60*60*12)){
+  return "12小时前"
+}else if(getTimeType(time,60*60*24)){
+  return "1天前"
+}else if(getTimeType(time,60*60*24*2)){
+  return "2天前"
+}else if(getTimeType(time,60*60*24*3)){
+  return "3天前"
+}else if(getTimeType(time,60*60*24*4)){
+  return "4天前"
+}else if(getTimeType(time,60*60*24*5)){
+  return "5天前"
+}else if(getTimeType(time,60*60*24*6)){
+  return "6天前"
+}else if(getTimeType(time,60*60*24*7)){
+  return "一周前"
+}else{
+  return  dayjs(time).format("YYYY-MM-DD")
+}
+    
+   }
+   export const getTimeType=(time,duration):boolean=>{
+    let now:number=dayjs(new Date()) 
+    return Math.floor((now-time)/1000)<duration
+   }
