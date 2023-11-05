@@ -12,7 +12,82 @@
       ></tui-tab>
     </view>
     <view class="sort-list">
-      <view class="sort-card"> </view>
+      <view class="sort-card">
+        <view class="sort-card-top">
+          <view class="sort-card-top-left">
+            <view class="title">
+              <img :src="compilation" alt="" class="sort-card-top-left-icon" />
+              <tui-text
+                text="产品系列合集"
+                block
+                size="36"
+                fontWeight="500"
+                color="#000000"
+                padding="0 15rpx"
+              ></tui-text>
+            </view>
+            <tui-text
+              text="产品系列合集 | 27章知识"
+              block
+              size="28"
+              fontWeight="400"
+              color="#9c9c9c"
+              padding="10rpx 10rpx"
+            ></tui-text>
+          </view>
+          <view class="sort-card-top-right">
+            <tui-form-button
+              radius="10px"
+              height="80rpx"
+              background="rgb(234, 234, 241)"
+              color="#000"
+              >查看
+
+              <tui-icon
+                name="arrowright"
+                :size="40"
+                unit="rpx"
+                color="#000"
+              ></tui-icon>
+            </tui-form-button>
+          </view>
+        </view>
+        <view class="sort-card-content">
+          <scroll-view scroll-x>
+            <view class="tui-article-list">
+              <view
+                v-for="(item, index) in courseList"
+                :key="index"
+                class="course-card-item"
+                @tap="moreDetail(item)"
+              >
+                <view class="cover-url">
+                  <tui-image-group
+                    radius="10rpx"
+                    :imageList="[
+                      {
+                        src: item?.coverUrl,
+                      },
+                    ]"
+                    width="282rpx"
+                    height="155rpx"
+                  ></tui-image-group>
+                  <view class="cover-url-mask">
+                   <view>{{ item.viewNum }} 看过</view> 
+                   <view>{{ item.supportNum }} 点赞</view> 
+                   <view>{{ item.commentNum }} 评论</view> 
+                  </view>
+                </view>
+                <view class="article-detail">
+                  <view class="article-detail-title">
+                    {{ item.articleTitle }}
+                  </view>
+                </view>
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+      </view>
     </view>
     <view class="greenet-content-list">
       <view v-for="item in couresList" :key="item.couresId">
@@ -62,17 +137,22 @@
 
 <script>
 import { getArticleListPost } from "@/common/apis/article-controller";
+import compilation from "@/static/course/compilation.svg";
+
 export default {
   async onLoad() {
     const data = await getArticleListPost({
       pageNum: this.pageNum,
       pageSize: this.pageSize,
     });
+    this.courseList = data.data;
     console.log(111, data);
   },
   data() {
     return {
       current: 0,
+      compilation,
+      courseList: [],
       tabs: ["全部", "产品经理", "前端开发", "后端开发", "运营", "数据分析"],
       couresList: [
         {
@@ -165,11 +245,17 @@ export default {
     change(preValue) {
       this.current = preValue.index;
     },
+    moreDetail(e){
+      uni.navigateTo({
+        url: `/pages/coures/article/article?articleTitle=${e.articleTitle}`,
+      });
+
+    }
   },
 };
 </script>
 
-<style>
+<style lang="less">
 page {
   background-color: rgb(234, 234, 241);
 }
@@ -265,10 +351,93 @@ page {
 }
 .sort-card {
   background: #ffffff;
-  height: 300px;
+  height: 206px;
   margin: 0 20rpx;
   border-radius: 20rpx;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 28rpx 0rpx 28rpx 20rpx;
+  &-top {
+    height: 100rpx;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 20rpx;
+    &-left {
+      flex: 1;
+      .title {
+        display: flex;
+        color: #000000;
+      }
+      &-icon {
+        width: 50rpx;
+        height: 50rpx;
+      }
+    }
+    &-right {
+      width: 150rpx;
+      height: 70%;
+    }
+  }
+}
+.tui-article-list {
+  margin-top: 20rpx;
+  display: flex;
+}
+.course-card-item {
+  width: 282rpx;
+  margin-right: 20rpx;
+
+  .cover-url {
+    border-radius: 8rpx;
+    flex: 0 0 auto;
+    width: 282rpx;
+    height: 154rpx;  position: relative;
+    &-mask {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 2;
+      box-sizing: border-box;
+      padding: 16px 8px 6px;
+      width: 100%;
+      height: 38px;
+      border-bottom-right-radius: 6px;
+      border-bottom-left-radius: 6px;
+      background-image: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.8) 100%
+      );
+      color: #fff;
+      font-size: 22rpx;
+      opacity: 1;
+      display: -webkit-flex;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    &-img {
+      height: 100%;
+      width: 100%;
+      border-radius: 8rpx;
+      object-fit: cover;
+      -o-object-fit: cover;
+      -webkit-object-fit: cover;
+      -ms-object-fit: cover;
+      -moz-object-fit: cover;
+    }
+  }
+}
+.article-detail {
+  margin-top: 14rpx;
+  height: 100rpx;
+  &-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
 }
 </style>

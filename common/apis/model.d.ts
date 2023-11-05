@@ -223,3 +223,9 @@ export interface Article {
   updateTime: string;
   viewNum: number;
 }
+
+export interface CommonResultArticle {
+  code: number;
+  data: Article;
+  message: string;
+}

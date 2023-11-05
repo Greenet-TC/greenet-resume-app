@@ -84,6 +84,12 @@
         "navigationBarTitleText": "精选课程"
       }
     },
+    {
+      "path": "pages/coures/article/article",
+      "style": {
+        "navigationBarTitleText": "",        "navigationStyle": "custom"
+      }
+    },
 
     {
       "path": "pages/profile/index",
