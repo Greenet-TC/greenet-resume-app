@@ -291,7 +291,7 @@
       ></tui-text>
     </view>
     <tui-section title="相似岗位" :size="34"></tui-section>
-    <view class="job-card" v-for="item in intershipList" :key="item.id">
+    <view class="job-card" v-for="(item,index) in intershipList" :key="`${item.id}-${index}`">
       <tui-card
         :title="{
           text: item.positionName,

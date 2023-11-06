@@ -56,7 +56,7 @@
               <view class="tui-goods__list">
                 <view
                   v-for="(item, index) in companyInfoList"
-                  :key="index"
+                  :key="`${item.id}-${index}`"
                   class="tui-company-item"
                   @tap="moreDetail(item)"
                 >
@@ -98,7 +98,7 @@
               </view>
             </scroll-view>
           </view>
-
+       
           <tui-tab
             :tabs="tabLists"
             scroll
@@ -117,7 +117,7 @@
       </template>
     </tui-sticky>
 
-    <view class="job-card" v-for="item in intershipList" :key="item.id">
+    <view class="job-card" v-for="(item,index) in intershipList" :key="`${item.id}-${index}`">
       <tui-card
         :title="{
           text: item.positionName,
@@ -259,8 +259,9 @@ import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import dayjs from "dayjs";
 
-const proprtyList = ["全部", "实习", "校招"];
-const searchTabList = ["职位", "公司"];
+
+const proprtyList=['全部', '实习', '校招']
+const searchTabList=['职位','公司']
 export default {
   onReachBottom: async function () {
     if (!this.pullUpOn) {
@@ -346,8 +347,7 @@ export default {
         pageSize: this.pageSize,
         property: this.property,
       });
-      this.intershipList = data.data;
-      this.intershipList = this.intershipList.map((i) => {
+      this.intershipList = data.data.map((i) => {
         return {
           ...i,
           companyInfo: getTargetElement(
@@ -368,6 +368,7 @@ export default {
       this.loading = false;
     }
   },
+
   onPageScroll(e) {
     this.scrollTop = e.scrollTop;
   },
@@ -384,18 +385,18 @@ export default {
       pageNum: 1,
       pageSize: 10,
       property: undefined,
-      positionName: undefined,
+      positionName:undefined,
       getTargetElement,
       salaryType,
       pageInfo: {
-        page: 0,
+        page: 1,
         pageSize: 0,
         totalCount: 0,
       },
       pullUpOn: true,
       banner: ["a.png", "b.png", "c.png", "d.png"],
       selectH: 0,
-      tabLists: proprtyList,
+      tabLists:proprtyList,
       dropdownList: [
         {
           name: "价格升序",
@@ -405,8 +406,7 @@ export default {
           name: "价格降序",
           selected: false,
         },
-      ],
-      tabIndex: 0, //顶部筛选索引
+      ],tabIndex: 0, //顶部筛选索引
     };
   },
 
@@ -419,10 +419,10 @@ export default {
     search: function (value) {
       this.getSearchInterShipInfo(value);
     },
-    clear: function () {
+    clear:function(){
       this.getSearchInterShipInfo(undefined);
     },
-    getSearchInterShipInfo: async function (value) {
+    getSearchInterShipInfo:async function(value){
       this.positionName = value ? value.value : undefined;
       this.loading = true;
       try {
@@ -430,7 +430,7 @@ export default {
           pageNum: 1,
           pageSize: this.pageSize,
           property: this.property,
-          positionName: this.positionName,
+          positionName:this.positionName 
         });
         this.intershipList = data.data;
         this.intershipList = this.intershipList.map((i) => {
@@ -446,7 +446,7 @@ export default {
         if (data.data.length < this.pageSize) {
           this.pullUpOn = false;
         }
-        this.pageNum = 2;
+        this.pageNum = 1;
         this.pageInfo = data.pageInfo;
       } catch (e) {
         console.log(e);
@@ -491,7 +491,7 @@ export default {
           pageNum: 1,
           pageSize: this.pageSize,
           property: this.property,
-          positionName: this.positionName,
+          positionName:this.positionName 
         });
         this.intershipList = data.data;
         this.intershipList = this.intershipList.map((i) => {
@@ -507,7 +507,7 @@ export default {
         if (data.data.length < this.pageSize) {
           this.pullUpOn = false;
         }
-        this.pageNum = 2;
+        this.pageNum = 1;
         this.pageInfo = data.pageInfo;
       } catch (e) {
         console.log(e);
@@ -515,7 +515,7 @@ export default {
         this.loading = false;
       }
     },
-  },
+  }
 };
 </script>
 

@@ -37,17 +37,18 @@
           </view>
           <view class="sort-card-top-right">
             <tui-form-button
-              radius="10px"
-              height="80rpx"
-              background="rgb(234, 234, 241)"
-              color="#000"
+              radius="5px"
+              size="30"
+              height="60rpx"
+              background="rgba(234, 234, 241,.9)"
+              color="#00000060"
               >查看
 
               <tui-icon
                 name="arrowright"
                 :size="40"
                 unit="rpx"
-                color="#000"
+                color="#00000060"
               ></tui-icon>
             </tui-form-button>
           </view>
@@ -379,7 +380,7 @@ page {
   }
 }
 .tui-article-list {
-  margin-top: 20rpx;
+  margin-top: 25rpx;
   display: flex;
 }
 .course-card-item {

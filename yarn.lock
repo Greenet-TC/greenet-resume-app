@@ -23,11 +23,6 @@
     postcss "^8.4.14"
     source-map "^0.6.1"
 
-"@wangeditor/editor-for-vue@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@wangeditor/editor-for-vue/-/editor-for-vue-1.0.2.tgz#62674d56354319ff8dcc83db5c62cec4437ee906"
-  integrity sha512-BOENvAXJVtVXlE2X50AAvjV82YlCUeu5cbeR0cvEQHQjYtiVnJtq7HSoj85r2kTgGouI5OrpJG9BBEjSjUSPyA==
-
 csstype@^3.1.0:
   version "3.1.2"
   resolved "https://npm.corp.kuaishou.com/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"

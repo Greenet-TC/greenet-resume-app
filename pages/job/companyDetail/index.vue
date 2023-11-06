@@ -78,7 +78,7 @@
           @scrolltolower="bottomLower"
         >
           <tui-loading text="'加载中...'" v-if="loading"></tui-loading>
-          <view v-if="!positionInfo.length">
+          <view v-if="!positionInfo?.length">
             <tui-no-data
               imgUrl="/static/images/toast/img_noorder_3x.png"
               btnText="去看看"

@@ -85,7 +85,7 @@
           <view class="tui-goods__list">
             <view
               v-for="(item, index) in companyInfoList"
-              :key="index"
+              :key="`${item.id}-${index}`"
               class="tui-company-item"
               @tap="moreDetail(item)"
             >
@@ -175,7 +175,7 @@
           </view>
         </view>
       </view>
-      <view class="job-card" v-for="item in intershipList" :key="item.id">
+      <view class="job-card" v-for="(item,index) in intershipList"  :key="`${item.id}-${index}`">
         <tui-card
           :title="{
             text: item.positionName,
@@ -302,7 +302,7 @@
             </view>
           </template>
         </tui-card>
-        <tui-loading v-if="loading" text="加载中..."></tui-loading>
+      
       </view>
     </view>
 
@@ -330,6 +330,7 @@
     <!-- </view> -->
   </view>
 </template>
+
 <script>
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
@@ -339,16 +340,57 @@ import { salaryType } from "@/common/contant";
 import dayjs from "dayjs";
 import { WEBURL, getTargetElement, getFormateDateTime } from "@/common/utils";
 export default {
-  //设置页面全屏
-  onPageScroll(e) {
-    // #ifdef APP-PLUS
-    let scrollTop = e.scrollTop;
-    if (scrollTop < 0) {
-      if (this.opacity > 0) this.opacity = 1 - Math.abs(scrollTop) / 30;
-    } else {
-      this.opacity = 1;
+  onShow() {
+    if (!getToken()) {
+      setTimeout(() => {
+        if (!getToken()) {
+          this.openActionSheet();
+        }
+      }, 1000);
     }
-    // #endif
+  },
+
+  async onLoad() {
+    setTimeout(async () => {
+      if (getToken()) {
+        getBaseInfo();
+        setLoginStatus(true);
+        const _data = await getPageListPost({
+          pageNum: 1,
+          pageSize: 50,
+        });
+        this.companyInfoList = _data.data;
+        const data = await internshipPositionGetPageListPOST({
+          pageNum: 1,
+          pageSize: 10,
+        });
+        this.intershipList = data.data.map((i) => {
+          return {
+            ...i,
+            companyInfo: getTargetElement(
+              this.companyInfoList,
+              i.companyId,
+              "id"
+            ),
+          };
+        });
+        if (data.data.length < this.pageSize) {
+          this.pullUpOn = false;
+        }
+        this.pageNum = this.pageNum + 1;
+        this.pageInfo = data.pageInfo;
+      }
+    }, 1000);
+  },
+
+  onPullDownRefresh: function () {
+    let loadData = JSON.parse(JSON.stringify(this.productList));
+    loadData = loadData.splice(0, 10);
+    this.productList = loadData;
+    this.pageIndex = 1;
+    this.pullUpOn = true;
+    this.loadding = false;
+    uni.stopPullDownRefresh();
   },
 
   onReachBottom: function () {
@@ -366,56 +408,6 @@ export default {
       this.productList = this.productList.concat(loadData);
       this.pageIndex = this.pageIndex + 1;
       this.loadding = false;
-    }
-  },
-
-  onPullDownRefresh: function () {
-    let loadData = JSON.parse(JSON.stringify(this.productList));
-    loadData = loadData.splice(0, 10);
-    this.productList = loadData;
-    this.pageIndex = 1;
-    this.pullUpOn = true;
-    this.loadding = false;
-    uni.stopPullDownRefresh();
-  },
-
-  async onLoad() {
-    setTimeout(async () => {
-      if (getToken()) {
-        getBaseInfo();
-        setLoginStatus(true);
-        const _data = await getPageListPost({
-          pageNum: 1,
-          pageSize: 50,
-        });
-        this.companyInfoList = _data.data;
-
-        const data = await internshipPositionGetPageListPOST({
-          pageNum: 1,
-          pageSize: 10,
-        });
-        this.intershipList = data.data;
-        this.intershipList = this.intershipList.map((i) => {
-          return {
-            ...i,
-            companyInfo: getTargetElement(
-              this.companyInfoList,
-              i.companyId,
-              "id"
-            ),
-          };
-        });
-      }
-    }, 1000);
-  },
-
-  onShow() {
-    if (!getToken()) {
-      setTimeout(() => {
-        if (!getToken()) {
-          this.openActionSheet();
-        }
-      }, 3000);
     }
   },
 
@@ -446,7 +438,6 @@ export default {
           id: "4",
         },
       ],
-
       webURLBase: WEBURL,
       companyInfoList: [],
       intershipList: [],
@@ -467,7 +458,6 @@ export default {
       ],
     };
   },
-
   methods: {
     resumeEdit: function (e) {
       uni.navigateTo({
@@ -514,11 +504,31 @@ export default {
       this.closeActionSheet();
       if (index === 0) {
         await login();
-        const data = await getPageListPost({
+        const _data = await getPageListPost({
           pageNum: 1,
           pageSize: 20,
         });
-        this.companyInfoList = data.data;
+        this.companyInfoList = _data.data;
+
+        const data = await internshipPositionGetPageListPOST({
+          pageNum: 1,
+          pageSize: 10,
+        });
+        this.intershipList = data.data.map((i) => {
+          return {
+            ...i,
+            companyInfo: getTargetElement(
+              this.companyInfoList,
+              i.companyId,
+              "id"
+            ),
+          };
+        });
+        if (data.data.length < this.pageSize) {
+          this.pullUpOn = false;
+        }
+        this.pageNum = this.pageNum + 1;
+        this.pageInfo = data.pageInfo;
       }
     },
   },

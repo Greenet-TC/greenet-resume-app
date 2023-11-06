@@ -40,7 +40,7 @@
                 <tui-text block text="阿里巴巴" size="30"></tui-text>
                 <tui-text
                   block
-                  text="`互联网 | 已上市 | 10000 + 人`"
+                  text="`互联网 | 已上市 | 10000 + 人"
                   size="22"
                   type="gray"
                 ></tui-text
@@ -56,7 +56,7 @@
             class="tui-new-item"
             :class="[index != 0 && index != 1 ? 'tui-new-mtop' : '']"
             v-for="(item, index) in companyInfoList"
-            :key="index"
+            :key="`${item.id}-${index}`"
             @tap="moreDetail(item)"
           >
             <view class="tui-recru-info-item">
