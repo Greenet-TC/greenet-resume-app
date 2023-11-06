@@ -12,7 +12,13 @@
       ></tui-tab>
     </view>
     <view class="sort-list">
-      <view class="sort-card"> </view>
+      <view class="sort-card">
+        <view class="sort-card-header">
+          <view class="sort-card-header-left"></view>
+          <view class="sort-card-header-right"></view>
+        </view>
+        <view class="sort-card-conent"></view>
+      </view>
     </view>
     <view class="greenet-content-list">
       <view v-for="item in couresList" :key="item.couresId">
@@ -169,7 +175,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 page {
   background-color: rgb(234, 234, 241);
 }
@@ -264,11 +270,18 @@ page {
   margin: 100rpx 0;
 }
 .sort-card {
-  background: #ffffff;
+  background-color: #ffffff60;
   height: 300px;
   margin: 0 20rpx;
   border-radius: 20rpx;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 20rpx 20rpx;
+  &-header {
+    height: 80rpx;
+    display: flex;
+    justify-content: space-between;
+    background: #ff4f4c;
+  }
 }
 </style>
