@@ -115,7 +115,7 @@ export function removeToken() {
 }
 export const WEBURL =
   "https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { IOptions } from "./contant";
 
 export type ValueOf<T> = T[keyof T];
@@ -134,36 +134,54 @@ export const getTargetElement = <
   })[0];
 };
 
-
-export const getFormateDateTime=(time:number)=>{
-if(getTimeType(time,30*60)){
-return "30min前"
-}else if(getTimeType(time,60*60)){
-  return "1小时前"
-}else if(getTimeType(time,60*60*6)){
-  return "6小时前"
-}else if(getTimeType(time,60*60*12)){
-  return "12小时前"
-}else if(getTimeType(time,60*60*24)){
-  return "1天前"
-}else if(getTimeType(time,60*60*24*2)){
-  return "2天前"
-}else if(getTimeType(time,60*60*24*3)){
-  return "3天前"
-}else if(getTimeType(time,60*60*24*4)){
-  return "4天前"
-}else if(getTimeType(time,60*60*24*5)){
-  return "5天前"
-}else if(getTimeType(time,60*60*24*6)){
-  return "6天前"
-}else if(getTimeType(time,60*60*24*7)){
-  return "一周前"
-}else{
-  return  dayjs(time).format("YYYY-MM-DD")
-}
-    
-   }
-   export const getTimeType=(time,duration):boolean=>{
-    let now:number=dayjs(new Date()) 
-    return Math.floor((now-time)/1000)<duration
-   }
+export const getFormateDateTime = (time: number) => {
+  if (getTimeType(time, 15 * 60)) {
+    return "刚刚";
+  } else if (getTimeType(time, 30 * 60)) {
+    return "30min前";
+  } else if (getTimeType(time, 60 * 60)) {
+    return "1小时前";
+  } else if (getTimeType(time, 60 * 60 * 2)) {
+    return "2小时前";
+  } else if (getTimeType(time, 60 * 60 * 3)) {
+    return "3小时前";
+  } else if (getTimeType(time, 60 * 60 * 4)) {
+    return "4小时前";
+  } else if (getTimeType(time, 60 * 60 * 5)) {
+    return "5小时前";
+  } else if (getTimeType(time, 60 * 60 * 6)) {
+    return "6小时前";
+  } else if (getTimeType(time, 60 * 60 * 7)) {
+    return "7小时前";
+  } else if (getTimeType(time, 60 * 60 * 8)) {
+    return "8小时前";
+  } else if (getTimeType(time, 60 * 60 * 9)) {
+    return "9小时前";
+  } else if (getTimeType(time, 60 * 60 * 10)) {
+    return "10小时前";
+  } else if (getTimeType(time, 60 * 60 * 11)) {
+    return "11小时前";
+  } else if (getTimeType(time, 60 * 60 * 12)) {
+    return "12小时前";
+  } else if (getTimeType(time, 60 * 60 * 24)) {
+    return "1天前";
+  } else if (getTimeType(time, 60 * 60 * 24 * 2)) {
+    return "2天前";
+  } else if (getTimeType(time, 60 * 60 * 24 * 3)) {
+    return "3天前";
+  } else if (getTimeType(time, 60 * 60 * 24 * 4)) {
+    return "4天前";
+  } else if (getTimeType(time, 60 * 60 * 24 * 5)) {
+    return "5天前";
+  } else if (getTimeType(time, 60 * 60 * 24 * 6)) {
+    return "6天前";
+  } else if (getTimeType(time, 60 * 60 * 24 * 7)) {
+    return "一周前";
+  } else {
+    return dayjs(time).format("YYYY-MM-DD");
+  }
+};
+export const getTimeType = (time, duration): boolean => {
+  let now: Dayjs = dayjs(new Date());
+  return Math.floor((now - time) / 1000) < duration;
+};

@@ -247,7 +247,7 @@ export default {
     },
     moreDetail(e) {
       uni.navigateTo({
-        url: `/pages/coures/article/article?articleTitle=${e.articleTitle}`,
+        url: `/pages/coures/article/article?articleId=${e.articleId}`,
       });
     },
   },

@@ -98,7 +98,7 @@
               </view>
             </scroll-view>
           </view>
-       
+
           <tui-tab
             :tabs="tabLists"
             scroll
@@ -259,11 +259,9 @@ import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import dayjs from "dayjs";
 
-
-const proprtyList=['全部', '实习', '校招']
-const searchTabList=['职位','公司']
+const proprtyList = ["全部", "实习", "校招"];
+const searchTabList = ["职位", "公司"];
 export default {
-  
   onReachBottom: async function () {
     if (!this.pullUpOn) {
       uni.showToast({
@@ -383,10 +381,10 @@ export default {
       scrollTop: 0,
       companyInfoList: [],
       intershipList: [],
-      pageNum: 0,
+      pageNum: 1,
       pageSize: 10,
       property: undefined,
-      positionName:undefined,
+      positionName: undefined,
       getTargetElement,
       salaryType,
       pageInfo: {
@@ -397,7 +395,7 @@ export default {
       pullUpOn: true,
       banner: ["a.png", "b.png", "c.png", "d.png"],
       selectH: 0,
-      tabLists:proprtyList,
+      tabLists: proprtyList,
       dropdownList: [
         {
           name: "价格升序",
@@ -407,7 +405,8 @@ export default {
           name: "价格降序",
           selected: false,
         },
-      ],tabIndex: 0, //顶部筛选索引
+      ],
+      tabIndex: 0, //顶部筛选索引
     };
   },
 
@@ -420,18 +419,18 @@ export default {
     search: function (value) {
       this.getSearchInterShipInfo(value);
     },
-    clear:function(){
+    clear: function () {
       this.getSearchInterShipInfo(undefined);
     },
-    getSearchInterShipInfo:async function(value){
+    getSearchInterShipInfo: async function (value) {
       this.positionName = value ? value.value : undefined;
       this.loading = true;
       try {
         const data = await internshipPositionGetPageListPOST({
-          pageNum: 0,
+          pageNum: 1,
           pageSize: this.pageSize,
           property: this.property,
-          positionName:this.positionName 
+          positionName: this.positionName,
         });
         this.intershipList = data.data;
         this.intershipList = this.intershipList.map((i) => {
@@ -447,7 +446,7 @@ export default {
         if (data.data.length < this.pageSize) {
           this.pullUpOn = false;
         }
-        this.pageNum = 1;
+        this.pageNum = 2;
         this.pageInfo = data.pageInfo;
       } catch (e) {
         console.log(e);
@@ -489,10 +488,10 @@ export default {
       this.loading = true;
       try {
         const data = await internshipPositionGetPageListPOST({
-          pageNum: 0,
+          pageNum: 1,
           pageSize: this.pageSize,
           property: this.property,
-          positionName:this.positionName 
+          positionName: this.positionName,
         });
         this.intershipList = data.data;
         this.intershipList = this.intershipList.map((i) => {
@@ -508,7 +507,7 @@ export default {
         if (data.data.length < this.pageSize) {
           this.pullUpOn = false;
         }
-        this.pageNum = 1;
+        this.pageNum = 2;
         this.pageInfo = data.pageInfo;
       } catch (e) {
         console.log(e);

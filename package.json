@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@wangeditor/editor-for-vue": "^1.0.2",
-    "dayjs": "^1.11.9"
+    "dayjs": "^1.11.9",
+    "mp-html": "^2.4.2"
   },
   "devDependencies": {
     "@types/uni-app": "^1.4.5"
