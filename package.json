@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@wangeditor/editor-for-vue": "^1.0.2",
     "dayjs": "^1.11.9"
   },
   "devDependencies": {
