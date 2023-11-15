@@ -1,5 +1,4 @@
 import http from "../../components/common/tui-request";
-import store from "@/store/index.ts";
 import {
   WechatPayControllerResponseType,
   internshipPositionGetPageListParameType,

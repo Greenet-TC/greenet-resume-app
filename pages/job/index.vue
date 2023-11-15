@@ -116,7 +116,6 @@
         </view>
       </template>
     </tui-sticky>
-
     <view class="job-card" v-for="item in intershipList" :key="item.id">
       <tui-card
         :title="{

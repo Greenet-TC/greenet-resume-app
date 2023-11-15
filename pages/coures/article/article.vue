@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-12 11:26:53
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-11-06 15:45:48
+ * @LastEditTime: 2023-11-15 22:11:02
  * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,8 +14,8 @@
       @init="initNavigation"
       @change="opacityChange"
       :scrollTop="scrollTop"
-      title="精选课程"
-      backgroundColor="#ffffff80"
+      title="文章详情"
+      backgroundColor="#ffffff"
       color="#333"
     >
       <view class="tui-header-icon" :style="{ marginTop: top + 'px' }">
@@ -34,11 +34,65 @@
         ></tui-icon>
       </view>
     </tui-navigation-bar>
-
-    <view class="article-content">
-      <mpHtml :content="content || ''" />
+    <view class="article-cover">
+      <image
+        :src="articleInfo?.coverUrl"
+        class="article-cover"
+        mode="scaleToFill"
+      ></image>
     </view>
+    <view class="content-box">
+      <view class="article">
+        <view class="article-header">
+          <tui-divide-list
+            :list="list"
+            badgeBgColor="rgb(247, 77, 84)"
+            badgeColor="#fff"
+          ></tui-divide-list>
 
+          <view>
+            <tui-tag
+              v-if="articleInfo?.createTime"
+              type="light-orange"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="20rpx"
+              >{{ getFormateDateTime(articleInfo?.createTime) }}</tui-tag
+            >
+            <tui-tag
+              v-for="(item, index) in articleInfo?.tags"
+              :key="index"
+              type="light-brownish"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="20rpx"
+              >{{ item }}</tui-tag
+            >
+            <tui-tag
+              v-if="articleInfo?.viewNum"
+              type="light-brownish"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              size="20rpx"
+              >{{ articleInfo?.viewNum }}人看过</tui-tag
+            >
+          </view>
+        </view>
+        <view>
+          <tui-section
+            size="36"
+            :title="articleInfo?.articleTitle"
+            :descr="articleInfo?.summery"
+          ></tui-section>
+        </view>
+        <view class="article-content">
+          <mpHtml :content="articleInfo?.content || ''" />
+        </view>
+      </view>
+      <view class="comments">
+        <tui-section title="热门评论" :size="34"></tui-section>
+      </view>
+    </view>
     <tui-footer
       :fixed="false"
       class="service-tui-footer"
@@ -50,6 +104,7 @@
 import { viewArticleDetailPost } from "@/common/apis/article-controller";
 import uParse from "@/components/uni/uParse/src/wxParse";
 import mpHtml from "mp-html/dist/uni-app/components/mp-html/mp-html";
+import { getFormateDateTime } from "@/common/utils";
 
 export default {
   components: { uParse, mpHtml },
@@ -59,7 +114,13 @@ export default {
       const data = await viewArticleDetailPost({
         articleId: options.articleId,
       });
-      console.log("data", data);
+      this.articleInfo = data.data;
+      this.list = this.list.map((i) => {
+        return {
+          ...i,
+          value: this.articleInfo[i.id],
+        };
+      });
     } catch (e) {
       this.articleInfo = {
         articleId: 1699166776869283,
@@ -89,35 +150,34 @@ export default {
       opacity: 0,
       scrollTop: 0.5,
       articleInfo: null,
-      content: `<p style="text-indent: 2em;">🥰<img style="float: right; max-width: 40%;" src="static/img/qqgroup.jpg" /></p>
-<p>TinyMCE是一款易用、且功能强大的所见即所得的富文本编辑器。同类程序有：</p>
-<table style="border-collapse: collapse;" border="1">
-<tbody>
-<tr style="height: 21px;">
-<td style="width: 20%; height: 21px;">UEditor</td>
-<td style="width: 20%; height: 21px;">Kindeditor</td>
-<td style="width: 20%; height: 21px;">Simditor</td>
-</tr>
-<tr style="height: 21px;">
-<td style="width: 20%; height: 21px;">CKEditor</td>
-<td style="width: 20%; height: 21px;">wangEditor</td>
-<td style="width: 20%; height: 21px;">Suneditor</td>
-</tr>
-<tr style="height: 21px;">
-<td style="width: 20%; height: 21px;">froala</td>
-<td style="width: 20%; height: 21px;">等等</td>
-<td style="width: 20%; height: 21px;">&nbsp;</td>
-</tr>
-</tbody>
-</table>
-<h4>关于此中文文档（手册）</h4>
-<p>该文档是<a href="./">TinyMCE的中文使用手册、进阶用法的说明书</a>，包含入门用法、插件使用、配置参数使用方法、内置方法等。<span style="color: #f30;">它并非100%照搬英文文档进行翻译</span>，我会对很多自认为不完善的地方进行删改或加入新的内容，使之比原文档更易于学习。</p>
-<p>弄这个中文手册的初衷：从前一直使用kindeditor，但苦于官方已N久没有更新，不得不到处寻找合适自己的编辑器，用过很多之后，最终感觉还是TinyMCE比较顺手，主要是它能简能繁，适用非常全面。</p>
-<p>老外的东西是不错的，就是没有中文手册文档，拦住好多像我一样英语比较差的国人，限制了它的知名度，希望这份中文文档能帮助TinyMCE走进中国。</p>
-<p>我深知自己的英语水平比较烂，如有任何翻译错误，还请邮件告诉我：Lcard@qq.com</p>
-<p>PS：网友群：689501894，吐槽群：818515594</p>
-<p>&mdash;&mdash; 译者兼该文档制作人：莫若卿</p>
-<p>&mdash;&mdash; 2019.3</p>`,
+      getFormateDateTime,
+      list: [
+        {
+          id: "viewNum",
+          text: "浏览量",
+          value: 251,
+          //角标数字，大于0时显示
+          num: Math.floor(Math.random() * 10 + 1),
+        },
+        {
+          text: "点赞量",
+          id: "supportNum",
+          value: 20, //角标数字，大于0时显示
+          num: 0,
+        },
+        {
+          text: "收藏量",
+          value: 20, //角标数字，大于0时显示
+          num: 0,
+          id: "collectNum",
+        },
+        {
+          text: "评论量",
+          value: 0, //角标数字，大于0时显示
+          num: 0,
+          id: "commentNum",
+        },
+      ],
     };
   },
 
@@ -168,7 +228,9 @@ export default {
     margin: 0px 8px;
   }
 }
-
+page {
+  background-color: rgb(245, 246, 248);
+}
 .school-active {
   height: 100vh;
   width: 100%;
@@ -184,7 +246,32 @@ export default {
     left: 20rpx;
   }
 }
-.article-content {
-  padding: 100rpx 20rpx;
+.content-box {
+  position: absolute;
+  top: 203px;
+
+  width: 96%;
+  left: 2%;
+}
+.article {
+  background: #ffffff;
+  border-radius: 20rpx;
+  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.01);
+  &-cover {
+    width: 100%;
+  }
+  &-content {
+    padding: 20rpx 20rpx;
+  }
+  &-header {
+    padding: 20rpx;
+  }
+}
+.comments {
+  background: #ffffff;
+  height: 200rpx;
+  width: 100%;
+  margin-top: 20rpx;
+  padding: 14rpx;
 }
 </style>
