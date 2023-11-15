@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-12 11:26:53
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-11-15 22:11:02
+ * @LastEditTime: 2023-11-16 00:56:18
  * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -93,11 +93,71 @@
         <tui-section title="热门评论" :size="34"></tui-section>
       </view>
     </view>
-    <tui-footer
-      :fixed="false"
-      class="service-tui-footer"
-      copyright="Copyright © 2022-2025 Greenet-TC."
-    ></tui-footer>
+
+    <view class="tui-tabbar">
+      <view class="search-container">
+        <!-- <view class="tui-search__bar">
+              <view class="tui-searchbox" @tap="search">
+                <icon type="search" :size="13" color="#999"></icon>
+                <text class="tui-search-text">搜索岗位/公司/行业名称等</text>
+              </view>
+            </view> -->
+        <tui-searchbar
+          radius="40rpx"
+          inputBgColor="#f3f4f6"
+          placeholder="发表你的评论..."
+          backgroundColor="rgb(245, 246, 248,0)"
+          @search="search"
+          @clear="clear"
+          searchText="确认"
+        ></tui-searchbar>
+      </view>
+
+      <view class="tui-badge-item">
+        <tui-icon name="message" size="22"></tui-icon>
+        <tui-badge
+          type="gray"
+          absolute
+          :scaleRatio="0.8"
+          translateX="40%"
+          top="-6rpx"
+          >{{ articleInfo?.commentNum }}</tui-badge
+        >
+      </view>
+      <view class="tui-badge-item">
+        <tui-icon size="22" name="agree"></tui-icon>
+        <tui-badge
+          type="gray"
+          absolute
+          :scaleRatio="0.8"
+          translateX="40%"
+          top="-6rpx"
+          >{{ articleInfo?.supportNum }}</tui-badge
+        >
+      </view>
+
+      <view class="tui-badge-item">
+        <tui-icon name="like" size="22"></tui-icon>
+        <tui-badge
+          type="gray"
+          absolute
+          :scaleRatio="0.8"
+          translateX="40%"
+          top="-6rpx"
+          >{{ articleInfo?.collectNum }}</tui-badge
+        >
+      </view>
+      <button open-type="share" class="tui-share-btn">
+        <tui-icon name="share" size="22"></tui-icon>
+      </button>
+    </view>
+    <view class="footer">
+      <tui-footer
+        :fixed="false"
+        class="service-tui-footer"
+        copyright="Copyright © 2022-2025 Greenet-TC."
+      ></tui-footer
+    ></view>
   </view>
 </template>
 <script>
@@ -250,13 +310,17 @@ page {
   position: absolute;
   top: 203px;
 
-  width: 96%;
-  left: 2%;
+  width: 94%;
+  left: 3%;
 }
 .article {
   background: #ffffff;
   border-radius: 20rpx;
   box-shadow: 0 2px 1px rgba(0, 0, 0, 0.01);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: -1 0 10px rgba(0, 0, 0, 0.35);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(80rpx);
   &-cover {
     width: 100%;
   }
@@ -270,8 +334,51 @@ page {
 .comments {
   background: #ffffff;
   height: 200rpx;
-  width: 100%;
+  width: 94%;
   margin-top: 20rpx;
   padding: 14rpx;
+}
+.tui-tabbar {
+  width: 100%;
+  height: 150rpx;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  /* #ifdef H5 */
+  /* bottom: 50px; */
+  /* #endif */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40rpx 32rpx 0;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  z-index: 9999;
+}
+.search-container {
+  width: 352rpx;
+}
+.tui-badge-item {
+  position: relative;
+}
+.tui-share-btn {
+  // flex: 1;
+  display: block;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: 0;
+  line-height: 1;
+}
+
+.tui-share-btn::after {
+  border: 0;
+}
+.footer {
+  width: 100%;
+  height: 200rpx;
 }
 </style>
