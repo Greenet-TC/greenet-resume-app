@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-12 11:26:53
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-11-16 00:56:18
+ * @LastEditTime: 2023-11-16 21:59:22
  * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -86,7 +86,12 @@
           ></tui-section>
         </view>
         <view class="article-content">
-          <mpHtml :content="articleInfo?.content || ''" />
+          <mpHtml
+            :content="articleInfo?.content || ''"
+            lazy-load="{{ true }}"
+            containerStyle="padding:5px; font-size:14px; color:#1f2329;overflow:hidden;white-space:pre-wrap;white-space:pre-line;  "
+            >加载中...</mpHtml
+          >
         </view>
       </view>
       <view class="comments">
