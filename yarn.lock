@@ -38,11 +38,6 @@ dayjs@^1.11.9:
   resolved "https://npm.corp.kuaishou.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
   integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
 
-mp-html@^2.4.2:
-  version "2.4.2"
-  resolved "https://npm.corp.kuaishou.com/mp-html/-/mp-html-2.4.2.tgz#dfc08136d05990ac4d97b3d603c7689cbcd6a031"
-  integrity sha512-MSfJh5ckuaI2uibeO4qiUl2e/j5fpXy6cmW/ZzSkb+U3rTJfMSNzODqrDwG0YWOd8BVI+tD9/jLZiBhJbMupUg==
-
 nanoid@^3.3.6:
   version "3.3.6"
   resolved "https://npm.corp.kuaishou.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"

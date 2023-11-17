@@ -2,7 +2,7 @@
  * @Author: maxueming maxueming@kuaishou.com
  * @Date: 2023-09-12 11:26:53
  * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-11-16 21:59:22
+ * @LastEditTime: 2023-11-17 10:20:43
  * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -86,12 +86,7 @@
           ></tui-section>
         </view>
         <view class="article-content">
-          <mpHtml
-            :content="articleInfo?.content || ''"
-            lazy-load="{{ true }}"
-            containerStyle="padding:5px; font-size:14px; color:#1f2329;overflow:hidden;white-space:pre-wrap;white-space:pre-line;  "
-            >加载中...</mpHtml
-          >
+          <uParse :content="articleInfo?.content || ''" />
         </view>
       </view>
       <view class="comments">
@@ -168,11 +163,10 @@
 <script>
 import { viewArticleDetailPost } from "@/common/apis/article-controller";
 import uParse from "@/components/uni/uParse/src/wxParse";
-import mpHtml from "mp-html/dist/uni-app/components/mp-html/mp-html";
 import { getFormateDateTime } from "@/common/utils";
 
 export default {
-  components: { uParse, mpHtml },
+  components: { uParse },
   onPageScroll(e) {},
   async onLoad(options) {
     try {
