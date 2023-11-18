@@ -1,11 +1,3 @@
-<!--
- * @Author: maxueming maxueming@kuaishou.com
- * @Date: 2023-09-12 11:26:53
- * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-11-17 10:25:36
- * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <view class="school-active">
     <tui-navigation-bar
@@ -47,6 +39,7 @@
           <tui-divide-list
             :list="list"
             badgeBgColor="rgb(247, 77, 84)"
+            background="rgb(247, 77, 84,0)"
             badgeColor="#fff"
           ></tui-divide-list>
 
@@ -74,13 +67,14 @@
               margin="0 14rpx 0 0"
               padding="10rpx"
               size="20rpx"
-              >{{ articleInfo?.viewNum }}人看过</tui-tag
+              >{{ tranNumber(articleInfo?.viewNum ?? 0, 2) }}人看过</tui-tag
             >
           </view>
         </view>
         <view>
           <tui-section
-            size="36"
+            size="40"
+            fontWeight="500"
             :title="articleInfo?.articleTitle"
             :descr="articleInfo?.summery"
           ></tui-section>
@@ -94,63 +88,88 @@
       </view>
     </view>
 
-    <view class="tui-tabbar">
-      <view class="search-container">
-        <!-- <view class="tui-search__bar">
-              <view class="tui-searchbox" @tap="search">
-                <icon type="search" :size="13" color="#999"></icon>
-                <text class="tui-search-text">搜索岗位/公司/行业名称等</text>
-              </view>
-            </view> -->
-        <tui-searchbar
-          radius="40rpx"
-          inputBgColor="#f3f4f6"
-          placeholder="发表你的评论..."
-          backgroundColor="rgb(245, 246, 248,0)"
-          @search="search"
-          @clear="clear"
-          searchText="确认"
-        ></tui-searchbar>
+    <view
+      class="tui-tabbar"
+      :style="{ height: isComment ? '390rpx' : '150rpx' }"
+    >
+      <view class="tui-tabbar-textarea" v-if="isComment">
+        <view class="tui-tabbar-textarea-useInfo">
+          <image
+            :src="
+              baseInfo?.avatar
+                ? baseInfo?.avatar
+                : baseInfo?.sex === 1
+                ? webURLBase + `/profile/man.png`
+                : webURLBase + `/profile/woman.png`
+            "
+            class="tui-avatar"
+          ></image>
+          <view class="tui-nickname">
+            {{ baseInfo?.username }}
+          </view>
+        </view>
       </view>
+      <view class="tui-tabbar-tab">
+        <view
+          class="search-container"
+          :style="{ width: isComment ? '640rpx' : '352rpx' }"
+        >
+          <tui-searchbar
+            radius="40rpx"
+            inputBgColor="#f3f4f6"
+            placeholder="发表你的评论..."
+            backgroundColor="rgb(245, 246, 248,0)"
+            @click="click"
+            @cancel="cancel"
+            @blur="blur"
+            @search="search"
+            searchText="发送"
+            padding="16rpx 22rpx"
+            cursorSpacing="40"
+          >
+          </tui-searchbar>
+        </view>
+        <view class="tui-tabbar-textarea-btn" v-if="!isComment">
+          <view class="tui-badge-item">
+            <tui-icon name="message" size="22"></tui-icon>
+            <tui-badge
+              type="gray"
+              absolute
+              :scaleRatio="0.8"
+              translateX="40%"
+              top="-6rpx"
+              >{{ tranNumber(articleInfo?.commentNum ?? 0, 2) }}</tui-badge
+            >
+          </view>
+          <view class="tui-badge-item" @tap="handleSupportNum">
+            <tui-icon size="22" name="agree" :color="supportColor"></tui-icon>
+            <tui-badge
+              type="gray"
+              absolute
+              :scaleRatio="0.8"
+              translateX="40%"
+              top="-6rpx"
+              >{{ tranNumber(articleInfo?.supportNum ?? 0, 2) }}</tui-badge
+            >
+          </view>
 
-      <view class="tui-badge-item">
-        <tui-icon name="message" size="22"></tui-icon>
-        <tui-badge
-          type="gray"
-          absolute
-          :scaleRatio="0.8"
-          translateX="40%"
-          top="-6rpx"
-          >{{ articleInfo?.commentNum }}</tui-badge
-        >
+          <view class="tui-badge-item" @tap="handleCollectNum">
+            <tui-icon name="like" size="22" :color="collectColor"></tui-icon>
+            <tui-badge
+              type="gray"
+              absolute
+              :scaleRatio="0.8"
+              translateX="40%"
+              top="-6rpx"
+              >{{ tranNumber(articleInfo?.collectNum ?? 0, 2) }}</tui-badge
+            >
+          </view>
+          <button open-type="share" class="tui-share-btn">
+            <tui-icon name="share" size="22"></tui-icon></button
+        ></view>
       </view>
-      <view class="tui-badge-item">
-        <tui-icon size="22" name="agree"></tui-icon>
-        <tui-badge
-          type="gray"
-          absolute
-          :scaleRatio="0.8"
-          translateX="40%"
-          top="-6rpx"
-          >{{ articleInfo?.supportNum }}</tui-badge
-        >
-      </view>
-
-      <view class="tui-badge-item">
-        <tui-icon name="like" size="22"></tui-icon>
-        <tui-badge
-          type="gray"
-          absolute
-          :scaleRatio="0.8"
-          translateX="40%"
-          top="-6rpx"
-          >{{ articleInfo?.collectNum }}</tui-badge
-        >
-      </view>
-      <button open-type="share" class="tui-share-btn">
-        <tui-icon name="share" size="22"></tui-icon>
-      </button>
     </view>
+
     <view class="footer">
       <tui-footer
         :fixed="false"
@@ -161,13 +180,16 @@
   </view>
 </template>
 <script>
-import { viewArticleDetailPost } from "@/common/apis/article-controller";
+import {
+  viewArticleDetailPost,
+  articleUpdateCollectNumGET,
+  articleUpdateSupportNumGET,
+} from "@/common/apis/article-controller";
 import uParse from "@/components/uni/uParse/src/wxParse";
-import { getFormateDateTime } from "@/common/utils";
+import { getFormateDateTime, WEBURL, tranNumber } from "@/common/utils";
+import store from "@/store/index.ts";
 
 export default {
-  components: { uParse },
-  onPageScroll(e) {},
   async onLoad(options) {
     try {
       const data = await viewArticleDetailPost({
@@ -177,13 +199,15 @@ export default {
       this.list = this.list.map((i) => {
         return {
           ...i,
-          value: this.articleInfo[i.id],
+          value: tranNumber(this.articleInfo[i.id] ?? 0, 2),
         };
       });
-    } catch (e) {
-      
-    }
+    } catch (e) {}
   },
+
+  onPageScroll(e) {},
+  components: { uParse },
+
   data() {
     return {
       top: 0, //标题图标距离顶部距离
@@ -191,6 +215,11 @@ export default {
       scrollTop: 0.5,
       articleInfo: null,
       getFormateDateTime,
+      searchHeight: "72rpx",
+      isComment: false,
+      webURLBase: WEBURL,
+      tranNumber,
+    
       list: [
         {
           id: "viewNum",
@@ -203,24 +232,31 @@ export default {
           text: "点赞量",
           id: "supportNum",
           value: 20, //角标数字，大于0时显示
-          num: 0,
+          num: Math.floor(Math.random() * 10 + 1),
         },
         {
           text: "收藏量",
           value: 20, //角标数字，大于0时显示
-          num: 0,
+          num: Math.floor(Math.random() * 10 + 1),
           id: "collectNum",
         },
         {
           text: "评论量",
           value: 0, //角标数字，大于0时显示
-          num: 0,
+          num: Math.floor(Math.random() * 10 + 1),
           id: "commentNum",
         },
       ],
+      supportColor: "",
+      collectColor: "",
+      CommentColor: "",
     };
   },
-
+  computed: {
+    baseInfo() {
+      return store.state.userBaseInfo;
+    },
+  },
   methods: {
     initNavigation(e) {
       this.opacity = e.opacity;
@@ -238,9 +274,64 @@ export default {
     opacityChange(e) {
       this.opacity = e.opacity;
     },
+    click(e) {
+      console.log(e);
+      // this.searchHeight = "144rpx";
+      this.isComment = true;
+     
+    },
+    blur() {
+      this.cancel()
+    },
+    cancel() {
+      this.isComment = false;
+    },
+    async search(value) {
+      try {
+        await commentInsertCommentPOST({
+          articleId: this.articleInfo.articleId,
+          articleTitle: this.articleInfo.articleTitle,
+          content: value,
+          fromName: "string",
+          fromUid: "number",
+        });
+        this.articleInfo.commentNum += 1;
+        this.CommentColor = !this.CommentColor ? "#FE3666" : "";
+      } catch (e) {
+        console.error("评论错误", e);
+      }
+      this.isComment = false;
+    },
+    async handleCollectNum() {
+      try {
+        await articleUpdateCollectNumGET({
+          articleId: this.articleInfo.articleId,
+          articleTitle: this.articleInfo.articleTitle,
+          collectFlag: !this.collectColor ? 1 : -1,
+        });
+        this.articleInfo.collectNum += !this.collectColor ? 1 : -1;
+        this.collectColor = !this.collectColor ? "#FE3666" : "";
+      } catch (e) {
+        console.error("收藏错误", e);
+      }
+    },
+    async handleSupportNum() {
+      try {
+        await articleUpdateSupportNumGET({
+          articleId: this.articleInfo.articleId,
+          articleTitle: this.articleInfo.articleTitle,
+          collectFlag: !this.supportColor ? 1 : -1,
+        });
+        this.articleInfo.supportNum += !this.supportColor ? 1 : -1;
+        this.supportColor = !this.supportColor ? "#FE3666" : "";
+      } catch (e) {
+        console.error("点赞错误", e);
+      }
+    },
   },
 };
 </script>
+
 <style lang="less">
 .tui-header-icon {
   margin-left: 10px;
@@ -270,6 +361,36 @@ export default {
 }
 page {
   background-color: rgb(245, 246, 248);
+
+  width: 100%;
+  height: 100%;
+  --color: #e1e1e170;
+  // background-color: #F3F3F3;
+  background-image: linear-gradient(
+      0deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      var(--color) 25%,
+      var(--color) 26%,
+      transparent 27%,
+      transparent 74%,
+      var(--color) 75%,
+      var(--color) 76%,
+      transparent 77%,
+      transparent
+    );
+  background-size: 55px 55px;
 }
 .school-active {
   height: 100vh;
@@ -294,13 +415,13 @@ page {
   left: 3%;
 }
 .article {
-  background: #ffffff;
-  border-radius: 20rpx;
-  box-shadow: 0 2px 1px rgba(0, 0, 0, 0.01);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: -1 0 10px rgba(0, 0, 0, 0.35);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(80rpx);
+  // background: #ffffff;
+  // border-radius: 20rpx;
+  // box-shadow: 0 2px 1px rgba(0, 0, 0, 0.01);
+  // background: rgba(255, 255, 255, 0.95);
+  // box-shadow: -1 0 10px rgba(0, 0, 0, 0.35);
+  // -webkit-backdrop-filter: blur(10px);
+  // backdrop-filter: blur(80rpx);
   &-cover {
     width: 100%;
   }
@@ -309,6 +430,12 @@ page {
   }
   &-header {
     padding: 20rpx;
+    // background: #ffffff;
+    border-radius: 20rpx 20rpx 20rpx 20rpx;
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(80rpx);
   }
 }
 .comments {
@@ -320,25 +447,51 @@ page {
 }
 .tui-tabbar {
   width: 100%;
-  height: 150rpx;
   background: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   position: fixed;
   left: 0;
   bottom: 0;
+  z-index: 9999;
   /* #ifdef H5 */
   /* bottom: 50px; */
   /* #endif */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 0 40rpx 32rpx 0;
   box-sizing: border-box;
   font-size: 24rpx;
-  z-index: 9999;
+  &-tab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &-textarea {
+    margin-top: 10rpx;
+    width: 600rpx;
+    padding: 0rpx 40rpx;
+    &-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex: 1;
+    }
+    .tui-avatar {
+      width: 40rpx;
+      height: 40rpx;
+    }
+    .tui-nickname {
+      margin-left: 20rpx;
+    }
+    &-useInfo {
+      display: flex;
+      height: 50rpx;
+      align-items: center;
+      // margin-bottom: 22rpx;
+      // justify-content: ;
+    }
+  }
 }
 .search-container {
-  width: 352rpx;
+  padding-left: 20rpx;
 }
 .tui-badge-item {
   position: relative;

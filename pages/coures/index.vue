@@ -74,9 +74,9 @@
                     height="155rpx"
                   ></tui-image-group>
                   <view class="cover-url-mask">
-                    <view>{{ item.viewNum }} 看过</view>
-                    <view>{{ item.supportNum }} 点赞</view>
-                    <view>{{ item.commentNum }} 评论</view>
+                    <view>{{ tranNumber(item.viewNum??0,2) }} 看过</view>
+                    <view>{{ tranNumber(item.supportNum??0,2) }} 点赞</view>
+                    <!-- <view>{{ tranNumber(item.commentNum??0,2)  }} 评论</view> -->
                   </view>
                 </view>
                 <view class="article-detail">
@@ -139,6 +139,7 @@
 <script>
 import { getArticleListPost } from "@/common/apis/article-controller";
 import compilation from "@/static/course/compilation.svg";
+import {tranNumber } from "@/common/utils";
 
 export default {
   async onLoad() {
@@ -147,11 +148,10 @@ export default {
       pageSize: this.pageSize,
     });
     this.courseList = data.data;
-    console.log(111, data);
   },
   data() {
     return {
-      current: 0,
+      current: 0,tranNumber,
       compilation,
       courseList: [],
       tabs: ["全部", "产品经理", "前端开发", "后端开发", "运营", "数据分析"],
@@ -351,7 +351,7 @@ page {
 }
 .sort-card {
   background: #ffffff;
-  height: 206px;
+  height: 200px;
   margin: 0 20rpx;
   border-radius: 20rpx;
   overflow: hidden;
@@ -409,7 +409,7 @@ page {
         rgba(0, 0, 0, 0) 0%,
         rgba(0, 0, 0, 0.8) 100%
       );
-      color: #fff;
+      color: #ffffff;
       font-size: 22rpx;
       opacity: 1;
       display: -webkit-flex;
@@ -432,12 +432,14 @@ page {
 }
 .article-detail {
   margin-top: 14rpx;
-  height: 100rpx;
+  height: 94rpx;
   &-title {
+    font-size: 25rpx;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    height: 100%;
     -webkit-box-orient: vertical;
   }
 }

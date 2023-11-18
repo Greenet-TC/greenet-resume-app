@@ -185,3 +185,38 @@ export const getTimeType = (time, duration): boolean => {
   let now: Dayjs = dayjs(new Date());
   return Math.floor((now - time) / 1000) < duration;
 };
+
+ export function tranNesumber(num, point){
+  // 将数字转换为字符串,然后通过split方法用.分隔,取到第0个
+  let numStr = num.toString().split('.')[0]
+  if(numStr.length<6) { // 判断数字有多长,如果小于6,,表示10万以内的数字,让其直接显示
+      console.log(numStr);
+      return numStr;
+    }else if(numStr.length>=6 && numStr.length<=8){ // 如果数字大于6位,小于8位,让其数字后面加单位万
+       let decimal = numStr.substring(numStr.length-4, numStr.length-4+point)
+       console.log(decimal);
+       // 由千位,百位组成的一个数字
+       return parseFloat(parseInt(num / 10000)+'.'+decimal)+'w'  
+  }else if(numStr.length >8){ // 如果数字大于8位,让其数字后面加单位亿
+       let decimal = numStr.substring(numStr.length-8, numStr.length-8+point);
+       console.log(decimal);
+       return parseFloat(parseInt(num/100000000)+'.'+decimal)+'亿'
+  }
+}
+
+export function tranNumber(value){
+  value = Number(value)
+  var num;
+  if( value > 999&& value<=9999){
+    num = (Math.floor(value / 10) / 100) + 'k';
+  }
+  else if (value > 9999) { //大于9999显示x.xx万
+    num = (Math.floor(value / 100) / 100) + 'w+';
+  } else if (value <= 9999 && value > -9999) {
+    num = value
+  } else if (value < -9999) { //小于-9999显示-x.xx万
+    num = -(Math.floor(Math.abs(value) / 1000) / 10) + 'w'
+  }
+  return num;
+}
+

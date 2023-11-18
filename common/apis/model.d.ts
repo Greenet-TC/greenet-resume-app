@@ -229,3 +229,22 @@ export interface CommonResultArticle {
   data: Article;
   message: string;
 }
+export interface ArticleUpdateParams{
+  articleId:number;
+  articleTitle:string;
+  collectFlag:number
+}
+
+export interface ArticleUpdateResponse<T> {
+  result: number;
+  data: T;
+  error_msg: string;
+}
+export interface  ArticleCommentParams{
+  articleId: number,
+  articleTitle: string,
+  content: string,
+  fromName: string,
+  fromUid: number,
+ 
+}

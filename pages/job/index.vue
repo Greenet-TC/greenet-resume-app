@@ -64,7 +64,7 @@
                     <tui-image-group
                       :imageList="[
                         {
-                          src: item.logo,
+                          src: item?.logo,
                         },
                       ]"
                       isGroup
@@ -197,7 +197,7 @@
               <tui-image-group
                 :imageList="[
                   {
-                    src: item.companyInfo.logo,
+                    src: item.companyInfo?.logo,
                   },
                 ]"
                 isGroup
@@ -208,7 +208,7 @@
                 <tui-text block :text="item.company" size="30"></tui-text>
                 <tui-text
                   block
-                  :text="`${item.companyInfo.market.label} | ${item.companyInfo.scale.label} | ${item.companyInfo.sectorNumber.label}`"
+                  :text="`${item.companyInfo?.market.label} | ${item.companyInfo?.scale.label} | ${item.companyInfo?.sectorNumber.label}`"
                   size="22"
                   type="gray"
                 ></tui-text
