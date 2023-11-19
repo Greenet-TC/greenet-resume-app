@@ -84,8 +84,66 @@
         </view>
       </view>
       <view class="comments">
-        <tui-section title="热门评论" :size="34"></tui-section>
+        <tui-section
+          padding="5px 5px"
+          :title="`精彩评论 (${commentLists.length})`"
+          :size="30"
+          fontWeight="500"
+        >
+        </tui-section>
+
+        <view
+          class="comments-item"
+          v-for="(item, index) in commentLists"
+          :key="index"
+        >
+          <view>
+            <image
+              :src="
+                baseInfo?.avatar
+                  ? baseInfo?.avatar
+                  : baseInfo?.sex === 1
+                  ? webURLBase + `/profile/man.png`
+                  : webURLBase + `/profile/woman.png`
+              "
+              class="tui-avatar"
+            ></image>
+          </view>
+          <view>
+            <tui-section
+              size="28"
+              fontWeight="400"
+              padding="0px 6px"
+              descrTop="2"
+              descrColor="#252933"
+              :title="item?.fromName"
+              :descr="item?.content"
+            ></tui-section>
+            <tui-text
+              :text="getFormateDateTime(item?.createTime)"
+              size="20"
+              padding="0 6px 0 6px"
+              type="gray"
+            ></tui-text
+            ><tui-tag
+              type="primary"
+              plain
+              v-if="index === 0"
+              size="20rpx"
+              padding="8rpx 18rpx"
+              >首评</tui-tag
+            >
+          </view>
+        </view>
       </view>
+
+      <view class="footer">
+        <tui-footer
+          :fixed="false"
+          class="service-tui-footer"
+          copyright="Copyright © 2022-2025 Greenet-TC."
+        ></tui-footer
+      ></view>
     </view>
 
     <view
@@ -115,6 +173,7 @@
           :style="{ width: isComment ? '640rpx' : '352rpx' }"
         >
           <tui-searchbar
+            ref="searchbar"
             radius="40rpx"
             inputBgColor="#f3f4f6"
             placeholder="发表你的评论..."
@@ -130,7 +189,7 @@
           </tui-searchbar>
         </view>
         <view class="tui-tabbar-textarea-btn" v-if="!isComment">
-          <view class="tui-badge-item">
+          <view class="tui-badge-item"    @tap="click">
             <tui-icon name="message" size="22"></tui-icon>
             <tui-badge
               type="gray"
@@ -169,14 +228,6 @@
         ></view>
       </view>
     </view>
-
-    <view class="footer">
-      <tui-footer
-        :fixed="false"
-        class="service-tui-footer"
-        copyright="Copyright © 2022-2025 Greenet-TC."
-      ></tui-footer
-    ></view>
   </view>
 </template>
 <script>
@@ -184,6 +235,8 @@ import {
   viewArticleDetailPost,
   articleUpdateCollectNumGET,
   articleUpdateSupportNumGET,
+  commentInsertCommentPOST,
+  commentGetCommentListPOST,
 } from "@/common/apis/article-controller";
 import uParse from "@/components/uni/uParse/src/wxParse";
 import { getFormateDateTime, WEBURL, tranNumber } from "@/common/utils";
@@ -202,6 +255,10 @@ export default {
           value: tranNumber(this.articleInfo[i.id] ?? 0, 2),
         };
       });
+      const _comments = await commentGetCommentListPOST({
+        articleId: options.articleId,
+      });
+      this.commentLists = _comments.data;
     } catch (e) {}
   },
 
@@ -219,7 +276,8 @@ export default {
       isComment: false,
       webURLBase: WEBURL,
       tranNumber,
-    
+      commentLists: [],
+
       list: [
         {
           id: "viewNum",
@@ -276,27 +334,36 @@ export default {
     },
     click(e) {
       console.log(e);
-      // this.searchHeight = "144rpx";
+      this.getElementScollTop('.comments')
       this.isComment = true;
-     
     },
     blur() {
-      this.cancel()
+      this.cancel();
     },
     cancel() {
       this.isComment = false;
+    },
+    //调用方法开始计时
+    reset() {
+      this.$refs.searchbar && this.$refs.searchbar.reset();
     },
     async search(value) {
       try {
         await commentInsertCommentPOST({
           articleId: this.articleInfo.articleId,
           articleTitle: this.articleInfo.articleTitle,
-          content: value,
-          fromName: "string",
-          fromUid: "number",
+          content: value.value,
+          // fromName: "string",
+          // fromUid: "number",
         });
         this.articleInfo.commentNum += 1;
         this.CommentColor = !this.CommentColor ? "#FE3666" : "";
+
+        const _comments = await commentGetCommentListPOST({
+          articleId: this.articleInfo.articleId,
+        });
+        this.commentLists = _comments.data;
+        this.reset()
       } catch (e) {
         console.error("评论错误", e);
       }
@@ -327,6 +394,20 @@ export default {
       } catch (e) {
         console.error("点赞错误", e);
       }
+    },
+    getElementScollTop(ele) {
+      const query = uni.createSelectorQuery()
+      query
+        .select(ele)
+        .boundingClientRect((data) => {
+          console.log(data, 'data')
+          let pageScrollTop = Math.round(data.top)
+          uni.pageScrollTo({
+            scrollTop: pageScrollTop, //滚动的距离
+            duration: 0, //过渡时间
+        })
+      })
+        .exec()
     },
   },
 };
@@ -440,10 +521,17 @@ page {
 }
 .comments {
   background: #ffffff;
-  height: 200rpx;
   width: 94%;
   margin-top: 20rpx;
-  padding: 14rpx;
+  padding: 28rpx;
+  &-item {
+    display: flex;
+    margin-top: 20px;
+    .tui-avatar {
+      width: 40rpx;
+      height: 40rpx;
+    }
+  }
 }
 .tui-tabbar {
   width: 100%;
@@ -512,6 +600,6 @@ page {
 }
 .footer {
   width: 100%;
-  height: 200rpx;
+  height: 250rpx;
 }
 </style>

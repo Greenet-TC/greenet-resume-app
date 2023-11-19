@@ -242,9 +242,22 @@ export interface ArticleUpdateResponse<T> {
 }
 export interface  ArticleCommentParams{
   articleId: number,
-  articleTitle: string,
-  content: string,
-  fromName: string,
-  fromUid: number,
+  articleTitle?: string,
+  content?: string,
+  fromName?: string,
+  fromUid?: number,
  
+}
+export interface CommentReponseList
+{
+  "articleId": number,
+      "articleTitle":string,
+      "commentId": number,
+      "content":string,
+      "createTime": string,
+      "fromName": string,
+      "fromUid": number,
+      "id": number,
+      "subCommentsNum": number,
+      "updateTime": string
 }

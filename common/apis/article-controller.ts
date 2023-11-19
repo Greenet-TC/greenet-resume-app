@@ -15,6 +15,7 @@ import {
   ArticleUpdateParams,
   ArticleUpdateResponse,
   ArticleCommentParams,
+  CommentReponseList,
 } from './model'
 
 /** CompanyInfoController 分页查询所有文章信息 */
@@ -77,6 +78,23 @@ export async function commentInsertCommentPOST(
 
   const result = await http.request({
     url: `/api/comment/insertComment`,
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  return result.data
+}
+
+
+/** comment-controller 获取评论 */
+export async function commentGetCommentListPOST(
+  payload: ArticleCommentParams,
+): Promise<ArticleUpdateResponse<CommentReponseList[]>> {
+  const data = payload
+  
+  const result = await http.request({
+    url: `/api/comment/getCommentList`,
     method: 'post',
     data,
     headers: { 'Content-Type': 'application/json' },
