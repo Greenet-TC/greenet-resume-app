@@ -102,3 +102,19 @@ export async function commentGetCommentListPOST(
 
   return result.data
 }
+
+/** comment-controller 获取分类 */
+export async function articleParamListPOST(
+  
+): Promise<ArticleUpdateResponse<string>> {
+  const data = {}
+  
+  const result = await http.request({
+    url: `/api/article/param/getList`,
+    method: 'post',
+    data,
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  return result.data
+}

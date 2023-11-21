@@ -12,13 +12,13 @@
       ></tui-tab>
     </view>
     <view class="sort-list">
-      <view class="sort-card">
+      <view class="sort-card" v-for="item in categoryThirdList" :key="item.id">
         <view class="sort-card-top">
           <view class="sort-card-top-left">
             <view class="title">
               <img :src="compilation" alt="" class="sort-card-top-left-icon" />
               <tui-text
-                text="产品系列合集"
+                :text="item.label"
                 block
                 size="36"
                 fontWeight="500"
@@ -48,6 +48,7 @@
                 name="arrowright"
                 :size="40"
                 unit="rpx"
+                margin="0 0 0 10rpx"
                 color="#00000060"
               ></tui-icon>
             </tui-form-button>
@@ -137,17 +138,27 @@
 </template>
 
 <script>
-import { getArticleListPost } from "@/common/apis/article-controller";
+import { getArticleListPost,articleParamListPOST } from "@/common/apis/article-controller";
 import compilation from "@/static/course/compilation.svg";
-import {tranNumber } from "@/common/utils";
+import {tranNumber,getCategoryTreeToArr } from "@/common/utils";
 
 export default {
   async onLoad() {
+
     const data = await getArticleListPost({
       pageNum: this.pageNum,
       pageSize: this.pageSize,
+      // categoryThird:['100235999']
     });
     this.courseList = data.data;
+    const _paramList= await articleParamListPOST()
+    this.category=JSON.parse(_paramList.data)
+    console.log('222',this.category[0].innerTree)
+    // this.tags=
+    this.categoryThirdList=getCategoryTreeToArr(JSON.parse(_paramList.data),'3')
+
+    console.log('---',getCategoryTreeToArr(JSON.parse(_paramList.data),'3'))
+    
   },
   data() {
     return {
@@ -238,9 +249,12 @@ export default {
           applicantNum: "92人报名",
         },
       ],
+      category:[],
       pageNum: 0,
       pageSize: 10,
+      categoryThirdList:[]
     };
+   
   },
   methods: {
     change(preValue) {
@@ -352,7 +366,7 @@ page {
 .sort-card {
   background: #ffffff;
   height: 200px;
-  margin: 0 20rpx;
+  margin: 0 20rpx 24rpx 20rpx;
   border-radius: 20rpx;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
