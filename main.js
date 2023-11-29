@@ -126,14 +126,18 @@ app.$mount()
 // #endif
 
 // #ifdef VUE3
+import {mixin} from './common/mixin.ts'
 import { createSSRApp } from 'vue'
 export function createApp() {
   const app = createSSRApp(App)
   app.use(store)
   app.config.globalProperties.http = http
+  // main.js
+app.mixin(mixin)
   return {
     app,
   }
 }
+
 
 // #endif

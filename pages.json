@@ -4,7 +4,8 @@
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "优加实习",
-        "navigationStyle": "custom"
+        "navigationStyle": "custom",
+        "enableShareAppMessage":true   
       }
     },
 

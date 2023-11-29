@@ -601,6 +601,7 @@ export default {
         id: option.id,
       });
       this.positionInfo = data.data?.[0];
+      this.share.title ='🏝️'+ this.positionInfo?.positionName
       const company_data = await getPageListPost({
         pageNum: 1,
         pageSize: 50,

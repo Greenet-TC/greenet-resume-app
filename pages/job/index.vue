@@ -335,6 +335,7 @@ export default {
   },
 
   async onLoad() {
+    this.share.title =`✅✅✅${dayjs(new Date()).format("MM月DD日")} 最新实习信息已更新`
     this.loading = true;
     try {
       const company_data = await getPageListPost({

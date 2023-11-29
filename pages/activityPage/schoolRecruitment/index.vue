@@ -1,11 +1,3 @@
-<!--
- * @Author: maxueming maxueming@kuaishou.com
- * @Date: 2023-09-12 11:26:53
- * @LastEditors: maxueming maxueming@kuaishou.com
- * @LastEditTime: 2023-11-16 00:40:14
- * @FilePath: /greenet-resume-app/pages/activityPage/schoolRecruitment/index.vue
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 <template>
   <view class="school-active">
     <tui-navigation-bar
@@ -79,9 +71,35 @@
 </template>
 <script>
 export default {
+  onShareTimeline(res) {
+    console.log(res);
+    return {
+      title: `优加实习｜24届校招特训营`, // 我是分享后显示的标题,可不填
+      query: "", // id=123, 可不填 传递的参数，只能是这种格式
+      imageUrl:
+        "https://mmbiz.qpic.cn/mmbiz_jpg/DLjQMNwUKcBAwxGJHmf01HoWOhOfO8LMmRcmc0VUKIibgt0lzRxIaUg3smkq6XMYBFfeEJXsHGDGolkMNvkziaBQ/0?wx_fmt=jpeg", // 可不填,可以是网络路径也可以是本地路径，分享到朋友圈显示的图标
+      success(res) {
+        uni.showToast({
+          title: "分享成功",
+        });
+      },
+      fail(res) {
+        uni.showToast({
+          title: "分享失败",
+          icon: "none",
+        });
+      },
+    };
+  },
+
   onPageScroll(e) {
     this.scrollTop = e.scrollTop;
   },
+
+  onLoad(){
+    this.share.title = '🔥🔥🔥 校招特训营等你来'
+  },
+
   data() {
     return {
       top: 0, //标题图标距离顶部距离
@@ -131,29 +149,10 @@ export default {
         return 11;
       }
     },
-  },
-  onShareTimeline(res) {
-    console.log(res);
-    return {
-      title: `优加实习｜24届校招特训营`, // 我是分享后显示的标题,可不填
-      query: "", // id=123, 可不填 传递的参数，只能是这种格式
-      imageUrl:
-        "https://mmbiz.qpic.cn/mmbiz_jpg/DLjQMNwUKcBAwxGJHmf01HoWOhOfO8LMmRcmc0VUKIibgt0lzRxIaUg3smkq6XMYBFfeEJXsHGDGolkMNvkziaBQ/0?wx_fmt=jpeg", // 可不填,可以是网络路径也可以是本地路径，分享到朋友圈显示的图标
-      success(res) {
-        uni.showToast({
-          title: "分享成功",
-        });
-      },
-      fail(res) {
-        uni.showToast({
-          title: "分享失败",
-          icon: "none",
-        });
-      },
-    };
-  },
+  }
 };
 </script>
+
 <style lang="less">
 .tui-header-icon {
   margin-left: 10px;

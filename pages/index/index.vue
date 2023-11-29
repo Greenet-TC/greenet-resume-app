@@ -320,6 +320,7 @@ export default {
   // },
 
   async onLoad() {
+    this.share.title ='你距离实习更近'
     setTimeout(async () => {
       if (getToken()) {
         getBaseInfo();

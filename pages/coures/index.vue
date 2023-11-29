@@ -145,7 +145,7 @@ import compilation from "@/static/course/compilation.svg";
 import { tranNumber, getCategoryTreeToArr } from "@/common/utils";
 export default {
   async onLoad() {
-   
+    this.share.title ='🗂️🗂️🗂️ 优加知识库更新啦'
     const res = await articleParamListPOST();
     this.category = JSON.parse(res.data);
 

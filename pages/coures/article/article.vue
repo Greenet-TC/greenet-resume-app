@@ -244,11 +244,13 @@ import store from "@/store/index.ts";
 
 export default {
   async onLoad(options) {
+   
     try {
       const data = await viewArticleDetailPost({
         articleId: options.articleId,
       });
       this.articleInfo = data.data;
+      this.share.title = "🔥🔥🔥" +this.articleInfo.articleTitle
       this.list = this.list.map((i) => {
         return {
           ...i,

@@ -41,7 +41,7 @@
 <script>
 import { WEBURL } from "@/common/utils";
 import store from "@/store/index.ts";
-import { login, getBaseInfo } from "@/common/login";
+import { login ,getBaseInfo} from "@/common/login";
 import { saveBaseInfoUsingPOST } from "@/common/apis/user-controller.ts";
 export default {
   data() {
@@ -73,18 +73,10 @@ export default {
       }
     },
     async getUserProfile() {
-      setTimeout(() => {
-        login();
-        uni.switchTab({
-          url: "/pages/index/index",
-          success: function (e) {
-            var page = getCurrentPages().pop(); //当前页面
-            if (page == undefined || page == null) return;
-            page.onLoad(); //或者其它操作
-          },
-        });
-      }, 1000);
+      setTimeout(()=>{
 
+      },1000)
+      login();
       //
       // 获取用户信息
       // 注意 getUserProfile 不支持在事件中使用异步操作
@@ -93,16 +85,35 @@ export default {
         lang: "zh_CN",
         desc: "获取用户信息",
         success: async (userInfo) => {
+          
           await saveBaseInfoUsingPOST({
             ...store.state.userBaseInfo,
-            avatar: userInfo.userInfo.avatarUrl,
-            username: userInfo.userInfo.nickName,
+            avatar:userInfo.userInfo.avatarUrl,
+            username:userInfo.userInfo.nickName
           });
           await getBaseInfo();
-          console.log("12121", userInfo);
+          setTimeout(() => {
+            uni.switchTab({
+              url: "/pages/index/index",
+              success: function (e) {
+                var page = getCurrentPages().pop(); //当前页面
+                if (page == undefined || page == null) return;
+                page.onLoad(); //或者其它操作
+              },
+            });
+          }, 1000);
         },
         fail: (err) => {
-          
+          setTimeout(() => {
+            uni.switchTab({
+              url: "/pages/index/index",
+              success: function (e) {
+                var page = getCurrentPages().pop(); //当前页面
+                if (page == undefined || page == null) return;
+                page.onLoad(); //或者其它操作
+              },
+            });
+          }, 1000);
           console.log(err, "err");
         },
       });
