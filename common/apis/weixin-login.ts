@@ -8,11 +8,11 @@
  */
 import http from "../../components/common/tui-request";
 import { setCookiesValue } from "../login";
-import { setToken } from "../utils";
 
-export const loginMiniGET = (code: string) => {
+
+export const loginMiniGET = (code: string,encryptedData?:string,iv?:string) => {
   return http
-    .get(`/api/resume/web/loginMini?code=${code}`)
+    .get(`/api/resume/web/loginMini?code=${code}&encryptedData=${encryptedData}&iv=${iv}`)
     .then((res) => {
       if (res.data.result === 1) {
         uni.showToast({
@@ -20,6 +20,7 @@ export const loginMiniGET = (code: string) => {
           icon: "success",
           duration: 2000,
         });
+        uni.setStorageSync("xxl_sso_sessionid", res.data.data.xxl_sso_sessionid);
         setCookiesValue(res.data.data.xxl_sso_sessionid);
         uni.removeStorageSync("preLogin");
       }

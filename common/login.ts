@@ -95,10 +95,12 @@ export const login = async () => {
 export const getBaseInfo = async () => {
   const data = await userBaseInfoUsingGET();
   saveBaseInfoStore(data.data);
+  return data
 };
 export const getQueryAccount = async () => {
   const data = await WechatPayControllerQueryAccountGET();
   setQueryAccountValue(data.data);
+  return data
 };
 
 export const saveBaseInfoStore = (baseInfo: userBaseInfoDataRespones) => {

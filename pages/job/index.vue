@@ -74,7 +74,7 @@
                     <view class="tui-recru-info-text">
                       <tui-text
                         block
-                        :text="item.companyName"
+                        :text="item.companyName.slice(0, 5)"
                         size="30"
                       ></tui-text>
                       <tui-text

@@ -472,10 +472,9 @@ export default {
     async loginClick() {
       // login();
       this.loading = true;
-      console.log(111);
       try {
         const data = await getUserProfile();
-        console.log(data.userInfo.avatarUrl);
+        console.log(data)
         await saveBaseInfoUsingPOST({
           ...store.state.userBaseInfo,
           avatar: data?.userInfo.avatarUrl,
@@ -487,7 +486,6 @@ export default {
         this.loading = false;
       }
 
-      console.log(store.state.userBaseInfo);
     },
   },
 };

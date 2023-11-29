@@ -189,7 +189,7 @@
           </tui-searchbar>
         </view>
         <view class="tui-tabbar-textarea-btn" v-if="!isComment">
-          <view class="tui-badge-item"    @tap="click">
+          <view class="tui-badge-item" @tap="click">
             <tui-icon name="message" size="22"></tui-icon>
             <tui-badge
               type="gray"
@@ -333,8 +333,7 @@ export default {
       this.opacity = e.opacity;
     },
     click(e) {
-      console.log(e);
-      this.getElementScollTop('.comments')
+      this.getElementScollTop(".comments");
       this.isComment = true;
     },
     blur() {
@@ -363,7 +362,7 @@ export default {
           articleId: this.articleInfo.articleId,
         });
         this.commentLists = _comments.data;
-        this.reset()
+        this.reset();
       } catch (e) {
         console.error("评论错误", e);
       }
@@ -396,18 +395,18 @@ export default {
       }
     },
     getElementScollTop(ele) {
-      const query = uni.createSelectorQuery()
+      const query = uni.createSelectorQuery();
       query
         .select(ele)
         .boundingClientRect((data) => {
-          console.log(data, 'data')
-          let pageScrollTop = Math.round(data.top)
+          console.log(data, "data");
+          let pageScrollTop = Math.round(data.top);
           uni.pageScrollTo({
             scrollTop: pageScrollTop, //滚动的距离
             duration: 0, //过渡时间
+          });
         })
-      })
-        .exec()
+        .exec();
     },
   },
 };
@@ -530,6 +529,7 @@ page {
     .tui-avatar {
       width: 40rpx;
       height: 40rpx;
+      border-radius: 50%;
     }
   }
 }

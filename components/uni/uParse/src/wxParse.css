@@ -162,7 +162,6 @@
 	display: block;
 	max-width: 100%;
 	margin-bottom: 0em;
-	/* //与p标签底部padding同时修改 */
 	overflow: hidden;
 }
 

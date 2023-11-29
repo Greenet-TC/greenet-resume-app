@@ -87,7 +87,8 @@
     {
       "path": "pages/coures/article/article",
       "style": {
-        "navigationBarTitleText": "",        "navigationStyle": "custom"
+        "navigationBarTitleText": "",       
+         "navigationStyle": "custom"
       }
     },
 
@@ -115,6 +116,12 @@
       "path": "pages/job/jobInfo/index",
       "style": {
         "navigationBarTitleText": "职位详情",
+        "navigationStyle": "custom"
+      }
+    }, {
+      "path": "pages/common/login",
+      "style": {
+        "navigationBarTitleText": "授权登陆",
         "navigationStyle": "custom"
       }
     }

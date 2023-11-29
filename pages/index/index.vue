@@ -101,7 +101,11 @@
                   height="80rpx"
                 ></tui-image-group>
                 <view class="tui-recru-info-text">
-                  <tui-text block :text="item.companyName" size="30"></tui-text>
+                  <tui-text
+                    block
+                    :text="item.companyName.slice(0, 5)"
+                    size="30"
+                  ></tui-text>
                   <tui-text
                     block
                     :text="`${100}+ 内推岗位`"
@@ -143,39 +147,14 @@
               ></tui-icon>
             </view>
           </view>
-          <view class="tui-new-box">
-            <view class="tui-new-job-info-box">
-              <view class="tui-new-job-info">
-                <tui-image-group
-                  :imageList="[
-                    {
-                      src: `https://uploadfiles.nowcoder.com/files/20181102/4575098_1541147538969_826546_1499420128657_7.png?x-oss-process=image%2Fresize%2Cw_120%2Ch_120%2Cm_fill`,
-                    },
-                  ]"
-                  isGroup
-                  width="80rpx"
-                  height="80rpx"
-                ></tui-image-group>
-                <view class="tui-recru-info-text">
-                  <tui-text block text="阿里巴巴" size="30"></tui-text>
-                  <tui-text
-                    block
-                    text="`互联网 | 已上市 | 10000 + 人`"
-                    size="22"
-                    type="gray"
-                  ></tui-text
-                ></view>
-              </view>
-              <tui-notice-bar
-                single
-                :padding="['0', '20rpx']"
-                content="阿里巴巴集团的业务包括核心商业、云计算、本地生活服务、数字媒体及娱乐以及创新业务。围绕着阿里巴巴的平台与业务，一个涵盖了消费者、商家、品牌"
-              ></tui-notice-bar>
-            </view>
-          </view>
+          
         </view>
       </view>
-      <view class="job-card" v-for="(item,index) in intershipList"  :key="`${item.id}-${index}`">
+      <view
+        class="job-card"
+        v-for="(item, index) in intershipList"
+        :key="`${item.id}-${index}`"
+      >
         <tui-card
           :title="{
             text: item.positionName,
@@ -302,31 +281,14 @@
             </view>
           </template>
         </tui-card>
-      
       </view>
     </view>
 
-    <!-- 优秀简历 -->
-
-    <!--加载loadding-->
-    <tui-loadmore v-if="loadding" :index="1"></tui-loadmore>
-    <!-- <tui-nomore v-if="!pullUpOn"></tui-nomore> -->
-    <!--加载loadding-->
-    <!-- <view class="tui-footer-box"> -->
-    <!--uni-app-->
-    <tui-actionsheet
-      :show="showActionSheet"
-      :item-list="itemList"
-      @click="itemClick"
-      @cancel="closeActionSheet"
-      tips="您还没有登录，请登录后获取更多？"
-      color="#e41f19"
-    >
-    </tui-actionsheet>
     <tui-footer
       :fixed="false"
       copyright="Copyright © 2022-2025 Greenet-TC."
     ></tui-footer>
+
     <!-- </view> -->
   </view>
 </template>
@@ -334,21 +296,28 @@
 <script>
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
-import { login, getBaseInfo, setLoginStatus } from "../../common/login";
-import { getToken } from "../../common/utils";
+import { getBaseInfo, setLoginStatus } from "../../common/login";
 import { salaryType } from "@/common/contant";
 import dayjs from "dayjs";
-import { WEBURL, getTargetElement, getFormateDateTime } from "@/common/utils";
+import {
+  WEBURL,
+  getTargetElement,
+  getFormateDateTime,
+  isPreLogin,
+  getToken,
+} from "@/common/utils";
+
 export default {
-  onShow() {
-    if (!getToken()) {
-      setTimeout(() => {
-        if (!getToken()) {
-          this.openActionSheet();
-        }
-      }, 1000);
-    }
-  },
+  // async onShow() {
+  //   if (!getToken()) {
+  //     setTimeout(() => {
+  //       if (!getToken()) {
+  //         this.toLogin();
+  //       }
+  //     }, 1000);
+  //     c;
+  //   }
+  // },
 
   async onLoad() {
     setTimeout(async () => {
@@ -464,10 +433,34 @@ export default {
         url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
       });
     },
-
+    getUserProfile() {
+      wx.login({
+        success(res) {
+          let code = res.code;
+          wx.getUserProfile({
+            lang: "en",
+            desc: "获取授权",
+            success: function (res) {
+              console.log(res);
+            },
+            fail: function (res) {
+              console.log("fail-get-userinfo", res);
+            },
+            complete: function () {
+              console.log("complete-get-userinfo");
+            },
+          });
+        },
+      });
+    },
     moreDetail: function (e) {
       uni.navigateTo({
         url: `/pages/job/companyDetail/index?id=${e.id}`,
+      });
+    },
+    toLogin: function (e) {
+      uni.navigateTo({
+        url: `/pages/common/login`,
       });
     },
 
@@ -494,42 +487,6 @@ export default {
     //隐藏组件
     closeActionSheet: function () {
       this.showActionSheet = false;
-    },
-    //调用此方法显示组件
-    openActionSheet: function (type) {
-      this.showActionSheet = true;
-    },
-    itemClick: async function (e) {
-      let index = e.index;
-      this.closeActionSheet();
-      if (index === 0) {
-        await login();
-        const _data = await getPageListPost({
-          pageNum: 1,
-          pageSize: 20,
-        });
-        this.companyInfoList = _data.data;
-
-        const data = await internshipPositionGetPageListPOST({
-          pageNum: 1,
-          pageSize: 10,
-        });
-        this.intershipList = data.data.map((i) => {
-          return {
-            ...i,
-            companyInfo: getTargetElement(
-              this.companyInfoList,
-              i.companyId,
-              "id"
-            ),
-          };
-        });
-        if (data.data.length < this.pageSize) {
-          this.pullUpOn = false;
-        }
-        this.pageNum = this.pageNum + 1;
-        this.pageInfo = data.pageInfo;
-      }
     },
   },
 };
@@ -689,7 +646,7 @@ page {
 
 .tui-block__box {
   width: 100%;
-  padding: 0 25rpx 25rpx;
+  padding: 0 25rpx 10rpx 25rpx;
   box-sizing: border-box;
   background-color: #ffffff;
   border-radius: 20rpx;
@@ -892,14 +849,7 @@ page {
 .tui-footer-box {
   display: block;
 }
-/*秒杀商品*/
-.tui-block__box {
-  padding: 0 25rpx 25rpx;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  border-radius: 20rpx;
-  overflow: hidden;
-}
+
 .tui-goods__list {
   display: flex;
   align-items: center;
@@ -1084,5 +1034,8 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.tui-recru-info-text {
+  margin-left: 20rpx;
 }
 </style>

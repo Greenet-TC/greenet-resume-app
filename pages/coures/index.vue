@@ -12,7 +12,7 @@
       ></tui-tab>
     </view>
     <view class="sort-list">
-      <view class="sort-card" v-for="item in categoryThirdList" :key="item.id">
+      <view class="sort-card" v-for="item in categoryThirdList" :key="item.id" v-show="!!item.articleList.length">
         <view class="sort-card-top">
           <view class="sort-card-top-left">
             <view class="title">
@@ -27,9 +27,8 @@
               ></tui-text>
             </view>
             <tui-text
-              text="产品系列合集 | 27章知识"
+              :text="`${item.description.slice(0,10)}... | ${item.articleList.length} 章知识`"
               block
-              size="28"
               fontWeight="400"
               color="#9c9c9c"
               padding="10rpx 10rpx"
@@ -58,7 +57,7 @@
           <scroll-view scroll-x>
             <view class="tui-article-list">
               <view
-                v-for="(item, index) in courseList"
+                v-for="(item, index) in item.articleList"
                 :key="index"
                 class="course-card-item"
                 @tap="moreDetail(item)"
@@ -75,8 +74,8 @@
                     height="155rpx"
                   ></tui-image-group>
                   <view class="cover-url-mask">
-                    <view>{{ tranNumber(item.viewNum??0,2) }} 看过</view>
-                    <view>{{ tranNumber(item.supportNum??0,2) }} 点赞</view>
+                    <view>{{ tranNumber(item.viewNum ?? 0, 2) }} 看过</view>
+                    <view>{{ tranNumber(item.supportNum ?? 0, 2) }} 点赞</view>
                     <!-- <view>{{ tranNumber(item.commentNum??0,2)  }} 评论</view> -->
                   </view>
                 </view>
@@ -91,7 +90,7 @@
         </view>
       </view>
     </view>
-    <view class="greenet-content-list">
+    <!-- <view class="greenet-content-list">
       <view v-for="item in couresList" :key="item.couresId">
         <view class="greenet-course-list-item">
           <view class="course-list-item-image">
@@ -133,36 +132,40 @@
         </view>
         <tui-divider height="4" />
       </view>
-    </view>
+    </view> -->
   </view>
 </template>
 
 <script>
-import { getArticleListPost,articleParamListPOST } from "@/common/apis/article-controller";
+import {
+  getArticleListPost,
+  articleParamListPOST,
+} from "@/common/apis/article-controller";
 import compilation from "@/static/course/compilation.svg";
-import {tranNumber,getCategoryTreeToArr } from "@/common/utils";
-
+import { tranNumber, getCategoryTreeToArr } from "@/common/utils";
 export default {
   async onLoad() {
+   
+    const res = await articleParamListPOST();
+    this.category = JSON.parse(res.data);
 
-    const data = await getArticleListPost({
-      pageNum: this.pageNum,
-      pageSize: this.pageSize,
-      // categoryThird:['100235999']
-    });
-    this.courseList = data.data;
-    const _paramList= await articleParamListPOST()
-    this.category=JSON.parse(_paramList.data)
-    console.log('222',this.category[0].innerTree)
-    // this.tags=
-    this.categoryThirdList=getCategoryTreeToArr(JSON.parse(_paramList.data),'3')
-
-    console.log('---',getCategoryTreeToArr(JSON.parse(_paramList.data),'3'))
-    
+    for (const item of getCategoryTreeToArr(JSON.parse(res.data), "3")) {
+      const { data } = await getArticleListPost({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        categoryThird: [String(item.id)],
+      });
+      this.categoryThirdList.push({
+        ...item,
+        articleList: data,
+      });
+    }
+    console.log(this.categoryThirdList)
   },
   data() {
     return {
-      current: 0,tranNumber,
+      current: 0,
+      tranNumber,
       compilation,
       courseList: [],
       tabs: ["全部", "产品经理", "前端开发", "后端开发", "运营", "数据分析"],
@@ -249,12 +252,11 @@ export default {
           applicantNum: "92人报名",
         },
       ],
-      category:[],
-      pageNum: 0,
+      category: [],
+      pageNum: 1,
       pageSize: 10,
-      categoryThirdList:[]
+      categoryThirdList: [],
     };
-   
   },
   methods: {
     change(preValue) {

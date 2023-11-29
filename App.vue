@@ -22,9 +22,12 @@ export default {
     navHeight: 0,
   },
   onLaunch: async function () {
-    const { code } = await getlogin();
-    await loginMiniGET(code);
-    getBaseInfo();
+   
+    if (!uni.getStorageSync("xxl_sso_sessionid")) {
+      const { code } = await getlogin();
+      await loginMiniGET(code);
+    }
+    await getBaseInfo();
     getQueryAccount();
     setLoginStatus(true);
     this.globalData.navHeight =
