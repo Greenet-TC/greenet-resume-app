@@ -1,6 +1,6 @@
 <template>
   <view>
-    <tui-sticky :scrollTop="scrollTop" stickyHeight="530rpx">
+    <tui-sticky :scrollTop="scrollTop" v-if="!loading" stickyHeight="530rpx">
       <template v-slot:header>
         <view class="top-sticky-after"></view>
         <view class="top-sticky-container">
@@ -98,7 +98,7 @@
               </view>
             </scroll-view>
           </view>
-       
+
           <tui-tab
             :tabs="tabLists"
             scroll
@@ -116,137 +116,164 @@
         </view>
       </template>
     </tui-sticky>
-
-    <view class="job-card" v-for="(item,index) in intershipList" :key="`${item.id}-${index}`">
-      <tui-card
-        :title="{
-          text: item.positionName,
-          size: 32,
-          color: 'rgb(31 41 55)',
-        }"
-        :isHot="true"
-        :tag="{
-          text:
-            !!item.salary && !!item.salaryType
-              ? `${item.salary}元/${
-                  getTargetElement(salaryType, item.salaryType.value)?.label
-                } `
-              : '薪资面议',
-          size: 26,
-          color: '#f64',
-        }"
-        @tap="toJobDetail(item)"
-      >
-        <template v-slot:body>
-          <view class="intership-body">
-            <view class="course-list-item-tag">
-              <tui-tag
-                type="light-green"
-                v-if="item.location"
-                margin="0 14rpx 0 0"
-                padding="8rpx"
-                size="20rpx"
-                >{{
-                  Array.isArray(item.location)
-                    ? item.location.join("/")
-                    : item.location
-                }}</tui-tag
-              >
-              <tui-tag
-                v-if="item.property"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="8rpx"
-                size="20rpx"
-                >{{ item.property?.label }}</tui-tag
-              >
-              <tui-tag
-                v-if="item.experience"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="8rpx"
-                size="20rpx"
-                >{{ item.experience?.label }}</tui-tag
-              >
-              <tui-tag
-                v-if="item.degree"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="8rpx"
-                size="20rpx"
-                >{{ item.degree?.label }}</tui-tag
-              >
-
-              <tui-tag
-                v-if="item.jobType"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="8rpx"
-                size="20rpx"
-                >{{ item.jobType?.label }}</tui-tag
+    <tui-skeleton v-if="loading"></tui-skeleton>
+    <view
+      class="job-card"
+      v-for="(item, index) in intershipList"
+      :key="`${item.id}-${index}`"
+    >
+      <view class="tui-skeleton">
+        <tui-card
+          :title="{
+            text: item.positionName,
+            size: 32,
+            color: 'rgb(31 41 55)',
+          }"
+          :isHot="true"
+          :tag="{
+            text:
+              !!item.salary && !!item.salaryType
+                ? `${item.salary}元/${
+                    getTargetElement(salaryType, item.salaryType.value)?.label
+                  } `
+                : '薪资面议',
+            size: 26,
+            color: '#f64',
+          }"
+          @tap="toJobDetail(item)"
+        >
+          <template v-slot:body>
+            <view class="intership-body">
+              <view class="course-list-item-tag">
+                <view class="tui-skeleton-rect">
+                  <tui-tag
+                    type="light-green"
+                    v-if="item.location"
+                    margin="0 14rpx 0 0"
+                    padding="8rpx"
+                    size="20rpx"
+                    >{{
+                      Array.isArray(item.location)
+                        ? item.location.join("/")
+                        : item.location
+                    }}</tui-tag
+                  ></view
+                >
+                <view class="tui-skeleton-rect">
+                  <tui-tag
+                    v-if="item.property"
+                    type="light-green"
+                    class="tui-skeleton-rect"
+                    margin="0 14rpx 0 0"
+                    padding="8rpx"
+                    size="20rpx"
+                    >{{ item.property?.label }}</tui-tag
+                  > </view
+                ><view class="tui-skeleton-rect">
+                  <tui-tag
+                    v-if="item.experience"
+                    type="light-green"
+                    class="tui-skeleton-rect"
+                    margin="0 14rpx 0 0"
+                    padding="8rpx"
+                    size="20rpx"
+                    >{{ item.experience?.label }}</tui-tag
+                  > </view
+                ><view class="tui-skeleton-rect">
+                  <tui-tag
+                    v-if="item.degree"
+                    type="light-green"
+                    class="tui-skeleton-rect"
+                    margin="0 14rpx 0 0"
+                    padding="8rpx"
+                    size="20rpx"
+                    >{{ item.degree?.label }}</tui-tag
+                  ></view
+                >
+                <view class="tui-skeleton-rect">
+                  <tui-tag
+                    v-if="item.jobType"
+                    type="light-green"
+                    class="tui-skeleton-rect"
+                    margin="0 14rpx 0 0"
+                    padding="8rpx"
+                    size="20rpx"
+                    >{{ item.jobType?.label }}</tui-tag
+                  ></view
+                >
+              </view>
+              <view class="tui-skeleton-rect">
+                <view class="intership-body-date">{{
+                  getFormateDateTime(item.createTime)
+                }}</view></view
               >
             </view>
-            <view class="intership-body-date">{{
-              getFormateDateTime(item.createTime)
-            }}</view></view
-          >
-        </template>
-        <template v-slot:footer>
-          <view class="tui-footer-job-info">
-            <view class="tui-new-job-info">
-              <tui-image-group
-                :imageList="[
-                  {
-                    src: item.companyInfo?.logo,
-                  },
-                ]"
-                isGroup
-                width="80rpx"
-                height="80rpx"
-              ></tui-image-group>
-              <view class="tui-recru-info-text">
-                <tui-text block :text="item.company" size="30"></tui-text>
-                <tui-text
-                  block
-                  :text="`${item.companyInfo?.market.label} | ${item.companyInfo?.scale.label} | ${item.companyInfo?.sectorNumber.label}`"
-                  size="22"
-                  type="gray"
-                ></tui-text
-              ></view>
+          </template>
+          <template v-slot:footer>
+            <view class="tui-footer-job-info">
+              <view class="tui-new-job-info">
+                <tui-image-group
+                  :imageList="[
+                    {
+                      src: item.companyInfo?.logo,
+                    },
+                  ]"
+                  class="tui-skeleton-circular"
+                  isGroup
+                  width="80rpx"
+                  height="80rpx"
+                ></tui-image-group>
+                <view class="tui-recru-info-text">
+                  <tui-text
+                    block
+                    :text="item.company"
+                    size="30"
+                    class="tui-skeleton-rect"
+                  ></tui-text>
+                  <tui-text
+                    class="tui-skeleton-rect"
+                    block
+                    :text="`${item.companyInfo?.market.label} | ${item.companyInfo?.scale.label} | ${item.companyInfo?.sectorNumber.label}`"
+                    size="22"
+                    type="gray"
+                  ></tui-text
+                ></view>
+              </view>
+              <view class="tui-right-job-info">
+                <tui-tag
+                  class="tui-skeleton-rect"
+                  type="danger"
+                  padding="8rpx"
+                  shape="circle"
+                  size="20rpx"
+                  v-if="
+                    dayjs(item.createTime).format('YYYY-MM-DD') ===
+                    dayjs(new Date()).format('YYYY-MM-DD')
+                  "
+                  >最新</tui-tag
+                >
+                <tui-tag
+                  v-if="item.isFree ?? true"
+                  class="tui-skeleton-rect"
+                  type="light-blue"
+                  padding="8rpx"
+                  size="20rpx"
+                  >免费</tui-tag
+                >
+                <image
+                  v-else
+                  class="tui-skeleton-rect"
+                  src="../../static/images/icon/vip.svg"
+                  mode="widthFix"
+                  :style="{
+                    height: 50 + 'rpx',
+                    width: 50 + 'rpx',
+                  }"
+                ></image>
+              </view>
             </view>
-            <view class="tui-right-job-info">
-              <tui-tag
-                type="danger"
-                padding="8rpx"
-                shape="circle"
-                size="20rpx"
-                v-if="
-                  dayjs(item.createTime).format('YYYY-MM-DD') ===
-                  dayjs(new Date()).format('YYYY-MM-DD')
-                "
-                >最新</tui-tag
-              >
-              <tui-tag
-                v-if="item.isFree ?? true"
-                type="light-blue"
-                padding="8rpx"
-                size="20rpx"
-                >免费</tui-tag
-              >
-              <image
-                v-else
-                src="../../static/images/icon/vip.svg"
-                mode="widthFix"
-                :style="{
-                  height: 50 + 'rpx',
-                  width: 50 + 'rpx',
-                }"
-              ></image>
-            </view>
-          </view>
-        </template>
-      </tui-card>
-      <tui-loading v-if="loading" text="加载中..."></tui-loading>
+          </template> </tui-card
+      ></view>
     </view>
     <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore>
   </view>
@@ -259,9 +286,8 @@ import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import dayjs from "dayjs";
 
-
-const proprtyList=['全部', '实习', '校招']
-const searchTabList=['职位','公司']
+const proprtyList = ["全部", "实习", "校招"];
+const searchTabList = ["职位", "公司"];
 export default {
   onReachBottom: async function () {
     if (!this.pullUpOn) {
@@ -335,7 +361,9 @@ export default {
   },
 
   async onLoad() {
-    this.share.title =`✅✅✅${dayjs(new Date()).format("MM月DD日")} 最新实习信息已更新`
+    this.share.title = `✅${dayjs(new Date()).format(
+      "MM月DD日"
+    )} 最新实习信息已更新`;
     this.loading = true;
     try {
       const company_data = await getPageListPost({
@@ -366,7 +394,7 @@ export default {
     } catch (e) {
       console.log(e);
     } finally {
-      this.loading = false;
+      this.loading = true;
     }
   },
 
@@ -382,11 +410,87 @@ export default {
       getFormateDateTime,
       scrollTop: 0,
       companyInfoList: [],
-      intershipList: [],
+      intershipList: [
+        {
+          company: "字节跳动",
+          companyId: 49,
+          createTime: 1704893694000,
+          degree: { value: "1", label: "本科" },
+          email: "duansizhu@bytedance.com",
+          experience: { value: "1", label: "1-3年" },
+          id: 1309,
+          isFree: true,
+          jobType: { value: "1", label: "产品运营" },
+          location: ["北京"],
+          positionAdvan: "",
+          positionDuty:
+            "1、负责字节直播安全业务的运营岗位招聘；↵2、简历Sourcing，电话面试综合评估候选人；↵3、跟进面试全流程，保证面试及时顺利进行并追踪面试结果；↵4、数据驱动，分析统计人才数据、招聘漏斗，制作招聘Dashboard。",
+          positionName: "HR实习生",
+          positionRequired:
+            "1、统招本科及以上，24届保研或研一研二优先，专业不限，对招聘工作和互联网行业有浓厚兴趣；↵2、每周全勤5天，可现场实习3个月以上；↵3、主动积极、勤于思考，靠谱认真、结果导向，自驱好学、抗压皮实；↵4、性格外向开朗，有互联网招聘经验优先。",
+          positionTags: null,
+          property: { value: "1", label: "校招" },
+          salary: "",
+          salaryType: { value: "0", label: "日结" },
+          updateTime: null,
+          urgent: false,
+          url: "",
+        },
+        {
+          company: "字节跳动",
+          companyId: 49,
+          createTime: 1704893694000,
+          degree: { value: "1", label: "本科" },
+          email: "duansizhu@bytedance.com",
+          experience: { value: "1", label: "1-3年" },
+          id: 1309,
+          isFree: true,
+          jobType: { value: "1", label: "产品运营" },
+          location: ["北京"],
+          positionAdvan: "",
+          positionDuty:
+            "1、负责字节直播安全业务的运营岗位招聘；↵2、简历Sourcing，电话面试综合评估候选人；↵3、跟进面试全流程，保证面试及时顺利进行并追踪面试结果；↵4、数据驱动，分析统计人才数据、招聘漏斗，制作招聘Dashboard。",
+          positionName: "HR实习生",
+          positionRequired:
+            "1、统招本科及以上，24届保研或研一研二优先，专业不限，对招聘工作和互联网行业有浓厚兴趣；↵2、每周全勤5天，可现场实习3个月以上；↵3、主动积极、勤于思考，靠谱认真、结果导向，自驱好学、抗压皮实；↵4、性格外向开朗，有互联网招聘经验优先。",
+          positionTags: null,
+          property: { value: "1", label: "校招" },
+          salary: "",
+          salaryType: { value: "0", label: "日结" },
+          updateTime: null,
+          urgent: false,
+          url: "",
+        },
+        {
+          company: "字节跳动",
+          companyId: 49,
+          createTime: 1704893694000,
+          degree: { value: "1", label: "本科" },
+          email: "duansizhu@bytedance.com",
+          experience: { value: "1", label: "1-3年" },
+          id: 1309,
+          isFree: true,
+          jobType: { value: "1", label: "产品运营" },
+          location: ["北京"],
+          positionAdvan: "",
+          positionDuty:
+            "1、负责字节直播安全业务的运营岗位招聘；↵2、简历Sourcing，电话面试综合评估候选人；↵3、跟进面试全流程，保证面试及时顺利进行并追踪面试结果；↵4、数据驱动，分析统计人才数据、招聘漏斗，制作招聘Dashboard。",
+          positionName: "HR实习生",
+          positionRequired:
+            "1、统招本科及以上，24届保研或研一研二优先，专业不限，对招聘工作和互联网行业有浓厚兴趣；↵2、每周全勤5天，可现场实习3个月以上；↵3、主动积极、勤于思考，靠谱认真、结果导向，自驱好学、抗压皮实；↵4、性格外向开朗，有互联网招聘经验优先。",
+          positionTags: null,
+          property: { value: "1", label: "校招" },
+          salary: "",
+          salaryType: { value: "0", label: "日结" },
+          updateTime: null,
+          urgent: false,
+          url: "",
+        },
+      ],
       pageNum: 1,
       pageSize: 10,
       property: undefined,
-      positionName:undefined,
+      positionName: undefined,
       getTargetElement,
       salaryType,
       pageInfo: {
@@ -397,7 +501,7 @@ export default {
       pullUpOn: true,
       banner: ["a.png", "b.png", "c.png", "d.png"],
       selectH: 0,
-      tabLists:proprtyList,
+      tabLists: proprtyList,
       dropdownList: [
         {
           name: "价格升序",
@@ -407,7 +511,8 @@ export default {
           name: "价格降序",
           selected: false,
         },
-      ],tabIndex: 0, //顶部筛选索引
+      ],
+      tabIndex: 0, //顶部筛选索引
     };
   },
 
@@ -420,10 +525,10 @@ export default {
     search: function (value) {
       this.getSearchInterShipInfo(value);
     },
-    clear:function(){
+    clear: function () {
       this.getSearchInterShipInfo(undefined);
     },
-    getSearchInterShipInfo:async function(value){
+    getSearchInterShipInfo: async function (value) {
       this.positionName = value ? value.value : undefined;
       this.loading = true;
       try {
@@ -431,7 +536,7 @@ export default {
           pageNum: 1,
           pageSize: this.pageSize,
           property: this.property,
-          positionName:this.positionName 
+          positionName: this.positionName,
         });
         this.intershipList = data.data;
         this.intershipList = this.intershipList.map((i) => {
@@ -492,7 +597,7 @@ export default {
           pageNum: 1,
           pageSize: this.pageSize,
           property: this.property,
-          positionName:this.positionName 
+          positionName: this.positionName,
         });
         this.intershipList = data.data;
         this.intershipList = this.intershipList.map((i) => {
@@ -516,7 +621,7 @@ export default {
         this.loading = false;
       }
     },
-  }
+  },
 };
 </script>
 

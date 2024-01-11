@@ -57,9 +57,7 @@
         ></image>
         <view class="coupon-contant">
           <view class="coupon-contant-text">
-            <view class="coupon-contant-text-title">
-              优加实习城市信息共享群
-            </view>
+            <view class="coupon-contant-text-title"> 24校招/实习特训营群 </view>
             <view class="coupon-contant-text-sub">
               300+名企岗位内推offer轻松拿！
             </view>
@@ -77,7 +75,7 @@
           height="50rpx"
           disabledGray
           @tap="moreCompany"
-          >更多内推</tui-button
+          >更多公司</tui-button
         >
       </view>
       <view class="tui-block__box">
@@ -106,6 +104,7 @@
                     :text="item.companyName.slice(0, 5)"
                     size="30"
                   ></tui-text>
+
                   <tui-text
                     block
                     :text="`${100}+ 内推岗位`"
@@ -138,16 +137,24 @@
               <text class="tui-sub__desc">大家都在投递</text>
             </view>
             <view class="tui-more__box">
-              <text>100+ 岗位</text>
-              <tui-icon
-                name="arrowright"
-                :size="30"
-                unit="rpx"
-                color="#999"
-              ></tui-icon>
+              <tui-button
+                width="140rpx"
+                size="24"
+                shape="circle"
+                type="gray-warning"
+                height="50rpx"
+                disabledGray
+                @tap="more"
+                >更多岗位
+                <tui-icon
+                  name="arrowright"
+                  :size="30"
+                  unit="rpx"
+                  color="#999"
+                ></tui-icon
+              ></tui-button>
             </view>
           </view>
-          
         </view>
       </view>
       <view
@@ -320,7 +327,7 @@ export default {
   // },
 
   async onLoad() {
-    this.share.title ='你距离实习更近'
+    this.share.title = "你距离实习更近";
     setTimeout(async () => {
       if (getToken()) {
         getBaseInfo();
@@ -332,7 +339,7 @@ export default {
         this.companyInfoList = _data.data;
         const data = await internshipPositionGetPageListPOST({
           pageNum: 1,
-          pageSize: 10,
+          pageSize: 5,
         });
         this.intershipList = data.data.map((i) => {
           return {

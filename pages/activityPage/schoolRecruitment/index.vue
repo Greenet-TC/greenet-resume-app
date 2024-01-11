@@ -96,8 +96,8 @@ export default {
     this.scrollTop = e.scrollTop;
   },
 
-  onLoad(){
-    this.share.title = '🔥🔥🔥 校招特训营等你来'
+  onLoad() {
+    this.share.title = "🔥🔥🔥 校招特训营等你来";
   },
 
   data() {
@@ -149,7 +149,7 @@ export default {
         return 11;
       }
     },
-  }
+  },
 };
 </script>
 
