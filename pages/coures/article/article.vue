@@ -244,7 +244,6 @@ import store from "@/store/index.ts";
 
 export default {
   async onLoad(options) {
-    console.log('getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${option.articleId}`',getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${this.$options.articleId}`)
    
     try {
       const data = await viewArticleDetailPost({
@@ -372,7 +371,6 @@ export default {
       // #endif
       this.share.title = "🔥" +this.articleInfo.articleTitle
       this.share.path = getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${this.articleInfo.articleId}`
-      console.log('getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${option.articleId}`',getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${option.articleId}`)
 
     },
     //调用方法开始计时
