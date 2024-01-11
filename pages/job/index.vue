@@ -128,6 +128,7 @@
             text: item.positionName,
             size: 32,
             color: 'rgb(31 41 55)',
+            class:'tui-skeleton-rect'
           }"
           :isHot="true"
           :tag="{
@@ -139,6 +140,7 @@
                 : '薪资面议',
             size: 26,
             color: '#f64',
+            class:'tui-skeleton-rect'
           }"
           @tap="toJobDetail(item)"
         >
@@ -289,25 +291,27 @@ import dayjs from "dayjs";
 const proprtyList = ["全部", "实习", "校招"];
 const searchTabList = ["职位", "公司"];
 export default {
-  onReachBottom: async function () {
-    if (!this.pullUpOn) {
-      uni.showToast({
-        title: "到底了",
-        duration: 1000,
+  onPageScroll(e) {
+    this.scrollTop = e.scrollTop;
+  },
+
+  async onLoad() {
+    this.share.title = `✅${dayjs(new Date()).format(
+      "MM月DD日"
+    )} 最新实习信息已更新`;
+    this.loading = true;
+    try {
+      const company_data = await getPageListPost({
+        pageNum: 1,
+        pageSize: 50,
       });
-    }
-    this.loadding = true;
-    const data = await internshipPositionGetPageListPOST({
-      pageNum: this.pageNum,
-      pageSize: this.pageSize,
-      property: this.property,
-    });
-    if (data.data.length < this.pageSize) {
-      this.loadding = false;
-      this.pullUpOn = false;
-    } else {
-      let loadData = data.data;
-      loadData = loadData.map((i) => {
+      this.companyInfoList = company_data.data;
+      const data = await internshipPositionGetPageListPOST({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        property: this.property,
+      });
+      this.intershipList = data.data.map((i) => {
         return {
           ...i,
           companyInfo: getTargetElement(
@@ -317,9 +321,16 @@ export default {
           ),
         };
       });
-      this.intershipList = this.intershipList.concat(loadData);
+      if (data.data.length < this.pageSize) {
+        this.pullUpOn = false;
+      }
       this.pageNum = this.pageNum + 1;
-      this.loadding = false;
+      this.pageInfo = data.pageInfo;
+    } catch (e) {
+      console.log(e);
+      
+    } finally {
+      this.loading = false;
     }
   },
 
@@ -360,23 +371,25 @@ export default {
     }
   },
 
-  async onLoad() {
-    this.share.title = `✅${dayjs(new Date()).format(
-      "MM月DD日"
-    )} 最新实习信息已更新`;
-    this.loading = true;
-    try {
-      const company_data = await getPageListPost({
-        pageNum: 1,
-        pageSize: 50,
+  onReachBottom: async function () {
+    if (!this.pullUpOn) {
+      uni.showToast({
+        title: "到底了",
+        duration: 1000,
       });
-      this.companyInfoList = company_data.data;
-      const data = await internshipPositionGetPageListPOST({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        property: this.property,
-      });
-      this.intershipList = data.data.map((i) => {
+    }
+    this.loadding = true;
+    const data = await internshipPositionGetPageListPOST({
+      pageNum: this.pageNum,
+      pageSize: this.pageSize,
+      property: this.property,
+    });
+    if (data.data.length < this.pageSize) {
+      this.loadding = false;
+      this.pullUpOn = false;
+    } else {
+      let loadData = data.data;
+      loadData = loadData.map((i) => {
         return {
           ...i,
           companyInfo: getTargetElement(
@@ -386,25 +399,15 @@ export default {
           ),
         };
       });
-      if (data.data.length < this.pageSize) {
-        this.pullUpOn = false;
-      }
+      this.intershipList = this.intershipList.concat(loadData);
       this.pageNum = this.pageNum + 1;
-      this.pageInfo = data.pageInfo;
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.loading = true;
+      this.loadding = false;
     }
-  },
-
-  onPageScroll(e) {
-    this.scrollTop = e.scrollTop;
   },
 
   data() {
     return {
-      loading: false,
+      loading: true,
       loadding: false,
       dayjs,
       getFormateDateTime,
@@ -485,7 +488,55 @@ export default {
           updateTime: null,
           urgent: false,
           url: "",
-        },
+        },{
+          company: "字节跳动",
+          companyId: 49,
+          createTime: 1704893694000,
+          degree: { value: "1", label: "本科" },
+          email: "duansizhu@bytedance.com",
+          experience: { value: "1", label: "1-3年" },
+          id: 1309,
+          isFree: true,
+          jobType: { value: "1", label: "产品运营" },
+          location: ["北京"],
+          positionAdvan: "",
+          positionDuty:
+            "1、负责字节直播安全业务的运营岗位招聘；↵2、简历Sourcing，电话面试综合评估候选人；↵3、跟进面试全流程，保证面试及时顺利进行并追踪面试结果；↵4、数据驱动，分析统计人才数据、招聘漏斗，制作招聘Dashboard。",
+          positionName: "HR实习生",
+          positionRequired:
+            "1、统招本科及以上，24届保研或研一研二优先，专业不限，对招聘工作和互联网行业有浓厚兴趣；↵2、每周全勤5天，可现场实习3个月以上；↵3、主动积极、勤于思考，靠谱认真、结果导向，自驱好学、抗压皮实；↵4、性格外向开朗，有互联网招聘经验优先。",
+          positionTags: null,
+          property: { value: "1", label: "校招" },
+          salary: "",
+          salaryType: { value: "0", label: "日结" },
+          updateTime: null,
+          urgent: false,
+          url: "",
+        },{
+          company: "字节跳动",
+          companyId: 49,
+          createTime: 1704893694000,
+          degree: { value: "1", label: "本科" },
+          email: "duansizhu@bytedance.com",
+          experience: { value: "1", label: "1-3年" },
+          id: 1309,
+          isFree: true,
+          jobType: { value: "1", label: "产品运营" },
+          location: ["北京"],
+          positionAdvan: "",
+          positionDuty:
+            "1、负责字节直播安全业务的运营岗位招聘；↵2、简历Sourcing，电话面试综合评估候选人；↵3、跟进面试全流程，保证面试及时顺利进行并追踪面试结果；↵4、数据驱动，分析统计人才数据、招聘漏斗，制作招聘Dashboard。",
+          positionName: "HR实习生",
+          positionRequired:
+            "1、统招本科及以上，24届保研或研一研二优先，专业不限，对招聘工作和互联网行业有浓厚兴趣；↵2、每周全勤5天，可现场实习3个月以上；↵3、主动积极、勤于思考，靠谱认真、结果导向，自驱好学、抗压皮实；↵4、性格外向开朗，有互联网招聘经验优先。",
+          positionTags: null,
+          property: { value: "1", label: "校招" },
+          salary: "",
+          salaryType: { value: "0", label: "日结" },
+          updateTime: null,
+          urgent: false,
+          url: "",
+        }
       ],
       pageNum: 1,
       pageSize: 10,
@@ -621,13 +672,13 @@ export default {
         this.loading = false;
       }
     },
-  },
+  }
 };
 </script>
 
 <style lang="less">
 page {
-  background-color: rgb(245, 246, 248);
+  background-color: #f7f7f7;
 }
 
 // 吸顶容器

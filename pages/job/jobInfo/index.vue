@@ -1,7 +1,5 @@
 <template>
-  <view
-    ><tui-loading v-if="loading" text="加载中..."></tui-loading>
-
+  <view>
     <tui-navigation-bar
       dropDownHide
       @init="initNavigation"
@@ -10,8 +8,6 @@
       title="岗位详情"
       backgroundColor="#FFFFFF"
       color="#333"
-      :maxOpacity="0.05"
-      :backdropFilter="true"
     >
       <view class="tui-header-icon" :style="{ marginTop: top + 'px' }">
         <tui-icon
@@ -30,395 +26,411 @@
       </view>
     </tui-navigation-bar>
 
-    <view class="top-sticky-after" :style="{ marginTop: top + 'px' }"></view>
-    <view class="job-tui-card">
-      <tui-card
-        :header="{
-          bgcolor: 'rgba(255,255,255,0)',
-          line: true,
-        }"
-        :title="{
-          text: positionInfo?.positionName,
-          size: 40,
-          color: 'rgb(31 41 55)',
-        }"
-        :isHot="positionInfo?.urgent"
-        :tag="{
-          text: `${getFormateDateTime(positionInfo?.createTime)}`,
-          size: 26,
-          color: '#f64',
-        }"
-      >
-        <template v-slot:body>
-          <view class="position-card-body">
-            <view class="job-tui-text">
-              <tui-text
-                padding="0rpx 0"
-                block
-                :text="
-                  !!positionInfo?.salary && !!positionInfo?.salaryType
-                    ? `${positionInfo?.salary}元/${
-                        getTargetElement(
-                          salaryType,
-                          positionInfo?.salaryType.value
-                        )?.label
-                      }`
-                    : '薪资面议'
-                "
-                size="35"
-                color="#f64"
-                fontWeight="600"
-              ></tui-text> </view
-            ><tui-tag type="light-orange" padding="20rpx 30rpx">
-              {{ positionInfo?.property?.label }}</tui-tag
-            >
-          </view>
-        </template>
-        <template v-slot:footer>
-          <view class="job-footer-box">
-            <view class="job-footer-box-item">
-              <tui-icon name="gps" :size="18"></tui-icon>
-              <tui-text
-                padding="0rpx 6rpx"
-                block
-                :text="
-                  Array.isArray(positionInfo?.location)
-                    ? positionInfo?.location.join('/')
-                    : positionInfo?.location
-                "
-                size="30x"
-                color="gray"
-              ></tui-text
-            ></view>
-            <view class="job-footer-box-item">
-              <tui-icon name="send" :size="18"></tui-icon>
-              <tui-text
-                padding="0rpx 6rpx"
-                block
-                :text="positionInfo?.degree?.label"
-                size="30x"
-                color="gray"
-              ></tui-text
-            ></view>
-            <view class="job-footer-box-item">
-              <tui-icon name="clock" :size="18"></tui-icon>
-              <tui-text
-                padding="0rpx 6rpx"
-                block
-                :text="positionInfo?.experience?.label"
-                size="30x"
-                color="gray"
-              ></tui-text
-            ></view>
-          </view>
-        </template>
-      </tui-card>
-    </view>
-
-    <view class="job-detail">
-      <view class="job-detail-box">
-        <view class="job-detail-box-tag">
-          <tui-tag
-            v-if="companyInfo?.sectorNumber?.label"
-            type="light-brownish"
-            margin="0 14rpx 0 0"
-            padding="10rpx"
-            size="24rpx"
-            >{{ companyInfo?.sectorNumber?.label }}</tui-tag
-          >
-          <view
-            v-for="(item, index) in positionInfo?.positionTags"
-            :key="index+''"
-          >
-            <tui-tag
-              type="light-green"
-              margin="0 14rpx 0 0"
-              padding="10rpx"
-              size="24rpx"
-              >{{ item }}</tui-tag
-            ></view
-          >
-        </view>
-      </view>
-      <tui-overflow-hidden
-        :type="2"
-        height="1000rpx"
-        :removeGradient="removeGradient"
-      >
-        <view class="job-detail-box">
-          <view class="job-footer-box-gra">
-            <tui-text
-              padding="0rpx 0"
-              color="rgb(31 41 55)"
-              block
-              :text="`岗位类型 : ${positionInfo?.jobType?.label} `"
-              size="30"
-            ></tui-text>
-          </view>
-          <view class="job-footer-box-gra">
-            <tui-text
-              padding="0rpx 0"
-              color="gray"
-              block
-              :text="`毕业要求 : ${positionInfo?.degree?.label} `"
-              size="30"
-            ></tui-text>
-          </view>
-          <view class="job-footer-box-gra">
-            <tui-text
-              padding="0rpx 0"
-              color="gray"
-              block
-              :text="`工作地点 : ${positionInfo?.location} `"
-              size="30"
-            ></tui-text>
-          </view>
-        </view>
-        <view class="job-detail-box">
-          <tui-section
-            title="岗位职责"
-            is-line
-            background="#fff"
-            lineCap="circle"
-            lineColor="#8E44AD"
-            size="38"
-            padding="10rpx 20rpx"
-            :lineRight="20"
-            :lineWidth="10"
-          ></tui-section>
-          <tui-text
-            padding="16rpx 0"
-            block
-            :text="positionInfo?.positionDuty"
-            size="28"
-            color="#213547"
-          ></tui-text>
-        </view>
-        <view class="job-detail-box">
-          <tui-section
-            title="岗位要求"
-            is-line
-            background="#fff"
-            lineCap="circle"
-            lineColor="#8E44AD"
-            size="38"
-            padding="10rpx 20rpx"
-            :lineRight="20"
-            :lineWidth="10"
-          ></tui-section>
-
-          <tui-text
-            padding="16rpx 0"
-            block
-            :text="positionInfo?.positionRequired"
-            size="28"
-            color="#213547"
-          ></tui-text>
-        </view>
-        <view class="job-detail-box" v-if="positionInfo?.positionAdvan">
-          <tui-section
-            title="岗位优势"
-            is-line
-            background="#fff"
-            lineCap="circle"
-            lineColor="#8E44AD"
-            size="38"
-            padding="10rpx 20rpx"
-            :lineRight="20"
-            :lineWidth="10"
-          ></tui-section>
-          <tui-text
-            padding="16rpx 0"
-            block
-            :text="positionInfo?.positionAdvan"
-            size="28"
-            color="#213547"
-          ></tui-text>
-        </view>
-      </tui-overflow-hidden>
-      <view v-if="!removeGradient" class="job-footer-box-more-btn"
-        ><tui-text
-          padding="0rpx 0"
-          color="#f64"
-          block
-          text="查看更多"
-          size="28"
-          @tap="setRemoveGradient"
-        ></tui-text
-      ></view>
-    </view>
-    <view class="job-detail">
-      <view class="tui-new-job-info-box">
-        <view class="tui-new-job-info">
-          <tui-image-group
-            :imageList="[
-              {
-                src: companyInfo?.logo,
-              },
-            ]"
-            isGroup
-            width="80rpx"
-            height="80rpx"
-          ></tui-image-group>
-          <view class="tui-recru-info-text">
-            <tui-text
-              block
-              :text="companyInfo?.companyName"
-              size="30"
-            ></tui-text>
-            <tui-text
-              block
-              :text="`${companyInfo?.market?.label} | ${companyInfo?.scale?.label} | ${companyInfo?.sectorNumber?.label}`"
-              size="22"
-              type="gray"
-            ></tui-text
-          ></view>
-        </view>
-        <tui-notice-bar
-          single
-          :padding="['0', '20rpx']"
-          :content="companyInfo?.introduction"
-        ></tui-notice-bar>
-      </view>
-    </view>
-    <view class="job-detail flooter-box">
-      <tui-icon name="about" color="red" :size="14"></tui-icon>
-      <tui-text
-        block
-        text="如发现虚假招聘、广告，或以任何名义索要证件、费用，或诱导异地入职、参与培训等均属违法，发现请提高警惕"
-        size="25"
-        padding="0rpx 12rpx"
-      ></tui-text>
-    </view>
-    <tui-section title="相似岗位" :size="34"></tui-section>
-    <view class="job-card" v-for="(item,index) in intershipList" :key="`${item.id}-${index}`">
-      <tui-card
-        :title="{
-          text: item.positionName,
-          size: 32,
-          color: 'rgb(31 41 55)',
-        }"
-        :isHot="true"
-        :tag="{
-          text:
-            !!item.salary && !!item.salaryType
-              ? `${item.salary}元/${
-                  getTargetElement(salaryType, item.salaryType.value)?.label
-                } `
-              : '薪资面议',
-          size: 26,
-          color: '#f64',
-        }"
-        @tap="toJobDetail(item)"
-      >
-        <template v-slot:body>
-          <view class="intership-body">
-            <view class="course-list-item-tag">
-              <tui-tag
-                type="light-green"
-                v-if="item.location"
-                margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
-                >{{
-                  Array.isArray(item.location)
-                    ? item.location.join("/")
-                    : item.location
-                }}</tui-tag
-              >
-              <tui-tag
-                v-if="item.property"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
-                >{{ item.property?.label }}</tui-tag
-              >
-              <tui-tag
-                v-if="item.experience"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
-                >{{ item.experience?.label }}</tui-tag
-              >
-              <tui-tag
-                v-if="item.degree"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="10rpx"
-                size="24rpx"
-                >{{ item.degree?.label }}</tui-tag
+    <tui-skeleton v-if="loading"></tui-skeleton>
+    <view class="tui-skeleton">
+      <view class="job-tui-card">
+        <tui-card
+        
+         full
+          :header="{
+            bgcolor: 'rgba(255,255,255,0)',
+            line: true,
+          }"
+          :border="true"
+          :title="{
+            text: positionInfo?.positionName,
+            size: 40,
+            color: 'rgb(31 41 55)',
+            class: 'tui-skeleton-rect',
+          }"
+          :isHot="positionInfo?.urgent"
+          :tag="{
+            text: `${getFormateDateTime(positionInfo?.createTime)}`,
+            size: 26,
+            color: '#f64',
+            class: 'tui-skeleton-rect',
+          }"
+        >
+          <template v-slot:body>
+            <view class="position-card-body">
+              <view class="job-tui-text">
+                <tui-text
+                  class="tui-skeleton-rect"
+                  :class="'tui-skeleton-rect'"
+                  padding="0rpx 0"
+                  block
+                  :text="
+                    !!positionInfo?.salary && !!positionInfo?.salaryType
+                      ? `${positionInfo?.salary}元/${
+                          getTargetElement(
+                            salaryType,
+                            positionInfo?.salaryType.value
+                          )?.label
+                        }`
+                      : '薪资面议'
+                  "
+                  size="35"
+                  color="#f64"
+                  fontWeight="600"
+                ></tui-text> </view
               ><tui-tag
-                v-if="item.jobType"
-                type="light-green"
-                margin="0 14rpx 0 0"
-                padding="8rpx"
-                size="20rpx"
-                >{{ item.jobType?.label }}</tui-tag
+                type="light-orange"
+                padding="20rpx 30rpx"
+                :class="'tui-skeleton-rect'"
+              >
+                {{ positionInfo?.property?.label }}</tui-tag
               >
             </view>
-            <view class="intership-body-date">{{
-              getFormateDateTime(item.createTime)
-            }}</view></view
-          >
-        </template>
-        <template v-slot:footer>
-          <view class="tui-footer-job-info">
-            <view class="tui-new-job-info">
-              <tui-image-group
-                :imageList="[
-                  {
-                    src: item.companyInfo?.logo,
-                  },
-                ]"
-                isGroup
-                width="80rpx"
-                height="80rpx"
-              ></tui-image-group>
-              <view class="tui-recru-info-text">
-                <tui-text block :text="item.company" size="30"></tui-text>
+          </template>
+          <template v-slot:footer>
+            <view class="job-footer-box" >
+              <view class="job-footer-box-item" :class="'tui-skeleton-rect'">
+                <tui-icon name="gps" :size="18"></tui-icon>
                 <tui-text
+                  padding="0rpx 6rpx"
                   block
-                  :text="`${item.companyInfo.market.label} | ${item.companyInfo.scale.label} | ${item.companyInfo.sectorNumber.label}`"
-                  size="22"
-                  type="gray"
+                  :text="
+                    Array.isArray(positionInfo?.location)
+                      ? positionInfo?.location.join('/')
+                      : positionInfo?.location
+                  "
+                  size="30x"
+                  color="gray"
+                ></tui-text
+              ></view>
+              <view class="job-footer-box-item" :class="'tui-skeleton-rect'">
+                <tui-icon name="send" :size="18"></tui-icon>
+                <tui-text
+                  padding="0rpx 6rpx"
+                  block
+                  :text="positionInfo?.degree?.label"
+                  size="30x"
+                  color="gray"
+                ></tui-text
+              ></view>
+              <view class="job-footer-box-item" :class="'tui-skeleton-rect'">
+                <tui-icon name="clock" :size="18"></tui-icon>
+                <tui-text
+                  padding="0rpx 6rpx"
+                  block
+                  :text="positionInfo?.experience?.label"
+                  size="30x"
+                  color="gray"
                 ></tui-text
               ></view>
             </view>
-            <view class="tui-right-job-info">
+          </template>
+        </tui-card>
+      </view>
+      <view class="job-detail" >
+        <view class="job-detail-box">
+          <view class="job-detail-box-tag">
+            <tui-tag
+              v-if="companyInfo?.sectorNumber?.label"
+              type="gray"
+              margin="0 14rpx 0 0"
+              padding="10rpx"
+              :class="'tui-skeleton-rect'"
+              size="24rpx"
+              >{{ companyInfo?.sectorNumber?.label }}</tui-tag
+            >
+            <view
+              v-for="(item, index) in positionInfo?.positionTags"
+              :key="index + ''"
+              
+            >
               <tui-tag
-                type="danger"
-                padding="8rpx"
-                shape="circle"
-                size="20rpx"
-                v-if="
-                  dayjs(item.createTime).format('YYYY-MM-DD') ===
-                  dayjs(new Date()).format('YYYY-MM-DD')
-                "
-                >最新</tui-tag
-              >
-              <tui-tag
-                v-if="item.isFree ?? true"
-                type="light-blue"
-                padding="8rpx"
-                size="20rpx"
-                >免费</tui-tag
-              >
-              <image
-                v-else
-                src="../../static/images/icon/vip.svg"
-                mode="widthFix"
-                :style="{
-                  height: 50 + 'rpx',
-                  width: 50 + 'rpx',
-                }"
-              ></image>
+                type="gray"
+                margin="0 14rpx 0 0"
+                
+                padding="10rpx"
+                size="24rpx"
+                >{{ item }}</tui-tag
+              ></view
+            >
+          </view>
+        </view>
+        <tui-overflow-hidden
+          :type="2"
+          height="1000rpx"
+          :removeGradient="removeGradient"
+        >
+          <view class="job-detail-box">
+            <view class="servier-contant" :class="'tui-skeleton-rect'">
+              <view class="servier-contant-title">
+                <view class="num">1</view>
+                <view>基本信息</view>
+              </view></view
+            >
+            <view class="job-footer-box-gra" :class="'tui-skeleton-rect'">
+              <tui-text
+                padding="16rpx 0"
+                color="rgb(31 41 55)"
+                block
+                :text="`岗位类型 : ${positionInfo?.jobType?.label} `"
+                size="30"
+              ></tui-text>
+            </view>
+            <view class="job-footer-box-gra" :class="'tui-skeleton-rect'">
+              <tui-text
+                padding="0rpx 0"
+                color="gray"
+                block
+                :text="`毕业要求 : ${positionInfo?.degree?.label} `"
+                size="30"
+              ></tui-text>
+            </view>
+            <view class="job-footer-box-gra" :class="'tui-skeleton-rect'">
+              <tui-text
+                padding="0rpx 0"
+                color="gray"
+                block
+                :text="`工作地点 : ${positionInfo?.location} `"
+                size="30"
+              ></tui-text>
             </view>
           </view>
-        </template>
-      </tui-card>
-      <tui-loading v-if="loading" text="加载中..."></tui-loading>
+          <view class="job-detail-box" :class="'tui-skeleton-rect'">
+            <view class="servier-contant" >
+              <view class="servier-contant-title">
+                <view class="num">2</view>
+                <view>岗位职责</view>
+              </view>
+            </view>
+            <view class="job-detail-box-text">
+              <tui-text
+                padding="16rpx 0"
+                block
+                :text="positionInfo?.positionDuty"
+                size="28"
+                color="#213547"
+              ></tui-text
+            ></view>
+          </view>
+          <view class="job-detail-box" :class="'tui-skeleton-rect'">
+            <view class="servier-contant">
+              <view class="servier-contant-title">
+                <view class="num">3</view>
+                <view>岗位要求</view>
+              </view>
+            </view>
+            <view class="job-detail-box-text">
+              <tui-text
+                highlight
+                padding="16rpx 0"
+                block
+                :text="positionInfo?.positionRequired"
+                size="28"
+                color="#213547"
+              ></tui-text
+            ></view>
+          </view>
+          <view class="job-detail-box" v-if="positionInfo?.positionAdvan" :class="'tui-skeleton-rect'">
+            <view class="servier-contant">
+              <view class="servier-contant-title">
+                <view class="num">4</view>
+                <view>岗位优势</view>
+              </view>
+            </view>
+            <view class="job-detail-box-text">
+              <tui-text
+                padding="16rpx 0"
+                block
+                :text="positionInfo?.positionAdvan"
+                size="28"
+                color="#213547"
+              ></tui-text
+            ></view>
+          </view>
+        </tui-overflow-hidden>
+        <view v-if="!removeGradient" class="job-footer-box-more-btn"
+          ><tui-text
+            padding="0rpx 0"
+            color="#f64"
+            block
+            text="查看更多"
+            size="28"
+            @tap="setRemoveGradient"
+          ></tui-text
+        ></view>
+      </view>
+      <view class="job-detail">
+        <view class="tui-new-job-info-box" :class="'tui-skeleton-rect'">
+          <view class="tui-new-job-info">
+            <tui-image-group
+              :imageList="[
+                {
+                  src: companyInfo?.logo,
+                },
+              ]"
+              isGroup
+              width="80rpx"
+              height="80rpx"
+            ></tui-image-group>
+            <view class="tui-recru-info-text">
+              <tui-text
+                block
+                :text="companyInfo?.companyName"
+                size="30"
+              ></tui-text>
+              <tui-text
+                block
+                :text="`${companyInfo?.market?.label} | ${companyInfo?.scale?.label} | ${companyInfo?.sectorNumber?.label}`"
+                size="22"
+                type="gray"
+              ></tui-text
+            ></view>
+          </view>
+          <tui-notice-bar
+            single
+            :padding="['0', '20rpx']"
+            :content="companyInfo?.introduction"
+          ></tui-notice-bar>
+        </view>
+      </view>
+      <view class="job-detail flooter-box">
+        <tui-icon name="about" color="red" :size="14"></tui-icon>
+        <tui-text
+          block
+          text="如发现虚假招聘、广告，或以任何名义索要证件、费用，或诱导异地入职、参与培训等均属违法，发现请提高警惕"
+          size="25"
+          padding="0rpx 12rpx"
+        ></tui-text>
+      </view>
+      <tui-section title="相似岗位" :size="34"></tui-section>
+      <view
+        class="job-card"
+        v-for="(item, index) in intershipList"
+        :key="`${item.id}-${index}`"
+      >
+        <tui-card
+          :title="{
+            text: item.positionName,
+            size: 32,
+            color: 'rgb(31 41 55)',
+          }"
+          :isHot="true"
+          :tag="{
+            text:
+              !!item.salary && !!item.salaryType
+                ? `${item.salary}元/${
+                    getTargetElement(salaryType, item.salaryType.value)?.label
+                  } `
+                : '薪资面议',
+            size: 26,
+            color: '#f64',
+          }"
+          @tap="toJobDetail(item)"
+        >
+          <template v-slot:body>
+            <view class="intership-body">
+              <view class="course-list-item-tag">
+                <tui-tag
+                  type="light-green"
+                  v-if="item.location"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{
+                    Array.isArray(item.location)
+                      ? item.location.join("/")
+                      : item.location
+                  }}</tui-tag
+                >
+                <tui-tag
+                  v-if="item.property"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{ item.property?.label }}</tui-tag
+                >
+                <tui-tag
+                  v-if="item.experience"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{ item.experience?.label }}</tui-tag
+                >
+                <tui-tag
+                  v-if="item.degree"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="10rpx"
+                  size="24rpx"
+                  >{{ item.degree?.label }}</tui-tag
+                ><tui-tag
+                  v-if="item.jobType"
+                  type="light-green"
+                  margin="0 14rpx 0 0"
+                  padding="8rpx"
+                  size="20rpx"
+                  >{{ item.jobType?.label }}</tui-tag
+                >
+              </view>
+              <view class="intership-body-date">{{
+                getFormateDateTime(item.createTime)
+              }}</view></view
+            >
+          </template>
+          <template v-slot:footer>
+            <view class="tui-footer-job-info">
+              <view class="tui-new-job-info">
+                <tui-image-group
+                  :imageList="[
+                    {
+                      src: item.companyInfo?.logo,
+                    },
+                  ]"
+                  isGroup
+                  width="80rpx"
+                  height="80rpx"
+                ></tui-image-group>
+                <view class="tui-recru-info-text">
+                  <tui-text block :text="item.company" size="30"></tui-text>
+                  <tui-text
+                    block
+                    :text="`${item.companyInfo.market.label} | ${item.companyInfo.scale.label} | ${item.companyInfo.sectorNumber.label}`"
+                    size="22"
+                    type="gray"
+                  ></tui-text
+                ></view>
+              </view>
+              <view class="tui-right-job-info">
+                <tui-tag
+                  type="danger"
+                  padding="8rpx"
+                  shape="circle"
+                  size="20rpx"
+                  v-if="
+                    dayjs(item.createTime).format('YYYY-MM-DD') ===
+                    dayjs(new Date()).format('YYYY-MM-DD')
+                  "
+                  >最新</tui-tag
+                >
+                <tui-tag
+                  v-if="item.isFree ?? true"
+                  type="light-blue"
+                  padding="8rpx"
+                  size="20rpx"
+                  >免费</tui-tag
+                >
+                <image
+                  v-else
+                  src="../../static/images/icon/vip.svg"
+                  mode="widthFix"
+                  :style="{
+                    height: 50 + 'rpx',
+                    width: 50 + 'rpx',
+                  }"
+                ></image>
+              </view>
+            </view>
+          </template>
+        </tui-card>
+        <tui-loading v-if="loading" text="加载中..."></tui-loading>
+      </view>
     </view>
     <tui-footer
       :fixed="false"
@@ -601,7 +613,7 @@ export default {
         id: option.id,
       });
       this.positionInfo = data.data?.[0];
-      this.share.title ='🏝️'+ this.positionInfo?.positionName
+      this.share.title = "🏝️" + this.positionInfo?.positionName;
       const company_data = await getPageListPost({
         pageNum: 1,
         pageSize: 50,
@@ -614,7 +626,7 @@ export default {
         pageNum: 1,
         pageSize: 50,
       });
-     
+
       const intershipListData = await internshipPositionGetPageListPOST({
         pageNum: this.pageNum,
         pageSize: 5,
@@ -624,11 +636,7 @@ export default {
       this.intershipList = this.intershipList.map((i) => {
         return {
           ...i,
-          companyInfo: getTargetElement(
-            companyData.data,
-            i.companyId,
-            "id"
-          ),
+          companyInfo: getTargetElement(companyData.data, i.companyId, "id"),
         };
       });
     } catch (e) {
@@ -867,19 +875,9 @@ export default {
 </script>
 <style lang="less">
 page {
-  background-color: rgb(245, 246, 248);
+  background-color: #f7f7f7;
 }
-.top-sticky-after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 222px;
-  border-radius: 50%;
-  background: rgba(0, 140, 255, 0.082);
-  filter: blur(30px);
-}
+
 .tui-header-icon {
   margin-left: 10px;
   width: 80px;
@@ -909,18 +907,23 @@ page {
 .job-detail {
   padding: 24rpx;
   background: #fff;
-  border-radius: 12rpx;
-  margin: 0rpx 30rpx 24rpx;
+  border-radius: 10rpx;
+  margin: 0rpx 20rpx 24rpx;
+  box-shadow: rgba(0, 0, 0, 0.04) 0rpx 3rpx 5rpx;
 }
 .job-tui-card {
-  margin-bottom: 20rpx;
-  margin-top: 86px;
+  background: #fff;
+  border-radius: 10rpx;
+  margin: 190rpx 20rpx 24rpx;
+  box-shadow: rgba(0, 0, 0, 0.04) 0rpx 3rpx 5rpx;
+
 }
 .job-detail-box {
   margin-bottom: 16rpx;
-  font-family: cursive;
+  // font-family: cursive;
 }
-.job-tui-text {
+.job-detail-box-text {
+  margin-left: 7px;
 }
 .position-card-body {
   display: flex;
@@ -941,6 +944,7 @@ page {
 .job-footer-box-gra {
   display: flex;
   flex-direction: row;
+  padding-left: 7px;
 }
 .job-footer-box-more-btn {
   display: flex;
@@ -1027,7 +1031,7 @@ page {
 }
 
 .tui-original__pri {
-  font-size: 24rpx;
+  font-size: 20rpx;
   line-height: 24rpx;
   color: #999999;
   transform-origin: center 10%;
@@ -1177,11 +1181,11 @@ page {
   height: 80rpx;
 }
 
-
 //intership list
 .job-card {
   margin-bottom: 20rpx;
-}.intership-body {
+}
+.intership-body {
   display: flex;
   justify-content: space-between;
   padding: 0 24rpx;
@@ -1199,7 +1203,8 @@ page {
   align-items: flex-start;
   margin: 10rpx 0;
   color: rgb(185, 186, 188);
-}.tui-footer-job-info {
+}
+.tui-footer-job-info {
   display: flex;
   justify-content: space-between;
 }
@@ -1208,12 +1213,37 @@ page {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}.tui-new-job-info {
+}
+.tui-new-job-info {
   height: 80rpx;
   width: 70%;
   display: flex;
   justify-content: left;
   padding: 20rpx 24rpx;
   border-radius: 10rpx;
+}
+.servier-contant {
+  padding-left: 40px;
+  margin-top: 15px;
+}
+.servier-contant-title {
+  font-size: 36rpx;
+  color: #404040;
+  font-weight: 600;
+  position: relative;
+}
+.num {
+  width: 32px;
+  position: absolute;
+  height: 19px;
+  line-height: 19px;
+  top: 3px;
+  font-size: 18px;
+  left: -40px;
+  border-radius: 10px 6px 0 10px;
+  background: #ff4f4f;
+  background-image: linear-gradient(90deg, #ff813a, #ff3d3d);
+  color: #fff;
+  text-align: center;
 }
 </style>
