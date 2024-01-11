@@ -36,7 +36,7 @@
             bgcolor: 'rgba(255,255,255,0)',
             line: true,
           }"
-          :border="true"
+         
           :title="{
             text: positionInfo?.positionName,
             size: 40,
@@ -164,9 +164,10 @@
             >
             <view class="job-footer-box-gra" :class="'tui-skeleton-rect'">
               <tui-text
-                padding="16rpx 0"
+              padding="0rpx 0"
                 color="rgb(31 41 55)"
                 block
+                highlight
                 :text="`岗位类型 : ${positionInfo?.jobType?.label} `"
                 size="30"
               ></tui-text>
@@ -178,6 +179,7 @@
                 block
                 :text="`毕业要求 : ${positionInfo?.degree?.label} `"
                 size="30"
+                highlight
               ></tui-text>
             </view>
             <view class="job-footer-box-gra" :class="'tui-skeleton-rect'">
@@ -185,6 +187,7 @@
                 padding="0rpx 0"
                 color="gray"
                 block
+                highlight
                 :text="`工作地点 : ${positionInfo?.location} `"
                 size="30"
               ></tui-text>
@@ -203,6 +206,7 @@
                 block
                 :text="positionInfo?.positionDuty"
                 size="28"
+                highlight
                 color="#213547"
               ></tui-text
             ></view>
@@ -236,6 +240,7 @@
               <tui-text
                 padding="16rpx 0"
                 block
+                highlight
                 :text="positionInfo?.positionAdvan"
                 size="28"
                 color="#213547"
