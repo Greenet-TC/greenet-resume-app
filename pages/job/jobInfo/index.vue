@@ -610,6 +610,7 @@ export default {
     this.scrollTop = e.scrollTop;
   },
   async onLoad(option) {
+    this.id=option?.id??0
     try {
       this.loading = true;
       const data = await internshipPositionGetPageListPOST({
@@ -619,6 +620,7 @@ export default {
       });
       this.positionInfo = data.data?.[0];
       this.share.title = "🏝️" + this.positionInfo?.positionName;
+      this.share.path = getCurrentPages()[getCurrentPages().length - 1].route+`?id=${option.id}`
       const company_data = await getPageListPost({
         pageNum: 1,
         pageSize: 50,
@@ -699,6 +701,7 @@ export default {
   data() {
     return {
       top: 0, //标题图标距离顶部距离
+      id:0,
       opacity: 0,
       scrollTop: 0,
       positionInfo: null,
@@ -788,6 +791,9 @@ export default {
         }
       });
       // #endif
+      this.share.title = "🏝️" + this.positionInfo?.positionName;
+      this.share.path = getCurrentPages()[getCurrentPages().length - 1].route+`?id=${this.id}`
+      console.log('getCurrentPages().pages[pages.length - 1].route+`?id=${this.id}',getCurrentPages().pages[pages.length - 1].route+`?id=${this.id}`)
     },
     async createPoster() {
       this.hideSharePopup();

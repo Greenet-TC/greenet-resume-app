@@ -223,7 +223,7 @@
               >{{ tranNumber(articleInfo?.collectNum ?? 0, 2) }}</tui-badge
             >
           </view>
-          <button open-type="share" class="tui-share-btn">
+          <button open-type="share" class="tui-share-btn" @tap="onShare">
             <tui-icon name="share" size="22"></tui-icon></button
         ></view>
       </view>
@@ -244,13 +244,15 @@ import store from "@/store/index.ts";
 
 export default {
   async onLoad(options) {
+    console.log('getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${option.articleId}`',getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${this.$options.articleId}`)
    
     try {
       const data = await viewArticleDetailPost({
         articleId: options.articleId,
       });
       this.articleInfo = data.data;
-      this.share.title = "🔥🔥🔥" +this.articleInfo.articleTitle
+      this.share.title = "🔥" +this.articleInfo.articleTitle
+      this.share.path = getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${options.articleId}`
       this.list = this.list.map((i) => {
         return {
           ...i,
@@ -343,6 +345,35 @@ export default {
     },
     cancel() {
       this.isComment = false;
+    },
+    onShare() {
+      //#ifdef APP-PLUS
+      plus.share.sendWithSystem(
+        {
+          content: "ThorUI商城模板",
+          href: "https://www.thorui.cn/",
+        },
+        function () {
+          console.log("分享成功");
+        },
+        function (e) {
+          console.log("分享失败：" + JSON.stringify(e));
+        }
+      );
+      //#endif
+      // #ifdef H5
+      thorui.getClipboardData("https://thorui.cn/doc", (res) => {
+        if (res) {
+          this.tui.toast("链接复制成功，赶快去分享吧~");
+        } else {
+          this.tui.toast("链接复制失败");
+        }
+      });
+      // #endif
+      this.share.title = "🔥" +this.articleInfo.articleTitle
+      this.share.path = getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${this.articleInfo.articleId}`
+      console.log('getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${option.articleId}`',getCurrentPages()[getCurrentPages().length - 1].route+`?articleId=${option.articleId}`)
+
     },
     //调用方法开始计时
     reset() {
