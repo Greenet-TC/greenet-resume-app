@@ -1,6 +1,6 @@
 <template>
   <view>
-    <tui-sticky :scrollTop="scrollTop" stickyHeight="530rpx">
+    <tui-sticky :scrollTop="scrollTop" stickyHeight="190rpx">
       <template v-slot:header>
         <view class="top-sticky-after"></view>
         <view class="top-sticky-container">
@@ -19,7 +19,7 @@
               @clear="clear"
             ></tui-searchbar>
           </view>
-          <view class="tui-block__box">
+          <!-- <view class="tui-block__box">
             <view class="tui-group-name">
               <view class="tui-seckill__box">
                 <tui-text
@@ -86,7 +86,7 @@
                     ></view>
                   </view>
                   <view class="job-company-detail">
-                    <!-- <text>详情</text> -->
+                  
                     <tui-icon
                       name="arrowright"
                       :size="30"
@@ -97,7 +97,7 @@
                 </view>
               </view>
             </scroll-view>
-          </view>
+          </view> -->
 
           <tui-tab
             :tabs="tabLists"
@@ -643,7 +643,10 @@ export default {
     },
     async change(value) {
       this.property = value.index ? value.index : undefined;
-      this.loading = true;
+      // this.loading = true;
+      uni.showLoading({
+        title: "正在加载...",
+      });
       try {
         const data = await internshipPositionGetPageListPOST({
           pageNum: 1,
@@ -670,7 +673,8 @@ export default {
       } catch (e) {
         console.log(e);
       } finally {
-        this.loading = false;
+        // this.loading = false;
+        uni.hideLoading();
       }
     },
   },
@@ -684,7 +688,7 @@ page {
 
 // 吸顶容器
 .top-sticky-container {
-  height: 444rpx;
+  height: 200rpx;
   width: 100%;
   padding-top: 76rpx;
   background: rgba(255, 255, 255, 0.05);
