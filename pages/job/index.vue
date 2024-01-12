@@ -128,7 +128,7 @@
             text: item.positionName,
             size: 32,
             color: 'rgb(31 41 55)',
-            class:'tui-skeleton-rect'
+            class: 'tui-skeleton-rect',
           }"
           :isHot="true"
           :tag="{
@@ -140,7 +140,7 @@
                 : '薪资面议',
             size: 26,
             color: '#f64',
-            class:'tui-skeleton-rect'
+            class: 'tui-skeleton-rect',
           }"
           @tap="toJobDetail(item)"
         >
@@ -328,7 +328,6 @@ export default {
       this.pageInfo = data.pageInfo;
     } catch (e) {
       console.log(e);
-      
     } finally {
       this.loading = false;
     }
@@ -488,7 +487,8 @@ export default {
           updateTime: null,
           urgent: false,
           url: "",
-        },{
+        },
+        {
           company: "字节跳动",
           companyId: 49,
           createTime: 1704893694000,
@@ -512,7 +512,8 @@ export default {
           updateTime: null,
           urgent: false,
           url: "",
-        },{
+        },
+        {
           company: "字节跳动",
           companyId: 49,
           createTime: 1704893694000,
@@ -536,7 +537,7 @@ export default {
           updateTime: null,
           urgent: false,
           url: "",
-        }
+        },
       ],
       pageNum: 1,
       pageSize: 10,
@@ -672,7 +673,7 @@ export default {
         this.loading = false;
       }
     },
-  }
+  },
 };
 </script>
 
