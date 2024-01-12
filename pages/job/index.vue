@@ -1,16 +1,10 @@
 <template>
   <view>
-    <tui-sticky :scrollTop="scrollTop" stickyHeight="190rpx">
+    <tui-sticky :scrollTop="scrollTop" stickyHeight="250rpx">
       <template v-slot:header>
         <view class="top-sticky-after"></view>
         <view class="top-sticky-container">
           <view class="top-sticky-container-search">
-            <!-- <view class="tui-search__bar">
-              <view class="tui-searchbox" @tap="search">
-                <icon type="search" :size="13" color="#999"></icon>
-                <text class="tui-search-text">搜索岗位/公司/行业名称等</text>
-              </view>
-            </view> -->
             <tui-searchbar
               radius="40rpx"
               placeholder="搜索岗位/公司/行业名称等"
@@ -19,86 +13,6 @@
               @clear="clear"
             ></tui-searchbar>
           </view>
-          <!-- <view class="tui-block__box">
-            <view class="tui-group-name">
-              <view class="tui-seckill__box">
-                <tui-text
-                  padding="0rpx 0"
-                  block
-                  text="更多招聘信息"
-                  size="34"
-                  fontWeight="600"
-                ></tui-text>
-                <view class="tui-countdown__box">
-                  <view class="tui-countdown__title">距结束</view>
-                  <view class="tui-flex__center">
-                    <tui-countdown
-                      :time="3800"
-                      backgroundColor="transparent"
-                      borderColor="transparent"
-                      color="#EB0909"
-                      colonColor="#EB0909"
-                    ></tui-countdown>
-                  </view>
-                </view>
-              </view>
-              <view class="tui-more__box" @tap="moreCompany">
-                <text>更多</text>
-                <tui-icon
-                  name="arrowright"
-                  :size="36"
-                  unit="rpx"
-                  color="#999"
-                ></tui-icon>
-              </view>
-            </view>
-            <scroll-view scroll-x>
-              <view class="tui-goods__list">
-                <view
-                  v-for="(item, index) in companyInfoList"
-                  :key="`${item.id}-${index}`"
-                  class="tui-company-item"
-                  @tap="moreDetail(item)"
-                >
-                  <view class="tui-new-comp-info">
-                    <tui-image-group
-                      :imageList="[
-                        {
-                          src: item?.logo,
-                        },
-                      ]"
-                      isGroup
-                      width="80rpx"
-                      height="80rpx"
-                    ></tui-image-group>
-                    <view class="tui-recru-info-text">
-                      <tui-text
-                        block
-                        :text="item.companyName.slice(0, 5)"
-                        size="30"
-                      ></tui-text>
-                      <tui-text
-                        block
-                        :text="`${100}+ 内推岗位`"
-                        size="22"
-                        type="gray"
-                      ></tui-text
-                    ></view>
-                  </view>
-                  <view class="job-company-detail">
-                  
-                    <tui-icon
-                      name="arrowright"
-                      :size="30"
-                      unit="rpx"
-                      color="#999"
-                    ></tui-icon>
-                  </view>
-                </view>
-              </view>
-            </scroll-view>
-          </view> -->
-
           <tui-tab
             :tabs="tabLists"
             scroll
@@ -697,34 +611,7 @@ page {
     width: 480rpx;
   }
 }
-//search
-// .tui-search__bar {
-//   width: 100%;
-//   background: rgba(245, 246, 248, 0);
-//   padding: 15rpx 20rpx 25rpx 20rpx;
-//   box-sizing: border-box;
-// }
 
-// .tui-searchbox {
-//   width: 100%;
-//   height: 64rpx;
-//   margin-right: 30rpx;
-//   border-radius: 15px;
-//   font-size: 24rpx;
-//   background: #fff;
-//   padding: 6rpx 20rpx;
-//   box-sizing: border-box;
-//   color: #999;
-//   display: flex;
-//   align-items: center;
-//   overflow: hidden;
-// }
-
-// .tui-search-text {
-//   padding-left: 16rpx;
-// }
-
-/**screen start */
 .tui-screen__box {
   width: 100%;
   height: 80rpx;
