@@ -11,11 +11,18 @@
         isFixed
       ></tui-tab>
     </view>
+    <tui-skeleton v-if="loading"></tui-skeleton>
     <view class="sort-list">
-      <view class="sort-card" v-for="item in categoryThirdList" :key="item.id" v-show="!!item.articleList.length">
+      <view
+        class="sort-card"
+        :class="'tui-skeleton'"
+        v-for="item in categoryThirdList"
+        :key="item.id"
+        v-show="!!item.articleList.length"
+      >
         <view class="sort-card-top">
           <view class="sort-card-top-left">
-            <view class="title">
+            <view class="title" :class="'tui-skeleton-rect'">
               <img :src="compilation" alt="" class="sort-card-top-left-icon" />
               <tui-text
                 :text="item.label"
@@ -27,14 +34,17 @@
               ></tui-text>
             </view>
             <tui-text
-              :text="`${item.description.slice(0,10)}... | ${item.articleList.length} 章知识`"
+              :text="`${item.description.slice(0, 10)}... | ${
+                item.articleList.length
+              } 章知识`"
               block
+              class="tui-skeleton-rect"
               fontWeight="400"
               color="#9c9c9c"
               padding="10rpx 10rpx"
             ></tui-text>
           </view>
-          <view class="sort-card-top-right">
+          <view class="sort-card-top-right" :class="'tui-skeleton-rect'">
             <tui-form-button
               radius="5px"
               size="30"
@@ -62,7 +72,7 @@
                 class="course-card-item"
                 @tap="moreDetail(item)"
               >
-                <view class="cover-url">
+                <view class="cover-url" :class="'tui-skeleton-rect'">
                   <tui-image-group
                     radius="10rpx"
                     :imageList="[
@@ -80,7 +90,10 @@
                   </view>
                 </view>
                 <view class="article-detail">
-                  <view class="article-detail-title">
+                  <view
+                    class="article-detail-title"
+                    :class="'tui-skeleton-rect'"
+                  >
                     {{ item.articleTitle }}
                   </view>
                 </view>
@@ -145,25 +158,32 @@ import compilation from "@/static/course/compilation.svg";
 import { tranNumber, getCategoryTreeToArr } from "@/common/utils";
 export default {
   async onLoad() {
-    this.share.title ='🗂️🗂️🗂️ 优加知识库更新啦'
-    const res = await articleParamListPOST();
-    this.category = JSON.parse(res.data);
-
-    for (const item of getCategoryTreeToArr(JSON.parse(res.data), "3")) {
-      const { data } = await getArticleListPost({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        categoryThird: [String(item.id)],
-      });
-      this.categoryThirdList.push({
-        ...item,
-        articleList: data,
-      });
+    this.share.title = "🗂️🗂️🗂️ 优加知识库更新啦";
+    try {
+      this.loading = true;
+      const arr = [];
+      const res = await articleParamListPOST();
+      this.category = JSON.parse(res.data);
+      for (const item of getCategoryTreeToArr(JSON.parse(res.data), "3")) {
+        const { data } = await getArticleListPost({
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          categoryThird: [String(item.id)],
+        });
+        arr.push({
+          ...item,
+          articleList: data,
+        });
+      }
+      this.categoryThirdList = arr;
+    } catch (e) {
+    } finally {
+      this.loading = false;
     }
-    console.log(this.categoryThirdList)
   },
   data() {
     return {
+      loading: true,
       current: 0,
       tranNumber,
       compilation,
@@ -255,7 +275,227 @@ export default {
       category: [],
       pageNum: 1,
       pageSize: 10,
-      categoryThirdList: [],
+      categoryThirdList: [
+        {
+          category: "3",
+          description:
+            "本知识库收录产品经理基础知识，包括产品经理岗位介绍，产品经理岗位分析等",
+          id: 100235213,
+          innerTree: Array(0),
+          label: "产品经理基础知识",
+          articleList: [
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+          ],
+        },
+        {
+          category: "3",
+          description:
+            "本知识库收录产品经理基础知识，包括产品经理岗位介绍，产品经理岗位分析等",
+          id: 100235213,
+          innerTree: Array(0),
+          label: "产品经理基础知识",
+          articleList: [
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+          ],
+        },
+        {
+          category: "3",
+          description:
+            "本知识库收录产品经理基础知识，包括产品经理岗位介绍，产品经理岗位分析等",
+          id: 100235213,
+          innerTree: Array(0),
+          label: "产品经理基础知识",
+          articleList: [
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+            {
+              articleId: 1700204113361350,
+              articleTitle: "产品专栏01｜产品入门介绍",
+              categoryFirst: ["100"],
+              categorySecond: ["100235"],
+              categoryThird: ["100235213"],
+              collectNum: 7,
+              commentNum: 14,
+              content: null,
+              coverUrl:
+                "https://resumes-docs-1312496861.cos.ap-beijing.myqcloud.com/4d844aaf0d174dbea44e3fc57fd13758.png",
+              createTime: 1700204113000,
+              id: 73,
+              isFree: true,
+              summery:
+                "看到这，相信我们对于是否选择互联网产品/运营岗，已经有了一个基本的认知。而伴随着互联网发展的精细化，岗位也开始细分，产品经理不仅仅都是个画原型图，做功能的工具人，还需要我们在不同业务场景有一定的擅长领域。需要注意的是：岗位的细分虽然伴随着部分能力模型要求的变化，但是对于校招岗位来说，我们面试重点考察的能力还是以通用的基础能力为主。而当我们基础能力完善后，还具备某一岗位/行业的“优势”",
+              supportNum: 7,
+              tags: ["产品经理", "互联网产品", "产品专栏"],
+              updateTime: 1702287607000,
+              viewNum: 1515,
+            },
+          ],
+        },
+      ],
     };
   },
   methods: {

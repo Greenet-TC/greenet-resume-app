@@ -1,6 +1,6 @@
 <template>
   <view>
-    <tui-sticky :scrollTop="scrollTop" v-if="!loading" stickyHeight="530rpx">
+    <tui-sticky :scrollTop="scrollTop" stickyHeight="530rpx">
       <template v-slot:header>
         <view class="top-sticky-after"></view>
         <view class="top-sticky-container">
