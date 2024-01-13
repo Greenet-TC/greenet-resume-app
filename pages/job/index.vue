@@ -1,6 +1,6 @@
 <template>
   <view>
-    <tui-sticky :scrollTop="scrollTop" stickyHeight="250rpx">
+    <tui-sticky :scrollTop="scrollTop" stickyHeight="350rpx">
       <template v-slot:header>
         <view class="top-sticky-after"></view>
         <view class="top-sticky-container">
@@ -13,11 +13,26 @@
               @clear="clear"
             ></tui-searchbar>
           </view>
+          <tui-tabs
+            :tabs="searchTabList"
+            :currentTab="currentTab"
+            itemWidth="50%"
+            height="60"
+            sliderHeight="60"
+            bottom="20"
+            selectedColor="#f64"
+            color="rgb(31 41 55)"
+            sliderWidth="220"
+            backgroundColor="rgb(245, 246, 248,0)"
+            sliderBgColor="#ffffff"
+            @change="tabsChange"
+            :size="34"
+            bold
+          ></tui-tabs>
           <tui-tab
             :tabs="tabLists"
             scroll
             :size="30"
-            bold
             color="rgb(31 41 55)"
             selectedColor="rgb(31 41 55)"
             sliderBgColor="#f64"
@@ -33,6 +48,7 @@
     <tui-skeleton v-if="loading"></tui-skeleton>
     <view
       class="job-card"
+      v-show="currentTab === 0"
       v-for="(item, index) in intershipList"
       :key="`${item.id}-${index}`"
     >
@@ -191,6 +207,92 @@
           </template> </tui-card
       ></view>
     </view>
+    <view
+      class="job-card"
+      v-show="currentTab === 1"
+      v-for="(item, index) in companyInfoList"
+      :key="`${item.id}-${index}`"
+    >
+      <tui-card
+        :title="{
+          text: item.companyName,
+          size: 32,
+          color: 'rgb(31 41 55)',
+        }"
+        :isHot="true"
+        :tag="{
+          text: item.market?.label ?? '',
+          size: 26,
+          color: '#f64',
+        }"
+        @tap="toJobDetail(item)"
+      >
+        <template v-slot:body>
+          <view class="intership-body">
+            <view class="course-list-item-tag">
+              <view class="tui-company-info">
+                <tui-image-group
+                  :imageList="[
+                    {
+                      src: item?.logo,
+                    },
+                  ]"
+                  isGroup
+                  width="80rpx"
+                  height="80rpx"
+                ></tui-image-group>
+                <view class="company-intro-text">{{ item.introduction }}</view>
+              </view>
+            </view>
+            <tui-tag type="light-blue" padding="8rpx" size="20rpx"
+              >100+ </tui-tag
+            >
+          </view>
+        </template>
+        <template v-slot:footer>
+          <view class="tui-footer-job-info">
+            <view class="tui-recru-info-text">
+              <tui-text
+                block
+                :text="`${item?.market.label} | ${item?.scale.label} | ${item?.sectorNumber.label}`"
+                size="22"
+                type="gray"
+              ></tui-text
+            ></view>
+
+            <view class="tui-right-company-info">
+              <tui-tag
+                type="danger"
+                padding="8rpx"
+                shape="circle"
+                size="20rpx"
+                v-if="
+                  dayjs(item.createTime).format('YYYY-MM-DD') ===
+                  dayjs(new Date()).format('YYYY-MM-DD')
+                "
+                >最新</tui-tag
+              >
+              <tui-tag
+                v-if="item.isFree ?? true"
+                type="light-blue"
+                padding="8rpx"
+                size="20rpx"
+                >免费</tui-tag
+              >
+              <image
+                v-else
+                src="../../static/images/icon/vip.svg"
+                mode="widthFix"
+                :style="{
+                  height: 50 + 'rpx',
+                  width: 50 + 'rpx',
+                }"
+              ></image>
+            </view>
+          </view>
+        </template>
+      </tui-card>
+    </view>
     <tui-loadmore v-if="loadding" :index="3" type="red"></tui-loadmore>
   </view>
 </template>
@@ -203,7 +305,6 @@ import { internshipPositionGetPageListPOST } from "@/common/apis/intership-searc
 import dayjs from "dayjs";
 
 const proprtyList = ["全部", "实习", "校招"];
-const searchTabList = ["职位", "公司"];
 export default {
   onPageScroll(e) {
     this.scrollTop = e.scrollTop;
@@ -325,33 +426,10 @@ export default {
       dayjs,
       getFormateDateTime,
       scrollTop: 0,
+      currentTab: 0,
+      searchTabList: [{ name: "岗位" }, { name: "公司" }],
       companyInfoList: [],
       intershipList: [
-        {
-          company: "字节跳动",
-          companyId: 49,
-          createTime: 1704893694000,
-          degree: { value: "1", label: "本科" },
-          email: "duansizhu@bytedance.com",
-          experience: { value: "1", label: "1-3年" },
-          id: 1309,
-          isFree: true,
-          jobType: { value: "1", label: "产品运营" },
-          location: ["北京"],
-          positionAdvan: "",
-          positionDuty:
-            "1、负责字节直播安全业务的运营岗位招聘；↵2、简历Sourcing，电话面试综合评估候选人；↵3、跟进面试全流程，保证面试及时顺利进行并追踪面试结果；↵4、数据驱动，分析统计人才数据、招聘漏斗，制作招聘Dashboard。",
-          positionName: "HR实习生",
-          positionRequired:
-            "1、统招本科及以上，24届保研或研一研二优先，专业不限，对招聘工作和互联网行业有浓厚兴趣；↵2、每周全勤5天，可现场实习3个月以上；↵3、主动积极、勤于思考，靠谱认真、结果导向，自驱好学、抗压皮实；↵4、性格外向开朗，有互联网招聘经验优先。",
-          positionTags: null,
-          property: { value: "1", label: "校招" },
-          salary: "",
-          salaryType: { value: "0", label: "日结" },
-          updateTime: null,
-          urgent: false,
-          url: "",
-        },
         {
           company: "字节跳动",
           companyId: 49,
@@ -591,6 +669,9 @@ export default {
         uni.hideLoading();
       }
     },
+    tabsChange(e) {
+      this.currentTab = e?.index ?? 0;
+    },
   },
 };
 </script>
@@ -602,7 +683,7 @@ page {
 
 // 吸顶容器
 .top-sticky-container {
-  height: 200rpx;
+  height: 270rpx;
   width: 100%;
   padding-top: 76rpx;
   background: rgba(255, 255, 255, 0.05);
@@ -952,10 +1033,17 @@ page {
 }
 .tui-footer-job-info {
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 .tui-right-job-info {
   padding: 40rpx 20rpx 20rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tui-right-company-info {
+  padding: 10rpx 20rpx 10rpx 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -965,5 +1053,22 @@ page {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(80rpx);
+}
+.company-intro-text {
+  height: 80rpx;
+  color: #444747;
+  display: -webkit-box; /*弹性伸缩盒子模型显示*/
+  -webkit-box-orient: vertical; /*排列方式*/
+  -webkit-line-clamp: 2; /*显示文本行数*/
+  overflow: hidden; /*溢出隐藏*/
+  font-size: 15px;
+  margin-left: 16rpx;
+}
+.tui-company-info {
+  height: 80rpx;
+  width: 90%;
+  display: flex;
+  justify-content: left;
+  border-radius: 10rpx;
 }
 </style>
