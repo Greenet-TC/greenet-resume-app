@@ -3,33 +3,61 @@
     <!--header-->
     <!--加载loadding-->
     <tui-loadmore v-if="pullUpOn" :index="1"></tui-loadmore>
-    <view class="tui-header-banner">
-      <view class="tui-banner-bg">
-        <!--banner-->
-        <view class="tui-banner-box">
-          <swiper
-            :indicator-dots="true"
-            :autoplay="true"
-            :interval="5000"
-            :duration="150"
-            class="tui-banner-swiper"
-            :circular="true"
-            indicator-color="rgba(255, 255, 255, 0.8)"
-            indicator-active-color="#fff"
-          >
-            <swiper-item
-              v-for="(item, index) in banner"
-              :key="index"
-              @tap.stop="detail"
-            >
-              <image
-                :src="webURLBase + `/home/home-${item}`"
-                class="tui-slide-image"
-                mode="scaleToFill"
-              />
-            </swiper-item>
-          </swiper>
+    <view
+      class="home-header"
+      :style="{
+        background: 'url(' + webURLBase + '/home/index-bg.svg)',
+      }"
+    >
+      <view class="home-header-title">优加 实习</view>
+      <view class="home-header-desc">找实习，进大厂，修改简历，找我就对了</view>
+      <view class="home-header-service">
+        <view
+          :class="[
+            'home-header-service-item',
+            {
+              active: activeKey === SERVICERTYPE.MODIFY,
+            },
+          ]"
+          @tap="handleClickService(SERVICERTYPE.MODIFY)"
+          >简历修改</view
+        >
+        <view
+          :class="[
+            'home-header-service-item',
+            {
+              active: activeKey === SERVICERTYPE.INTERVIEW,
+            },
+          ]"
+          @tap="handleClickService(SERVICERTYPE.INTERVIEW)"
+          >模拟面试</view
+        >
+        <view
+          :class="[
+            'home-header-service-item',
+            {
+              active: activeKey === SERVICERTYPE.RENT,
+            },
+          ]"
+          @tap="handleClickService(SERVICERTYPE.RENT)"
+          >实习租房</view
+        >
+        <view
+          :class="[
+            'home-header-service-item',
+            {
+              active: activeKey === SERVICERTYPE.REFERRAL,
+            },
+          ]"
+          @tap="handleClickService(SERVICERTYPE.REFERRAL)"
+          >实习内推</view
+        >
+      </view>
+      <view class="home-header-search">
+        <view class="home-header-search-icon"
+          ><tui-icon name="search" color="#368CEF" size="24"></tui-icon>
         </view>
+        <view>请输入公司名称，支持岗位+城市名称组合查询</view>
       </view>
     </view>
 
@@ -304,6 +332,8 @@
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import { getBaseInfo, setLoginStatus } from "../../common/login";
+import { SERVICERTYPE } from "../../common/contant";
+import indexImg from "../../static/images/banner/index-bg.svg";
 import { salaryType } from "@/common/contant";
 import dayjs from "dayjs";
 import {
@@ -422,11 +452,14 @@ export default {
       loadding: false,
       pullUpOn: false,
       opacity: 1,
+      SERVICERTYPE,
+      activeKey: SERVICERTYPE.MODIFY,
       dayjs,
       salaryType,
       showActionSheet: false,
       getFormateDateTime,
       getTargetElement,
+      indexImg,
       itemList: [
         {
           text: "登录",
@@ -492,6 +525,9 @@ export default {
         url: `/pages/job/jobInfo/index?id=${item.id}`,
       });
     },
+    handleClickService(key) {
+      this.activeKey = key;
+    },
     //隐藏组件
     closeActionSheet: function () {
       this.showActionSheet = false;
@@ -501,6 +537,14 @@ export default {
 </script>
 
 <style lang="less">
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: "阿里妈妈数黑体 Bold";
+  font-weight: 700;
+  src: url("../../static/font/p8bYj5x5FN0P.woff2") format("woff2"),
+    url("../../static/font/p8bYj5x5FN0P.woff") format("woff");
+  font-display: swap;
+}
 page {
   background-color: #f7f7f7;
 }
@@ -510,100 +554,71 @@ page {
   color: #333;
 }
 
-.tui-header-banner {
+.home-header {
   box-sizing: border-box;
-  /* background: #e41f19; */
-  position: fixed;
-  height: 900px;
-  width: 100%;
-  top: 0;
-  left: 0;
-  z-index: -2;
-}
-
-.tui-banner-bg {
-  display: flex;
   height: 700rpx;
-  /* background-color: #e41f19; */
-  position: relative;
-}
-
-.tui-banner-box {
   width: 100%;
-  // padding: 0 10rpx;
-  box-sizing: border-box;
-  // position: absolute;
-  /* overflow: hidden; */
-  // bottom: -80rpx;
-  left: 0;
+  padding: 170rpx 28rpx 10rpx 28rpx;
+  background-repeat: no-repeat;
+  background-size: contain;
+  &-title {
+    color: #ffffff;
+    font-family: "阿里妈妈数黑体 Bold";
+    text-align: center;
+    font-size: 35px;
+  }
+  &-desc {
+    color: #ffffff;
+    text-align: center;
+    font-size: 30rpx;
+    margin-top: 14rpx;
+  }
+  &-service {
+    display: flex;
+    justify-content: space-around;
+    color: #ffffff80;
+    font-size: 32rpx;
+    margin-top: 50rpx;
+    &-item {
+      &.active {
+        position: relative;
+        color: #ffffff;
+        transition: 0.2s;
+        &::after {
+          .setBottomLine(#EAEAEA);
+          transition: 0.2s;
+        }
+      }
+    }
+  }
+  &-search {
+    display: flex;
+    background: #ffffff;
+    height: 94rpx;
+    border-radius: 15rpx;
+    color: #00000050;
+    font-size: 28rpx;
+    line-height: 100rpx;
+    margin-top: 44rpx;
+    &-icon {
+      padding: 0 11rpx 0 21rpx;
+    }
+  }
 }
-
-.tui-banner-swiper {
-  width: 100%;
-  height: 950rpx;
-  border-radius: 10rpx;
-  overflow: hidden;
-  transform: translateY(0);
-  background-color: #f8f8f8;
+.setBottomLine(@c: #C7C7C7) {
+  content: " ";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -15rpx;
+  right: 0;
+  height: 5rpx;
+  border-radius: 5rpx;
+  width: 95rpx;
+  background: @c;
+  transform-origin: 0 100%;
 }
-
-.tui-slide-image {
-  width: 100%;
-  height: 950rpx;
-  display: block;
-}
-
 /* #ifdef MP-WEIXIN */
-.tui-banner-swiper .wx-swiper-dot {
-  width: 8rpx;
-  height: 8rpx;
-  display: inline-flex;
-  background: none;
-  justify-content: space-between;
-}
-
-.tui-banner-swiper .wx-swiper-dot::before {
-  content: "";
-  flex-grow: 1;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 16rpx;
-  overflow: hidden;
-}
-
-.tui-banner-swiper .wx-swiper-dot-active::before {
-  background-color: #fff;
-}
-
-.tui-banner-swiper .wx-swiper-dot.wx-swiper-dot-active {
-  width: 16rpx;
-}
-
-/* #endif */
-
-/* #ifndef MP-WEIXIN */
-.tui-banner-swiper .uni-swiper-dot::v-deep {
-  width: 8rpx;
-  height: 8rpx;
-  display: inline-flex;
-  background-color: none;
-  justify-content: space-between;
-}
-
-.tui-banner-swiper .uni-swiper-dot::v-deep::before {
-  content: "";
-  flex-grow: 1;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 16rpx;
-  overflow: hidden;
-}
-
-.tui-banner-swiper .uni-swiper-dot-active::v-deep::before {
-  background-color: #fff;
-}
-
-.tui-banner-swiper .uni-swiper-dot.uni-swiper-dot-active::v-deep {
-  width: 16rpx;
-}
 
 /* #endif */
 
@@ -629,7 +644,6 @@ page {
   border-radius: 10px 10px 15px 15px;
 }
 .tui-container-a {
-  margin-top: 360px;
   background: #ffffff;
 }
 .tui-category-item {

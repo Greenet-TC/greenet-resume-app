@@ -1064,3 +1064,9 @@ export const salaryType: IOptions[] = [
   { value: 1, label: "月" },
   { value: 2, label: "年" },
 ];
+export enum SERVICERTYPE {
+  MODIFY = 1,
+  INTERVIEW = 2,
+  RENT = 3,
+  REFERRAL = 4,
+}
