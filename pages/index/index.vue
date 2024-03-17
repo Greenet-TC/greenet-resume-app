@@ -60,7 +60,25 @@
         <view>请输入公司名称，支持岗位+城市名称组合查询</view>
       </view>
     </view>
-    <view class="home-content"> </view>
+    <view class="home-content">
+      <!-- 公告 -->
+      <view>
+        <tui-roll-news
+          :list="list"
+          background="#eef5ff50"
+          radius="15rpx 15rpx 0 0"
+        >
+          <view class="tui-icon__box">
+            <tui-icon
+              name="news"
+              :size="40"
+              unit="rpx"
+              color="#ff4906"
+            ></tui-icon>
+          </view>
+        </tui-roll-news>
+      </view>
+    </view>
 
     <view class="tui-container-a">
       <view class="category-active" @tap="activePage">
@@ -409,6 +427,21 @@ export default {
   data() {
     return {
       banner: ["0.png", "1.png", "2.png", "3.png"],
+      //list 数据
+      list: [
+        {
+          id: 1,
+          title: "致力发展负责任的人工智能 中国发布八大治理原则",
+        },
+        {
+          id: 2,
+          title: "格兰仕暗示拜访拼多多后遭天猫打压，拼多多高层赞其有勇气",
+        },
+        {
+          id: 3,
+          title: "阿里计划将每股普通股拆为8股，增加筹资灵活性",
+        },
+      ],
       webURLBase: WEBURL,
       companyInfoList: [],
       intershipList: [],
