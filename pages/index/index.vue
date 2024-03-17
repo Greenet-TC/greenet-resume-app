@@ -60,24 +60,9 @@
         <view>请输入公司名称，支持岗位+城市名称组合查询</view>
       </view>
     </view>
+    <view class="home-content"> </view>
 
     <view class="tui-container-a">
-      <view class="tui-product-category">
-        <view
-          class="tui-category-item"
-          v-for="(item, index) in category"
-          :key="index"
-          :data-key="item.id"
-          @tap="resumeEdit"
-        >
-          <image
-            :src="'/static/images/icon/' + item.img"
-            class="tui-category-img"
-            mode="scaleToFill"
-          ></image>
-          <view class="tui-category-name">{{ item.name }}</view>
-        </view>
-      </view>
       <view class="category-active" @tap="activePage">
         <image
           src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner.png"
@@ -391,13 +376,14 @@ export default {
   },
 
   onPullDownRefresh: function () {
-    let loadData = JSON.parse(JSON.stringify(this.productList));
-    loadData = loadData.splice(0, 10);
-    this.productList = loadData;
-    this.pageIndex = 1;
-    this.pullUpOn = true;
-    this.loadding = false;
-    uni.stopPullDownRefresh();
+    return;
+    // let loadData = JSON.parse(JSON.stringify(this.productList));
+    // loadData = loadData.splice(0, 10);
+    // this.productList = loadData;
+    // this.pageIndex = 1;
+    // this.pullUpOn = true;
+    // this.loadding = false;
+    // uni.stopPullDownRefresh();
   },
 
   onReachBottom: function () {
@@ -423,28 +409,6 @@ export default {
   data() {
     return {
       banner: ["0.png", "1.png", "2.png", "3.png"],
-      category: [
-        {
-          img: "cv.png",
-          name: "简历修改",
-          id: "1",
-        },
-        {
-          img: "interview.png",
-          name: "模拟面试",
-          id: "2",
-        },
-        {
-          img: "qa.png",
-          name: "实习内推",
-          id: "3",
-        },
-        {
-          img: "house.png",
-          name: "实习租房",
-          id: "4",
-        },
-      ],
       webURLBase: WEBURL,
       companyInfoList: [],
       intershipList: [],
@@ -546,7 +510,7 @@ export default {
   font-display: swap;
 }
 page {
-  background-color: #f7f7f7;
+  background-color: #f8f8f8;
 }
 
 .container {
@@ -605,6 +569,13 @@ page {
     }
   }
 }
+.home-content {
+  height: 200rpx;
+  width: 100%;
+  background: #ffffff;
+  margin-top: -36px;
+  border-radius: 17rpx 17rpx 0 0;
+}
 .setBottomLine(@c: #C7C7C7) {
   content: " ";
   position: absolute;
@@ -622,50 +593,9 @@ page {
 
 /* #endif */
 
-.tui-product-category {
-  padding: 0rpx 10rpx 30rpx;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  font-size: 24rpx;
-  width: 362px;
-  color: #555;
-  margin-top: 20rpx;
-  position: absolute;
-  background: rgba(255, 255, 255, 0.25);
-  box-shadow: -1 0 10px rgba(0, 0, 0, 0.35);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(80rpx);
-  top: 274px;
-  left: 50%;
-  transform: translate(-50%);
-  border-radius: 10px 10px 15px 15px;
-}
 .tui-container-a {
   background: #ffffff;
 }
-.tui-category-item {
-  width: 20%;
-  height: 118rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  padding-top: 22rpx;
-}
-
-.tui-category-img {
-  height: 80rpx;
-  width: 80rpx;
-  display: block;
-}
-
-.tui-category-name {
-  line-height: 24rpx;
-}
-
 .tui-block__box {
   width: 100%;
   padding: 0 25rpx 10rpx 25rpx;
