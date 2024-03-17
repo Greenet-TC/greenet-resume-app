@@ -10,7 +10,6 @@
         "navigationStyle": "custom"
       }
     },
-
     {
       "path": "pages/index/servier-select/servier-select",
       "style": {
@@ -23,6 +22,7 @@
         "navigationBarTitleText": "支付订单"
       }
     },
+
     {
       "path": "pages/job/index",
       "style": {
@@ -146,16 +146,22 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "pagePath": "pages/job/companyInfo/index",
         "text": "简历",
-        "iconPath": "static/images/tabbar/home.png",
-        "selectedIconPath": "static/images/tabbar/select-home.png"
+        "iconPath": "static/images/tabbar/cv.png",
+        "selectedIconPath": "static/images/tabbar/select-cv.png"
       },
       {
         "pagePath": "pages/job/index",
-        "text": "实习",
+        "text": "职位",
         "iconPath": "static/images/tabbar/job.png",
         "selectedIconPath": "static/images/tabbar/select-job.png"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/images/tabbar/home.png",
+        "selectedIconPath": "static/images/tabbar/select-home.png"
       },
       {
         "pagePath": "pages/coures/index",

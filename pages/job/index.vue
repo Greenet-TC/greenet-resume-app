@@ -245,8 +245,8 @@
               </view>
             </view>
             <tui-tag type="light-blue" padding="8rpx" size="20rpx"
-              >100+ </tui-tag
-            >
+              >100+
+            </tui-tag>
           </view>
         </template>
         <template v-slot:footer>

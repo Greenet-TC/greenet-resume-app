@@ -32,16 +32,7 @@
           @tap="handleClickService(SERVICERTYPE.INTERVIEW)"
           >模拟面试</view
         >
-        <view
-          :class="[
-            'home-header-service-item',
-            {
-              active: activeKey === SERVICERTYPE.RENT,
-            },
-          ]"
-          @tap="handleClickService(SERVICERTYPE.RENT)"
-          >实习租房</view
-        >
+
         <view
           :class="[
             'home-header-service-item',
@@ -51,6 +42,16 @@
           ]"
           @tap="handleClickService(SERVICERTYPE.REFERRAL)"
           >实习内推</view
+        >
+        <view
+          :class="[
+            'home-header-service-item',
+            {
+              active: activeKey === SERVICERTYPE.RENT,
+            },
+          ]"
+          @tap="handleClickService(SERVICERTYPE.RENT)"
+          >实习租房</view
         >
       </view>
       <view class="home-header-search">
@@ -83,6 +84,7 @@
         <swiper
           @change="bannerChange"
           circular
+          :current="activeKey"
           :indicator-dots="false"
           :interval="4000"
           :duration="150"
@@ -506,22 +508,22 @@ export default {
             {
               url: "m-1.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【优秀学姐】冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
             },
             {
               url: "m-2.png",
-              title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              title: "专业导师，经验丰富，修改简历1500+简历",
+              desc: "【专业导师】经验丰富，修改简历1500+简历",
             },
             {
               url: "m-3.png",
-              title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              title: "简历没有内容?学姐教你写简历方法论",
+              desc: "【方法论】简历没有内容?学姐教你写简历方法论",
             },
             {
               url: "m-4.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【超强优化】简历内容空白，如何将校园尽力包装？",
             },
           ],
         },
@@ -530,50 +532,24 @@ export default {
           activeKey: SERVICERTYPE.INTERVIEW,
           content: [
             {
-              url: "m-1.png",
+              url: "i-1.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【优秀导师】曾在华为、腾讯、京东实习，简历修改经验丰富",
             },
             {
-              url: "m-1.png",
+              url: "i-2.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【总结复盘】模拟面试，常见问题总结，自我介绍联系，复盘总结",
             },
             {
-              url: "m-1.png",
+              url: "i-3.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【范围广】大佬学姐亲自模拟面试，三节课全方位覆盖",
             },
             {
-              url: "m-1.png",
+              url: "i-4.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
-            },
-          ],
-        },
-        {
-          title: "实习租房",
-          activeKey: SERVICERTYPE.RENT,
-          content: [
-            {
-              url: "m-1.png",
-              title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
-            },
-            {
-              url: "m-1.png",
-              title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
-            },
-            {
-              url: "m-1.png",
-              title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
-            },
-            {
-              url: "m-1.png",
-              title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【冲刺班】校招/实习冲刺班，迅速总结、定位、介绍实信息。",
             },
           ],
         },
@@ -582,24 +558,50 @@ export default {
           activeKey: SERVICERTYPE.REFERRAL,
           content: [
             {
-              url: "1.png",
+              url: "p-1.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【在职内推】，学长学姐直推业务团队，offer率高",
             },
             {
-              url: "1.png",
+              url: "p-2.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【训练营】实习项目训练，涵盖多个岗位",
             },
             {
-              url: "1.png",
+              url: "p-3.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【方法论】企业级项目，接触最新企业方法论",
             },
             {
-              url: "1.png",
+              url: "p-4.png",
               title: "大厂学姐教你写简历",
-              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+              desc: "【保offer】保offer班，3周保证获得offer",
+            },
+          ],
+        },
+        {
+          title: "实习租房",
+          activeKey: SERVICERTYPE.RENT,
+          content: [
+            {
+              url: "r-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "【获取资源】认识不同的人，不同的资源",
+            },
+            {
+              url: "r-2.png",
+              title: "大厂学姐教你写简历",
+              desc: "【丰富活动】担心实习生活枯燥？每周联谊活动丰富有趣",
+            },
+            {
+              url: "r-3.png",
+              title: "大厂学姐教你写简历",
+              desc: "【交流学习】不同公司/学校/城市学生一起交流实习内容，互相学习",
+            },
+            {
+              url: "r-4.png",
+              title: "大厂学姐教你写简历",
+              desc: "【实习租房】担心实习租房被坑？优加租房靠谱",
             },
           ],
         },
@@ -643,8 +645,7 @@ export default {
       });
     },
     bannerChange: function (e) {
-      console.log(e);
-      this.activeKey = e.detail.current + 1;
+      this.activeKey = e.detail.current;
       this.current = e.detail.current;
     },
     more: function () {
@@ -759,7 +760,7 @@ page {
   &-swiper {
     width: 100%;
     height: 400px;
-    padding: 16rpx 20rpx;
+    padding: 0 20rpx 16rpx 20rpx;
     box-sizing: border-box;
   }
   &-item {
@@ -771,7 +772,7 @@ page {
       width: 340rpx;
       height: 240rpx;
       background: #ffffff;
-      margin-top: 20rpx;
+      margin-bottom: 20rpx;
       border-radius: 17rpx;
       > image {
         width: 340rpx;
