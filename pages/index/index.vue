@@ -62,7 +62,7 @@
     </view>
     <view class="home-content">
       <!-- 公告 -->
-      <view>
+      <view class="home-content-news">
         <tui-roll-news
           :list="list"
           background="#eef5ff50"
@@ -77,6 +77,39 @@
             ></tui-icon>
           </view>
         </tui-roll-news>
+      </view>
+      <!-- 滑动内容 -->
+      <view class="home-content-swiper">
+        <swiper
+          @change="bannerChange"
+          circular
+          :indicator-dots="false"
+          :interval="4000"
+          :duration="150"
+          :style="{ height: '300px' }"
+        >
+          <block v-for="(item, index) in serviceItem" :key="index">
+            <swiper-item>
+              <view class="home-content-item">
+                <view
+                  v-for="ele in item.content"
+                  :key="ele.url"
+                  class="home-content-item-container"
+                >
+                  <img :src="webURLBase + '/home/' + ele.url" alt="" />
+                  <view class="home-content-item-container-title">{{
+                    ele.desc
+                  }}</view>
+                </view>
+              </view>
+            </swiper-item>
+          </block>
+        </swiper>
+        <tui-swiper-dot
+          :type="2"
+          :count="count"
+          :current="current"
+        ></tui-swiper-dot>
       </view>
     </view>
 
@@ -335,7 +368,7 @@
 import { getPageListPost } from "@/common/apis/CompanyInfoController";
 import { internshipPositionGetPageListPOST } from "@/common/apis/intership-search-list";
 import { getBaseInfo, setLoginStatus } from "../../common/login";
-import { SERVICERTYPE } from "../../common/contant";
+import { SERVICERTYPE, serviceType } from "../../common/contant";
 import indexImg from "../../static/images/banner/index-bg.svg";
 import { salaryType } from "@/common/contant";
 import dayjs from "dayjs";
@@ -431,15 +464,15 @@ export default {
       list: [
         {
           id: 1,
-          title: "致力发展负责任的人工智能 中国发布八大治理原则",
+          title: "24年春招开始啦，100+企业热招中",
         },
         {
           id: 2,
-          title: "格兰仕暗示拜访拼多多后遭天猫打压，拼多多高层赞其有勇气",
+          title: "优加实习简历修改特训营，正在热招中....",
         },
         {
           id: 3,
-          title: "阿里计划将每股普通股拆为8股，增加筹资灵活性",
+          title: "实习不知道找哪里？哪里找？简历怎么修改，找我们",
         },
       ],
       webURLBase: WEBURL,
@@ -461,6 +494,114 @@ export default {
         {
           text: "登录",
           color: "#ff4906",
+        },
+      ],
+      current: 0,
+      count: 0,
+      serviceItem: [
+        {
+          title: "简历修改",
+          activeKey: SERVICERTYPE.MODIFY,
+          content: [
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-2.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-3.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-4.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+          ],
+        },
+        {
+          title: "模拟面试",
+          activeKey: SERVICERTYPE.INTERVIEW,
+          content: [
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+          ],
+        },
+        {
+          title: "实习租房",
+          activeKey: SERVICERTYPE.RENT,
+          content: [
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "m-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+          ],
+        },
+        {
+          title: "实习内推",
+          activeKey: SERVICERTYPE.REFERRAL,
+          content: [
+            {
+              url: "1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+            {
+              url: "1.png",
+              title: "大厂学姐教你写简历",
+              desc: "冯学姐毕业于华中科技大学，曾在华为、腾讯、京东实习，简历修改经验丰富",
+            },
+          ],
         },
       ],
     };
@@ -501,7 +642,11 @@ export default {
         url: `/pages/common/login`,
       });
     },
-
+    bannerChange: function (e) {
+      console.log(e);
+      this.activeKey = e.detail.current + 1;
+      this.current = e.detail.current;
+    },
     more: function () {
       uni.switchTab({
         url: "/pages/job/index",
@@ -603,11 +748,48 @@ page {
   }
 }
 .home-content {
-  height: 200rpx;
+  height: 800rpx;
   width: 100%;
-  background: #ffffff;
   margin-top: -36px;
   border-radius: 17rpx 17rpx 0 0;
+  &-news {
+    background: #ffffff;
+    border-radius: 17rpx 17rpx 0 0;
+  }
+  &-swiper {
+    width: 100%;
+    height: 400px;
+    padding: 16rpx 20rpx;
+    box-sizing: border-box;
+  }
+  &-item {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    &-container {
+      width: 340rpx;
+      height: 240rpx;
+      background: #ffffff;
+      margin-top: 20rpx;
+      border-radius: 17rpx;
+      > image {
+        width: 340rpx;
+        height: 185rpx;
+        border-radius: 17rpx 17rpx 0 0;
+      }
+      &-title {
+        display: inline-block;
+        white-space: nowrap;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 24rpx;
+        text-align: center;
+        margin: 0 10rpx;
+      }
+    }
+  }
 }
 .setBottomLine(@c: #C7C7C7) {
   content: " ";
