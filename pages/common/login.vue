@@ -41,7 +41,7 @@
 <script>
 import { WEBURL } from "@/common/utils";
 import store from "@/store/index.ts";
-import { login ,getBaseInfo} from "@/common/login";
+import { login, getBaseInfo } from "@/common/login";
 import { saveBaseInfoUsingPOST } from "@/common/apis/user-controller.ts";
 export default {
   data() {
@@ -73,9 +73,7 @@ export default {
       }
     },
     async getUserProfile() {
-      setTimeout(()=>{
-
-      },1000)
+      setTimeout(() => {}, 1000);
       login();
       //
       // 获取用户信息
@@ -85,11 +83,10 @@ export default {
         lang: "zh_CN",
         desc: "获取用户信息",
         success: async (userInfo) => {
-          
           await saveBaseInfoUsingPOST({
             ...store.state.userBaseInfo,
-            avatar:userInfo.userInfo.avatarUrl,
-            username:userInfo.userInfo.nickName
+            avatar: userInfo.userInfo.avatarUrl,
+            username: userInfo.userInfo.nickName,
           });
           await getBaseInfo();
           setTimeout(() => {
@@ -123,6 +120,26 @@ export default {
 </script>
 
 <style>
+page {
+  background: linear-gradient(
+      131.5deg,
+      rgba(254, 54, 102, 0.12) 0.82%,
+      rgba(255, 62, 108, 0) 21.71%
+    ),
+    linear-gradient(
+      227.78deg,
+      rgba(195, 255, 251, 0.4) 2.86%,
+      rgba(186, 255, 251, 0) 20.97%
+    ),
+    linear-gradient(
+      180deg,
+      #d6e6ff 0%,
+      #f9fcff 25.16%,
+      #f5f9ff 39.96%,
+      rgba(210, 222, 255, 0.24) 61.08%,
+      rgba(255, 255, 255, 0) 100%
+    );
+}
 .tui-bg {
   width: 100%;
   height: 360rpx;
@@ -134,11 +151,10 @@ export default {
   padding: 0 35rpx;
   box-sizing: border-box;
   margin-top: 200px;
-  background: linear-gradient(180deg, #ecfafa, #f8f8f8);
 }
 .tui-form {
   background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+
   backdrop-filter: blur(10px);
   height: 600rpx;
   /* box-shadow: 0 10rpx 14rpx 0 rgba(0, 0, 0, 0.08); */

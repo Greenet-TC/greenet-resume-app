@@ -30,13 +30,11 @@
     <view class="tui-skeleton">
       <view class="job-tui-card">
         <tui-card
-        
-         full
+          full
           :header="{
             bgcolor: 'rgba(255,255,255,0)',
             line: true,
           }"
-         
           :title="{
             text: positionInfo?.positionName,
             size: 40,
@@ -83,7 +81,7 @@
             </view>
           </template>
           <template v-slot:footer>
-            <view class="job-footer-box" >
+            <view class="job-footer-box">
               <view class="job-footer-box-item" :class="'tui-skeleton-rect'">
                 <tui-icon name="gps" :size="18"></tui-icon>
                 <tui-text
@@ -122,7 +120,7 @@
           </template>
         </tui-card>
       </view>
-      <view class="job-detail" >
+      <view class="job-detail">
         <view class="job-detail-box">
           <view class="job-detail-box-tag">
             <tui-tag
@@ -137,12 +135,10 @@
             <view
               v-for="(item, index) in positionInfo?.positionTags"
               :key="index + ''"
-              
             >
               <tui-tag
                 type="gray"
                 margin="0 14rpx 0 0"
-                
                 padding="10rpx"
                 size="24rpx"
                 >{{ item }}</tui-tag
@@ -164,7 +160,7 @@
             >
             <view class="job-footer-box-gra" :class="'tui-skeleton-rect'">
               <tui-text
-              padding="0rpx 0"
+                padding="0rpx 0"
                 color="rgb(31 41 55)"
                 block
                 highlight
@@ -194,7 +190,7 @@
             </view>
           </view>
           <view class="job-detail-box" :class="'tui-skeleton-rect'">
-            <view class="servier-contant" >
+            <view class="servier-contant">
               <view class="servier-contant-title">
                 <view class="num">2</view>
                 <view>岗位职责</view>
@@ -229,7 +225,11 @@
               ></tui-text
             ></view>
           </view>
-          <view class="job-detail-box" v-if="positionInfo?.positionAdvan" :class="'tui-skeleton-rect'">
+          <view
+            class="job-detail-box"
+            v-if="positionInfo?.positionAdvan"
+            :class="'tui-skeleton-rect'"
+          >
             <view class="servier-contant">
               <view class="servier-contant-title">
                 <view class="num">4</view>
@@ -396,7 +396,7 @@
                   <tui-text block :text="item.company" size="30"></tui-text>
                   <tui-text
                     block
-                    :text="`${item.companyInfo.market.label} | ${item.companyInfo.scale.label} | ${item.companyInfo.sectorNumber.label}`"
+                    :text="`${item.companyInfo?.market?.label} | ${item.companyInfo?.scale?.label} | ${item.companyInfo?.sectorNumber?.label}`"
                     size="22"
                     type="gray"
                   ></tui-text
@@ -446,6 +446,7 @@
     <view class="tui-tabbar">
       <view class="tui-btn-mr">
         <tui-button
+          v-if="positionInfo?.isFree"
           type="warning"
           width="350rpx"
           height="70rpx"
@@ -453,6 +454,26 @@
           shape="circle"
           @click="openDrawer"
           >立即投递</tui-button
+        >
+        <tui-button
+          v-else
+          type="warning"
+          width="350rpx"
+          height="70rpx"
+          plain
+          :size="30"
+          shape="circle"
+          @click="OpenVipDrawer"
+          ><image
+            class="tui-skeleton-rect"
+            src="../../../static/images/icon/vip.svg"
+            mode="widthFix"
+            :style="{
+              height: 50 + 'rpx',
+              width: 50 + 'rpx',
+            }"
+          ></image
+          >立即解锁🔓</tui-button
         >
       </view>
       <view @click="showSharePopup">
@@ -610,7 +631,21 @@ export default {
     this.scrollTop = e.scrollTop;
   },
   async onLoad(option) {
-    this.id=option?.id??0
+    /**激励广告 */
+    if (wx.createRewardedVideoAd) {
+      this.rewardedVideoAd = wx.createRewardedVideoAd({
+        adUnitId: "adunit-e97bd4efa55e5e05",
+      });
+      this.rewardedVideoAd.onLoad(() => {
+        this.adIsSuccess = true;
+        console.log("onLoad event emit");
+      });
+      this.rewardedVideoAd.onError((err) => {
+        this.adIsSuccess = false;
+        console.log("onError event emit", err);
+      });
+    }
+    this.id = option?.id ?? 0;
     try {
       this.loading = true;
       const data = await internshipPositionGetPageListPOST({
@@ -620,10 +655,12 @@ export default {
       });
       this.positionInfo = data.data?.[0];
       this.share.title = "🏝️" + this.positionInfo?.positionName;
-      this.share.path = getCurrentPages()[getCurrentPages().length - 1].route+`?id=${option.id}`
+      this.share.path =
+        getCurrentPages()[getCurrentPages().length - 1].route +
+        `?id=${option.id}`;
       const company_data = await getPageListPost({
         pageNum: 1,
-        pageSize: 50,
+        pageSize: 100,
         id: this.positionInfo?.companyId,
       });
       this.companyInfo = company_data.data?.[0];
@@ -631,7 +668,7 @@ export default {
 
       const companyData = await getPageListPost({
         pageNum: 1,
-        pageSize: 50,
+        pageSize: 100,
       });
 
       const intershipListData = await internshipPositionGetPageListPOST({
@@ -640,6 +677,7 @@ export default {
         jobType: this.positionInfo.jobType.value,
       });
       this.intershipList = intershipListData.data;
+
       this.intershipList = this.intershipList.map((i) => {
         return {
           ...i,
@@ -701,7 +739,7 @@ export default {
   data() {
     return {
       top: 0, //标题图标距离顶部距离
-      id:0,
+      id: 0,
       opacity: 0,
       scrollTop: 0,
       positionInfo: null,
@@ -718,9 +756,56 @@ export default {
       modalShow: false,
       posterImg: "",
       salaryType,
+      adIsSuccess: true,
+      rewardedVideoAd: null,
     };
   },
   methods: {
+    OpenVipDrawer() {
+      uni.showToast({
+        icon: "none",
+        title: "广告获取成功",
+        duration: 3000,
+        position: "center",
+      });
+
+      this.rewardedVideoAd.show().catch(() => {
+        this.rewardedVideoAd
+          .load()
+          .then(() => this.rewardedVideoAd.show())
+          .catch((err) => {
+            uni.showToast({
+              icon: "none",
+              title: "广告显示失败",
+              duration: 3000,
+              position: "center",
+            });
+
+            console.log("激励视频 广告显示失败");
+          });
+      });
+      this.rewardedVideoAd.onClose((res) => {
+        // 用户点击了【关闭广告】按钮
+        if (res && res.isEnded) {
+          // 正常播放结束，可以下发游戏奖励
+          uni.showToast({
+            icon: "none",
+            title: "奖励获取成功",
+            duration: 3000,
+            position: "center",
+          });
+          this.visible = true;
+        } else {
+          // 播放中途退出，不下发游戏奖励
+          uni.showToast({
+            icon: "none",
+            title: "奖励获取失败",
+            duration: 3000,
+            position: "center",
+          });
+        }
+      });
+    },
     setRemoveGradient() {
       this.removeGradient = true;
     },
@@ -792,8 +877,13 @@ export default {
       });
       // #endif
       this.share.title = "🏝️" + this.positionInfo?.positionName;
-      this.share.path = getCurrentPages()[getCurrentPages().length - 1].route+`?id=${this.id}`
-      console.log('getCurrentPages().pages[pages.length - 1].route+`?id=${this.id}',getCurrentPages().pages[pages.length - 1].route+`?id=${this.id}`)
+      this.share.path =
+        getCurrentPages()[getCurrentPages().length - 1].route +
+        `?id=${this.id}`;
+      console.log(
+        "getCurrentPages().pages[pages.length - 1].route+`?id=${this.id}",
+        getCurrentPages().pages[pages.length - 1].route + `?id=${this.id}`
+      );
     },
     async createPoster() {
       this.hideSharePopup();
@@ -927,7 +1017,6 @@ page {
   border-radius: 10rpx;
   margin: 190rpx 20rpx 24rpx;
   box-shadow: rgba(0, 0, 0, 0.04) 0rpx 3rpx 5rpx;
-
 }
 .job-detail-box {
   margin-bottom: 16rpx;

@@ -87,25 +87,87 @@
         ></tui-swiper-dot>
       </view>
     </view>
-
+    <view :style="{ padding: '10px' }">
+      <view class="home-content-title">
+        <view class="home-content-title-num">1</view>
+        <view>实习交流群</view>
+      </view></view
+    >
     <view class="tui-container-a">
-      <view class="category-active" @tap="activePage">
-        <image
-          src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner.png"
-          class="tui-img__coupon"
-        ></image>
-        <view class="coupon-contant">
-          <view class="coupon-contant-text">
-            <view class="coupon-contant-text-title"> 24校招/实习特训营群 </view>
-            <view class="coupon-contant-text-sub">
-              300+名企岗位内推offer轻松拿！
+      <swiper
+        vertical="true"
+        circular
+        autoplay
+        :current="1"
+        :indicator-dots="false"
+        :interval="4000"
+        :duration="150"
+        :style="{ height: '100px' }"
+      >
+        <swiper-item>
+          <view class="category-active" @tap="activePage">
+            <image
+              src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner.png"
+              class="tui-img__coupon"
+            ></image>
+            <view class="coupon-contant">
+              <view class="coupon-contant-text">
+                <view class="coupon-contant-text-title">
+                  24校招特训营群招募啦
+                </view>
+                <view class="coupon-contant-text-sub">
+                  300+名企岗位内推offer轻松拿！
+                </view>
+              </view>
+              <view class="coupon-contant-btn">加入+</view>
             </view>
           </view>
-          <view class="coupon-contant-btn">加入+</view>
-        </view>
-      </view>
+        </swiper-item>
+        <swiper-item>
+          <view class="category-active" @tap="activePage">
+            <image
+              src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner-2.png"
+              class="tui-img__coupon"
+            ></image>
+            <view class="coupon-contant">
+              <view class="coupon-contant-text">
+                <view class="coupon-contant-text-title">
+                  24实习信息 城市交流群
+                </view>
+                <view class="coupon-contant-text-sub">
+                  覆盖全国20+城市高校信息共享！
+                </view>
+              </view>
+              <view class="coupon-contant-btn">加入+</view>
+            </view>
+          </view>
+        </swiper-item>
+        <swiper-item>
+          <view class="category-active" @tap="activePage">
+            <image
+              src="https://mxm1923893223-ulteh-1302287111.tcloudbaseapp.com/activity/banner-3.png"
+              class="tui-img__coupon"
+            ></image>
+            <view class="coupon-contant">
+              <view class="coupon-contant-text">
+                <view class="coupon-contant-text-title">
+                  24留学生实习信息交流群
+                </view>
+                <view class="coupon-contant-text-sub">
+                  覆盖欧美/澳洲/香港高校！
+                </view>
+              </view>
+              <view class="coupon-contant-btn">加入+</view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+
       <view class="tui-title-contant">
-        <tui-text size="35" fontWeight="500" block text="实习内推"></tui-text>
+        <view class="home-content-title">
+          <view class="home-content-title-num">2</view>
+          <view>实习公司</view>
+        </view>
         <tui-button
           width="140rpx"
           size="24"
@@ -167,33 +229,31 @@
       </view>
       <!-- 头部 -->
 
-      <view class="tui-product-box">
-        <!--简历模板-->
-        <view class="tui-block__box">
-          <view class="tui-group-name" @tap="more">
-            <view>
-              <text>热招岗位</text>
-              <text class="tui-sub__desc">大家都在投递</text>
-            </view>
-            <view class="tui-more__box">
-              <tui-button
-                width="140rpx"
-                size="24"
-                shape="circle"
-                type="gray-warning"
-                height="50rpx"
-                disabledGray
-                @tap="more"
-                >更多岗位
-                <tui-icon
-                  name="arrowright"
-                  :size="30"
-                  unit="rpx"
-                  color="#999"
-                ></tui-icon
-              ></tui-button>
-            </view>
+      <view class="tui-group-name" @tap="more">
+        <view :style="{ padding: '10px' }">
+          <view class="home-content-title">
+            <view class="home-content-title-num">3</view>
+            <view>热招岗位</view>
+            <text class="tui-sub__desc">大家都在投递</text>
           </view>
+        </view>
+        <view class="tui-more__box">
+          <tui-button
+            width="140rpx"
+            size="24"
+            shape="circle"
+            type="gray-warning"
+            height="50rpx"
+            disabledGray
+            @tap="more"
+            >更多岗位
+            <tui-icon
+              name="arrowright"
+              :size="30"
+              unit="rpx"
+              color="#999"
+            ></tui-icon
+          ></tui-button>
         </view>
       </view>
       <view
@@ -327,6 +387,9 @@
             </view>
           </template>
         </tui-card>
+        <view class="adContainer" v-if="index % 5 === 0">
+          <ad unit-id="adunit-a887674f103b6df6" ad-intervals="30"></ad>
+        </view>
       </view>
     </view>
 
@@ -369,10 +432,14 @@ export default {
 
   async onLoad() {
     this.share.title = "你距离实习更近";
+    uni.showLoading({
+      title: "加载中",
+    });
     setTimeout(async () => {
       if (getToken()) {
         getBaseInfo();
         setLoginStatus(true);
+
         const _data = await getPageListPost({
           pageNum: 1,
           pageSize: 50,
@@ -397,6 +464,7 @@ export default {
         }
         this.pageNum = this.pageNum + 1;
         this.pageInfo = data.pageInfo;
+        uni.hideLoading();
       }
     }, 1000);
   },
@@ -724,7 +792,7 @@ page {
   }
 }
 .home-content {
-  height: 800rpx;
+  height: 600rpx;
   width: 100%;
   margin-top: -36px;
   border-radius: 17rpx 17rpx 0 0;
@@ -734,7 +802,7 @@ page {
   }
   &-swiper {
     width: 100%;
-    height: 400px;
+    height: 600rpx;
     padding: 0 20rpx 16rpx 20rpx;
     box-sizing: border-box;
   }
@@ -766,7 +834,32 @@ page {
       }
     }
   }
+  &-title {
+    font-size: 36rpx;
+    color: #404040;
+    font-weight: 600;
+    position: relative;
+    display: flex;
+    margin-left: 44px;
+    height: 27px;
+    line-height: 27px;
+    &-num {
+      width: 32px;
+      position: absolute;
+      height: 19px;
+      line-height: 19px;
+      top: 3px;
+      font-size: 18px;
+      left: -40px;
+      border-radius: 10px 6px 0 10px;
+      background: #ff4f4f;
+      background-image: linear-gradient(90deg, #ff813a, #ff3d3d);
+      color: #fff;
+      text-align: center;
+    }
+  }
 }
+
 .setBottomLine(@c: #C7C7C7) {
   content: " ";
   position: absolute;
@@ -785,15 +878,15 @@ page {
 /* #endif */
 
 .tui-container-a {
-  background: #ffffff;
+  // background: #ffffff;
 }
 .tui-block__box {
-  width: 100%;
   padding: 0 25rpx 10rpx 25rpx;
   box-sizing: border-box;
   background-color: #ffffff;
   border-radius: 20rpx;
   overflow: hidden;
+  margin: 0 10px;
 }
 
 .tui-product-box {
@@ -803,8 +896,7 @@ page {
 .category-active {
   height: 156rpx;
   position: relative;
-  margin-top: 20rpx;
-  padding: 20px 32rpx 0 32rpx;
+  padding: 10px 32rpx 0 32rpx;
 
   .tui-img__coupon {
     width: 100%;
@@ -867,7 +959,7 @@ page {
   line-height: 34rpx;
   font-weight: bold;
   text-align: center;
-  padding: 30rpx 0;
+  padding: 30rpx 0 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -900,9 +992,9 @@ page {
   font-weight: 400;
   color: #999;
   position: absolute;
-  right: 6rpx;
+  right: 39rpx;
   font-size: 24rpx;
-  top: 16rpx;
+  top: 44rpx;
 }
 .tui-countdown__box {
   width: 228rpx;
@@ -975,7 +1067,6 @@ page {
   display: flex;
   justify-content: space-between;
   padding: 20rpx;
-  margin-top: 20rpx;
 }
 
 .tui-new-job-info {
@@ -1120,6 +1211,7 @@ page {
 .tui-company-item {
   margin: 0 4rpx;
   position: relative;
+  padding: 10px 0;
 }
 .tui-new-comp-info {
   height: 80rpx;
@@ -1131,7 +1223,10 @@ page {
 }
 .job-card {
   margin-bottom: 20rpx;
-  width: 100%;
+  .adContainer {
+    margin: 16px 16px 0 16px;
+    border-radius: 10rpx;
+  }
 }
 .intership-body {
   display: flex;
