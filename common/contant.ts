@@ -1066,7 +1066,7 @@ export const salaryType: IOptions[] = [
 ];
 export enum SERVICERTYPE {
   MODIFY = 0,
-  INTERVIEW = 1,
+  REFERRAL = 1,
+  INTERVIEW = 2,
   RENT = 3,
-  REFERRAL = 2,
 }

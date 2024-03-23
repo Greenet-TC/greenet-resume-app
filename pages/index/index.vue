@@ -13,45 +13,16 @@
       <view class="home-header-desc">找实习，进大厂，修改简历，找我就对了</view>
       <view class="home-header-service">
         <view
+          v-for="item in serviceItem"
+          :key="item.activeKey"
           :class="[
             'home-header-service-item',
             {
-              active: activeKey === SERVICERTYPE.MODIFY,
+              active: activeKey === item.activeKey,
             },
           ]"
-          @tap="handleClickService(SERVICERTYPE.MODIFY)"
-          >简历修改</view
-        >
-        <view
-          :class="[
-            'home-header-service-item',
-            {
-              active: activeKey === SERVICERTYPE.INTERVIEW,
-            },
-          ]"
-          @tap="handleClickService(SERVICERTYPE.INTERVIEW)"
-          >模拟面试</view
-        >
-
-        <view
-          :class="[
-            'home-header-service-item',
-            {
-              active: activeKey === SERVICERTYPE.REFERRAL,
-            },
-          ]"
-          @tap="handleClickService(SERVICERTYPE.REFERRAL)"
-          >实习内推</view
-        >
-        <view
-          :class="[
-            'home-header-service-item',
-            {
-              active: activeKey === SERVICERTYPE.RENT,
-            },
-          ]"
-          @tap="handleClickService(SERVICERTYPE.RENT)"
-          >实习租房</view
+          @tap="handleClickService(item.activeKey)"
+          >{{ item.title }}</view
         >
       </view>
       <view class="home-header-search">
@@ -96,6 +67,8 @@
                 <view
                   v-for="ele in item.content"
                   :key="ele.url"
+                  :data-key="item.activeKey"
+                  @tap="resumeEdit"
                   class="home-content-item-container"
                 >
                   <img :src="webURLBase + '/home/' + ele.url" alt="" />
@@ -502,7 +475,7 @@ export default {
       count: 0,
       serviceItem: [
         {
-          title: "简历修改",
+          title: "简历优化",
           activeKey: SERVICERTYPE.MODIFY,
           content: [
             {
@@ -524,6 +497,32 @@ export default {
               url: "m-4.png",
               title: "大厂学姐教你写简历",
               desc: "【超强优化】简历内容空白，如何将校园尽力包装？",
+            },
+          ],
+        },
+        {
+          title: "实习规划",
+          activeKey: SERVICERTYPE.REFERRAL,
+          content: [
+            {
+              url: "r-1.png",
+              title: "大厂学姐教你写简历",
+              desc: "【获取资源】认识不同的人，不同的资源",
+            },
+            {
+              url: "r-2.png",
+              title: "大厂学姐教你写简历",
+              desc: "【丰富活动】担心实习生活枯燥？每周联谊活动丰富有趣",
+            },
+            {
+              url: "r-3.png",
+              title: "大厂学姐教你写简历",
+              desc: "【交流学习】不同公司/学校/城市学生一起交流实习内容，互相学习",
+            },
+            {
+              url: "r-4.png",
+              title: "大厂学姐教你写简历",
+              desc: "【实习租房】担心实习租房被坑？优加租房靠谱",
             },
           ],
         },
@@ -555,7 +554,7 @@ export default {
         },
         {
           title: "实习内推",
-          activeKey: SERVICERTYPE.REFERRAL,
+          activeKey: SERVICERTYPE.RENT,
           content: [
             {
               url: "p-1.png",
@@ -579,39 +578,15 @@ export default {
             },
           ],
         },
-        {
-          title: "实习租房",
-          activeKey: SERVICERTYPE.RENT,
-          content: [
-            {
-              url: "r-1.png",
-              title: "大厂学姐教你写简历",
-              desc: "【获取资源】认识不同的人，不同的资源",
-            },
-            {
-              url: "r-2.png",
-              title: "大厂学姐教你写简历",
-              desc: "【丰富活动】担心实习生活枯燥？每周联谊活动丰富有趣",
-            },
-            {
-              url: "r-3.png",
-              title: "大厂学姐教你写简历",
-              desc: "【交流学习】不同公司/学校/城市学生一起交流实习内容，互相学习",
-            },
-            {
-              url: "r-4.png",
-              title: "大厂学姐教你写简历",
-              desc: "【实习租房】担心实习租房被坑？优加租房靠谱",
-            },
-          ],
-        },
       ],
     };
   },
   methods: {
     resumeEdit: function (e) {
       uni.navigateTo({
-        url: `/pages/index/servier-select/servier-select?type=${e.currentTarget.dataset.key}`,
+        url: `/pages/index/servier-select/servier-select?type=${
+          e.currentTarget.dataset.key + 1
+        }`,
       });
     },
     getUserProfile() {
