@@ -318,7 +318,7 @@ export default {
     try {
       const company_data = await getPageListPost({
         pageNum: 1,
-        pageSize: 50,
+        pageSize: 1000,
       });
       this.companyInfoList = company_data.data;
       const data = await internshipPositionGetPageListPOST({

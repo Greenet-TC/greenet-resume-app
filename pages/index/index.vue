@@ -442,12 +442,12 @@ export default {
 
         const _data = await getPageListPost({
           pageNum: 1,
-          pageSize: 50,
+          pageSize: 1000,
         });
         this.companyInfoList = _data.data;
         const data = await internshipPositionGetPageListPOST({
           pageNum: 1,
-          pageSize: 5,
+          pageSize: 10,
         });
         this.intershipList = data.data.map((i) => {
           return {

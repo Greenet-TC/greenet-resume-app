@@ -632,6 +632,7 @@ export default {
   },
   async onLoad(option) {
     /**激励广告 */
+
     if (wx.createRewardedVideoAd) {
       this.rewardedVideoAd = wx.createRewardedVideoAd({
         adUnitId: "adunit-e97bd4efa55e5e05",
